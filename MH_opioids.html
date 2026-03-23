@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Opioids, Substances & Assessment — Mental Health Nursing</title>
+<style>
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>💊 Opioids, Substances & Assessment</h1>
+  <p>Mental Health Nursing • Tehrani Labs</p>
+</div>
+<nav class="nav"><a href="MH_Index.html">Home</a>
+<a href="MH_schizophrenia.html">🧠 Schizophrenia</a>
+<a href="MH_schizoaffective.html">🔄 Schizoaffective Disorder</a>
+<a href="MH_delusional.html">💭 Delusional Disorder</a>
+<a href="MH_delusions.html">👁️ Delusions & Hallucinations</a>
+<a href="MH_alcohol.html">🍷 Alcohol Use Disorder</a>
+<a href="MH_opioids.html" class="active">💊 Opioids, Substances & Assessment</a>
+<a href="MH_assessment.html">📋 Mental Status Exam</a></nav>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="stats" id="statsText">0 of 27 answered (0%)</div>
+  <div style="text-align:right;margin-bottom:15px"><button onclick="resetAll()" style="padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.8em">Reset All</button></div>
+  <div class="q-card" data-answered="false">
+  <div class="q-num">Question 1</div>
+  <div class="q-stem">The client was prescribed buprenorphine-naloxone in the emergency department for opioid use disorder. When the client presents to the psychiatrist's office for a follow-up visit, what assessment finding indicates effectiveness of the buprenorphine-naloxone?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'19P',true,false)">Client went from using heroin every day to using heroin once in the last seven days.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19P',false,false)">Client is asking for medications to help relieve the bad withdrawal symptoms.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19P',false,false)">Client reports that the cravings for heroin are getting extremely strong.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19P',false,false)">Client reports that the buprenorphine-naloxone makes him feel 'too high' so he stopped using it.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> A reduction in heroin use from daily to once in the last seven days indicates that buprenorphine-naloxone is working to help the client manage their dependency and reduce their opioid use.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 2</div>
+  <div class="q-stem">A client with opioid use disorder is prescribed methadone as part of their treatment plan. Which of the following findings suggests that the client is receiving an appropriate dose of methadone?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'19C1',true,false)">The client reports feeling normal and does not experience cravings for opioids.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19C1',false,false)">The client reports feeling drowsy and lethargic throughout the day.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19C1',false,false)">The client reports continuing to use heroin daily despite taking methadone.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19C1',false,false)">The client complains of nausea and vomiting after taking methadone.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> A properly adjusted dose of methadone will alleviate cravings and withdrawal symptoms without producing the euphoria associated with opioid misuse, helping the client maintain stability.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 3</div>
+  <div class="q-stem">A client with opioid use disorder is started on naloxone to reverse an opioid overdose. After administration, which of the following outcomes is <strong>most</strong> important to assess for in the client?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'19C2',true,false)">Return of respiratory function to normal levels.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19C2',false,false)">Client's ability to stand and walk without assistance.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19C2',false,false)">Resolution of gastrointestinal symptoms, such as nausea or vomiting.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'19C2',false,false)">Client's willingness to attend a follow-up treatment session.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Naloxone is an opioid antagonist that temporarily reverses the life-threatening effects of an opioid overdose, such as respiratory depression. The priority is to ensure that the client's breathing and oxygenation are stable.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 4</div>
+  <div class="q-stem">Family members bring a teenager to the emergency department whom they claim uses cocaine and appears to be experiencing withdrawals. What assessment finding supports the family's concern?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'20P',true,false)">Client reports having unpleasant and colorful dreams and not being able to sleep.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20P',false,false)">A family member says to the client, "This is your last chance."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20P',false,false)">Client states, "I have a rush of energy and I feel so good right now."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20P',false,false)">The client is in a calm and quiet mood and expresses no physical discomfort.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Cocaine withdrawal symptoms can include agitation, fatigue, vivid or unpleasant dreams, and difficulty sleeping. The other options do not indicate withdrawal symptoms from cocaine.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 5</div>
+  <div class="q-stem">A client with opioid use disorder arrives at the clinic and reports feeling nauseous and sweating excessively. Which of the following assessment findings would support opioid withdrawal?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'20C1',true,false)">Client has dilated pupils and reports muscle aches.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20C1',false,false)">Client is talkative, energetic, and feels euphoric.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20C1',false,false)">Client reports feeling irritable but is calm and relaxed.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20C1',false,false)">Client denies experiencing any cravings for opioids.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Opioid withdrawal symptoms include muscle aches, dilated pupils, nausea, sweating, and irritability. These symptoms are signs of the body reacting to the absence of opioids after dependency has developed.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 6</div>
+  <div class="q-stem">A client with a history of heroin use disorder is admitted to the hospital for detoxification. The nurse suspects opioid withdrawal and prepares to assess the client. Which of the following findings would be <strong>most</strong> indicative of opioid withdrawal?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'20C2',true,false)">Client reports feeling restless, yawning frequently, and has a runny nose.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20C2',false,false)">Client states, "I feel great and I'm not experiencing any discomfort."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20C2',false,false)">Client exhibits decreased respiratory rate and pupil constriction.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'20C2',false,false)">Client remains calm, relaxed, and in no apparent distress.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> These are common signs of opioid withdrawal. Symptoms like yawning, restlessness, and rhinorrhea (runny nose) are early indicators of opioid withdrawal as the body adjusts to the absence of opioids.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 7</div>
+  <div class="q-stem">Based on the nurse's notes, at what time should the nurse have <strong>first</strong> suspected that the client may have used cocaine and intervened?<br><br><em>Chart: Jara Stelt, 25yo, admitted for cocaine abuse. 1550: Client in bed, VS stable, no distress. 1615: Client in group therapy. 1720: Client with visitor, no distress. 1830: Nurse finds bed empty, client and visitor in closed bathroom. 1850: Client irritable, VS elevated (BP 142/90, HR 110). 1945: More irritable, VS further elevated (BP 144/90, HR 114). 2010: Client found unresponsive with tourniquet, syringe, cocaine found.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'21P',true,false)">1850</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21P',false,false)">1720</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21P',false,false)">2010</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21P',false,false)">1945</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> At 1850, the client had elevated vital signs, including an increased heart rate and blood pressure, along with irritability. These signs may be indicative of stimulant use, such as cocaine.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 8</div>
+  <div class="q-stem">Based on the nurse's notes, at what time should the nurse recognize both subjective and objective symptoms of withdrawal from a substance use disorder and intervene?<br><br><em>Chart: Emily Torres, 32yo, admitted for substance use disorder. 0920: Client in bed, VS stable, no distress. 1020: Client up, slightly restless. 1130: Client reports feeling shaky, slightly nauseous, denies cravings. VS: BP 118/76, HR 78. 1230: Client more agitated, shaking hands, reports feeling "anxious" and "jittery." VS: BP 132/86, HR 94. 1310: Client visibly sweating, trembling, reports severe anxiety and dizziness. VS: BP 138/88, HR 100.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'21C1',true,false)">1230</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21C1',false,false)">1310</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21C1',false,false)">1130</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21C1',false,false)">1020</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> At 1230, the client demonstrates both subjective signs (anxiety, feeling "jittery") and objective signs (shaking hands, elevated BP and HR). Early intervention at this point helps prevent further escalation of withdrawal symptoms.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 9</div>
+  <div class="q-stem">Based on the nurse's notes, when should the nurse suspect that the client may be experiencing opioid withdrawal and intervene?<br><br><em>Chart: Michael Green, 28yo, admitted for opioid use disorder. 0800: Client calm, VS stable. 0900: Client slightly tired, feels "a little off," denies major symptoms. 1030: Client feels "weak" and "sluggish," denies opioid cravings. 1200: Client nauseous, sweating, restless. VS: BP 126/82, HR 88. States "I need something to take the edge off." 1300: Client sweating, shaking, rhinorrhea, muscle aches. VS: BP 140/90, HR 110. Admits to using heroin the night before.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'21C2',true,false)">1300</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21C2',false,false)">1030</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21C2',false,false)">0800</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'21C2',false,false)">0900</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Symptoms of opioid withdrawal include nausea, muscle aches, diaphoresis, irritability, agitation, rhinorrhea, and pupillary dilation. These symptoms begin at 1200 but become clear at 1300 when the client admits to using heroin the night before.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 10</div>
+  <div class="q-stem">The client who is being discharged from the hospital after treatment for opioid addiction asks the nurse how to facilitate a full recovery from drug use after discharge. What response by the nurse is appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'22P',true,false)">"Recognize those things in your life that can trigger a relapse."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22P',false,false)">"Social isolation will help you stay away from drug use."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22P',false,false)">"Be sure to attend all of your alcoholics anonymous classes."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22P',false,false)">"Daily prayer is sure to keep you strong and drug free."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Understanding triggers and stressors that could lead to a relapse is an essential part of recovery for individuals with opioid use disorder. It empowers the client to identify high-risk situations, develop coping strategies, and seek support.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 11</div>
+  <div class="q-stem">The client diagnosed with opioid use disorder is preparing to return to work after completing a treatment program. What is the nurse's best recommendation to help prevent relapse during the transition back to daily life?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'22C1',true,false)">"Be cautious of social situations where drug use may occur and have a plan to avoid them."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22C1',false,false)">"Make sure to avoid any situations where stress might occur."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22C1',false,false)">"Your family and friends should monitor your behavior closely to ensure you stay sober."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22C1',false,false)">"Make sure to never refuse any pain medications if offered by your healthcare provider."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Being aware of potential triggers, including environments or people associated with past drug use, is crucial in the recovery process. Having a plan in place to manage these triggers can reduce the risk of relapse.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 12</div>
+  <div class="q-stem">A client with a history of opioid use disorder is preparing for discharge from the hospital. The client asks the nurse, "I'm really scared about going back to my old environment where I used to use. What can I do to avoid relapsing?" Which response by the nurse is <strong>most</strong> appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22C2',false,false)">"You need to be strong and remember how important it is to stay sober."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'22C2',true,false)">"Let's talk about a plan for after you leave, including connecting with support groups and follow-up care."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22C2',false,false)">"Try to stay busy with work and other activities to keep your mind off using."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'22C2',false,false)">"Make sure to stay away from anyone who might pressure you to use again."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The most appropriate nursing response is to help the client create a comprehensive discharge plan that includes connecting with support groups, follow-up care, and resources for ongoing support.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 13</div>
+  <div class="q-stem">While admitting a 23-year-old client with substance abuse disorder to the unit, the client's mother asks the nurse about inclusion into the client's plan of care. What response by the nurse is appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'23P',true,false)">"You will have the opportunity to be involved in family therapy sessions if the client permits."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23P',false,false)">"This is your child's problem, not yours so you are not included in the treatment plan."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23P',false,false)">"You should have no interaction in the client's plan of care to prevent distractions."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23P',false,false)">"You're exhibiting codependency, and it is not good for your child's recovery."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Involving family members in treatment is often beneficial in the recovery process for clients with substance abuse disorder, especially through family therapy. However, it is important that the client gives consent for family involvement.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 14</div>
+  <div class="q-stem">The nurse is admitting a 30-year-old client with substance use disorder to the unit. The client's partner asks how they can support the client's recovery. What response by the nurse is appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'23C1',true,false)">"You can participate in family therapy if the client is agreeable to it."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23C1',false,false)">"You should attend all therapy sessions with the client to keep them from relapsing."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23C1',false,false)">"You can help by limiting the client's contact with friends who also use substances."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23C1',false,false)">"Substance use disorder is the client's issue; it's not your responsibility to be involved."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Involving family members in therapy can provide support to the client and help the family understand how to be helpful in recovery. However, it is important that this is done with the client's consent and willingness to include the family.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 15</div>
+  <div class="q-stem">The nurse is developing a care plan for a 25-year-old client admitted for heroin addiction. The client's father asks the nurse about his role in the recovery process. What is the <strong>most</strong> appropriate response by the nurse?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'23C2',true,false)">"You can be involved in family therapy to better understand their addiction and how to support their recovery."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23C2',false,false)">"Your involvement should be limited to providing emotional support, but no other actions are necessary."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23C2',false,false)">"You may help by taking responsibility for the client's actions to relieve them of guilt."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'23C2',false,false)">"You are not involved in the plan of care because this is your child's personal issue."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Family involvement is an essential component of addiction treatment, especially in family therapy. It helps educate family members on addiction dynamics and enables them to provide emotional and practical support.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 16</div>
+  <div class="q-stem">Based on the nurse's notes of client teaching performed, what statement indicates <strong>inaccurate</strong> teaching provided to the client?<br><br><em>Chart: Samuel Pider, 28yo, admitted for opioid addiction. Nurse taught: "Methadone replaces the opioid to which you are addicted. It will be given to you orally. If you don't like it, it can be stopped immediately and changed to another drug. Do not take methadone on the streets. Methadone will help you to not crave the illegal drug. It will be used on a long-term basis."</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'24P',true,false)">"If you don't like it, it can be stopped immediately and changed to another drug."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24P',false,false)">"Do not take methadone on the streets as it must be given in the treatment center."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24P',false,false)">"Methadone replaces the opioid to which you are addicted."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24P',false,false)">"Methadone will help you to not crave the illegal drug."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Methadone is a long-term treatment for opioid use disorder, and discontinuing or changing it abruptly without proper guidance from the healthcare provider can have serious consequences, such as withdrawal symptoms or relapse. Methadone must be tapered under medical supervision.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 17</div>
+  <div class="q-stem">Based on the nurse's notes of client teaching performed, what statement indicates <strong>inaccurate</strong> teaching provided to the client?<br><br><em>Chart: Lila Macon, 32yo, for opioid use disorder. Nurse explained: "Buprenorphine-naloxone is used to prevent withdrawal and cravings from opioids. It will help you gradually reduce your dependence on opioids. If you take the medication as directed, you will not have cravings or feel withdrawal symptoms. You can take it for as long as you need."</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'24C1',true,false)">"If you take the medication as directed, you will not have cravings or feel withdrawal symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24C1',false,false)">"Buprenorphine-naloxone is used to prevent withdrawal and cravings from opioids."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24C1',false,false)">"Buprenorphine-naloxone will help you gradually reduce your dependence on opioids."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24C1',false,false)">"You can take it for as long as you need."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> While buprenorphine-naloxone can reduce cravings and withdrawal, it is not guaranteed to completely eliminate them for all clients. Some individuals may still experience mild cravings or withdrawal symptoms, especially early in the treatment process.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 18</div>
+  <div class="q-stem">Based on the nurse's notes of client teaching performed, what statement indicates <strong>inaccurate</strong> teaching was provided to the client?<br><br><em>Chart: Henry Torres, 40yo, for opioid use disorder treatment with prescriptions for naltrexone and counseling. Nurse provided the following information: "Naltrexone works by blocking the effects of opioids in your brain. It will help reduce cravings and prevent any high you may experience if you relapse. It is important to take naltrexone exactly as prescribed, and you should not take opioids while on this medication. If you relapse, it can cause severe withdrawal symptoms."</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24C2',false,false)">"It is important to take naltrexone exactly as prescribed and to avoid opioids."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24C2',false,false)">"Naltrexone works by blocking the effects of opioids in your brain."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'24C2',false,false)">"Naltrexone will prevent any high you may experience if you relapse."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'24C2',true,false)">"If you relapse, it can cause severe withdrawal symptoms."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Naltrexone is an opioid antagonist that blocks the euphoric effects of opioids, but it does not cause withdrawal symptoms if a client relapses. However, if naltrexone is initiated too soon after recent opioid use, it can precipitate withdrawal symptoms due to its opioid-blocking action.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 19</div>
+  <div class="q-stem">When the nurse reviews the result of the CAGE Alcohol Abuse Screening Tool that the client has completed, how should the nurse interpret the result?<br><br><em>CAGE Results: C (Cut down) = Yes, A (Annoyed) = No, G (Guilty) = No, E (Eye-opener) = Yes → Score: 2 Yes answers</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'25P',true,false)">There is a possible alcoholism problem that needs further assessment.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25P',false,false)">The client does not have a problem with alcohol.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25P',false,false)">There is not enough data in the result to make an interpretation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25P',false,false)">The client needs a drink of alcohol in the mornings.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The result of the CAGE screening tool indicates that the client has answered "Yes" to two or more of the four questions. This suggests a possible alcoholism problem that requires further assessment.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 20</div>
+  <div class="q-stem">When the nurse reviews the result of the AUDIT Alcohol Screening Tool that the client has completed, how should the nurse interpret the result?<br><br><em>AUDIT Results showing: drinks 2-3 times/week, 5-6 drinks per occasion, weekly inability to stop, weekly guilt, monthly blackouts, prior injury from drinking.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'25C1',true,false)">There is a possible alcohol use disorder that needs further assessment.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25C1',false,false)">The client does not have a problem with alcohol.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25C1',false,false)">There is not enough data in the result to make an interpretation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25C1',false,false)">The client needs a drink of alcohol in the mornings.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The score range of 20-29 points on the AUDIT Alcohol Screening Tool indicates a possible alcohol use disorder that warrants further assessment. The tool's scoring helps identify the severity of alcohol-related issues.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 21</div>
+  <div class="q-stem">When the nurse reviews the result of the DAST (Drug Abuse Screening Test) that the client has completed, how should the nurse interpret the results?<br><br><em>DAST Results: Used drugs other than medical = Yes, More than one drug at a time = No, Withdrawal symptoms = Yes, Illegal activities to obtain drugs = Yes, Takes drugs to relax/feel better = Yes → Score: 4 Yes answers</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'25C2',true,false)">There is a likely drug use disorder that needs further assessment.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25C2',false,false)">The client does not have a problem with drugs.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25C2',false,false)">There is not enough data in the result to make an interpretation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'25C2',false,false)">The client has no issues with tobacco use.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> A score of 4 points on the DAST indicates a possible drug use disorder. The questions are designed to assess the severity of drug use and its impact on the client's life. A positive response to multiple questions signals a potential substance use problem.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 22</div>
+  <div class="q-stem">The nurse in a psychiatric unit is caring for several clients. Which client should the nurse recommend for group therapy?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'26P',true,false)">A client on methadone for 2 months without relapse from opioid use.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26P',false,false)">A client who was found today wandering down the street in a confused state.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26P',false,false)">A client admitted 6 hours ago for manic episodes.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26P',false,false)">A client who is experiencing auditory hallucinations.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client on methadone for 2 months without relapse is the most appropriate recommendation for group therapy. This client is stable enough to participate and can benefit from peer support.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 23</div>
+  <div class="q-stem">The nurse in a psychiatric unit is caring for several clients. Which client should the nurse recommend for group therapy?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26C1',false,false)">A client who has been recently admitted for a manic episode and is unable to stay seated for more than a few minutes.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26C1',false,false)">A client experiencing severe psychosis and actively responding to auditory hallucinations.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'26C1',true,false)">A client who is experiencing opioid use disorder and has expressed a willingness to discuss their challenges with peers.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26C1',false,false)">A client who is disoriented and repeatedly asking where they are.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Clients with opioid use disorder who are willing to participate can greatly benefit from group therapy, as it provides peer support, reduces isolation, and offers structure for recovery.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 24</div>
+  <div class="q-stem">The nurse on a behavioral health unit is evaluating clients for group therapy. Which client is the best candidate for this intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26C2',false,false)">A client experiencing command hallucinations telling them to harm themselves.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'26C2',true,false)">A client with opioid use disorder who is currently taking methadone.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26C2',false,false)">A client in a manic state who is constantly interrupting others and unable to sit still.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'26C2',false,false)">A client with severe depression who refuses to talk or make eye contact with staff.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Group therapy is most beneficial for clients who have insight into their condition and a willingness to engage with others. A client with opioid use disorder who is currently taking methadone can gain significant support and coping strategies through group therapy.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 25</div>
+  <div class="q-stem">When working with a client that is non-compliant in treatment, what is the nurse's <strong>first</strong> intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'33P',true,false)">Address the reasons for non-compliance by asking questions.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33P',false,false)">Respect the client's decision and preserve their autonomy.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33P',false,false)">Notify the provider and place client in seclusion.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33P',false,false)">Reinforce the treatment plan with the client.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The first step in addressing non-compliance is understanding the underlying reasons for it. This can involve asking the client open-ended questions to explore their concerns, barriers to treatment, or any misconceptions they may have.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 26</div>
+  <div class="q-stem">A client with substance use disorder is enrolled in an outpatient treatment program and is struggling with consistent attendance. What is the nurse's <strong>most</strong> appropriate action?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'33C1',true,false)">Explore the barriers to attendance and collaborate on solutions.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33C1',false,false)">Encourage the client to attend the program regardless of personal difficulties.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33C1',false,false)">Place the client on probation for missed sessions.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33C1',false,false)">Report the client to their family for lack of participation.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse's first action should be to explore the reasons behind the client's difficulty with attendance. This could involve addressing practical, emotional, or logistical barriers that may prevent participation.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 27</div>
+  <div class="q-stem">The nurse is working with a client who has been in a long-term residential treatment program for substance use disorder. The client is preparing to transition to an outpatient program. What is the nurse's <strong>most</strong> important role in this transition?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'33C2',true,false)">Ensure the client has a strong support system and access to community resources.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33C2',false,false)">Encourage the client to stop therapy sessions until they feel they can manage on their own.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33C2',false,false)">Tell the client to avoid social situations where they may be triggered.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'33C2',false,false)">Focus only on the client's physical health as they move to outpatient care.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse's most important role in the transition to outpatient care is ensuring that the client has a strong support system and access to community resources. These resources are essential to maintain progress after transitioning from a residential program.</div>
+</div>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+<script>
+function selectChoice(btn,qid,isCorrect,isSATA){
+  const card=btn.closest('.q-card');
+  if(!isSATA && card.dataset.answered==='true')return;
+  if(isSATA){
+    btn.classList.toggle('selected');
+    return;
+  }
+  card.dataset.answered='true';
+  const choices=card.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    if(c===btn){c.classList.add('selected',isCorrect?'correct':'wrong');}
+    if(cor&&!isCorrect){c.classList.add('reveal-correct');}
+    c.style.pointerEvents='none';
+  });
+  card.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function submitSATA(cardEl){
+  if(cardEl.dataset.answered==='true')return;
+  cardEl.dataset.answered='true';
+  const choices=cardEl.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    const sel=c.classList.contains('selected');
+    if(sel&&cor)c.classList.add('correct');
+    else if(sel&&!cor)c.classList.add('wrong');
+    else if(!sel&&cor)c.classList.add('reveal-correct');
+    c.style.pointerEvents='none';
+  });
+  cardEl.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.q-card').length;
+  const done=document.querySelectorAll('.q-card[data-answered=true]').length;
+  const pct=Math.round((done/total)*100);
+  const fill=document.getElementById('progressFill');
+  const stats=document.getElementById('statsText');
+  if(fill)fill.style.width=pct+'%';
+  if(stats)stats.textContent=done+' of '+total+' answered ('+pct+'%)';
+  try{localStorage.setItem(window.location.pathname+'_progress',JSON.stringify({done,total}));}catch(e){}
+}
+function resetAll(){
+  document.querySelectorAll('.q-card').forEach(c=>{
+    c.dataset.answered='false';
+    c.querySelectorAll('.choice-btn').forEach(b=>{
+      b.className='choice-btn';b.style.pointerEvents='auto';
+    });
+    c.querySelector('.rationale').classList.remove('show');
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

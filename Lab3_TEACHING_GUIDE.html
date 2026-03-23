@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3: Heat of Fusion - Teaching Guide</title>
+    <style>
+        body {
+            font-family: Calibri, Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #1a5276;
+            border-bottom: 3px solid #1a5276;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2874a6;
+            border-bottom: 2px solid #2874a6;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #2874a6;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .equation {
+            font-family: "Cambria Math", "Times New Roman", serif;
+            font-size: 14pt;
+            text-align: center;
+            padding: 15px;
+            background-color: #eef4f9;
+            border: 1px solid #2874a6;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .quote {
+            font-style: italic;
+            background-color: #f9f9f9;
+            border-left: 4px solid #2874a6;
+            padding: 10px 20px;
+            margin: 15px 0;
+        }
+        .key-point {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #1a5276;
+        }
+    </style>
+</head>
+<body>
+
+<h1>⚗ Lab 3: Heat of Fusion of Water</h1>
+<h2 style="border: none; color: #666;">Instructor Teaching Guide — First 10-15 Minutes</h2>
+
+<hr>
+
+<h2>◉ LEARNING OBJECTIVES (Write on Board)</h2>
+<p>By the end of this lab, students will be able to:</p>
+<ol>
+    <li>Explain <strong>WHY</strong> ice absorbs energy without changing temperature during melting</li>
+    <li>Use calorimetry (Q = mcΔT) to measure heat transfer</li>
+    <li>Calculate the experimental heat of fusion of water and compare to the accepted value</li>
+    <li>Apply conservation of energy to a real physical system</li>
+</ol>
+
+<hr>
+
+<h2>🎬 THE HOOK (2-3 minutes)</h2>
+
+<h3>Start with a Question:</h3>
+<div class="quote">
+    "How many of you put ice in your drink today? Have you ever noticed that the ice takes FOREVER to melt, even though the water around it is much warmer? Think about it — warm water sitting on a table reaches room temperature in minutes. But ice in that same warm water? It sits there for 10, 15, 20 minutes. Why?"
+</div>
+
+<p><strong>Wait for responses.</strong> Most will say "because it's cold" or "because it's solid."</p>
+
+<div class="quote">
+    "But cold things warm up. We know that. A cold spoon warms up in your hand in seconds. So why doesn't the ice just... warm up and become water? What's taking so long?"
+</div>
+
+<h3>The Reveal:</h3>
+<div class="key-point">
+    "Melting ice isn't just about raising the temperature. The ice has to <strong>break apart its entire crystal structure</strong> — every single hydrogen bond connecting every molecule to its neighbors. That takes a MASSIVE amount of energy. And here's the wild part: while it's doing that, the temperature <strong>doesn't change at all</strong>. The thermometer stays at 0°C the whole time it's melting. All that energy is going into breaking bonds, not making molecules move faster."
+</div>
+
+<hr>
+
+<h2>§ THE CONCEPT (5-7 minutes)</h2>
+
+<h3>The Moving Day Analogy</h3>
+<p>Draw this on the board or describe:</p>
+
+<div class="quote">
+    "Imagine you live in an apartment building where everyone is connected to their neighbors by bungee cords. That's ice — every molecule bonded to the molecules around it. Now you want to move out."
+</div>
+
+<div class="quote">
+    "Before you can go anywhere, you have to cut ALL the bungee cords attached to you. That takes work — that takes ENERGY. And while you're cutting cords, you haven't actually moved yet. You're still standing in the same spot at the same temperature."
+</div>
+
+<div class="quote">
+    "Only AFTER all the cords are cut can you start walking around freely. THEN you can warm up, move faster, etc. The energy of cutting those cords? That's the heat of fusion."
+</div>
+
+<div class="key-point">
+    <strong>Key Point:</strong> "The heat of fusion is 333.55 J per gram. That means melting 1 gram of ice takes the same energy as heating 1 gram of water from 0°C to 80°C. That's ENORMOUS."
+</div>
+
+<hr>
+
+<h2>⚛ THE EQUATIONS (3-4 minutes)</h2>
+
+<h3>Equation 1: Heat transfer (no phase change)</h3>
+<div class="equation">
+    <strong>Q = m × c × ΔT</strong>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Meaning</th>
+            <th>Units</th>
+            <th>"Plain English"</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Q</strong></td>
+            <td>Heat transferred</td>
+            <td>J (joules)</td>
+            <td>"How much energy moved"</td>
+        </tr>
+        <tr>
+            <td><strong>m</strong></td>
+            <td>Mass</td>
+            <td>g (grams)</td>
+            <td>"How much stuff"</td>
+        </tr>
+        <tr>
+            <td><strong>c</strong></td>
+            <td>Specific heat capacity</td>
+            <td>J/(g·°C)</td>
+            <td>"How stubborn is it about changing temperature?"</td>
+        </tr>
+        <tr>
+            <td><strong>ΔT</strong></td>
+            <td>Temperature change</td>
+            <td>°C</td>
+            <td>"How much did the temperature change?" (T<sub>f</sub> - T<sub>i</sub>)</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Equation 2: Phase change (melting)</h3>
+<div class="equation">
+    <strong>Q<sub>ice</sub> = m<sub>ice</sub> × ΔH<sub>f</sub></strong>
+</div>
+
+<h3>The Conservation Key</h3>
+<div class="equation">
+    <strong>Q<sub>ice</sub> = −Q<sub>warm water</sub></strong>
+</div>
+
+<div class="quote">
+    "Energy is like money in a closed bank account. If the warm water 'spends' 9,000 joules, the ice 'receives' exactly 9,000 joules. Nobody creates or destroys energy — it just transfers."
+</div>
+
+<h3>Quick Check</h3>
+<p>Ask the class:</p>
+<div class="quote">"If 100 g of warm water at 35°C drops to 15°C, how much energy did it lose? Work it out."</div>
+
+<div class="key-point">
+    <strong>Answer:</strong><br>
+    Q = m × c × ΔT<br>
+    Q = 100 g × 4.184 J/(g·°C) × (15 - 35)°C<br>
+    Q = 100 × 4.184 × (-20) = <strong>-8,368 J</strong><br><br>
+    The negative sign means it LOST 8,368 joules. That energy went into melting ice.
+</div>
+
+<hr>
+
+<h2>🌍 REAL-WORLD CONNECTIONS (2-3 minutes)</h2>
+
+<h3>Why This Matters:</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Application</th>
+            <th>How Heat of Fusion Is Involved</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Ice Packs</strong></td>
+            <td>
+                • Ice absorbs massive energy from swollen tissue WITHOUT getting warm<br>
+                • 333 J per gram! Much more effective than a cold towel<br>
+                • That's why ice packs stay cold — they're busy breaking bonds
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Climate & Polar Ice</strong></td>
+            <td>
+                • Arctic ice absorbs enormous energy as it melts<br>
+                • This SLOWS global warming — ice acts as a heat buffer<br>
+                • Once the ice is gone, that buffer disappears and warming accelerates
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Food Preservation</strong></td>
+            <td>
+                • Ice in a cooler absorbs 333 J/g while melting at 0°C<br>
+                • Keeps food at a constant temperature until ALL ice is melted<br>
+                • Way more effective than just cold water
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Ice Cream Making</strong></td>
+            <td>
+                • Salt + ice mixture gets VERY cold (below 0°C)<br>
+                • The salt forces ice to melt, pulling 333 J/g from surroundings<br>
+                • The cream mixture drops below 0°C and freezes
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>⚗️ TODAY'S LAB OVERVIEW (1-2 minutes)</h2>
+
+<div class="quote">"Today you're going to:"</div>
+<ol>
+    <li>Put warm water in a calorimeter and measure its temperature</li>
+    <li>Add ice and watch the temperature DROP</li>
+    <li>Calculate how much energy the warm water lost</li>
+    <li>Use conservation of energy: that's exactly how much the ice gained</li>
+    <li>Divide by the mass of ice → that's your heat of fusion</li>
+    <li>Compare to the accepted value (333.55 J/g) and calculate percent error</li>
+</ol>
+
+<div class="key-point">
+    <strong>The Goal:</strong> "You're essentially asking: how much energy does it cost to melt one gram of ice? The answer should be about 334 joules. Let's see how close you can get."
+</div>
+
+<hr>
+
+<h2>⚠ CRITICAL TECHNIQUE POINTS</h2>
+
+<div class="warning">
+    <strong>◇ #1 SOURCE OF ERROR: WET ICE</strong><br>
+    If the ice has surface melt water, that water gets counted as "ice" but doesn't need fusion energy. Result: ΔH<sub>f</sub> too low. <strong>Have students pat ice dry with paper towels before adding!</strong>
+</div>
+
+<div class="warning">
+    <strong>Δt #2 SOURCE OF ERROR: NOT STIRRING</strong><br>
+    If students don't stir, the thermometer reads the local temperature (near the warm water or near the ice), not the average. Result: inaccurate T<sub>f</sub>. <strong>Continuous gentle stirring is essential.</strong>
+</div>
+
+<div class="warning">
+    <strong>⏱️ #3 SOURCE OF ERROR: RUSHING T<sub>f</sub></strong><br>
+    Students often read the minimum temperature too early or too late. <strong>T<sub>f</sub> is the lowest STABLE temperature</strong> — all ice must be melted and temperature must stabilize for 30+ seconds.
+</div>
+
+<hr>
+
+<h2>⚠ COMMON MISCONCEPTIONS TO ADDRESS</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Students Think...</th>
+            <th>Reality</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>"Adding heat always raises temperature"</td>
+            <td>During phase changes, energy breaks bonds — temperature stays constant</td>
+        </tr>
+        <tr>
+            <td>"The ice makes the water cold"</td>
+            <td>The warm water gives energy TO the ice. The ice absorbs energy. The water cools as a RESULT.</td>
+        </tr>
+        <tr>
+            <td>"Q should always be positive"</td>
+            <td>Q is negative when a substance loses heat. Sign convention matters!</td>
+        </tr>
+        <tr>
+            <td>"ΔT is always positive"</td>
+            <td>ΔT = T<sub>f</sub> - T<sub>i</sub>. If something cools down, ΔT is negative. Don't flip it!</td>
+        </tr>
+        <tr>
+            <td>"Percent error should be 0%"</td>
+            <td>Real experiments always have error. 3-10% is excellent for this lab. Discuss WHY there's error.</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>📊 EXPECTED RESULTS & TROUBLESHOOTING</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Result</th>
+            <th>Likely Cause</th>
+            <th>Fix</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ΔH<sub>f</sub> much too LOW (&lt;280 J/g)</td>
+            <td>Wet ice (excess melt water)</td>
+            <td>Pat ice dry before adding</td>
+        </tr>
+        <tr>
+            <td>ΔH<sub>f</sub> much too HIGH (&gt;400 J/g)</td>
+            <td>Heat loss to air/calorimeter walls; ice from deep freezer (below 0°C)</td>
+            <td>Use ice from ice-water slurry (guaranteed 0°C); work quickly</td>
+        </tr>
+        <tr>
+            <td>Trials don't agree (&gt;15% difference)</td>
+            <td>Inconsistent technique between trials</td>
+            <td>Emphasize same procedure both times</td>
+        </tr>
+        <tr>
+            <td>Temperature keeps dropping after adding ice</td>
+            <td>Not all ice melted; or still reaching equilibrium</td>
+            <td>Keep stirring until all ice melts and temp stabilizes</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<h2>◉ TRANSITION TO LAB</h2>
+
+<div class="quote">
+    "Any questions? Remember — the key to this lab is CAREFUL measurement. Every gram matters, every degree matters. If you're sloppy with the scale or rush the thermometer reading, your answer will be way off."
+</div>
+
+<div class="quote">
+    "And DRY YOUR ICE. I can't stress this enough. Wet ice is the enemy of good calorimetry. Paper towels are your friend."
+</div>
+
+<div class="quote">
+    "Alright, get with your lab partners. Step 1: weigh your empty calorimeter. Go!"
+</div>
+
+<hr>
+
+<h2>📊 QUICK REFERENCE FOR CIRCULATING</h2>
+<p>As students work, use these benchmarks to check their progress:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Checkpoint</th>
+            <th>Expected Values</th>
+            <th>Red Flags</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Empty calorimeter mass</td>
+            <td>30-60 g (depends on model)</td>
+            <td>Forgot stirrer; scale not zeroed</td>
+        </tr>
+        <tr>
+            <td>Warm water mass</td>
+            <td>80-130 g</td>
+            <td>Too little (<50g) or too much (>200g)</td>
+        </tr>
+        <tr>
+            <td>T<sub>i</sub></td>
+            <td>33-40°C</td>
+            <td>Too hot (>50°C) → excessive heat loss</td>
+        </tr>
+        <tr>
+            <td>T<sub>f</sub></td>
+            <td>10-20°C</td>
+            <td>If above 25°C, not enough ice was added</td>
+        </tr>
+        <tr>
+            <td>ΔT</td>
+            <td>About -20°C</td>
+            <td>Less than -10°C → add more ice next trial</td>
+        </tr>
+        <tr>
+            <td>Ice mass</td>
+            <td>20-40 g</td>
+            <td>If >60 g, they added too much → some ice may not melt</td>
+        </tr>
+        <tr>
+            <td>Q<sub>warm water</sub></td>
+            <td>-7,000 to -12,000 J</td>
+            <td>Positive sign → they forgot it's (T<sub>f</sub> - T<sub>i</sub>)</td>
+        </tr>
+        <tr>
+            <td>ΔH<sub>f</sub></td>
+            <td>300-380 J/g</td>
+            <td>Outside this → check their math step by step</td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+
+<div class="footer">
+    <h2>⚗ TEHRANI ⚗</h2>
+    <p>© Tehrani 2028</p>
+    <p><em>"A phase change is just a molecule's midlife crisis — it absorbs all that energy and has absolutely nothing to show for it on the thermometer."</em></p>
+    <p style="margin-top:8px; font-size:0.85em; letter-spacing:2px;">Q = mcΔT · ΔHₒ = 333.55 J/g · H₂O</p>
+</div>
+
+</body>
+</html>

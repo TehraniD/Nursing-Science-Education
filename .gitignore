@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Microsoft Office temp/lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+~$*.doc
+
+# Claude Code session data
+.claude/
+
+# VSCode (optional — remove this line if you want editor settings tracked)
+.vscode/

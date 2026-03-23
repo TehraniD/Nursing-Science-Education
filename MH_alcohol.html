@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Alcohol Use Disorder — Mental Health Nursing</title>
+<style>
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🍷 Alcohol Use Disorder</h1>
+  <p>Mental Health Nursing • Tehrani Labs</p>
+</div>
+<nav class="nav"><a href="MH_Index.html">Home</a>
+<a href="MH_schizophrenia.html">🧠 Schizophrenia</a>
+<a href="MH_schizoaffective.html">🔄 Schizoaffective Disorder</a>
+<a href="MH_delusional.html">💭 Delusional Disorder</a>
+<a href="MH_delusions.html">👁️ Delusions & Hallucinations</a>
+<a href="MH_alcohol.html" class="active">🍷 Alcohol Use Disorder</a>
+<a href="MH_opioids.html">💊 Opioids, Substances & Assessment</a>
+<a href="MH_assessment.html">📋 Mental Status Exam</a></nav>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="stats" id="statsText">0 of 23 answered (0%)</div>
+  <div style="text-align:right;margin-bottom:15px"><button onclick="resetAll()" style="padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.8em">Reset All</button></div>
+  <div class="q-card" data-answered="false">
+  <div class="q-num">Question 1</div>
+  <div class="q-stem">A client admitted with alcohol use disorder is to be discharged tomorrow but the nurse is concerned that codependency is likely to hinder the client's full recovery once discharged. What finding supports the nurse's concern?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'15P',true,false)">Spouse says, "When his siblings call to talk with him and he is drunk, I lie to them."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15P',false,false)">Spouse says, "I'm mad at him, but I make sure he doesn't fall and hurt himself."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15P',false,false)">Overhears spouse saying to client, "I love you and won't leave you, but this must stop."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15P',false,false)">Hears client ask spouse, "Did you pour all the bottles of wine down the kitchen sink?"</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The finding that supports the nurse's concern about codependency is lying to siblings about the client's drinking. Codependency often involves enabling behaviors, where a family member protects the client from facing the consequences of their actions.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 2</div>
+  <div class="q-stem">A client with alcohol use disorder is scheduled for discharge tomorrow, and the nurse is concerned that codependent behaviors may negatively affect the client's recovery after leaving the hospital. Which of the following findings supports the nurse's concern?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'15C1',true,false)">Spouse says, "I always cover for him at work when he's too hungover to go in."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15C1',false,false)">Spouse says, "I am afraid he will drink again, but I am trying to stay strong for him."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15C1',false,false)">Overhears spouse telling client, "We're in this together, and I will support you no matter what."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15C1',false,false)">Hears client ask spouse, "Did you hide my alcohol last night before I got home?"</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Covering for the client at work when hungover is a classic enabling/codependent behavior that prevents the client from facing the natural consequences of their alcohol use and delays recovery.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 3</div>
+  <div class="q-stem">The nurse is preparing to discharge a client with alcohol use disorder. The nurse is concerned about the potential for codependent behavior from the client's partner, which may impede the client's recovery. Which of the following behaviors would <strong>most</strong> support the nurse's concern?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15C2',false,false)">The partner regularly encourages the client to attend Alcoholics Anonymous meetings, even when the client resists.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15C2',false,false)">The partner expresses frustration about the client's drinking but insists, "I'm here for you no matter what."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'15C2',false,false)">The partner has been actively participating in family therapy and is learning healthy boundaries.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'15C2',true,false)">The partner says, "I don't think he'll be able to quit drinking without my help, so I need to be there for him at all times."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This statement suggests that the partner may be taking on an unhealthy caretaking role, believing that their constant involvement is necessary for the client's recovery. Codependency can hinder recovery when the family member becomes overly involved, enabling the client's behavior.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 4</div>
+  <div class="q-stem">A client who arrived on the unit a few hours ago is experiencing active alcohol withdrawal. What nursing intervention should the nurse <strong>prioritize</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'16P',true,false)">Initiate seizure precautions.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16P',false,false)">Leave the room and close the door to give client privacy.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16P',false,false)">Place a restraint on the client to prevent falls.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16P',false,false)">Decrease environmental stimuli.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The priority nursing intervention for a client experiencing active alcohol withdrawal is to initiate seizure precautions. Alcohol withdrawal can lead to serious complications such as seizures, which can occur within the first 12 to 48 hours after the last drink.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 5</div>
+  <div class="q-stem">A client admitted to the hospital with alcohol use disorder begins to show signs of alcohol withdrawal, including tremors, increased heart rate, and irritability. What is the <strong>priority</strong> nursing intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'16C1',true,false)">Administer a benzodiazepine as prescribed.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16C1',false,false)">Offer the client fluids and food to stabilize blood sugar.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16C1',false,false)">Encourage the client to walk around to reduce agitation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16C1',false,false)">Ensure the client is in a quiet, dimly lit room to minimize stimulation.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Benzodiazepines, such as diazepam or lorazepam, are commonly used in alcohol withdrawal to prevent the progression of symptoms and reduce the risk of complications like seizures.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 6</div>
+  <div class="q-stem">A client with a history of alcohol use disorder is admitted to the medical unit after a fall. The client is disoriented, tremulous, and states, "I see bugs crawling on the wall." Vital signs include: Blood pressure 160/95 mmHg, heart rate 120 beats/minute, respiratory rate 22 breaths/minute, and temperature 38.2°C (100.8°F). What is the <strong>priority</strong> nursing intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'16C2',true,false)">Place the client on seizure precautions and initiate continuous observation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16C2',false,false)">Offer the client a warm blanket and reassure them that they are safe.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16C2',false,false)">Contact the client's family to obtain collateral information about the drinking history.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'16C2',false,false)">Provide the client with a high-protein, low-fat diet and encourage hydration.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client's symptoms suggest alcohol withdrawal delirium (delirium tremens), which is a medical emergency. Seizure precautions and continuous monitoring are the priority to ensure safety and manage complications.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 7</div>
+  <div class="q-stem">The nurse on the unit receives report from the emergency department on a client experiencing alcohol withdrawal who is on the way to the unit. What medication should the nurse expect to administer to the client?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'17P',true,false)">Chlordiazepoxide</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17P',false,false)">Acamprosate</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17P',false,false)">Bupropion</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17P',false,false)">Disulfiram</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse should expect to administer Chlordiazepoxide to the client. This medication is a benzodiazepine commonly used to manage alcohol withdrawal symptoms, as it helps to prevent seizures and reduces anxiety.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 8</div>
+  <div class="q-stem">A client is admitted to the hospital for alcohol withdrawal and the healthcare provider prescribes chlordiazepoxide. What is the primary purpose of this medication?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'17C1',true,false)">To prevent seizures and reduce anxiety</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17C1',false,false)">To promote abstinence from alcohol</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17C1',false,false)">To alleviate symptoms of depression</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17C1',false,false)">To reduce cravings for nicotine</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The primary purpose of Chlordiazepoxide is to prevent seizures and reduce anxiety during alcohol withdrawal. It is a benzodiazepine that helps manage acute alcohol withdrawal symptoms.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 9</div>
+  <div class="q-stem">A client with alcohol use disorder is prescribed chlordiazepoxide to manage withdrawal symptoms. Which of the following is <strong>most</strong> important for the nurse to monitor while the client is receiving this medication?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'17C2',true,false)">Level of sedation</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17C2',false,false)">Liver function tests</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17C2',false,false)">Serum sodium levels</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'17C2',false,false)">Blood glucose levels</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> As a benzodiazepine, Chlordiazepoxide can cause sedation and respiratory depression, especially when used in high doses or in combination with other central nervous system depressants. Monitoring the client's level of sedation ensures early detection of any adverse effects.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 10</div>
+  <div class="q-stem">The nurse coming on the shift reads in the client's chart that the client has been experiencing symptoms of alcohol withdrawal. When the nurse assesses the client, what physiological assessment finding is the nurse likely to find?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'18P',true,false)">Increased heart rate</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18P',false,false)">Hallucinations</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18P',false,false)">Disorientation</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18P',false,false)">Delirium</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse is likely to find an increased heart rate as a physiological assessment finding in a client experiencing alcohol withdrawal. Alcohol withdrawal can trigger the autonomic nervous system, leading to symptoms such as tachycardia.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 11</div>
+  <div class="q-stem">A client with alcohol use disorder is experiencing symptoms of alcohol withdrawal. The nurse expects the client to exhibit which of the following signs within the first 6 to 12 hours after the last drink?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'18C1',true,false)">Tremors, anxiety, and sweating</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18C1',false,false)">Severe confusion and hallucinations</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18C1',false,false)">Seizures and delirium tremens</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18C1',false,false)">Severe agitation and hypertension</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Tremors, anxiety, and sweating are common symptoms of alcohol withdrawal that typically appear within the first 6 to 12 hours after the last drink. Severe confusion, hallucinations, seizures, and delirium tremens occur later in more severe withdrawal.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 12</div>
+  <div class="q-stem">A client with a history of alcohol use disorder is admitted to the hospital. Twelve hours after admission, the nurse observes the client is anxious, diaphoretic, and tremulous. Which assessment finding is indicative of early alcohol withdrawal?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18C2',false,false)">Reports of auditory hallucinations</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'18C2',true,false)">Elevated blood pressure and increased heart rate</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18C2',false,false)">Confusion, disorientation, and agitation</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'18C2',false,false)">Seizure activity and muscle rigidity</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Early alcohol withdrawal typically occurs within 6-24 hours of the last drink and is characterized by elevated vital signs (hypertension, tachycardia), anxiety, tremors, sweating, and nausea. Confusion, hallucinations, and seizures generally occur later in severe withdrawal.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 13</div>
+  <div class="q-stem">A client with a chronic history of alcohol abuse is brought to the emergency department. The client is aggressive, has slurred speech, and impaired motor coordination. Blood alcohol level is 347 mg/dL (Normal range: 0 mg/dL). Among the health care provider's orders is a prescription for thiamine. What is the rationale for this intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'35P',true,false)">To prevent Wernicke-Korsakoff syndrome</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35P',false,false)">To prevent alcoholic cardiomyopathy</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35P',false,false)">To prevent pancreatitis</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35P',false,false)">To prevent alcoholic hepatitis</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The rationale for administering thiamine in this scenario is to prevent Wernicke-Korsakoff syndrome. This is a severe neurological disorder caused by thiamine (vitamin B1) deficiency, which is common in individuals with chronic alcohol abuse.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 14</div>
+  <div class="q-stem">A client with chronic alcohol use disorder is admitted to the hospital due to confusion, difficulty walking, and memory impairment. The healthcare provider orders thiamine supplementation. What is the rationale for this intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35C1',false,false)">To treat alcohol withdrawal delirium</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35C1',false,false)">To reduce the risk of cardiovascular complications</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'35C1',true,false)">To prevent Wernicke's encephalopathy</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35C1',false,false)">To prevent hypoglycemia</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Thiamine supplementation is commonly prescribed to prevent Wernicke's encephalopathy in individuals with chronic alcohol use disorder. Alcohol impairs thiamine absorption and utilization.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 15</div>
+  <div class="q-stem">A client with a long history of alcohol use disorder is admitted for treatment and exhibits confusion, ataxia, and poor memory. The healthcare provider orders thiamine supplementation. What is the primary purpose of this treatment?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35C2',false,false)">To prevent alcoholic cardiomyopathy</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35C2',false,false)">To prevent alcohol-induced liver damage</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'35C2',true,false)">To address the risk of vitamin B1 deficiency</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'35C2',false,false)">To treat acute alcohol intoxication</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The primary purpose of thiamine supplementation is to address the risk of vitamin B1 deficiency, which is common in individuals with chronic alcohol use disorder. Deficiency can lead to neurological issues such as confusion, ataxia, and memory problems.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 16</div>
+  <div class="q-stem">The charge nurse on an inpatient psychiatric floor is teaching a floor nurse about clinical manifestations of alcohol withdrawal. The charge nurse knows the floor nurse demonstrates understanding when the floor nurse lists which clinical manifestations?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'37P',true,false)">Tremors</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37P',false,false)">Bradycardia</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37P',false,false)">Hypotension</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37P',false,false)">Constipation</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Tremors are a common manifestation of alcohol withdrawal, as the body reacts to the absence of alcohol. Bradycardia, hypotension, and constipation are not typical withdrawal symptoms.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 17</div>
+  <div class="q-stem">The nurse is caring for a client experiencing alcohol withdrawal. Which of the following clinical manifestations should the nurse expect in this client?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'37C1',true,false)">Hypertension</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37C1',false,false)">Hypothermia</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37C1',false,false)">Muscle rigidity</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37C1',false,false)">Blurred vision</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Hypertension (increased blood pressure) is a common symptom of alcohol withdrawal, resulting from sympathetic nervous system activation. Hypothermia, muscle rigidity, and blurred vision are not typically seen during alcohol withdrawal.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 18</div>
+  <div class="q-stem">The nurse is caring for a client undergoing alcohol withdrawal. Which of the following symptoms would the nurse <strong>most</strong> likely observe in this client?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'37C2',true,false)">Increased heart rate</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37C2',false,false)">Hypotension</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37C2',false,false)">Bradycardia</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'37C2',false,false)">Constipation</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Increased heart rate (tachycardia) is a common sign of alcohol withdrawal as the body reacts to the absence of alcohol and activates the sympathetic nervous system.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 19</div>
+  <div class="q-stem">Alcoholics Anonymous (AA) is a 12-step program to assist people to remain sober from alcohol through abstinence as the only cure. Which statement is correct regarding the concept of AA?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'38P',true,false)">AA accepts that alcoholism is an illness.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'38P',false,false)">Once a member achieves sobriety, they can engage in social drinking if they return to meetings.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'38P',false,false)">AA is an inappropriate treatment choice if you do not believe in God.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'38P',false,false)">The alcoholic is on a solo journey to sobriety.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> AA views alcoholism as a disease, acknowledging individuals with this condition are not morally flawed but rather suffering from a chronic illness that requires ongoing management.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 20</div>
+  <div class="q-stem">The nurse is caring for a client who has a history of alcohol use disorder and expresses interest in Alcoholics Anonymous (AA). The client states, "I want to cut back on my drinking, but I don't think I need to quit completely." Based on the principles of AA, what is the <strong>most</strong> appropriate response by the nurse?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'38C1',true,false)">"AA promotes complete abstinence rather than controlled drinking."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'38C1',false,false)">"AA focuses on reducing alcohol intake gradually over time."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'38C1',false,false)">"Your family and friends should monitor your behavior closely to ensure you stay sober."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'38C1',false,false)">"Make sure to never refuse any pain medications if offered by your healthcare provider."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> AA's fundamental principle is complete abstinence from alcohol, not controlled or social drinking. The nurse should educate the client about this core AA principle.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 21</div>
+  <div class="q-stem">A client with alcohol use disorder that is taking disulfiram relapses and drinks a glass of wine. The client presents in the emergency department experiencing severe throbbing headache, tachycardia, flushed face, dyspnea, and continuous vomiting. The nurse should recognize these symptoms indicate which condition?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'27P',true,false)">A reaction to disulfiram</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27P',false,false)">Alcohol poisoning</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27P',false,false)">Cardiovascular accident (CVA)</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27P',false,false)">A reaction to tannins in the red wine</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> These symptoms are indicative of a reaction to disulfiram. Disulfiram is a medication used to treat alcohol use disorder by inhibiting the enzyme aldehyde dehydrogenase. When alcohol is consumed while taking disulfiram, acetaldehyde builds up in the body, causing the observed reaction.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 22</div>
+  <div class="q-stem">A client taking disulfiram for alcohol use disorder arrives at the clinic with complaints of flushing, nausea, vomiting, and dizziness. The nurse recognizes that these symptoms are most likely due to which of the following?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27C1',false,false)">An allergic reaction to disulfiram</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27C1',false,false)">Withdrawal symptoms from alcohol</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'27C1',true,false)">A disulfiram-alcohol reaction</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27C1',false,false)">A side effect of stopping disulfiram abruptly</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The symptoms described (flushing, nausea, vomiting, dizziness) are classic signs of a disulfiram-alcohol reaction, which occurs when a client taking disulfiram consumes alcohol or uses alcohol-containing products.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 23</div>
+  <div class="q-stem">A client who has been taking disulfiram as part of their recovery program comes to the emergency department complaining of severe headache, chest pain, palpitations, and shortness of breath. The nurse suspects that these symptoms are most likely related to which of the following?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27C2',false,false)">A panic attack due to anxiety about recovery</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'27C2',true,false)">A disulfiram-alcohol interaction after recent alcohol consumption</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27C2',false,false)">An adverse reaction to another prescribed medication</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'27C2',false,false)">Symptoms of cardiovascular disease unrelated to disulfiram use</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Severe headache, chest pain, palpitations, and shortness of breath are indicative of a serious disulfiram-alcohol reaction. This reaction can be life-threatening and occurs when a client consumes alcohol while taking disulfiram.</div>
+</div>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+<script>
+function selectChoice(btn,qid,isCorrect,isSATA){
+  const card=btn.closest('.q-card');
+  if(!isSATA && card.dataset.answered==='true')return;
+  if(isSATA){
+    btn.classList.toggle('selected');
+    return;
+  }
+  card.dataset.answered='true';
+  const choices=card.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    if(c===btn){c.classList.add('selected',isCorrect?'correct':'wrong');}
+    if(cor&&!isCorrect){c.classList.add('reveal-correct');}
+    c.style.pointerEvents='none';
+  });
+  card.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function submitSATA(cardEl){
+  if(cardEl.dataset.answered==='true')return;
+  cardEl.dataset.answered='true';
+  const choices=cardEl.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    const sel=c.classList.contains('selected');
+    if(sel&&cor)c.classList.add('correct');
+    else if(sel&&!cor)c.classList.add('wrong');
+    else if(!sel&&cor)c.classList.add('reveal-correct');
+    c.style.pointerEvents='none';
+  });
+  cardEl.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.q-card').length;
+  const done=document.querySelectorAll('.q-card[data-answered=true]').length;
+  const pct=Math.round((done/total)*100);
+  const fill=document.getElementById('progressFill');
+  const stats=document.getElementById('statsText');
+  if(fill)fill.style.width=pct+'%';
+  if(stats)stats.textContent=done+' of '+total+' answered ('+pct+'%)';
+  try{localStorage.setItem(window.location.pathname+'_progress',JSON.stringify({done,total}));}catch(e){}
+}
+function resetAll(){
+  document.querySelectorAll('.q-card').forEach(c=>{
+    c.dataset.answered='false';
+    c.querySelectorAll('.choice-btn').forEach(b=>{
+      b.className='choice-btn';b.style.pointerEvents='auto';
+    });
+    c.querySelector('.rationale').classList.remove('show');
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

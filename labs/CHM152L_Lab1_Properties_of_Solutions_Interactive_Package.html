@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHM-152L Lab 1: Properties of Solutions | Interactive Lab Package</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&family=Fira+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-deep: #1a365d;
+            --primary-mid: #2c5282;
+            --primary-light: #4299e1;
+            --accent-coral: #ed8936;
+            --accent-teal: #319795;
+            --accent-green: #38a169;
+            --accent-purple: #805ad5;
+            --prelab-bg: #ebf8ff;
+            --prelab-border: #4299e1;
+            --prelab-accent: #2b6cb0;
+            --student-bg: #f0fff4;
+            --student-border: #38a169;
+            --student-accent: #276749;
+            --instructor-bg: #faf5ff;
+            --instructor-border: #805ad5;
+            --instructor-accent: #553c9a;
+            --clinical-bg: #fffbeb;
+            --clinical-border: #d69e2e;
+            --clinical-accent: #b7791f;
+            --text-dark: #1a202c;
+            --text-mid: #4a5568;
+            --text-light: #718096;
+            --bg-white: #ffffff;
+            --bg-cream: #fafafa;
+            --border-light: #e2e8f0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary-deep) 0%, var(--primary-mid) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .header h1 {
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        .header .subtitle { font-size: 1.1rem; opacity: 0.9; position: relative; }
+        .header .course-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            position: relative;
+        }
+        .nav-container {
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .nav-tabs {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .nav-tab {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            transition: all 0.3s ease;
+            position: relative;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-tab:hover { color: var(--primary-mid); background: rgba(66, 153, 225, 0.05); }
+        .nav-tab.active { color: var(--primary-deep); }
+        .nav-tab[data-tab="prelab"].active { border-bottom-color: var(--prelab-border); color: var(--prelab-accent); }
+        .nav-tab[data-tab="student"].active { border-bottom-color: var(--student-border); color: var(--student-accent); }
+        .nav-tab[data-tab="instructor"].active { border-bottom-color: var(--instructor-border); color: var(--instructor-accent); }
+        .nav-tab .tab-icon { display: block; font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 1.25rem 1.5rem;
+            font-family: 'Merriweather', Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section-header .icon { font-size: 1.5rem; }
+        .section-body { padding: 1.5rem; }
+        .prelab-section .section-header { background: var(--prelab-bg); color: var(--prelab-accent); border-left: 4px solid var(--prelab-border); }
+        .student-section .section-header { background: var(--student-bg); color: var(--student-accent); border-left: 4px solid var(--student-border); }
+        .instructor-section .section-header { background: var(--instructor-bg); color: var(--instructor-accent); border-left: 4px solid var(--instructor-border); }
+        .clinical-connection {
+            background: var(--clinical-bg);
+            border: 2px solid var(--clinical-border);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        .clinical-connection::before {
+            content: '🏥';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--clinical-bg);
+            padding: 0 0.5rem;
+            font-size: 1.25rem;
+        }
+        .clinical-connection h4 { color: var(--clinical-accent); font-weight: 700; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .clinical-connection p { color: var(--text-mid); font-size: 0.95rem; }
+        .flowchart-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; min-width: 600px; }
+        .flowchart-row { display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .flowchart-box {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            min-width: 140px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .flowchart-box.question { background: linear-gradient(135deg, var(--primary-mid), var(--primary-deep)); color: white; font-size: 1rem; padding: 1.25rem 2rem; }
+        .flowchart-box.polar { background: linear-gradient(135deg, #3182ce, #2b6cb0); color: white; }
+        .flowchart-box.nonpolar { background: linear-gradient(135deg, #dd6b20, #c05621); color: white; }
+        .flowchart-box.intermediate { background: linear-gradient(135deg, #38a169, #276749); color: white; }
+        .flowchart-box.result-yes { background: #c6f6d5; color: #276749; border: 2px solid #68d391; }
+        .flowchart-box.result-no { background: #fed7d7; color: #c53030; border: 2px solid #fc8181; }
+        .flowchart-box.result-partial { background: #fefcbf; color: #975a16; border: 2px solid #f6e05e; }
+        .flowchart-arrow { font-size: 1.5rem; color: var(--text-light); }
+        .flowchart-arrow.down { transform: rotate(90deg); }
+        .flowchart-label { font-size: 0.85rem; color: var(--text-mid); font-weight: 600; padding: 0.25rem 0.75rem; background: rgba(255,255,255,0.8); border-radius: 4px; }
+        .quick-ref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .quick-ref-card {
+            background: var(--bg-white);
+            border-radius: 10px;
+            border: 2px solid var(--border-light);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .quick-ref-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .quick-ref-card .card-header { padding: 0.75rem 1rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.5rem; }
+        .quick-ref-card.polar .card-header { background: linear-gradient(135deg, #3182ce, #2b6cb0); }
+        .quick-ref-card.nonpolar .card-header { background: linear-gradient(135deg, #dd6b20, #c05621); }
+        .quick-ref-card.intermediate .card-header { background: linear-gradient(135deg, #38a169, #276749); }
+        .quick-ref-card.safety .card-header { background: linear-gradient(135deg, #e53e3e, #c53030); }
+        .quick-ref-card.factors .card-header { background: linear-gradient(135deg, #805ad5, #6b46c1); }
+        .quick-ref-card .card-body { padding: 1rem; }
+        .quick-ref-card ul { list-style: none; padding: 0; }
+        .quick-ref-card li { padding: 0.4rem 0; padding-left: 1.5rem; position: relative; font-size: 0.95rem; color: var(--text-mid); }
+        .quick-ref-card li::before { content: '•'; position: absolute; left: 0.5rem; color: var(--text-light); font-weight: bold; }
+        .data-table-container { overflow-x: auto; margin: 1.5rem 0; border-radius: 10px; border: 2px solid var(--border-light); }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .data-table th { background: var(--primary-deep); color: white; padding: 1rem; text-align: left; font-weight: 600; white-space: nowrap; }
+        .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+        .data-table tr:nth-child(even) { background: #f8fafc; }
+        .data-table tr:hover { background: #edf2f7; }
+        .data-table input[type="text"], .data-table input[type="number"], .data-table textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .data-table input:focus, .data-table textarea:focus { outline: none; border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2); }
+        .data-table select { width: 100%; padding: 0.5rem; border: 1px solid var(--border-light); border-radius: 6px; font-family: inherit; font-size: 0.9rem; background: white; cursor: pointer; }
+        .instructor-answer { background: #f0fff4; border: 2px solid #68d391; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; }
+        .instructor-answer .label { font-weight: 700; color: var(--student-accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .instructor-answer .value { font-family: 'Fira Mono', monospace; color: var(--text-dark); }
+        .explanation-box { background: #ebf8ff; border-left: 4px solid var(--primary-light); padding: 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0; }
+        .explanation-box h5 { color: var(--primary-mid); margin-bottom: 0.5rem; }
+        .objectives-list { list-style: none; padding: 0; }
+        .objectives-list li { padding: 0.75rem 1rem; padding-left: 3rem; position: relative; background: #f8fafc; margin-bottom: 0.5rem; border-radius: 8px; border-left: 4px solid var(--primary-light); }
+        .objectives-list li::before { content: '✓'; position: absolute; left: 1rem; color: var(--accent-green); font-weight: bold; font-size: 1.1rem; }
+        .procedure-steps { counter-reset: step; list-style: none; padding: 0; }
+        .procedure-steps li { counter-increment: step; padding: 1rem 1rem 1rem 3.5rem; position: relative; margin-bottom: 0.75rem; background: var(--bg-cream); border-radius: 8px; border: 1px solid var(--border-light); }
+        .procedure-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2rem;
+            height: 2rem;
+            background: var(--primary-mid);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .safety-warning { background: linear-gradient(135deg, #fff5f5, #fed7d7); border: 2px solid #fc8181; border-radius: 10px; padding: 1.25rem; margin: 1.5rem 0; }
+        .safety-warning h4 { color: #c53030; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .safety-warning ul { list-style: none; padding: 0; }
+        .safety-warning li { padding: 0.4rem 0; padding-left: 1.5rem; position: relative; color: #742a2a; }
+        .safety-warning li::before { content: '⚠'; position: absolute; left: 0; }
+        .polarity-spectrum { background: linear-gradient(90deg, #3182ce 0%, #38a169 50%, #dd6b20 100%); height: 30px; border-radius: 15px; position: relative; margin: 2rem 0; }
+        .polarity-spectrum .marker { position: absolute; top: -30px; transform: translateX(-50%); text-align: center; font-weight: 600; font-size: 0.85rem; }
+        .polarity-spectrum .marker::after { content: '▼'; display: block; font-size: 1rem; }
+        .polarity-spectrum .marker.water { left: 5%; color: #2b6cb0; }
+        .polarity-spectrum .marker.acetone { left: 50%; color: #276749; }
+        .polarity-spectrum .marker.hexane { left: 95%; color: #c05621; }
+        .spectrum-labels { display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-mid); }
+        .molecule-diagram { display: flex; justify-content: center; align-items: center; gap: 2rem; padding: 2rem; background: white; border-radius: 12px; margin: 1.5rem 0; flex-wrap: wrap; }
+        .molecule { text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px; min-width: 180px; }
+        .molecule .structure { font-family: 'Fira Mono', monospace; font-size: 1.25rem; margin-bottom: 0.75rem; padding: 1rem; background: white; border-radius: 8px; border: 2px solid var(--border-light); }
+        .molecule .name { font-weight: 700; color: var(--text-dark); margin-bottom: 0.25rem; }
+        .molecule .type { font-size: 0.85rem; padding: 0.25rem 0.75rem; border-radius: 12px; display: inline-block; }
+        .molecule .type.polar { background: #bee3f8; color: #2b6cb0; }
+        .molecule .type.nonpolar { background: #feebc8; color: #c05621; }
+        .molecule .type.intermediate { background: #c6f6d5; color: #276749; }
+        .student-info-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem; background: var(--student-bg); border-radius: 10px; margin-bottom: 1.5rem; }
+        .info-field { display: flex; align-items: center; gap: 0.75rem; }
+        .info-field label { font-weight: 600; color: var(--student-accent); white-space: nowrap; }
+        .info-field input { flex: 1; padding: 0.5rem; border: 1px solid var(--student-border); border-radius: 6px; font-family: inherit; }
+        .rubric-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .rubric-table th { background: var(--instructor-accent); color: white; padding: 0.75rem; text-align: left; }
+        .rubric-table td { padding: 0.75rem; border: 1px solid var(--border-light); vertical-align: top; }
+        .rubric-table .proficient { background: #c6f6d5; }
+        .rubric-table .developing { background: #fefcbf; }
+        .rubric-table .needs-improvement { background: #fed7d7; }
+        .rubric-table .points { font-weight: 700; text-align: center; }
+        .question-block { background: var(--bg-cream); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; border: 1px solid var(--border-light); }
+        .question-block .q-number { display: inline-block; background: var(--primary-mid); color: white; width: 1.75rem; height: 1.75rem; border-radius: 50%; text-align: center; line-height: 1.75rem; font-weight: 700; font-size: 0.9rem; margin-right: 0.75rem; }
+        .question-block .q-text { font-weight: 600; color: var(--text-dark); margin-bottom: 0.75rem; }
+        .question-block .options { padding-left: 2.5rem; }
+        .question-block .option { padding: 0.4rem 0; display: flex; align-items: flex-start; gap: 0.5rem; }
+        .question-block .option input[type="radio"], .question-block .option input[type="checkbox"] { margin-top: 0.3rem; }
+        .question-block .correct-answer { background: #c6f6d5; border: 2px solid #68d391; border-radius: 6px; padding: 0.5rem 1rem; margin-top: 0.75rem; font-weight: 600; color: #276749; }
+        .key-concept { display: inline-block; background: linear-gradient(135deg, #ebf8ff, #bee3f8); padding: 0.15rem 0.5rem; border-radius: 4px; font-weight: 600; color: var(--primary-mid); }
+        @media print {
+            .nav-container { display: none; }
+            .tab-content { display: block !important; page-break-after: always; }
+            .header { background: white; color: black; border-bottom: 3px solid black; }
+            .section-card { box-shadow: none; border: 1px solid #ccc; }
+            .flowchart-container { background: white; }
+            input, textarea, select { border: 1px solid black !important; }
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.75rem; }
+            .nav-tab { padding: 0.75rem; font-size: 0.85rem; }
+            .nav-tab .tab-icon { font-size: 1.25rem; }
+            .main-content { padding: 1rem; }
+            .quick-ref-grid { grid-template-columns: 1fr; }
+            .student-info-bar { grid-template-columns: 1fr; }
+            .molecule-diagram { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🧪 Lab 1: Properties of Solutions</h1>
+        <p class="subtitle">Exploring Solubility, Miscibility, and Dissolution Kinetics</p>
+        <span class="course-badge">CHM-152L | General Chemistry II Laboratory</span>
+    </header>
+    
+    <nav class="nav-container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="prelab">
+                <span class="tab-icon">📚</span>
+                Pre-Lab Guide
+            </button>
+            <button class="nav-tab" data-tab="student">
+                <span class="tab-icon">📝</span>
+                Student Lab Report
+            </button>
+            <button class="nav-tab" data-tab="instructor">
+                <span class="tab-icon">🔑</span>
+                Instructor Key
+            </button>
+        </div>
+    </nav>
+    
+    <main class="main-content">
+        <!-- PRE-LAB GUIDE -->
+        <div id="prelab" class="tab-content active">
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">🎯</span>Learning Objectives</div>
+                <div class="section-body">
+                    <ul class="objectives-list">
+                        <li>Classify solvent pairs as miscible or immiscible based on polarity principles</li>
+                        <li>Compare quantitative solubility of ionic vs. non-polar solutes in Water, Acetone, and Hexane</li>
+                        <li>Measure how surface area (particle size) affects dissolution rate</li>
+                        <li>Measure how temperature affects dissolution rate</li>
+                        <li>Apply the "like dissolves like" principle to predict solubility outcomes</li>
+                    </ul>
+                    <div class="clinical-connection">
+                        <h4>🩺 Clinical Connection: Why This Matters for Nursing</h4>
+                        <p><strong>Medication Preparation:</strong> Many IV medications must be dissolved in specific solvents. Understanding polarity helps you recognize why some drugs dissolve in saline (polar) while others require lipid emulsions (non-polar).</p>
+                        <p style="margin-top: 0.5rem;"><strong>IV Fluid Selection:</strong> Normal saline (0.9% NaCl) works because salt is ionic and dissolves completely in polar water. Fat-soluble vitamins (A, D, E, K) require different delivery methods because they don't dissolve in water.</p>
+                        <p style="margin-top: 0.5rem;"><strong>Patient Safety:</strong> Precipitation can occur when incompatible medications are mixed—understanding solubility prevents dangerous medication errors.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">🔬</span>Key Concept: The Polarity Spectrum</div>
+                <div class="section-body">
+                    <p style="margin-bottom: 1rem;">Not all molecules are "polar" or "non-polar"—polarity exists on a <span class="key-concept">spectrum</span>. This explains why some solvents mix with both polar AND non-polar substances.</p>
+                    <div class="polarity-spectrum">
+                        <div class="marker water">Water</div>
+                        <div class="marker acetone">Acetone</div>
+                        <div class="marker hexane">Hexane</div>
+                    </div>
+                    <div class="spectrum-labels">
+                        <span>POLAR</span>
+                        <span>INTERMEDIATE</span>
+                        <span>NON-POLAR</span>
+                    </div>
+                    <div class="molecule-diagram">
+                        <div class="molecule">
+                            <div class="structure">H—O—H</div>
+                            <div class="name">Water (H₂O)</div>
+                            <span class="type polar">Highly Polar</span>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-mid);">Strong H-bonds, high dielectric constant</p>
+                        </div>
+                        <div class="molecule">
+                            <div class="structure">CH₃—C(=O)—CH₃</div>
+                            <div class="name">Acetone</div>
+                            <span class="type intermediate">Intermediate</span>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-mid);">Polar C=O + non-polar CH₃ groups</p>
+                        </div>
+                        <div class="molecule">
+                            <div class="structure">CH₃(CH₂)₄CH₃</div>
+                            <div class="name">Hexane (C₆H₁₄)</div>
+                            <span class="type nonpolar">Non-Polar</span>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem; color: var(--text-mid);">Only C-C and C-H bonds (London forces only)</p>
+                        </div>
+                    </div>
+                    <div class="clinical-connection">
+                        <h4>🩺 Clinical Insight: Acetone's Dual Nature</h4>
+                        <p>Acetone is used clinically as a defatting agent before surgical preps. Its <strong>amphipathic</strong> (dual-nature) structure allows it to dissolve both water-soluble residues AND oily/fatty substances from skin.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">🔀</span>Visual Flowchart: Predicting Solubility</div>
+                <div class="section-body">
+                    <p style="margin-bottom: 1rem;">Use this decision tree to predict whether a solute will dissolve in a given solvent:</p>
+                    <div class="flowchart-container">
+                        <div class="flowchart">
+                            <div class="flowchart-box question">What type is your SOLUTE?</div>
+                            <div class="flowchart-arrow down">➔</div>
+                            <div class="flowchart-row">
+                                <div class="flowchart-box polar">IONIC<br><small>(e.g., NaCl, KBr)</small></div>
+                                <div class="flowchart-box intermediate">POLAR<br><small>(e.g., Sugar, Ethanol)</small></div>
+                                <div class="flowchart-box nonpolar">NON-POLAR<br><small>(e.g., Vaseline, Oil)</small></div>
+                            </div>
+                            <div class="flowchart-arrow down">➔</div>
+                            <div class="flowchart-row"><div class="flowchart-label">In Water (Polar)?</div></div>
+                            <div class="flowchart-row">
+                                <div class="flowchart-box result-yes">✓ DISSOLVES<br><small>Ion-dipole forces</small></div>
+                                <div class="flowchart-box result-yes">✓ DISSOLVES<br><small>H-bonding</small></div>
+                                <div class="flowchart-box result-no">✗ WON'T DISSOLVE<br><small>No attraction</small></div>
+                            </div>
+                            <div class="flowchart-arrow down">➔</div>
+                            <div class="flowchart-row"><div class="flowchart-label">In Acetone (Intermediate)?</div></div>
+                            <div class="flowchart-row">
+                                <div class="flowchart-box result-no">✗ POOR<br><small>Can't stabilize ions</small></div>
+                                <div class="flowchart-box result-yes">✓ DISSOLVES<br><small>Dipole interactions</small></div>
+                                <div class="flowchart-box result-partial">~ PARTIAL<br><small>Some interaction</small></div>
+                            </div>
+                            <div class="flowchart-arrow down">➔</div>
+                            <div class="flowchart-row"><div class="flowchart-label">In Hexane (Non-Polar)?</div></div>
+                            <div class="flowchart-row">
+                                <div class="flowchart-box result-no">✗ WON'T DISSOLVE<br><small>No dipoles to attract</small></div>
+                                <div class="flowchart-box result-no">✗ WON'T DISSOLVE<br><small>Polar ≠ Non-polar</small></div>
+                                <div class="flowchart-box result-yes">✓ DISSOLVES<br><small>London dispersion forces</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">📋</span>Quick Reference Cards</div>
+                <div class="section-body">
+                    <div class="quick-ref-grid">
+                        <div class="quick-ref-card polar">
+                            <div class="card-header">💧 Polar Solvents</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>Example:</strong> Water (H₂O)</li>
+                                    <li><strong>Dissolves:</strong> Ionic compounds, polar molecules</li>
+                                    <li><strong>Cannot dissolve:</strong> Oils, fats, non-polar hydrocarbons</li>
+                                    <li><strong>Key force:</strong> Ion-dipole & Hydrogen bonding</li>
+                                    <li><strong>Clinical:</strong> Normal saline, most IV drugs</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="quick-ref-card nonpolar">
+                            <div class="card-header">🛢️ Non-Polar Solvents</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>Example:</strong> Hexane (C₆H₁₄)</li>
+                                    <li><strong>Dissolves:</strong> Oils, fats, waxes (Vaseline)</li>
+                                    <li><strong>Cannot dissolve:</strong> Salts, polar molecules</li>
+                                    <li><strong>Key force:</strong> London dispersion forces</li>
+                                    <li><strong>Clinical:</strong> Lipid-based drug carriers</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="quick-ref-card intermediate">
+                            <div class="card-header">⚖️ Intermediate Solvents</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>Example:</strong> Acetone</li>
+                                    <li><strong>Dissolves:</strong> Many polar AND some non-polar</li>
+                                    <li><strong>Structure:</strong> Polar C=O + non-polar CH₃</li>
+                                    <li><strong>Key term:</strong> Amphipathic</li>
+                                    <li><strong>Clinical:</strong> Surgical prep, defatting</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="quick-ref-card factors">
+                            <div class="card-header">⚡ Factors Affecting Rate</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>Temperature ↑</strong> = Faster dissolution</li>
+                                    <li><strong>Surface Area ↑</strong> = Faster dissolution</li>
+                                    <li><strong>Stirring/Agitation</strong> = Faster dissolution</li>
+                                    <li>Fine particles > Coarse particles</li>
+                                    <li>Hot water > Cold water</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="quick-ref-card safety">
+                            <div class="card-header">⚠️ Safety & Waste Disposal</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>ORGANIC WASTE:</strong> Acetone, Hexane, Vaseline mixtures</li>
+                                    <li><strong>SINK OK:</strong> Plain water, dilute salt water</li>
+                                    <li><strong>NEVER:</strong> Pour organics down sink</li>
+                                    <li>Wear safety goggles at all times</li>
+                                    <li>Work in fume hood with volatile organics</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">🧠</span>Molecular-Level Understanding</div>
+                <div class="section-body">
+                    <h4 style="color: var(--prelab-accent); margin-bottom: 1rem;">Why Does NaCl Dissolve in Water but NOT in Hexane?</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="explanation-box" style="background: #c6f6d5; border-color: #68d391;">
+                            <h5 style="color: #276749;">✓ In Water (It Works!)</h5>
+                            <ol style="margin-left: 1rem; color: var(--text-mid);">
+                                <li>Water molecules are <strong>polar</strong> with δ+ on H and δ- on O</li>
+                                <li>The δ- oxygen attracts Na⁺ ions</li>
+                                <li>The δ+ hydrogens attract Cl⁻ ions</li>
+                                <li>These <strong>ion-dipole interactions</strong> pull ions away from the crystal</li>
+                                <li>Water molecules surround each ion (hydration shell)</li>
+                                <li>Result: <strong>Complete dissolution!</strong></li>
+                            </ol>
+                        </div>
+                        <div class="explanation-box" style="background: #fed7d7; border-color: #fc8181;">
+                            <h5 style="color: #c53030;">✗ In Hexane (It Fails!)</h5>
+                            <ol style="margin-left: 1rem; color: var(--text-mid);">
+                                <li>Hexane has <strong>no permanent dipole</strong></li>
+                                <li>C-H bonds share electrons nearly equally</li>
+                                <li>No δ+ or δ- regions to attract ions</li>
+                                <li>The ionic bond energy in NaCl is NOT overcome</li>
+                                <li>Ions stay locked in crystal structure</li>
+                                <li>Result: <strong>No dissolution—crystals remain!</strong></li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="clinical-connection">
+                        <h4>🩺 Clinical Application: Electrolyte Replacement</h4>
+                        <p>This is exactly why IV electrolyte solutions use water as the solvent! Potassium chloride (KCl), sodium bicarbonate (NaHCO₃), and calcium gluconate all rely on water's polarity to dissolve and deliver ions directly into the bloodstream.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">🌡️</span>Understanding Dissolution Rate Factors</div>
+                <div class="section-body">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <h4 style="color: var(--prelab-accent); margin-bottom: 0.75rem;">🔥 Temperature Effect</h4>
+                            <p style="color: var(--text-mid); margin-bottom: 1rem;">Higher temperature = faster molecular motion</p>
+                            <div class="explanation-box">
+                                <p><strong>The "Traffic Jam" Analogy:</strong></p>
+                                <p style="margin-top: 0.5rem;">At <strong>10°C</strong>, water molecules are sluggish—like cars in heavy traffic. They bump into salt crystals slowly.</p>
+                                <p style="margin-top: 0.5rem;">At <strong>50°C</strong>, water molecules zoom around with high kinetic energy—like cars on an open highway. They crash into salt crystals rapidly.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--prelab-accent); margin-bottom: 0.75rem;">📐 Surface Area Effect</h4>
+                            <p style="color: var(--text-mid); margin-bottom: 1rem;">More surface = more contact with solvent</p>
+                            <div class="explanation-box">
+                                <p><strong>The "Doorway" Analogy:</strong></p>
+                                <p style="margin-top: 0.5rem;"><strong>Coarse NaCl</strong> = One big room with one doorway. Water can only enter/attack from that one entrance.</p>
+                                <p style="margin-top: 0.5rem;"><strong>Fine NaCl</strong> = Many tiny rooms, each with its own doorway. Water can attack from hundreds of entry points!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clinical-connection">
+                        <h4>🩺 Clinical Connection: Medication Formulation</h4>
+                        <p><strong>Crushing medications:</strong> When a patient can't swallow a tablet whole, crushing it increases surface area for faster dissolution in the stomach. (Never crush extended-release formulations!)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="safety-warning">
+                <h4>⚠️ Pre-Lab Safety Review</h4>
+                <ul>
+                    <li><strong>Hexane</strong> is highly flammable—NO open flames, use fume hood</li>
+                    <li><strong>Acetone</strong> is volatile—use fume hood, avoid skin contact</li>
+                    <li><strong>Organic waste container</strong> for ALL acetone/hexane/Vaseline mixtures</li>
+                    <li>Only dilute aqueous salt solutions may go down the sink with water</li>
+                    <li>Wear safety goggles and lab coat throughout the experiment</li>
+                </ul>
+            </div>
+            
+            <div class="section-card prelab-section">
+                <div class="section-header"><span class="icon">✅</span>Pre-Lab Checklist</div>
+                <div class="section-body">
+                    <p style="margin-bottom: 1rem;">Before coming to lab, make sure you can:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.5rem;">
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Define "miscible" and "immiscible"</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Explain "like dissolves like" principle</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Classify Water, Acetone, Hexane by polarity</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Describe ion-dipole interactions</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Predict how temperature affects dissolution rate</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Predict how surface area affects dissolution rate</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Explain why acetone mixes with BOTH water and hexane</span></label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.5rem; background: #f8fafc; border-radius: 6px; cursor: pointer;"><input type="checkbox" style="margin-top: 0.25rem;"><span>Know proper waste disposal for each chemical</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- STUDENT LAB REPORT -->
+        <div id="student" class="tab-content">
+            <div class="student-info-bar">
+                <div class="info-field"><label>Student Name:</label><input type="text" placeholder="Enter your name"></div>
+                <div class="info-field"><label>Date:</label><input type="date"></div>
+                <div class="info-field"><label>Lab Section:</label><input type="text" placeholder="e.g., CHM-152L-01"></div>
+                <div class="info-field"><label>Lab Partner(s):</label><input type="text" placeholder="Enter partner name(s)"></div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">🎯</span>Lab Objectives</div>
+                <div class="section-body">
+                    <ul class="objectives-list">
+                        <li>Classify solvent pairs as miscible or immiscible and relate results to polarity</li>
+                        <li>Compare quantitative solubility of ionic vs. non-polar solutes in varying solvents</li>
+                        <li>Measure the effects of surface area (particle size) and temperature on dissolution rates</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">🧪</span>Part I: Miscibility of Liquid Solvents</div>
+                <div class="section-body">
+                    <h4 style="color: var(--student-accent); margin-bottom: 1rem;">Procedure</h4>
+                    <ol class="procedure-steps">
+                        <li>Add 3.0 mL of each solvent pair to labeled test tubes</li>
+                        <li>Invert exactly 10 times. Let stand for 2 minutes</li>
+                        <li>Observe layers: <strong>1 Layer = Miscible</strong>, <strong>2 Layers = Immiscible</strong></li>
+                    </ol>
+                    <h4 style="color: var(--student-accent); margin: 1.5rem 0 1rem;">Data Table 1: Miscibility Observations</h4>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th style="width: 25%;">Solvent Pair</th><th style="width: 40%;">Observation</th><th style="width: 35%;">Conclusion</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Water + Acetone</strong></td><td><textarea rows="2" placeholder="Describe: Number of layers, clarity..."></textarea></td><td><select><option value="">Select...</option><option value="miscible">Miscible (1 Layer)</option><option value="immiscible">Immiscible (2 Layers)</option></select></td></tr>
+                                <tr><td><strong>Water + Hexane</strong></td><td><textarea rows="2" placeholder="Describe: Number of layers, clarity..."></textarea></td><td><select><option value="">Select...</option><option value="miscible">Miscible (1 Layer)</option><option value="immiscible">Immiscible (2 Layers)</option></select></td></tr>
+                                <tr><td><strong>Acetone + Hexane</strong></td><td><textarea rows="2" placeholder="Describe: Number of layers, clarity..."></textarea></td><td><select><option value="">Select...</option><option value="miscible">Miscible (1 Layer)</option><option value="immiscible">Immiscible (2 Layers)</option></select></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">⚗️</span>Part II: "Like Dissolves Like" (Quantitative)</div>
+                <div class="section-body">
+                    <h4 style="color: var(--student-accent); margin-bottom: 1rem;">A) NaCl Solubility (Ionic Solute)</h4>
+                    <ol class="procedure-steps">
+                        <li>Prepare 3 tubes with 10.0 mL of each solvent: Water, Acetone, Hexane</li>
+                        <li>Add NaCl in <strong>0.25 g increments</strong>. Shake 15 seconds, wait 30 seconds</li>
+                        <li>Repeat until no more dissolves. Record the <strong>maximum mass</strong> dissolved</li>
+                    </ol>
+                    <h4 style="color: var(--student-accent); margin: 1.5rem 0 1rem;">Data Table 2A: NaCl Solubility Limit</h4>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Solvent</th><th>Polarity</th><th>Max Mass Dissolved (g)</th><th>Observation</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Water</strong></td><td><select><option value="">Select...</option><option value="polar">Polar</option><option value="intermediate">Intermediate</option><option value="nonpolar">Non-Polar</option></select></td><td><input type="text" placeholder="e.g., 3.25 g"></td><td><textarea rows="2" placeholder="Describe appearance..."></textarea></td></tr>
+                                <tr><td><strong>Acetone</strong></td><td><select><option value="">Select...</option><option value="polar">Polar</option><option value="intermediate">Intermediate</option><option value="nonpolar">Non-Polar</option></select></td><td><input type="text" placeholder="e.g., 0.00 g"></td><td><textarea rows="2" placeholder="Describe appearance..."></textarea></td></tr>
+                                <tr><td><strong>Hexane</strong></td><td><select><option value="">Select...</option><option value="polar">Polar</option><option value="intermediate">Intermediate</option><option value="nonpolar">Non-Polar</option></select></td><td><input type="text" placeholder="e.g., 0.00 g"></td><td><textarea rows="2" placeholder="Describe appearance..."></textarea></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h4 style="color: var(--student-accent); margin: 2rem 0 1rem;">B) Vaseline Solubility (Non-Polar Solute)</h4>
+                    <ol class="procedure-steps">
+                        <li>Prepare 3 tubes with 10.0 mL of each solvent. Add <strong>0.20 g Vaseline</strong></li>
+                        <li>Cap and invert 10 times. Place in <strong>50°C warm-water bath</strong> for 3 minutes</li>
+                        <li>Observe clarity: Fully dissolved, Partially dissolved, or Not dissolved</li>
+                    </ol>
+                    <h4 style="color: var(--student-accent); margin: 1.5rem 0 1rem;">Data Table 2B: Vaseline Solubility</h4>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Solvent</th><th>Polarity</th><th>Solubility Result</th><th>Appearance</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Water</strong></td><td><select><option value="">Select...</option><option value="polar">Polar</option><option value="intermediate">Intermediate</option><option value="nonpolar">Non-Polar</option></select></td><td><select><option value="">Select...</option><option value="fully">Fully Dissolved</option><option value="partial">Partially Dissolved</option><option value="none">Not Dissolved</option></select></td><td><textarea rows="2" placeholder="Describe what you observe..."></textarea></td></tr>
+                                <tr><td><strong>Acetone</strong></td><td><select><option value="">Select...</option><option value="polar">Polar</option><option value="intermediate">Intermediate</option><option value="nonpolar">Non-Polar</option></select></td><td><select><option value="">Select...</option><option value="fully">Fully Dissolved</option><option value="partial">Partially Dissolved</option><option value="none">Not Dissolved</option></select></td><td><textarea rows="2" placeholder="Describe what you observe..."></textarea></td></tr>
+                                <tr><td><strong>Hexane</strong></td><td><select><option value="">Select...</option><option value="polar">Polar</option><option value="intermediate">Intermediate</option><option value="nonpolar">Non-Polar</option></select></td><td><select><option value="">Select...</option><option value="fully">Fully Dissolved</option><option value="partial">Partially Dissolved</option><option value="none">Not Dissolved</option></select></td><td><textarea rows="2" placeholder="Describe what you observe..."></textarea></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">📐</span>Part III: Particle Size vs. Dissolution Rate (3 Trials)</div>
+                <div class="section-body">
+                    <ol class="procedure-steps">
+                        <li>Prepare two containers with <strong>20.0 mL room temperature water</strong></li>
+                        <li>Add <strong>2.00 g Fine NaCl</strong> to one and <strong>2.00 g Coarse NaCl</strong> to the other</li>
+                        <li>Stir exactly <strong>10 seconds</strong>, then stop. Record time to dissolve completely</li>
+                        <li>Repeat for <strong>3 total trials</strong></li>
+                    </ol>
+                    <h4 style="color: var(--student-accent); margin: 1.5rem 0 1rem;">Data Table 3: Surface Area Effects</h4>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Trial</th><th>Fine NaCl Time (s)</th><th>Coarse NaCl Time (s)</th><th>Observations</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>1</strong></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="seconds"></td><td><textarea rows="2" placeholder="Note any differences..."></textarea></td></tr>
+                                <tr><td><strong>2</strong></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="seconds"></td><td><textarea rows="2" placeholder="Note any differences..."></textarea></td></tr>
+                                <tr><td><strong>3</strong></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="seconds"></td><td><textarea rows="2" placeholder="Note any differences..."></textarea></td></tr>
+                                <tr style="background: #edf2f7;"><td><strong>AVERAGE</strong></td><td><input type="number" placeholder="Calculate avg"></td><td><input type="number" placeholder="Calculate avg"></td><td style="font-style: italic; color: var(--text-mid);">(Trial1 + Trial2 + Trial3) ÷ 3</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">🌡️</span>Part IV: Temperature vs. Dissolution Rate (2 Trials)</div>
+                <div class="section-body">
+                    <ol class="procedure-steps">
+                        <li>Prepare 3 beakers with <strong>20.0 mL water</strong> at: 10°C (Ice), ~22°C (Room), 50°C (Warm)</li>
+                        <li>Record <strong>actual temperature</strong>. Add <strong>1.00 g Fine NaCl</strong></li>
+                        <li>Stir consistently. Record time to dissolve completely. Repeat for <strong>2 trials</strong></li>
+                    </ol>
+                    <h4 style="color: var(--student-accent); margin: 1.5rem 0 1rem;">Data Table 4: Temperature Effects</h4>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Condition</th><th>Actual Temp (°C)</th><th>Trial 1 Time (s)</th><th>Trial 2 Time (s)</th><th>Average Time (s)</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Cold (~10°C)</strong></td><td><input type="number" placeholder="°C"></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="Calculate"></td></tr>
+                                <tr><td><strong>Room (~22°C)</strong></td><td><input type="number" placeholder="°C"></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="Calculate"></td></tr>
+                                <tr><td><strong>Hot (~50°C)</strong></td><td><input type="number" placeholder="°C"></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="seconds"></td><td><input type="number" placeholder="Calculate"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">📝</span>Post-Lab Analysis Questions</div>
+                <div class="section-body">
+                    <div class="question-block">
+                        <p class="q-text"><span class="q-number">1</span><strong>Solvent Analysis:</strong> Why is Acetone considered "intermediate" in its solvent properties compared to Water and Hexane?</p>
+                        <textarea rows="5" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: 8px; font-family: inherit;" placeholder="Your answer: Discuss acetone's molecular structure..."></textarea>
+                    </div>
+                    <div class="question-block">
+                        <p class="q-text"><span class="q-number">2</span><strong>Solubility Mechanics:</strong> Explain, on a molecular level, why water could dissolve NaCl but Hexane could not.</p>
+                        <textarea rows="5" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: 8px; font-family: inherit;" placeholder="Your answer: Discuss ion-dipole interactions, polarity..."></textarea>
+                    </div>
+                    <div class="question-block">
+                        <p class="q-text"><span class="q-number">3</span><strong>Clinical Connection:</strong> A nurse is preparing an IV medication that must be dissolved before administration. Based on your lab results, explain why the medication is mixed with sterile water rather than a lipid solution if the drug is ionic.</p>
+                        <textarea rows="4" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: 8px; font-family: inherit;" placeholder="Your answer: Apply the 'like dissolves like' principle..."></textarea>
+                    </div>
+                    <div class="question-block">
+                        <p class="q-text"><span class="q-number">4</span><strong>Rate Analysis:</strong> Based on your Part III and IV data, which factor had a greater effect on dissolution rate—particle size or temperature? Support with specific data.</p>
+                        <textarea rows="4" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: 8px; font-family: inherit;" placeholder="Your answer: Compare your average times..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card student-section">
+                <div class="section-header"><span class="icon">♻️</span>Waste Disposal Record</div>
+                <div class="section-body">
+                    <div class="safety-warning" style="background: linear-gradient(135deg, #ebf8ff, #bee3f8); border-color: #4299e1;">
+                        <h4 style="color: #2b6cb0;">📋 Required: Document Your Waste Disposal</h4>
+                        <p style="color: var(--text-mid); margin-bottom: 1rem;">Check each item after proper disposal:</p>
+                        <div style="display: grid; gap: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: white; border-radius: 6px; cursor: pointer;"><input type="checkbox"><span>Water + Acetone mixture → <strong>Organic Waste Container</strong></span></label>
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: white; border-radius: 6px; cursor: pointer;"><input type="checkbox"><span>Water + Hexane mixture → <strong>Organic Waste Container</strong></span></label>
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: white; border-radius: 6px; cursor: pointer;"><input type="checkbox"><span>Acetone + Hexane mixture → <strong>Organic Waste Container</strong></span></label>
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: white; border-radius: 6px; cursor: pointer;"><input type="checkbox"><span>All Vaseline mixtures → <strong>Organic Waste Container</strong></span></label>
+                            <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: white; border-radius: 6px; cursor: pointer;"><input type="checkbox"><span>Dilute NaCl water (Parts III & IV) → <strong>Sink with running water</strong></span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- INSTRUCTOR KEY -->
+        <div id="instructor" class="tab-content">
+            <div class="section-card instructor-section" style="border: 3px solid var(--instructor-border);">
+                <div class="section-header"><span class="icon">🔐</span>INSTRUCTOR ANSWER KEY — CONFIDENTIAL</div>
+                <div class="section-body">
+                    <p style="color: var(--instructor-accent); font-weight: 600; background: #faf5ff; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--instructor-border);">⚠️ This section contains expected results, detailed explanations, and grading guidance. Do not share with students.</p>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">📊</span>Part I: Miscibility — Expected Results</div>
+                <div class="section-body">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Solvent Pair</th><th>Expected Result</th><th>Explanation</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Water + Acetone</strong></td><td><span style="background: #c6f6d5; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 600; color: #276749;">✓ MISCIBLE (1 Layer)</span></td><td>Acetone is polar enough to form hydrogen bonds with water via its carbonyl oxygen.</td></tr>
+                                <tr><td><strong>Water + Hexane</strong></td><td><span style="background: #fed7d7; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 600; color: #c53030;">✗ IMMISCIBLE (2 Layers)</span></td><td>Polar vs. non-polar incompatibility. Hexane forms top layer (density ~0.66 g/mL).</td></tr>
+                                <tr><td><strong>Acetone + Hexane</strong></td><td><span style="background: #c6f6d5; padding: 0.25rem 0.75rem; border-radius: 4px; font-weight: 600; color: #276749;">✓ MISCIBLE (1 Layer)</span></td><td>Acetone's methyl groups interact with hexane via London dispersion forces.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="explanation-box">
+                        <h5>💡 Teaching Point: The Acetone Surprise</h5>
+                        <p>Students often expect acetone to be immiscible with hexane because "acetone is polar." This is a great opportunity to discuss the <strong>spectrum of polarity</strong> rather than a binary classification.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">🧂</span>Part II-A: NaCl Solubility — Expected Results</div>
+                <div class="section-body">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Solvent</th><th>Polarity</th><th>Expected Max Mass</th><th>Expected Observation</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Water</strong></td><td><span style="background: #bee3f8; padding: 0.2rem 0.5rem; border-radius: 4px;">Polar</span></td><td><strong>&gt;3.0 g</strong></td><td>Clear, colorless solution. NaCl solubility ~36 g/100 mL at 25°C.</td></tr>
+                                <tr><td><strong>Acetone</strong></td><td><span style="background: #c6f6d5; padding: 0.2rem 0.5rem; border-radius: 4px;">Intermediate</span></td><td><strong>0.0–0.25 g</strong></td><td>Cloudy suspension, white crystals remain undissolved.</td></tr>
+                                <tr><td><strong>Hexane</strong></td><td><span style="background: #feebc8; padding: 0.2rem 0.5rem; border-radius: 4px;">Non-Polar</span></td><td><strong>0.0 g</strong></td><td>Crystals sit at bottom completely unchanged.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">🧴</span>Part II-B: Vaseline Solubility — Expected Results</div>
+                <div class="section-body">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>Solvent</th><th>Expected Result</th><th>Expected Appearance</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Water</strong></td><td><span style="background: #fed7d7; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">NOT Dissolved</span></td><td>Melted blobs float on surface. Clear phase separation.</td></tr>
+                                <tr><td><strong>Acetone</strong></td><td><span style="background: #fefcbf; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">PARTIALLY Dissolved</span></td><td>Cloudy/milky emulsion. Some dissolution but not complete.</td></tr>
+                                <tr><td><strong>Hexane</strong></td><td><span style="background: #c6f6d5; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">FULLY Dissolved</span></td><td>Clear, colorless solution.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">⏱️</span>Parts III & IV: Rate Data — Expected Results</div>
+                <div class="section-body">
+                    <div class="instructor-answer">
+                        <div class="label">✓ Part III: Surface Area (Expected Averages)</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-light);"><strong>Fine NaCl:</strong> ~20–30 seconds<br><span style="color: var(--text-mid); font-size: 0.9rem;">Range: 15–40 sec</span></div>
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-light);"><strong>Coarse NaCl:</strong> ~60–90 seconds<br><span style="color: var(--text-mid); font-size: 0.9rem;">Range: 45–120 sec</span></div>
+                        </div>
+                    </div>
+                    <div class="instructor-answer" style="margin-top: 1rem;">
+                        <div class="label">✓ Part IV: Temperature (Expected Averages)</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+                            <div style="background: #ebf8ff; padding: 1rem; border-radius: 8px; text-align: center;"><strong>Cold (10°C)</strong><br><span style="font-size: 1.5rem; color: var(--primary-mid);">~50 sec</span></div>
+                            <div style="background: #fefcbf; padding: 1rem; border-radius: 8px; text-align: center;"><strong>Room (22°C)</strong><br><span style="font-size: 1.5rem; color: var(--clinical-accent);">~30 sec</span></div>
+                            <div style="background: #fed7d7; padding: 1rem; border-radius: 8px; text-align: center;"><strong>Hot (50°C)</strong><br><span style="font-size: 1.5rem; color: #c53030;">~10–15 sec</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">✏️</span>Post-Lab Question Model Answers</div>
+                <div class="section-body">
+                    <div class="question-block" style="border-left: 4px solid var(--instructor-border);">
+                        <p class="q-text"><span class="q-number">1</span>Why is Acetone "intermediate"?</p>
+                        <div class="instructor-answer">
+                            <div class="label">✓ Model Answer</div>
+                            <div class="value"><p>Acetone (CH₃-C(=O)-CH₃) has an <strong>amphipathic</strong> structure. The central carbonyl (C=O) is <strong>highly polar</strong> and can accept hydrogen bonds from water. The two methyl groups (-CH₃) are <strong>non-polar</strong> and interact with hexane via London dispersion forces. This dual nature makes acetone miscible with both polar and non-polar solvents.</p></div>
+                        </div>
+                    </div>
+                    <div class="question-block" style="border-left: 4px solid var(--instructor-border);">
+                        <p class="q-text"><span class="q-number">2</span>Why does water dissolve NaCl but hexane cannot?</p>
+                        <div class="instructor-answer">
+                            <div class="label">✓ Model Answer</div>
+                            <div class="value"><p><strong>Water:</strong> Polar molecules with δ- oxygen attracting Na⁺ and δ+ hydrogens attracting Cl⁻. These <strong>ion-dipole interactions</strong> overcome the ~787 kJ/mol lattice energy. Water forms hydration shells around each ion.</p><p style="margin-top: 0.5rem;"><strong>Hexane:</strong> No permanent dipole—only weak London dispersion forces. Cannot overcome NaCl's high lattice energy. Ions remain locked in crystal.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">📋</span>Grading Rubric (20 Points Total)</div>
+                <div class="section-body">
+                    <div class="data-table-container">
+                        <table class="rubric-table">
+                            <thead><tr><th style="width: 18%;">Criteria</th><th class="proficient" style="width: 27%;">Proficient (5 pts)</th><th class="developing" style="width: 27%;">Developing (3 pts)</th><th class="needs-improvement" style="width: 28%;">Needs Improvement (1 pt)</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Data Recording</strong></td><td class="proficient">All trials recorded with precise units. Averages correct.</td><td class="developing">Missed one trial OR units inconsistent.</td><td class="needs-improvement">Tables largely empty or disorganized.</td></tr>
+                                <tr><td><strong>Observation Quality</strong></td><td class="proficient">Correctly identifies all miscibility and solubility results.</td><td class="developing">Confusion on acetone results.</td><td class="needs-improvement">Observations contradict basic solubility rules.</td></tr>
+                                <tr><td><strong>Safety & Waste</strong></td><td class="proficient">Organic waste used for all appropriate mixtures.</td><td class="developing">Minor prompts needed for disposal.</td><td class="needs-improvement"><strong>FAIL:</strong> Organic solvents down sink.</td></tr>
+                                <tr><td><strong>Analysis</strong></td><td class="proficient">Explains acetone's dual polarity AND ion-dipole mechanism.</td><td class="developing">Generic explanations without molecular reasoning.</td><td class="needs-improvement">Incorrectly identifies solvent polarity.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align: center; margin-top: 1.5rem; padding: 1rem; background: #f8fafc; border-radius: 8px;"><strong style="font-size: 1.1rem;">Total Score: _____ / 20</strong></div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">📝</span>Assessment Answer Key</div>
+                <div class="section-body">
+                    <h4 style="color: var(--instructor-accent); margin-bottom: 1rem;">Multiple Choice</h4>
+                    <div class="question-block"><p class="q-text"><span class="q-number">1</span>Waste container for Water + Acetone + NaCl?</p><div class="correct-answer">Answer: C — Organic waste container (any mixture with organic solvents)</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">2</span>Why heat Vaseline to 50°C?</p><div class="correct-answer">Answer: B — Increase kinetic energy to observe true dissolution</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">3</span>Which statement about Acetone is true?</p><div class="correct-answer">Answer: C — Has both polar and non-polar characteristics</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">4</span>Why did Fine NaCl dissolve faster?</p><div class="correct-answer">Answer: B — Greater surface area exposed to solvent</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">5</span>Water + Hexane produces?</p><div class="correct-answer">Answer: C — Two distinct layers (Immiscible)</div></div>
+                    <h4 style="color: var(--instructor-accent); margin: 2rem 0 1rem;">Select All That Apply</h4>
+                    <div class="question-block"><p class="q-text"><span class="q-number">6</span>ORGANIC waste?</p><div class="correct-answer">Answer: Hexane + Vaseline, Water + Acetone</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">7</span>Factors that INCREASED dissolution rate?</p><div class="correct-answer">Answer: Increasing temp to 50°C, Using Fine crystals</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">8</span>Why does NaCl dissolve in water?</p><div class="correct-answer">Answer: Ion-dipole interactions, Water is highly polar</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">9</span>Experimental errors affecting data?</p><div class="correct-answer">Answer: Inconsistent stirring, Temp drift, Dirty beaker</div></div>
+                    <div class="question-block"><p class="q-text"><span class="q-number">10</span>Acetone can dissolve?</p><div class="correct-answer">Answer: Water (miscible), Hexane (miscible), Vaseline (partial) — NOT ionic NaCl</div></div>
+                </div>
+            </div>
+            
+            <div class="section-card instructor-section">
+                <div class="section-header"><span class="icon">⚠️</span>Common Student Errors</div>
+                <div class="section-body">
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 1rem;"><h5 style="color: #c53030; margin-bottom: 0.5rem;">❌ Marking Acetone + Hexane as "Immiscible"</h5><p style="color: var(--text-mid);"><strong>Correction:</strong> Acetone's non-polar methyl groups interact with hexane via London forces.</p></div>
+                        <div style="background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 1rem;"><h5 style="color: #c53030; margin-bottom: 0.5rem;">❌ Expecting NaCl to dissolve in Acetone</h5><p style="color: var(--text-mid);"><strong>Correction:</strong> Acetone's dielectric constant (~21) is too low to stabilize ions. Water's (~80) is required.</p></div>
+                        <div style="background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 1rem;"><h5 style="color: #c53030; margin-bottom: 0.5rem;">❌ Confusing melting with dissolution</h5><p style="color: var(--text-mid);"><strong>Correction:</strong> Dissolution = molecular dispersion. Melting into floating blobs is NOT dissolution.</p></div>
+                        <div style="background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 1rem;"><h5 style="color: #c53030; margin-bottom: 0.5rem;">❌ CRITICAL: Organic solvents down sink</h5><p style="color: var(--text-mid);"><strong>Response:</strong> Automatic point deduction. Review waste protocols before every lab.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer style="text-align: center; padding: 2rem; background: var(--primary-deep); color: white; margin-top: 2rem;">
+        <p style="opacity: 0.9;">CHM-152L: General Chemistry II Laboratory | Tehrani 2028</p>
+        <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 0.5rem;">Lab 1: Properties of Solutions — Interactive Package</p>
+    </footer>
+    
+    <script>
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Schizophrenia — Mental Health Nursing</title>
+<style>
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🧠 Schizophrenia</h1>
+  <p>Mental Health Nursing • Tehrani Labs</p>
+</div>
+<nav class="nav"><a href="MH_Index.html">Home</a>
+<a href="MH_schizophrenia.html" class="active">🧠 Schizophrenia</a>
+<a href="MH_schizoaffective.html">🔄 Schizoaffective Disorder</a>
+<a href="MH_delusional.html">💭 Delusional Disorder</a>
+<a href="MH_delusions.html">👁️ Delusions & Hallucinations</a>
+<a href="MH_alcohol.html">🍷 Alcohol Use Disorder</a>
+<a href="MH_opioids.html">💊 Opioids, Substances & Assessment</a>
+<a href="MH_assessment.html">📋 Mental Status Exam</a></nav>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="stats" id="statsText">0 of 24 answered (0%)</div>
+  <div style="text-align:right;margin-bottom:15px"><button onclick="resetAll()" style="padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.8em">Reset All</button></div>
+  <div class="q-card" data-answered="false">
+  <div class="q-num">Question 1</div>
+  <div class="q-stem">A client diagnosed with schizophrenia is now stable for discharge. Which medication or intervention would be <strong>unexpected</strong> as part of a long-term strategy to <strong>prevent</strong> relapse?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'4P',true,false)">Alprazolam 10 mg by mouth daily</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4P',false,false)">Risperidone 4 mg by mouth daily</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4P',false,false)">Individual psychotherapy</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4P',false,false)">Family psychotherapy</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Alprazolam (10 mg by mouth daily) would be unexpected as part of the long-term strategy to prevent relapse in a client with schizophrenia. Alprazolam is a benzodiazepine that is typically used for anxiety and short-term management of anxiety-related symptoms. However, it does not address the underlying symptoms of schizophrenia and may even lead to dependence or exacerbate cognitive and psychomotor dysfunctions.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 2</div>
+  <div class="q-stem">The nurse is caring for a client with schizophrenia who is being started on haloperidol for symptom management. Which of the following would be the <strong>most</strong> important instruction for the nurse to provide to the client regarding this medication?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4C1',false,false)">"Do not stop taking the medication abruptly, as this can cause withdrawal symptoms."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'4C1',true,false)">"You may experience dizziness, so it's important to get up slowly from a sitting or lying position."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4C1',false,false)">"You should monitor your weight daily and report any significant changes."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4C1',false,false)">"You will need to have blood tests regularly to check for liver function."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The most important instruction is about orthostatic hypotension. Haloperidol is an antipsychotic that can cause orthostatic hypotension, leading to dizziness or fainting, especially when changing positions. Managing the risk of dizziness due to orthostatic hypotension is an immediate and critical safety concern.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 3</div>
+  <div class="q-stem">A client with schizophrenia is demonstrating signs of medication nonadherence. Which intervention would <strong>best</strong> support the client's medication regimen?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'4C2',true,false)">Assisting the client in setting up a daily reminder system for taking the medication</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4C2',false,false)">Instructing the client to discontinue the medication if they experience side effects</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4C2',false,false)">Having the client sign a contract to take the medication as prescribed</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'4C2',false,false)">Reassuring the client that they don't need the medication if they feel better</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The most appropriate intervention is assisting the client in setting up a daily reminder system for taking the medication. This practical approach helps the client adhere to their prescribed regimen and reduces the risk of relapse.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 4</div>
+  <div class="q-stem">A client newly admitted to the behavioral unit with schizophrenia, delusions, and paranoid behaviors says to the nurse, "I saw you laughing with the other nurse in the hallway before you came into my room, and I don't want you or her taking care of me." How should the nurse interpret the client's statement?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'5P',true,false)">The client is suspicious and distrustful, which is common for clients with schizophrenia.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5P',false,false)">The client is not a happy person and does not like laughter.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5P',false,false)">The client is resistant to being in the hospital and so they are angry with the staff.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5P',false,false)">The client is exhibiting bias against the nurses.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse should interpret the client's statement as indicative of suspicion and distrust, which are common symptoms of schizophrenia, especially in individuals experiencing paranoid delusions. Clients with schizophrenia often misinterpret social interactions and perceive harmless actions as threatening or directed toward them.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 5</div>
+  <div class="q-stem">A client diagnosed with schizophrenia is experiencing auditory hallucinations and tells the nurse, "I hear voices telling me to hurt myself." What should the nurse do <strong>first</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'5C1',true,false)">Ensure the client's safety by conducting a thorough assessment for self-harm risk.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5C1',false,false)">Ask the client to describe the voices in more detail.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5C1',false,false)">Tell the client that the voices are not real and try to reassure them.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5C1',false,false)">Offer the client a distraction, such as listening to music or watching TV.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse's first priority should be ensuring the client's safety by conducting a thorough assessment for self-harm risk. Auditory hallucinations, especially those involving commands to harm oneself, indicate a high risk for self-injury.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 6</div>
+  <div class="q-stem">A client diagnosed with schizophrenia is admitted to the hospital and expresses, "I can hear people whispering about me, and they want to harm me." How should the nurse respond to the client's statement?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'5C2',true,false)">"I understand that you hear voices, but I am here to ensure your safety."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5C2',false,false)">"Those voices aren't real, and you need to ignore them."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5C2',false,false)">"Who exactly do you think is trying to harm you?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'5C2',false,false)">"Don't worry, no one is talking about you."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This response validates the client's experience of hearing voices without confirming the delusion. It reassures the client that the nurse is focused on their safety and well-being while maintaining a supportive approach.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 7</div>
+  <div class="q-stem">A client with schizophrenia is brought to the psychiatric emergency care unit by 3 family members who report that the client is behaving "bizarre." The family reports being afraid that the client will harm self and others. What assessment of the client is <strong>most</strong> important?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'6P',true,false)">Determining if the client is having auditory or visual hallucinations.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6P',false,false)">Listening to the client's speech to determine if the client is using word salad.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6P',false,false)">Observing the client's facial features to determine if there is a flat affect.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6P',false,false)">Assessing the client for flights of ideas.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The most important assessment in this situation is determining if the client is experiencing auditory or visual hallucinations. Clients with schizophrenia often have impaired reality perception, leading to hallucinations that may increase the risk of self-harm or harm to others.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 8</div>
+  <div class="q-stem">A client with a history of schizophrenia is brought to the emergency department by family members. The client appears agitated, is pacing, and repeatedly mutters about "the government tracking me." What is the <strong>most</strong> important assessment for the nurse to complete <strong>first</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6C1',false,false)">Assess the client's vital signs</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6C1',false,false)">Determine the client's medication adherence history</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'6C1',true,false)">Evaluate the client's risk of self-harm or harm to others</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6C1',false,false)">Ask the client to identify the voices they are hearing</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The priority assessment for a client with schizophrenia who is agitated and expressing persecutory delusions is to evaluate the risk of self-harm or harm to others. Ensuring safety is the highest priority.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 9</div>
+  <div class="q-stem">A client with schizophrenia is admitted to the behavioral health unit. The client is disheveled, responding to internal stimuli, and appears withdrawn. What is the <strong>most</strong> important assessment for the nurse to perform at this time?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6C2',false,false)">Determine the client's nutritional status</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'6C2',true,false)">Evaluate for suicidal ideation and intent</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6C2',false,false)">Assess the client's level of insight into their condition</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'6C2',false,false)">Ask about the client's support system and family involvement</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Although all of the assessments are important, the most critical is to assess for suicidal ideation and intent. Clients with schizophrenia have an increased risk of suicide, particularly during acute episodes.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 10</div>
+  <div class="q-stem">The mother of a teenager with schizophrenia calls the psychiatrist's office and says to the nurse, "He's been taking the antipsychotic medication for 8 days now, but I am not seeing any effect from it." What response to the mother is <strong>most</strong> appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'7P',true,false)">"It takes about 2 to 6 weeks for the medication to reach peak effectiveness."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7P',false,false)">"I will have the psychiatrist call a new dose into the pharmacy."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7P',false,false)">"Are you sure that he is taking the medication as prescribed?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7P',false,false)">"Eight days is a long time. Please bring him into the office today."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Antipsychotic medications often require time to show significant therapeutic effects, and it is important to educate the family about the expected timeline for symptom improvement.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 11</div>
+  <div class="q-stem">The nurse is educating a family about the symptoms of schizophrenia in a client recently diagnosed. The family asks, "How can we tell if the medication is working?" What response is <strong>most</strong> appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'7C1',true,false)">"You should look for a decrease in the client's delusions and hallucinations over time."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7C1',false,false)">"The medication should cause the client to become more energetic and engaged in activities."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7C1',false,false)">"The medication should eliminate all of the client's symptoms immediately."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7C1',false,false)">"You should notice an increase in social activity and hobbies or interests."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Antipsychotic medications are most effective in managing positive symptoms such as delusions and hallucinations. The medication may take several weeks to show noticeable effects.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 12</div>
+  <div class="q-stem">The nurse is educating a family about the treatment plan for a client diagnosed with schizophrenia. The family asks, "How will we know if the treatment is working?" What is the nurse's <strong>best</strong> response?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'7C2',true,false)">"You should notice a reduction in the client's delusions and hallucinations over time."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7C2',false,false)">"Treatment should make the client more social and involved in daily activities."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7C2',false,false)">"Treatment will completely remove the client's symptoms in a short period."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'7C2',false,false)">"Look for improvements in the client's ability to focus and make decisions."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The primary indicator of treatment effectiveness is the reduction of delusions and hallucinations. These positive symptoms usually begin to improve within weeks, but complete symptom resolution may take longer.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 13</div>
+  <div class="q-stem">A client is diagnosed with schizophrenia. The health care provider orders haloperidol 50 mg bid, benztropine 1 mg prn, and zolpidem 10 mg HS. Which client behavior would warrant the nurse to administer benztropine?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'28P',true,false)">Muscle rigidity, spasms, and contractions</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28P',false,false)">Tactile hallucinations</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28P',false,false)">Paranoia and increased anxiety</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28P',false,false)">Reports of hearing disturbing voices</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The behavior that would warrant the nurse to administer benztropine is muscle rigidity, spasms, and contractions. Benztropine is an anticholinergic medication used to treat extrapyramidal symptoms (EPS), such as muscle rigidity, tremors, and spasms, which are commonly caused by antipsychotic medications like haloperidol.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 14</div>
+  <div class="q-stem">A client with schizophrenia is prescribed haloperidol for psychosis. The nurse observes that the client is showing signs of muscle stiffness, tremors, and difficulty walking. What should the nurse do <strong>next</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'28C1',true,false)">Administer benztropine as prescribed.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28C1',false,false)">Increase the dose of haloperidol.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28C1',false,false)">Document the symptoms and monitor the client.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28C1',false,false)">Request a change in the antipsychotic medication.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse should administer benztropine as prescribed. These symptoms are likely extrapyramidal symptoms (EPS), which are common side effects of antipsychotic medications such as haloperidol. Benztropine is used to treat these EPS.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 15</div>
+  <div class="q-stem">A client with schizophrenia is prescribed haloperidol and is experiencing severe sedation, diaphoresis, and muscle rigidity. What is the nurse's <strong>priority</strong> action?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'28C2',true,false)">Assess the client for signs of neuroleptic malignant syndrome (NMS).</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28C2',false,false)">Reassure the client that sedation is a normal side effect.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28C2',false,false)">Increase the haloperidol dose to achieve therapeutic effects.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'28C2',false,false)">Encourage the client to rest and drink fluids to stay hydrated.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The priority action is to assess the client for signs of neuroleptic malignant syndrome (NMS), a potentially life-threatening reaction to antipsychotic medications. Symptoms of NMS include severe sedation, diaphoresis, and muscle rigidity, among others. Early recognition and intervention are crucial.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 16</div>
+  <div class="q-stem">The nurse assesses a client who exhibits a flat affect, paranoia, anhedonia, anergia, neologisms, and echolalia. Which statement indicates the nurse understands the characteristics of positive and negative symptoms of schizophrenia?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'30P',true,false)">"Paranoia, neologisms, and echolalia are positive symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30P',false,false)">"Paranoia, anhedonia, and anergia are positive symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30P',false,false)">"Paranoia, anergia, and echolalia are negative symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30P',false,false)">"Paranoia, flat affect, and anhedonia are negative symptoms."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Positive symptoms are behaviors or thoughts that are added to a person's usual way of thinking, feeling, or behaving. These include hallucinations, delusions (like paranoia), and disorganized thinking or speech (like neologisms and echolalia). Negative symptoms reflect a decrease or loss of normal function or behaviors, such as flat affect, anhedonia, and anergia.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 17</div>
+  <div class="q-stem">The nurse is evaluating a client with schizophrenia who is exhibiting disorganized speech, auditory hallucinations, and a lack of motivation. Which statement best reflects the nurse's understanding of the client's symptoms?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'30C1',true,false)">"Disorganized speech and auditory hallucinations are positive symptoms, while lack of motivation is a negative symptom."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30C1',false,false)">"Auditory hallucinations are negative symptoms, and disorganized speech is a positive symptom."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30C1',false,false)">"Both disorganized speech and lack of motivation are negative symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30C1',false,false)">"Disorganized speech, auditory hallucinations, and lack of motivation are all positive symptoms."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> In schizophrenia, positive symptoms include behaviors that are added to the client's usual way of thinking or behaving, such as disorganized speech and auditory hallucinations. Negative symptoms refer to a decrease or loss of normal function, such as lack of motivation (avolition).</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 18</div>
+  <div class="q-stem">The nurse is caring for a client with schizophrenia who is demonstrating bizarre behaviors, delusions, social withdrawal, and limited speech. Which statement by the nurse indicates an understanding of the differentiation between positive and negative symptoms in schizophrenia?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'30C2',true,false)">"Bizarre behaviors and delusions are positive symptoms, while social withdrawal and limited speech are negative symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30C2',false,false)">"Limited speech and delusions are negative symptoms, while bizarre behaviors and social withdrawal are positive symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30C2',false,false)">"Both bizarre behaviors and social withdrawal are negative symptoms."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'30C2',false,false)">"Delusions, social withdrawal, and limited speech are all positive symptoms."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Positive symptoms of schizophrenia include symptoms that represent an excess or distortion of normal functioning, such as delusions and bizarre behaviors. Negative symptoms refer to a decrease or loss of normal functioning, such as social withdrawal and limited speech (alogia).</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 19</div>
+  <div class="q-stem">The nurse is providing teaching to a client who has a new prescription for clozapine. Which statement should the nurse include in the teaching?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'31P',true,false)">"You should have your white blood cell count checked regularly."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31P',false,false)">"You should check yourself every day for weight loss."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31P',false,false)">"You might experience frequent loose stools."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31P',false,false)">"You might experience ringing in the ears."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Clozapine is an atypical antipsychotic used to treat schizophrenia, but it is known to have serious side effects, including agranulocytosis (a severe reduction in white blood cells). Regular monitoring of the white blood cell count is crucial to ensure that the client does not develop this potentially life-threatening condition.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 20</div>
+  <div class="q-stem">A client has been prescribed clozapine for schizophrenia. The nurse is reviewing the client's medication regimen and notes that clozapine has been added. Which of the following should the nurse specifically monitor for in this client while on clozapine?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'31C1',true,false)">White blood cell count</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31C1',false,false)">Serum glucose levels</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31C1',false,false)">Blood pressure fluctuations</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31C1',false,false)">Liver enzymes</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Clozapine is known to cause a potentially life-threatening side effect of agranulocytosis, which is a severe reduction in white blood cells. The nurse should regularly monitor the client's white blood cell count to detect this condition.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 21</div>
+  <div class="q-stem">The nurse is providing discharge teaching to a client who has been prescribed clozapine for treatment-resistant schizophrenia. What statement should the nurse include in the teaching?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'31C2',true,false)">"You will need to have regular blood tests to monitor your white blood cell count."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31C2',false,false)">"This medication works quickly, and you should feel improvement within 2-3 days."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31C2',false,false)">"You should avoid foods containing tyramine while taking this medication."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'31C2',false,false)">"Taking this medication will prevent all future episodes of psychosis."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Clozapine can cause agranulocytosis, a potentially life-threatening drop in white blood cells. Clients need regular blood tests (weekly at first, then every 2-4 weeks) to monitor for this risk. The other statements are incorrect or misleading for clozapine.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 22</div>
+  <div class="q-stem">The nurse is educating the parents of a child diagnosed with schizophrenia on how to reply when their child experiences auditory hallucinations. Which is the nurse's <strong>best</strong> reply?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'32P',true,false)">"Ask him what the voices are saying to him."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32P',false,false)">"Encourage him not to worry about the voices."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32P',false,false)">"Tell him the voices aren't real."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32P',false,false)">"Tell him to stop talking about the voices."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The best approach to responding to auditory hallucinations is to engage the child in a way that acknowledges their experience without reinforcing the hallucination as reality. Asking what the voices are saying helps the child feel heard and provides an opportunity to assess the content of the hallucinations.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 23</div>
+  <div class="q-stem">The nurse is working with a client diagnosed with schizophrenia who is experiencing delusions of persecution. What is the nurse's <strong>best</strong> response to this client?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'32C1',true,false)">"I understand you are feeling that way, but I can assure you right now, you are safe."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32C1',false,false)">"Let's talk about why you feel this way and what might have led to these thoughts."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32C1',false,false)">"You don't need to be afraid. No one is after you."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32C1',false,false)">"Your beliefs are unrealistic, and you need to focus on reality."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The best response is to acknowledge the client's feelings without reinforcing or disputing the delusion. The nurse can validate the client's emotional experience, but at the same time, avoid reinforcing the delusion as reality.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 24</div>
+  <div class="q-stem">The nurse is caring for a client diagnosed with schizophrenia who exhibits disorganized speech. Which of the following interventions would be <strong>most</strong> helpful in promoting communication with this client?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'32C2',true,false)">Use short, simple sentences and ask one question at a time.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32C2',false,false)">Encourage the client to express their delusions more fully.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32C2',false,false)">Allow the client to speak freely without any interruptions.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'32C2',false,false)">Tell the client to focus on reality and stop talking about irrelevant topics.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Using short, simple sentences and asking one question at a time can help the client focus and better understand the conversation, as disorganized speech can make it difficult for clients to follow complex or lengthy statements.</div>
+</div>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+<script>
+function selectChoice(btn,qid,isCorrect,isSATA){
+  const card=btn.closest('.q-card');
+  if(!isSATA && card.dataset.answered==='true')return;
+  if(isSATA){
+    btn.classList.toggle('selected');
+    return;
+  }
+  card.dataset.answered='true';
+  const choices=card.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    if(c===btn){c.classList.add('selected',isCorrect?'correct':'wrong');}
+    if(cor&&!isCorrect){c.classList.add('reveal-correct');}
+    c.style.pointerEvents='none';
+  });
+  card.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function submitSATA(cardEl){
+  if(cardEl.dataset.answered==='true')return;
+  cardEl.dataset.answered='true';
+  const choices=cardEl.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    const sel=c.classList.contains('selected');
+    if(sel&&cor)c.classList.add('correct');
+    else if(sel&&!cor)c.classList.add('wrong');
+    else if(!sel&&cor)c.classList.add('reveal-correct');
+    c.style.pointerEvents='none';
+  });
+  cardEl.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.q-card').length;
+  const done=document.querySelectorAll('.q-card[data-answered=true]').length;
+  const pct=Math.round((done/total)*100);
+  const fill=document.getElementById('progressFill');
+  const stats=document.getElementById('statsText');
+  if(fill)fill.style.width=pct+'%';
+  if(stats)stats.textContent=done+' of '+total+' answered ('+pct+'%)';
+  try{localStorage.setItem(window.location.pathname+'_progress',JSON.stringify({done,total}));}catch(e){}
+}
+function resetAll(){
+  document.querySelectorAll('.q-card').forEach(c=>{
+    c.dataset.answered='false';
+    c.querySelectorAll('.choice-btn').forEach(b=>{
+      b.className='choice-btn';b.style.pointerEvents='auto';
+    });
+    c.querySelector('.rationale').classList.remove('show');
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

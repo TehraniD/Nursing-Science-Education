@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 2: Chemical Kinetics &mdash; Learning Guide &amp; Answer Key</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --primary: #1a56db;
+            --primary-light: #e8effc;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --teal: #0d9488;
+            --teal-light: #ccfbf1;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1a56db 50%, #3b82f6 100%);
+            color: white;
+            padding: 48px 40px;
+            border-radius: var(--radius);
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
+        .hero .subtitle { font-size: 1.1rem; opacity: 0.9; font-weight: 400; position: relative; z-index: 1; }
+        .hero .course-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Why it matters banner */
+        .why-banner {
+            background: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 36px;
+            font-size: 1.05rem;
+        }
+        .why-banner strong { color: var(--primary); }
+
+        /* Question cards */
+        .question-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 28px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        .question-header {
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: default;
+        }
+        .question-header.blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-bottom: 2px solid #93c5fd; }
+        .question-header.green { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-bottom: 2px solid #6ee7b7; }
+        .question-header.purple { background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-bottom: 2px solid #c4b5fd; }
+        .question-header.amber { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-bottom: 2px solid #fcd34d; }
+        .question-header.rose { background: linear-gradient(135deg, #fff1f2, #ffe4e6); border-bottom: 2px solid #fda4af; }
+
+        .q-number {
+            font-size: 1.5rem; font-weight: 800; min-width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: white; flex-shrink: 0;
+        }
+        .q-number.blue { background: var(--primary); }
+        .q-number.green { background: var(--accent); }
+        .q-number.purple { background: var(--purple); }
+        .q-number.amber { background: var(--warning); }
+        .q-number.rose { background: var(--danger); }
+
+        .q-info { flex: 1; }
+        .q-info h2 { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); margin-bottom: 2px; }
+        .q-pts {
+            font-size: 0.8rem; font-weight: 600; padding: 2px 10px;
+            border-radius: 12px; white-space: nowrap;
+        }
+        .q-pts.blue { background: #bfdbfe; color: #1e40af; }
+        .q-pts.green { background: #a7f3d0; color: #065f46; }
+        .q-pts.purple { background: #c4b5fd; color: #5b21b6; }
+        .q-pts.amber { background: #fde68a; color: #92400e; }
+        .q-pts.rose { background: #fecdd3; color: #9f1239; }
+
+        .question-body { padding: 28px; }
+
+        /* Section labels */
+        .section-label {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;
+        }
+        .section-label.analogy { background: #fef3c7; color: #92400e; }
+        .section-label.method { background: #dbeafe; color: #1e40af; }
+        .section-label.answer { background: #d1fae5; color: #065f46; }
+        .section-label.mistake { background: #fee2e2; color: #991b1b; }
+        .section-label.memory { background: #ede9fe; color: #5b21b6; }
+        .section-label.glossary { background: #ccfbf1; color: #115e59; }
+        .section-label.tip { background: #fce7f3; color: #9d174d; }
+
+        /* Simple explanation boxes */
+        .simple-box {
+            background: var(--warning-light); border: 1px solid #fde68a;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 20px; font-size: 0.98rem;
+        }
+        .simple-box p { margin-bottom: 8px; }
+        .simple-box p:last-child { margin-bottom: 0; }
+
+        /* Answer boxes */
+        .answer-box {
+            background: var(--accent-light); border: 2px solid #6ee7b7;
+            border-radius: 10px; padding: 22px 26px; margin: 16px 0;
+        }
+
+        /* Final answer highlight */
+        .final-answer {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            border: 2px solid var(--accent); border-radius: 10px;
+            padding: 16px 22px; margin: 14px 0;
+            font-weight: 600; font-size: 1.05rem; text-align: center;
+        }
+        .final-answer .label {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; color: var(--accent); display: block; margin-bottom: 4px;
+        }
+
+        /* Warning / mistake boxes */
+        .mistake-box {
+            background: var(--danger-light); border: 1px solid #fca5a5;
+            border-radius: 10px; padding: 16px 20px; margin: 14px 0; font-size: 0.95rem;
+        }
+        .mistake-box ul { margin: 8px 0 0 18px; }
+        .mistake-box li { margin-bottom: 6px; }
+
+        /* Memory hook boxes */
+        .memory-box {
+            background: var(--purple-light); border: 1px solid #c4b5fd;
+            border-radius: 10px; padding: 16px 20px; margin: 14px 0; font-size: 0.95rem;
+        }
+
+        /* Glossary boxes */
+        .glossary-box {
+            background: var(--teal-light); border: 1px solid #99f6e4;
+            border-radius: 10px; padding: 18px 22px; margin: 14px 0; font-size: 0.95rem;
+        }
+        .glossary-box table { margin: 8px 0 0 0; }
+        .glossary-box td { text-align: left; padding: 6px 12px; }
+        .glossary-box td:first-child { font-weight: 700; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+
+        /* Tip boxes */
+        .tip-box {
+            background: #fce7f3; border: 1px solid #f9a8d4;
+            border-radius: 10px; padding: 16px 20px; margin: 14px 0; font-size: 0.95rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.95rem;
+        }
+        thead th {
+            background: var(--gray-800); color: white; font-weight: 600;
+            padding: 10px 14px; text-align: center; font-size: 0.88rem;
+        }
+        thead th:first-child { border-radius: 8px 0 0 0; }
+        thead th:last-child { border-radius: 0 8px 0 0; }
+        tbody td {
+            padding: 10px 14px; text-align: center; border-bottom: 1px solid var(--gray-200);
+        }
+        tbody tr:nth-child(even) { background: var(--gray-50); }
+        tbody tr:hover { background: #eef2ff; }
+
+        .data-table { margin: 16px 0; }
+        .data-table thead th { background: var(--primary); }
+
+        /* Equation blocks */
+        .equation {
+            background: var(--gray-100); border: 1px solid var(--gray-200);
+            border-radius: 10px; padding: 18px 24px; margin: 14px 0;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 1.05rem; text-align: center; line-height: 2; overflow-x: auto;
+        }
+        .equation .frac {
+            display: inline-flex; flex-direction: column; align-items: center;
+            vertical-align: middle; margin: 0 4px;
+        }
+        .equation .frac .num { border-bottom: 2px solid var(--gray-700); padding: 0 6px 3px; }
+        .equation .frac .den { padding: 3px 6px 0; }
+
+        /* Step-by-step work */
+        .work-steps { margin: 16px 0; padding: 0; }
+        .work-step { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
+        .step-num {
+            background: var(--primary); color: white; font-weight: 700; font-size: 0.8rem;
+            min-width: 28px; height: 28px; display: flex; align-items: center;
+            justify-content: center; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+        }
+        .step-content { flex: 1; }
+        .step-content p { margin-bottom: 6px; }
+
+        /* Sub-parts */
+        .sub-part {
+            background: var(--gray-50); border: 1px solid var(--gray-200);
+            border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+        }
+        .sub-part h4 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+
+        /* Verify badge */
+        .verify {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-top: 6px;
+        }
+
+        /* Grading summary */
+        .grading-table thead th { background: var(--accent); }
+        .grading-table tbody tr:last-child { font-weight: 700; background: var(--accent-light); }
+
+        /* Summary box */
+        .summary-card {
+            background: linear-gradient(135deg, #1e3a5f, #1a56db);
+            color: white; border-radius: var(--radius); padding: 32px;
+            margin: 36px 0; box-shadow: var(--shadow-lg);
+        }
+        .summary-card h2 { font-size: 1.3rem; margin-bottom: 18px; font-weight: 800; }
+        .summary-card ol { padding-left: 20px; }
+        .summary-card li { margin-bottom: 10px; line-height: 1.6; }
+        .summary-card strong { color: #93c5fd; }
+
+        /* Print styles */
+        @media print {
+            body { background: white; font-size: 11pt; }
+            .container { max-width: 100%; padding: 0; }
+            .hero { break-after: avoid; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container { padding: 16px 12px 60px; }
+            .hero { padding: 28px 20px; }
+            .hero h1 { font-size: 1.5rem; }
+            .question-header { padding: 14px 18px; flex-wrap: wrap; }
+            .question-body { padding: 18px; }
+            .equation { font-size: 0.9rem; padding: 14px 12px; }
+            table { font-size: 0.82rem; }
+            thead th, tbody td { padding: 7px 8px; }
+        }
+
+        sup { font-size: 0.75em; }
+        sub { font-size: 0.75em; }
+        hr { border: none; border-top: 1px solid var(--gray-200); margin: 24px 0; }
+        h3 { font-size: 1rem; font-weight: 700; margin: 18px 0 10px; color: var(--gray-900); }
+
+        /* Numbered list inside answer boxes */
+        .answer-box ol, .answer-box ul { margin: 8px 0 0 18px; }
+        .answer-box li { margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="course-tag">CHM 152 &bull; Workshop 2</span>
+        <h1>Chemical Kinetics</h1>
+        <div class="subtitle">Complete Learning Guide &amp; Answer Key &mdash; All 10 Questions (100 pts)</div>
+    </div>
+
+    <!-- WHY IT MATTERS -->
+    <div class="why-banner">
+        <strong>Why This Topic Matters:</strong> Every drug you take, every breath you exhale, every food that spoils &ndash; they all happen at a specific speed. Chemical kinetics tells you <em>how fast</em> reactions happen and <em>what controls that speed</em>. Without kinetics, we can&rsquo;t design time-release medications, control pollution, or even cook food properly.
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 1 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header blue">
+            <div class="q-number blue">1</div>
+            <div class="q-info">
+                <h2>Define Chemical Kinetics &amp; Real-World Examples</h2>
+            </div>
+            <span class="q-pts blue">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p>Chemical kinetics is the study of how fast chemical reactions happen and what factors speed them up or slow them down.</p>
+            <p style="margin-top:10px;">It does not tell you whether a reaction will happen (that&rsquo;s thermodynamics &ndash; &Delta;G). It tells you how quickly it happens once it starts.</p>
+            <div class="simple-box" style="margin-top:14px;">
+                <p><strong>Kitchen analogy:</strong> Thermodynamics tells you that bread will eventually go stale. Kinetics tells you it happens in 3 days on the counter vs. 3 weeks in the freezer.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 2 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header green">
+            <div class="q-number green">2</div>
+            <div class="q-info">
+                <h2>Rate Expression: Propane Combustion</h2>
+            </div>
+            <span class="q-pts green">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p style="font-size:1.2rem; font-weight:600; margin-bottom:16px; padding:12px 16px; background:var(--gray-100); border-radius:8px; letter-spacing:0.01em;">
+                C<sub>3</sub>H<sub>8</sub>(g) + 5O<sub>2</sub>(g) &rarr; 3CO<sub>2</sub>(g) + 4H<sub>2</sub>O(g)
+            </p>
+
+            <div class="simple-box">
+                <p>Imagine a factory that makes candles.<br>
+                The recipe: burn 1 batch of wax + 5 batches of oxygen to produce 3 batches of CO<sub>2</sub> + 4 batches of water vapor.<br>
+                If wax burns at 1 batch/min, oxygen is consumed 5&times; faster.<br>
+                CO<sub>2</sub> forms at 3&times; the rate, and water at 4&times;.<br>
+                Each species moves at a different absolute speed.</p>
+                <p>But divide each speed by its coefficient and they all agree: 1 batch/min.<br>
+                The rate expression is the official scorecard.<br>
+                It converts every species&rsquo; individual speed into one agreed-upon reaction rate.<br>
+                It does not matter which molecule you choose to watch.</p>
+                <p style="font-style:italic; color:var(--gray-500); font-size:0.9rem; margin-top:6px;">&#8594; Q3 applies the same scorecard to a new reaction &mdash; watch for the subscript-vs-coefficient trap with FeCl<sub>3</sub>.</p>
+            </div>
+
+            <span class="section-label method">The Rule</span>
+            <div class="equation">
+                For &ensp; aA + bB &rarr; cC + dD:<br>
+                Rate = &minus;<span class="frac"><span class="num">1</span><span class="den">a</span></span><span class="frac"><span class="num">&Delta;[A]</span><span class="den">&Delta;t</span></span> = &minus;<span class="frac"><span class="num">1</span><span class="den">b</span></span><span class="frac"><span class="num">&Delta;[B]</span><span class="den">&Delta;t</span></span> = +<span class="frac"><span class="num">1</span><span class="den">c</span></span><span class="frac"><span class="num">&Delta;[C]</span><span class="den">&Delta;t</span></span> = +<span class="frac"><span class="num">1</span><span class="den">d</span></span><span class="frac"><span class="num">&Delta;[D]</span><span class="den">&Delta;t</span></span>
+            </div>
+
+            <h3>Step-by-Step: How to Write It</h3>
+            <div class="answer-box">
+                <ol>
+                    <li><strong>Identify all species:</strong> list every reactant and product from the balanced equation</li>
+                    <li><strong>Write &Delta;[species]/&Delta;t:</strong> one fraction per species</li>
+                    <li><strong>Place each stoichiometric coefficient as the denominator</strong> (coefficient 5 means divide by 5)</li>
+                    <li><strong>Reactants are consumed:</strong> prefix each reactant term with a minus sign</li>
+                    <li><strong>Products are formed:</strong> their terms stay positive, no sign needed</li>
+                    <li><strong>Connect all terms with equal signs:</strong> they all describe the same reaction rate</li>
+                </ol>
+            </div>
+
+
+            <div class="final-answer">
+                <span class="label">Final Answer</span>
+                Rate = &minus;<span style="font-family:monospace;"><sup>&Delta;[C<sub>3</sub>H<sub>8</sub>]</sup>&frasl;<sub>&Delta;t</sub></span>
+                = &minus;<sup>1</sup>&frasl;<sub>5</sub> <span style="font-family:monospace;"><sup>&Delta;[O<sub>2</sub>]</sup>&frasl;<sub>&Delta;t</sub></span>
+                = +<sup>1</sup>&frasl;<sub>3</sub> <span style="font-family:monospace;"><sup>&Delta;[CO<sub>2</sub>]</sup>&frasl;<sub>&Delta;t</sub></span>
+                = +<sup>1</sup>&frasl;<sub>4</sub> <span style="font-family:monospace;"><sup>&Delta;[H<sub>2</sub>O]</sup>&frasl;<sub>&Delta;t</sub></span>
+            </div>
+            <p style="font-size:0.88rem; color:var(--gray-500);">Grading: Each term is worth 2 pts. Deduct for missing negative signs, missing coefficient denominators, or wrong coefficients.</p>
+
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 3 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header green">
+            <div class="q-number green">3</div>
+            <div class="q-info">
+                <h2>Rate Expression: Iron + Hydrochloric Acid</h2>
+            </div>
+            <span class="q-pts green">8 pts</span>
+        </div>
+        <div class="question-body">
+            <p style="margin-bottom:12px;"><strong>Reaction:</strong>&ensp; 2Fe(s) + 6HCl(aq) &rarr; 2FeCl<sub>3</sub>(aq) + 3H<sub>2</sub>(g)</p>
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>Picture a sushi conveyor belt with a fixed rule: for every 2 salmon rolls eaten, 6 miso soups are sipped, 2 soy sauce packets are used, and 3 napkins are taken. Your eating speed and sipping speed look completely different — but <strong>divide each by its &ldquo;per-roll&rdquo; number (coefficient)</strong> and every measurement points to the same overall rate of dining.</p>
+                <p>Iron and HCl do the same thing: they disappear and appear at different absolute speeds, but the coefficients are the conversion factors that normalize everything to a single reaction rate.</p>
+            </div>
+
+
+            <div class="final-answer">
+                <span class="label">Final Answer</span>
+                Rate = &minus;<sup>1</sup>&frasl;<sub>2</sub> <span style="font-family:monospace;"><sup>&Delta;[Fe]</sup>&frasl;<sub>&Delta;t</sub></span>
+                = &minus;<sup>1</sup>&frasl;<sub>6</sub> <span style="font-family:monospace;"><sup>&Delta;[HCl]</sup>&frasl;<sub>&Delta;t</sub></span>
+                = +<sup>1</sup>&frasl;<sub>2</sub> <span style="font-family:monospace;"><sup>&Delta;[FeCl<sub>3</sub>]</sup>&frasl;<sub>&Delta;t</sub></span>
+                = +<sup>1</sup>&frasl;<sub>3</sub> <span style="font-family:monospace;"><sup>&Delta;[H<sub>2</sub>]</sup>&frasl;<sub>&Delta;t</sub></span>
+            </div>
+
+            <div class="memory-box">
+                <span class="section-label memory">Memory Hook</span><br>
+                <strong>Coefficient &rarr; denominator. Reactant &rarr; minus. Product &rarr; plus.</strong> That&rsquo;s it. Three rules, every time.
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 4 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header purple">
+            <div class="q-number purple">4</div>
+            <div class="q-info">
+                <h2>Rate Law &amp; k: NO<sub>2</sub> + O<sub>3</sub></h2>
+            </div>
+            <span class="q-pts purple">14 pts</span>
+        </div>
+        <div class="question-body">
+            <p style="margin-bottom:8px;"><strong>Reaction:</strong>&ensp; NO<sub>2</sub>(g) + O<sub>3</sub>(g) &rarr; NO<sub>3</sub>(g) + O<sub>2</sub>(g)</p>
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>You want to know what makes your car go faster: fuel quality or tire pressure?<br>
+                You can&rsquo;t test both at once &mdash; that makes it impossible to isolate which change helped.<br>
+                So you run one test changing only the fuel.<br>
+                Then another changing only the tires.<br>
+                The method of initial rates works exactly the same way.</p>
+                <p>Hold one reactant constant.<br>
+                Change the other.<br>
+                See how the rate responds.<br>
+                That response tells you the order.</p>
+                <p>&bull; Double [X] &rarr; rate doubles &rarr; 1<sup>st</sup> order in X<br>
+                &bull; Double [X] &rarr; rate quadruples &rarr; 2<sup>nd</sup> order in X<br>
+                &bull; Double [X] &rarr; rate unchanged &rarr; 0<sup>th</sup> order in X</p>
+                <p style="font-style:italic; color:var(--gray-500); font-size:0.9rem; margin-top:6px;">&#8594; Q5 uses the same method &mdash; but watch what happens when doubling [NO] quadruples the rate. That second pattern is where the 2nd-order twist reveals itself.</p>
+            </div>
+
+            <span class="section-label glossary">Key Terms for This Problem</span>
+            <div class="glossary-box">
+                <table>
+                    <tbody>
+                        <tr><td>Rate law</td><td>An equation that shows how the rate depends on concentration: Rate = k[A]<sup>a</sup>[B]<sup>b</sup>. The exponents (a, b) must be found experimentally &ndash; they are NOT the stoichiometric coefficients!</td></tr>
+                        <tr><td>Order</td><td>The exponent for a specific reactant. &ldquo;First order in NO<sub>2</sub>&rdquo; means the rate is directly proportional to [NO<sub>2</sub>]. &ldquo;Second order&rdquo; means proportional to [NO<sub>2</sub>]<sup>2</sup>.</td></tr>
+                        <tr><td>Overall order</td><td>The sum of all individual orders. If a=1 and b=1, overall order = 2.</td></tr>
+                        <tr><td>k (rate constant)</td><td>A number specific to this reaction at a specific temperature. Bigger k = faster reaction. Its UNITS depend on the overall order.</td></tr>
+                        <tr><td>Initial rate</td><td>The rate measured at the very START of the reaction, before products build up and complicate things.</td></tr>
+                        <tr><td>M&middot;s<sup>&minus;1</sup></td><td>Molarity per second &ndash; the standard unit for reaction rate.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Given Data</h3>
+            <table class="data-table">
+                <thead><tr><th>Experiment</th><th>[NO<sub>2</sub>] (M)</th><th>[O<sub>3</sub>] (M)</th><th>Initial Rate (M&middot;s<sup>&minus;1</sup>)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>5.0 &times; 10<sup>&minus;5</sup></td><td>1.0 &times; 10<sup>&minus;5</sup></td><td>0.022</td></tr>
+                    <tr><td>2</td><td>5.0 &times; 10<sup>&minus;5</sup></td><td>2.0 &times; 10<sup>&minus;5</sup></td><td>0.044</td></tr>
+                    <tr><td>3</td><td>2.5 &times; 10<sup>&minus;5</sup></td><td>2.0 &times; 10<sup>&minus;5</sup></td><td>0.022</td></tr>
+                </tbody>
+            </table>
+
+            <span class="section-label method">The Strategy (Use This Every Time)</span>
+            <div class="tip-box">
+                <ol>
+                    <li><strong>Find two experiments</strong> where ONLY ONE reactant changes (the other stays constant)</li>
+                    <li><strong>Divide the rates:</strong> Rate<sub>big</sub> / Rate<sub>small</sub> = some number</li>
+                    <li><strong>Divide the concentrations</strong> of the changing reactant: [X]<sub>big</sub> / [X]<sub>small</sub> = some number</li>
+                    <li><strong>Set them equal:</strong> (rate ratio) = (conc ratio)<sup>n</sup> and solve for n</li>
+                    <li><strong>Repeat</strong> for each reactant</li>
+                    <li><strong>Write the rate law</strong> and solve for k by plugging in any experiment&rsquo;s data</li>
+                </ol>
+            </div>
+
+
+
+            <div class="sub-part">
+                <h4>(a) Order with respect to NO<sub>2</sub></h4>
+                <p>The core formula to keep in mind:</p>
+                <div class="equation">(Concentration Multiplier)<sup>order</sup> = Rate Multiplier</div>
+                <p><strong>Step 1 &mdash; Pick the right pair of experiments.</strong><br>
+                We need two experiments where only [NO<sub>2</sub>] changes and [O<sub>3</sub>] stays constant.<br>
+                That&rsquo;s Experiments 2 and 3 &mdash; both have [O<sub>3</sub>] = 2.0 &times; 10<sup>&minus;5</sup> M.</p>
+                <p><strong>Step 2 &mdash; Calculate the rate multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">Rate<sub>2</sub></span><span class="den">Rate<sub>3</sub></span></span> =
+                    <span class="frac"><span class="num">0.044</span><span class="den">0.022</span></span> = 2.0
+                </div>
+                <p>The rate doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 3 &mdash; Calculate the concentration multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">[NO<sub>2</sub>]<sub>2</sub></span><span class="den">[NO<sub>2</sub>]<sub>3</sub></span></span> =
+                    <span class="frac"><span class="num">5.0 &times; 10<sup>&minus;5</sup></span><span class="den">2.5 &times; 10<sup>&minus;5</sup></span></span> = 2.0
+                </div>
+                <p>The concentration also doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 4 &mdash; Plug into the formula and solve.</strong></p>
+                <div class="equation">2.0<sup>order</sup> = 2.0</div>
+                <p>What power do you raise 2 to in order to get 2?<br>
+                The answer is 1, because 2<sup>1</sup> = 2.</p>
+                <div class="equation"><strong>order = 1 &ensp;&rArr;&ensp; NO<sub>2</sub> is first order</strong></div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Order with respect to O<sub>3</sub></h4>
+                <p><strong>Step 1 &mdash; Pick the right pair of experiments.</strong><br>
+                We need two experiments where only [O<sub>3</sub>] changes and [NO<sub>2</sub>] stays constant.<br>
+                That&rsquo;s Experiments 1 and 2 &mdash; both have [NO<sub>2</sub>] = 5.0 &times; 10<sup>&minus;5</sup> M.</p>
+                <p><strong>Step 2 &mdash; Calculate the rate multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">Rate<sub>2</sub></span><span class="den">Rate<sub>1</sub></span></span> =
+                    <span class="frac"><span class="num">0.044</span><span class="den">0.022</span></span> = 2.0
+                </div>
+                <p>The rate doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 3 &mdash; Calculate the concentration multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">[O<sub>3</sub>]<sub>2</sub></span><span class="den">[O<sub>3</sub>]<sub>1</sub></span></span> =
+                    <span class="frac"><span class="num">2.0 &times; 10<sup>&minus;5</sup></span><span class="den">1.0 &times; 10<sup>&minus;5</sup></span></span> = 2.0
+                </div>
+                <p>The concentration doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 4 &mdash; Plug into the formula and solve.</strong></p>
+                <div class="equation">2.0<sup>order</sup> = 2.0</div>
+                <p>The concentration doubled and the rate also doubled.<br>
+                What power do you raise 2 to in order to get 2?<br>
+                The answer is 1, because 2<sup>1</sup> = 2.</p>
+                <div class="equation"><strong>order = 1 &ensp;&rArr;&ensp; O<sub>3</sub> is first order</strong></div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Complete Rate Law</h4>
+                <div class="final-answer">
+                    <span class="label">Rate Law</span>
+                    Rate = k[NO<sub>2</sub>][O<sub>3</sub>]
+                    <br><span style="font-size:0.85rem; font-weight:400;">Overall order = 1 + 1 = <strong>2nd order overall</strong></span>
+                </div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(d) Calculate k (using Experiment 1)</h4>
+                <p>Rearrange: k = Rate / ([NO<sub>2</sub>]<sup>a</sup>[O<sub>3</sub>]<sup>b</sup>) = Rate / ([NO<sub>2</sub>][O<sub>3</sub>])</p>
+                <div class="equation">
+                    k = <span class="frac"><span class="num">0.022 M&middot;s<sup>&minus;1</sup></span><span class="den">(5.0 &times; 10<sup>&minus;5</sup> M)(1.0 &times; 10<sup>&minus;5</sup> M)</span></span>
+                    = <span class="frac"><span class="num">0.022</span><span class="den">5.0 &times; 10<sup>&minus;10</sup></span></span>
+                </div>
+                <div class="final-answer">
+                    <span class="label">Rate Constant</span>
+                    k = 4.4 &times; 10<sup>7</sup> M<sup>&minus;1</sup>s<sup>&minus;1</sup>
+                </div>
+                <p class="verify">&#10003; Verified: k = 4.4 &times; 10<sup>7</sup> for all three experiments (consistent k confirms the rate law is correct)</p>
+            </div>
+
+            <div class="tip-box">
+                <span class="section-label tip">Quick Reference: Rate Ratio Patterns</span>
+                <table style="margin-top:8px;">
+                    <thead><tr><th>If conc ratio is:</th><th>And rate ratio is:</th><th>Then order =</th></tr></thead>
+                    <tbody>
+                        <tr><td>2&times;</td><td>1&times; (no change)</td><td>0</td></tr>
+                        <tr><td>2&times;</td><td>2&times;</td><td>1</td></tr>
+                        <tr><td>2&times;</td><td>4&times;</td><td>2</td></tr>
+                        <tr><td>2&times;</td><td>8&times;</td><td>3</td></tr>
+                        <tr><td>3&times;</td><td>9&times;</td><td>2</td></tr>
+                        <tr><td>3&times;</td><td>27&times;</td><td>3</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:8px;">If the ratio isn&rsquo;t clean, use: <strong>order = ln(rate ratio) / ln(conc ratio)</strong></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 5 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header purple">
+            <div class="q-number purple">5</div>
+            <div class="q-info">
+                <h2>Rate Law &amp; k: 2NO + Cl<sub>2</sub></h2>
+            </div>
+            <span class="q-pts purple">14 pts</span>
+        </div>
+        <div class="question-body">
+            <p style="margin-bottom:8px;"><strong>Reaction:</strong>&ensp; 2NO(g) + Cl<sub>2</sub>(g) &rarr; 2NOCl(g)</p>
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>Think of a car crash.<br>
+                The chance of a crash depends on how many cars are on the road.<br>
+                Double the cars, and you roughly quadruple the crash risk.<br>
+                Every pair of cars is a potential collision &mdash; that&rsquo;s what makes it 2nd order.</p>
+                <p>In this reaction, two NO molecules must collide simultaneously.<br>
+                So the rate is 2nd order in NO.<br>
+                Cl<sub>2</sub> only needs to show up once &mdash; that makes it 1st order.<br>
+                Pack more NO in, and the rate doesn&rsquo;t just double &mdash; it quadruples.</p>
+            </div>
+
+            <h3>Given Data</h3>
+            <table class="data-table">
+                <thead><tr><th>Exp</th><th>[NO] (M)</th><th>[Cl<sub>2</sub>] (M)</th><th>Initial Rate (M&middot;s<sup>&minus;1</sup>)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>0.10</td><td>0.10</td><td>2.53 &times; 10<sup>&minus;6</sup></td></tr>
+                    <tr><td>2</td><td>0.10</td><td>0.20</td><td>5.06 &times; 10<sup>&minus;6</sup></td></tr>
+                    <tr><td>3</td><td>0.20</td><td>0.10</td><td>10.1 &times; 10<sup>&minus;6</sup></td></tr>
+                    <tr><td>4</td><td>0.30</td><td>0.10</td><td>22.8 &times; 10<sup>&minus;6</sup></td></tr>
+                </tbody>
+            </table>
+
+
+
+            <div class="sub-part">
+                <h4>(a) Order with respect to NO</h4>
+                <p>The core formula to keep in mind:</p>
+                <div class="equation">(Concentration Multiplier)<sup>order</sup> = Rate Multiplier</div>
+                <p><strong>Step 1 &mdash; Pick the right pair of experiments.</strong><br>
+                We need two experiments where only [NO] changes and [Cl<sub>2</sub>] stays constant.<br>
+                That&rsquo;s Experiments 1 and 3 &mdash; both have [Cl<sub>2</sub>] = 0.10 M.</p>
+                <p><strong>Step 2 &mdash; Calculate the rate multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">Rate<sub>3</sub></span><span class="den">Rate<sub>1</sub></span></span> =
+                    <span class="frac"><span class="num">10.1 &times; 10<sup>&minus;6</sup></span><span class="den">2.53 &times; 10<sup>&minus;6</sup></span></span> = 4
+                </div>
+                <p>The rate quadrupled &mdash; a multiplier of 4.</p>
+                <p><strong>Step 3 &mdash; Calculate the concentration multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">[NO]<sub>3</sub></span><span class="den">[NO]<sub>1</sub></span></span> =
+                    <span class="frac"><span class="num">0.20</span><span class="den">0.10</span></span> = 2.0
+                </div>
+                <p>The concentration doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 4 &mdash; Plug into the formula and solve.</strong></p>
+                <div class="equation">2.0<sup>order</sup> = 4</div>
+                <p>The concentration doubled, but the rate quadrupled &mdash; not just doubled.<br>
+                As a comparison: if the rate had only doubled, the order would be 1 (because 2<sup>1</sup> = 2).<br>
+                But since the rate quadrupled, the order must be 2 (because 2<sup>2</sup> = 4).</p>
+                <div class="equation"><strong>order = 2 &ensp;&rArr;&ensp; NO is second order</strong></div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Order with respect to Cl<sub>2</sub></h4>
+                <p><strong>Step 1 &mdash; Pick the right pair of experiments.</strong><br>
+                We need two experiments where only [Cl<sub>2</sub>] changes and [NO] stays constant.<br>
+                That&rsquo;s Experiments 1 and 2 &mdash; both have [NO] = 0.10 M.</p>
+                <p><strong>Step 2 &mdash; Calculate the rate multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">Rate<sub>2</sub></span><span class="den">Rate<sub>1</sub></span></span> =
+                    <span class="frac"><span class="num">5.06 &times; 10<sup>&minus;6</sup></span><span class="den">2.53 &times; 10<sup>&minus;6</sup></span></span> = 2.0
+                </div>
+                <p>The rate doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 3 &mdash; Calculate the concentration multiplier.</strong></p>
+                <div class="equation">
+                    <span class="frac"><span class="num">[Cl<sub>2</sub>]<sub>2</sub></span><span class="den">[Cl<sub>2</sub>]<sub>1</sub></span></span> =
+                    <span class="frac"><span class="num">0.20</span><span class="den">0.10</span></span> = 2.0
+                </div>
+                <p>The concentration doubled &mdash; a multiplier of 2.</p>
+                <p><strong>Step 4 &mdash; Plug into the formula and solve.</strong></p>
+                <div class="equation">2.0<sup>order</sup> = 2.0</div>
+                <p>What power do you raise 2 to in order to get 2?<br>
+                The answer is 1, because 2<sup>1</sup> = 2.</p>
+                <div class="equation"><strong>order = 1 &ensp;&rArr;&ensp; Cl<sub>2</sub> is first order</strong></div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Complete Rate Law &amp; k</h4>
+                <div class="final-answer">
+                    <span class="label">Rate Law</span>
+                    Rate = k[NO]<sup>2</sup>[Cl<sub>2</sub>]
+                    <br><span style="font-size:0.85rem; font-weight:400;">Overall order = 2 + 1 = <strong>3rd order overall</strong></span>
+                </div>
+                <div class="equation">
+                    k = <span class="frac"><span class="num">2.53 &times; 10<sup>&minus;6</sup> M&middot;s<sup>&minus;1</sup></span><span class="den">(0.10 M)<sup>2</sup>(0.10 M)</span></span>
+                    = <span class="frac"><span class="num">2.53 &times; 10<sup>&minus;6</sup></span><span class="den">1.0 &times; 10<sup>&minus;3</sup></span></span>
+                </div>
+                <div class="final-answer">
+                    <span class="label">Rate Constant</span>
+                    k = 2.53 &times; 10<sup>&minus;3</sup> M<sup>&minus;2</sup>s<sup>&minus;1</sup>
+                </div>
+                <p class="verify">&#10003; Verified: k = 2.53 &times; 10<sup>&minus;3</sup> for all four experiments</p>
+            </div>
+
+            <div class="glossary-box">
+                <span class="section-label glossary">Units of k: How to Figure Them Out</span>
+                <p>Start with: Rate = k &times; [stuff]. The units must balance.</p>
+                <table>
+                    <tbody>
+                        <tr><td style="font-family:inherit;">This problem:</td><td style="text-align:left;">M/s = k &times; M<sup>2</sup> &times; M = k &times; M<sup>3</sup></td></tr>
+                        <tr><td style="font-family:inherit;">Solve for k:</td><td style="text-align:left;">k = (M/s) / M<sup>3</sup> = M<sup>&minus;2</sup>&middot;s<sup>&minus;1</sup></td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:8px;"><strong>Shortcut:</strong> For overall order n: k units = M<sup>(1&minus;n)</sup>&middot;s<sup>&minus;1</sup>. Here n=3: M<sup>(1&minus;3)</sup> = M<sup>&minus;2</sup>s<sup>&minus;1</sup> &#10003;</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 6 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header amber">
+            <div class="q-number amber">6</div>
+            <div class="q-info">
+                <h2>Integrated Rate Laws: Zero, First &amp; Second Order</h2>
+            </div>
+            <span class="q-pts amber">10 pts</span>
+        </div>
+        <div class="question-body">
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p><strong>Zero order</strong> = an IV drip in a hospital. The drug enters your bloodstream at a constant rate &mdash; the amount already in your system doesn&rsquo;t matter. Concentration plays zero role in the speed.</p>
+                <p><strong>First order</strong> = a leaky bucket. The more water inside, the faster it drips out. But every hour it loses the same <em>fraction</em> of what&rsquo;s left &mdash; that&rsquo;s why radioactive half-lives are constant. Today you lose half. Next period you lose half of <em>that</em> half.</p>
+                <p><strong>Second order</strong> = two strangers trying to find each other at a marathon finish line. When thousands of runners are present, bumping into each other is easy. As the crowd thins, finding your friend gets <em>dramatically</em> harder &mdash; rate drops off much faster than first order.</p>
+                <p style="font-style:italic; color:var(--gray-500); font-size:0.9rem; margin-top:6px;">&#8594; Q7 puts you in the detective seat: real N<sub>2</sub>O<sub>5</sub> data, three columns to compute, and one plot that tells the truth.</p>
+            </div>
+
+            <span class="section-label glossary">Key Terms</span>
+            <div class="glossary-box">
+                <table>
+                    <tbody>
+                        <tr><td>Integrated rate law</td><td>An equation linking concentration to time directly. Instead of &ldquo;rate = ...&rdquo;, it says &ldquo;[A] at time t = ...&rdquo;. Useful for predicting how much is left after a certain time.</td></tr>
+                        <tr><td>[A]<sub>t</sub></td><td>Concentration of A at time t (the moment you&rsquo;re interested in)</td></tr>
+                        <tr><td>[A]<sub>0</sub></td><td>Concentration of A at time 0 (the starting concentration)</td></tr>
+                        <tr><td>ln</td><td>Natural logarithm (base e = 2.718...). On your calculator: the &ldquo;ln&rdquo; button. NOT log (which is base 10).</td></tr>
+                        <tr><td>Linear plot</td><td>When data falls on a straight line. We try three different y-axes ([A], ln[A], 1/[A]) to see which gives a straight line.</td></tr>
+                        <tr><td>Slope</td><td>The steepness of the line (rise/run = &Delta;y/&Delta;x). For kinetics, the slope equals k or &minus;k.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <table>
+                <thead>
+                    <tr><th>Order</th><th>Integrated Rate Law</th><th>Linear Plot (y vs. x)</th><th>Slope =</th><th>Units of k</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Zero</strong></td>
+                        <td>[A]<sub>t</sub> = &minus;kt + [A]<sub>0</sub></td>
+                        <td><strong>[A] vs. t</strong></td>
+                        <td><strong>&minus;k</strong></td>
+                        <td><strong>M&middot;s<sup>&minus;1</sup></strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>First</strong></td>
+                        <td>ln[A]<sub>t</sub> = &minus;kt + ln[A]<sub>0</sub></td>
+                        <td><strong>ln[A] vs. t</strong></td>
+                        <td><strong>&minus;k</strong></td>
+                        <td><strong>s<sup>&minus;1</sup></strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Second</strong></td>
+                        <td>1/[A]<sub>t</sub> = kt + 1/[A]<sub>0</sub></td>
+                        <td><strong>1/[A] vs. t</strong></td>
+                        <td><strong>+k</strong></td>
+                        <td><strong>M<sup>&minus;1</sup>&middot;s<sup>&minus;1</sup></strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <span class="section-label tip">How to Determine Order from Data</span><br>
+                You have concentration vs. time data. Plot THREE graphs:
+                <ol style="margin:8px 0 0 18px;">
+                    <li>Plot [A] vs. t &ndash; if it&rsquo;s a straight line &rarr; <strong>zero order</strong></li>
+                    <li>Plot ln[A] vs. t &ndash; if it&rsquo;s a straight line &rarr; <strong>first order</strong></li>
+                    <li>Plot 1/[A] vs. t &ndash; if it&rsquo;s a straight line &rarr; <strong>second order</strong></li>
+                </ol>
+                <p>Only ONE of these three will be linear. That&rsquo;s how you identify the order. Then the slope gives you k.</p>
+            </div>
+
+            <div class="memory-box">
+                <span class="section-label memory">Memory Hook &ndash; &ldquo;0-1-2 = C-L-R&rdquo;</span><br>
+                <strong>0</strong>th order &rarr; plot <strong>C</strong>oncentration (plain [A])<br>
+                <strong>1</strong>st order &rarr; plot <strong>L</strong>n (natural log of [A])<br>
+                <strong>2</strong>nd order &rarr; plot <strong>R</strong>eciprocal (1/[A])<br><br>
+                Or think: <strong>&ldquo;Can Larry Run?&rdquo;</strong> &ndash; C, L, R in order.
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 7 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header blue">
+            <div class="q-number blue">7</div>
+            <div class="q-info">
+                <h2>Determine Reaction Order from Data: N<sub>2</sub>O<sub>5</sub></h2>
+            </div>
+            <span class="q-pts blue">12 pts</span>
+        </div>
+        <div class="question-body">
+            <p style="margin-bottom:12px;"><strong>Reaction:</strong>&ensp; 2N<sub>2</sub>O<sub>5</sub> &rarr; 4NO<sub>2</sub> + O<sub>2</sub></p>
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>You&rsquo;re a detective with three suspects: zero order, first order, second order. Each has a telltale signature. Run three &ldquo;forensic tests&rdquo; on your data:</p>
+                <p>&bull; Plot <strong>[N<sub>2</sub>O<sub>5</sub>] vs. time</strong> &rarr; straight line? Zero order caught.<br>
+                &bull; Plot <strong>ln[N<sub>2</sub>O<sub>5</sub>] vs. time</strong> &rarr; straight line? First order caught.<br>
+                &bull; Plot <strong>1/[N<sub>2</sub>O<sub>5</sub>] vs. time</strong> &rarr; straight line? Second order caught.</p>
+                <p>Only ONE of the three will give a truly straight line. That&rsquo;s your suspect &mdash; and the slope of that line hands you k on a silver platter.</p>
+            </div>
+
+            <span class="section-label glossary">Key Calculations Explained</span>
+            <div class="glossary-box">
+                <table>
+                    <tbody>
+                        <tr><td>ln[N<sub>2</sub>O<sub>5</sub>]</td><td>Press the <strong>ln</strong> button on your calculator, then enter the concentration. Example: ln(5.00) = 1.6094. For values less than 1, ln gives a negative number: ln(0.61) = &minus;0.4943. That&rsquo;s OK!</td></tr>
+                        <tr><td>1/[N<sub>2</sub>O<sub>5</sub>]</td><td>Just divide 1 by the concentration. Example: 1/5.00 = 0.200. As concentration gets smaller, 1/[A] gets larger.</td></tr>
+                        <tr><td>&ldquo;Linear&rdquo;</td><td>The differences between consecutive values are approximately constant. If &Delta;(ln[A]) per 500s is always ~&minus;0.35, that&rsquo;s linear.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div class="sub-part">
+                <h4>(a) Calculated ln[N<sub>2</sub>O<sub>5</sub>] and 1/[N<sub>2</sub>O<sub>5</sub>]</h4>
+                <table class="data-table">
+                    <thead><tr><th>Time (s)</th><th>[N<sub>2</sub>O<sub>5</sub>] (M)</th><th>ln[N<sub>2</sub>O<sub>5</sub>]</th><th>1/[N<sub>2</sub>O<sub>5</sub>] (M<sup>&minus;1</sup>)</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>5.00</td><td><strong>1.6094</strong></td><td><strong>0.2000</strong></td></tr>
+                        <tr><td>500</td><td>3.52</td><td><strong>1.2585</strong></td><td><strong>0.2841</strong></td></tr>
+                        <tr><td>1000</td><td>2.48</td><td><strong>0.9083</strong></td><td><strong>0.4032</strong></td></tr>
+                        <tr><td>1500</td><td>1.75</td><td><strong>0.5596</strong></td><td><strong>0.5714</strong></td></tr>
+                        <tr><td>2000</td><td>1.23</td><td><strong>0.2070</strong></td><td><strong>0.8130</strong></td></tr>
+                        <tr><td>2500</td><td>0.87</td><td><strong>&minus;0.1393</strong></td><td><strong>1.1494</strong></td></tr>
+                        <tr><td>3000</td><td>0.61</td><td><strong>&minus;0.4943</strong></td><td><strong>1.6393</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Which plot is linear? &rarr; ln[N<sub>2</sub>O<sub>5</sub>] vs. time</h4>
+                <p><strong>How to tell:</strong> Check if the change between consecutive values is constant:</p>
+                <table>
+                    <thead><tr><th>Interval</th><th>&Delta;(ln[N<sub>2</sub>O<sub>5</sub>])</th><th>&Delta;(1/[N<sub>2</sub>O<sub>5</sub>])</th></tr></thead>
+                    <tbody>
+                        <tr><td>0 &rarr; 500</td><td>&minus;0.351</td><td>0.084</td></tr>
+                        <tr><td>500 &rarr; 1000</td><td>&minus;0.350</td><td>0.119</td></tr>
+                        <tr><td>1000 &rarr; 1500</td><td>&minus;0.349</td><td>0.168</td></tr>
+                        <tr><td>1500 &rarr; 2000</td><td>&minus;0.353</td><td>0.242</td></tr>
+                        <tr><td>2000 &rarr; 2500</td><td>&minus;0.346</td><td>0.336</td></tr>
+                        <tr><td>2500 &rarr; 3000</td><td>&minus;0.355</td><td>0.490</td></tr>
+                        <tr style="background:#d1fae5; font-weight:700;"><td>Verdict</td><td>CONSTANT (~&minus;0.35) &#10003;</td><td>NOT constant (grows 6&times;) &#10007;</td></tr>
+                    </tbody>
+                </table>
+                <div class="final-answer">
+                    <span class="label">Reaction Order</span>
+                    The reaction is <strong>FIRST ORDER</strong> with respect to N<sub>2</sub>O<sub>5</sub>
+                </div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Rate Constant k</h4>
+                <p>For first order: slope of ln[A] vs t = &minus;k</p>
+                <div class="equation">
+                    slope = <span class="frac"><span class="num">ln[A]<sub>final</sub> &minus; ln[A]<sub>initial</sub></span><span class="den">t<sub>final</sub> &minus; t<sub>initial</sub></span></span>
+                    = <span class="frac"><span class="num">&minus;0.4943 &minus; 1.6094</span><span class="den">3000 &minus; 0</span></span>
+                    = <span class="frac"><span class="num">&minus;2.1037</span><span class="den">3000</span></span>
+                    = &minus;7.01 &times; 10<sup>&minus;4</sup>
+                </div>
+                <p>Since slope = &minus;k: &ensp; k = &minus;(&minus;7.01 &times; 10<sup>&minus;4</sup>) = 7.01 &times; 10<sup>&minus;4</sup></p>
+                <div class="final-answer">
+                    <span class="label">Rate Constant</span>
+                    k = 7.01 &times; 10<sup>&minus;4</sup> s<sup>&minus;1</sup>
+                </div>
+                <p style="font-size:0.9rem; color:var(--gray-500);">Linear regression R&sup2; = 0.999996 &ndash; essentially a perfect straight line.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 8 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header amber">
+            <div class="q-number amber">8</div>
+            <div class="q-info">
+                <h2>The Arrhenius Equation</h2>
+            </div>
+            <span class="q-pts amber">10 pts</span>
+        </div>
+        <div class="question-body">
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>Imagine a <strong>bouncer at a club</strong> who only lets in people who are &ldquo;energetic enough.&rdquo; That minimum energy requirement is E<sub>a</sub>. At room temperature, most molecules are tired and subdued &mdash; few make the cut, reaction is slow. Raise the temperature and suddenly everyone is hyped up and bouncing &mdash; more molecules clear the threshold, reaction is fast.</p>
+                <p><strong>A</strong> is how many people show up to the door per second (collision frequency &times; proper orientation). <strong>e<sup>&minus;E<sub>a</sub>/RT</sup></strong> is the fraction the bouncer actually lets in. Even a 10&deg;C rise can double or triple that fraction &mdash; which is why warm reactions go so much faster.</p>
+                <p style="font-style:italic; color:var(--gray-500); font-size:0.9rem; margin-top:6px;">&#8594; Q9 takes this further: the Arrhenius plot tells you exactly <em>how high</em> the bouncer&rsquo;s energy threshold is &mdash; in kJ/mol.</p>
+            </div>
+
+
+
+            <div class="sub-part">
+                <h4>(a) The Arrhenius Equation</h4>
+                <div class="final-answer" style="font-size:1.2rem;">
+                    k = Ae<sup>&minus;E<sub>a</sub>/RT</sup>
+                </div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Define Each Variable</h4>
+                <table>
+                    <thead><tr><th>Variable</th><th>Name</th><th>What It Means (Simply)</th><th>Units</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>k</strong></td><td>Rate constant</td><td>How fast the reaction goes at this temperature. Bigger k = faster reaction.</td><td>Depends on order</td></tr>
+                        <tr><td><strong>A</strong></td><td>Pre-exponential (frequency) factor</td><td>How often molecules collide with the RIGHT orientation. Think of it as the &ldquo;maximum possible k&rdquo; if every collision worked.</td><td>Same as k</td></tr>
+                        <tr><td><strong>E<sub>a</sub></strong></td><td>Activation energy</td><td>The energy &ldquo;hill&rdquo; molecules must clear. Higher E<sub>a</sub> = harder to start = slower reaction.</td><td>J/mol or kJ/mol</td></tr>
+                        <tr><td><strong>R</strong></td><td>Gas constant</td><td>A universal conversion factor between energy and temperature.</td><td>8.314 J/(mol&middot;K)</td></tr>
+                        <tr><td><strong>T</strong></td><td>Temperature</td><td>MUST be in <strong>Kelvin</strong>. K = &deg;C + 273.15. Never use Celsius in this equation.</td><td>K (Kelvin)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Linearized Form</h4>
+                <p>Take the natural log of both sides of k = Ae<sup>&minus;E<sub>a</sub>/RT</sup>:</p>
+                <div class="final-answer" style="font-size:1.1rem;">
+                    <span class="label">Linearized Arrhenius</span>
+                    ln k = &minus;<span style="font-family:monospace;"><sup>E<sub>a</sub></sup>&frasl;<sub>R</sub></span> &middot; <span style="font-family:monospace;"><sup>1</sup>&frasl;<sub>T</sub></span> + ln A
+                </div>
+                <p style="margin-top:12px;">This has the form <strong>y = mx + b</strong>:</p>
+                <table>
+                    <thead><tr><th>Equation part</th><th>Corresponds to</th><th>What you do</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>y</strong></td><td><strong>ln(k)</strong></td><td>Plot this on the y-axis</td></tr>
+                        <tr><td><strong>x</strong></td><td><strong>1/T</strong></td><td>Plot this on the x-axis (T in Kelvin!)</td></tr>
+                        <tr><td><strong>m (slope)</strong></td><td><strong>&minus;E<sub>a</sub>/R</strong></td><td>Measure from the line; multiply by &minus;R to get E<sub>a</sub></td></tr>
+                        <tr><td><strong>b (y-intercept)</strong></td><td><strong>ln(A)</strong></td><td>Read from the graph; take e<sup>b</sup> to get A</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="memory-box">
+                <span class="section-label memory">Memory Hook</span><br>
+                <strong>&ldquo;KART&rdquo;</strong> &ndash; <strong>K</strong> = <strong>A</strong>e<sup>&minus;Ea/<strong>R</strong><strong>T</strong></sup>. Think of a go-kart: it needs energy (E<sub>a</sub>) to get over the hill, and it goes faster when it&rsquo;s hot (higher T).
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 9 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header rose">
+            <div class="q-number rose">9</div>
+            <div class="q-info">
+                <h2>Calculate E<sub>a</sub> from Arrhenius Slope</h2>
+            </div>
+            <span class="q-pts rose">8 pts</span>
+        </div>
+        <div class="question-body">
+            <p><strong>Given:</strong> slope of Arrhenius plot (ln k vs. 1/T) = &minus;15,200 K</p>
+            <p><strong>Formula:</strong> slope = &minus;E<sub>a</sub> / R, where R = 8.314 J/(mol&middot;K)</p>
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>The Arrhenius plot is like a <strong>ski slope profile</strong>: the steeper the run, the higher the mountain. A steep negative slope means a large E<sub>a</sub> &mdash; temperature has a huge effect on how fast the reaction goes. A gentle slope means a small E<sub>a</sub> &mdash; the reaction proceeds at roughly the same speed no matter the temperature.</p>
+                <p>Reading the slope and multiplying by &minus;R gives you the <strong>height of the energy mountain</strong> in joules per mole. That&rsquo;s all this problem is asking you to do.</p>
+                <p style="font-style:italic; color:var(--gray-500); font-size:0.9rem; margin-top:6px;">&#8594; Q10 removes the graph entirely: just two temperature measurements, and you can still calculate the height of that same hill.</p>
+            </div>
+
+            <span class="section-label glossary">Understanding the Units</span>
+            <div class="glossary-box">
+                <p>The slope has units of <strong>Kelvin</strong>. Here&rsquo;s why: slope = &Delta;y / &Delta;x = &Delta;(ln k) / &Delta;(1/T). ln k is unitless. 1/T has units of K<sup>&minus;1</sup>. So slope = unitless / K<sup>&minus;1</sup> = K.</p>
+                <p>When you multiply slope (K) &times; R (J&middot;mol<sup>&minus;1</sup>&middot;K<sup>&minus;1</sup>), the K cancels and you get J/mol. That&rsquo;s your E<sub>a</sub>.</p>
+            </div>
+
+
+            <div class="answer-box">
+                <div class="work-steps">
+                    <div class="work-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content"><p>Start with: slope = &minus;E<sub>a</sub> / R</p></div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content"><p>Rearrange: E<sub>a</sub> = &minus;slope &times; R</p></div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">3</span>
+                        <div class="step-content"><p>Plug in: E<sub>a</sub> = &minus;(&minus;15,200 K) &times; 8.314 J/(mol&middot;K) = 15,200 &times; 8.314</p></div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">4</span>
+                        <div class="step-content"><p>Calculate: E<sub>a</sub> = 126,373 J/mol</p></div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">5</span>
+                        <div class="step-content"><p>Convert J &rarr; kJ: <strong>126,373 &divide; 1000 = 126.4 kJ/mol</strong></p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="final-answer">
+                <span class="label">Final Answer</span>
+                E<sub>a</sub> = 126.4 kJ/mol
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUESTION 10 -->
+    <!-- ============================================ -->
+    <div class="question-card">
+        <div class="question-header rose">
+            <div class="q-number rose">10</div>
+            <div class="q-info">
+                <h2>Conceptual Synthesis: Order from Units + Two-Point Arrhenius</h2>
+            </div>
+            <span class="q-pts rose">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <span class="section-label analogy">The Analogy</span>
+            <div class="simple-box">
+                <p>The units of k are like a reaction&rsquo;s <strong>ID card</strong>. Just as a job title instantly tells you what someone does (s<sup>&minus;1</sup> = &ldquo;first-order reaction,&rdquo; M<sup>&minus;1</sup>s<sup>&minus;1</sup> = &ldquo;second-order reaction&rdquo;), the units reveal the order without running a single experiment.</p>
+                <p>And the two-point Arrhenius is chemistry&rsquo;s version of: &ldquo;if bread goes stale in 3 days at 20&deg;C but only 6 hours at 37&deg;C, how high is the energy hill?&rdquo; Two temperature measurements are all you need to calculate E<sub>a</sub> &mdash; no graph required.</p>
+                <p style="font-style:italic; color:var(--gray-500); font-size:0.9rem; margin-top:6px;">&#8592; Full circle from Q1: that bread on the counter is back &mdash; now you&rsquo;re not just observing the rate difference, you&rsquo;re calculating the activation energy responsible for it.</p>
+            </div>
+
+            <h3>Given Data</h3>
+            <table class="data-table">
+                <thead><tr><th>Temperature</th><th>k</th></tr></thead>
+                <tbody>
+                    <tr><td>300 K</td><td>1.5 &times; 10<sup>&minus;3</sup> s<sup>&minus;1</sup></td></tr>
+                    <tr><td>350 K</td><td>4.2 &times; 10<sup>&minus;2</sup> s<sup>&minus;1</sup></td></tr>
+                </tbody>
+            </table>
+
+            <span class="section-label glossary">What Is the Two-Point Arrhenius Equation?</span>
+            <div class="glossary-box">
+                <p>When you only have TWO temperatures (not enough to make a full graph), you use the <strong>two-point form</strong>. It&rsquo;s derived by writing the Arrhenius equation at both temperatures and subtracting:</p>
+                <div class="equation" style="font-size:0.95rem;">
+                    ln(<span class="frac"><span class="num">k<sub>2</sub></span><span class="den">k<sub>1</sub></span></span>) = &minus;<span class="frac"><span class="num">E<sub>a</sub></span><span class="den">R</span></span> &middot; (<span class="frac"><span class="num">1</span><span class="den">T<sub>2</sub></span></span> &minus; <span class="frac"><span class="num">1</span><span class="den">T<sub>1</sub></span></span>)
+                </div>
+                <table>
+                    <tbody>
+                        <tr><td>k<sub>1</sub>, T<sub>1</sub></td><td>Rate constant and temperature at the FIRST condition</td></tr>
+                        <tr><td>k<sub>2</sub>, T<sub>2</sub></td><td>Rate constant and temperature at the SECOND condition</td></tr>
+                        <tr><td>ln(k<sub>2</sub>/k<sub>1</sub>)</td><td>Natural log of the ratio of rate constants. If k got bigger, this is positive.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div class="sub-part">
+                <h4>(a) Overall order &ndash; How do you know from the units of k?</h4>
+                <p>For an <em>n</em>th-order reaction, the units of k follow the pattern:</p>
+                <div class="equation">k units = M<sup>(1&minus;n)</sup> &middot; s<sup>&minus;1</sup></div>
+                <table>
+                    <thead><tr><th>Order (n)</th><th>k units</th><th>Reasoning</th><th>Match?</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>M&middot;s<sup>&minus;1</sup></td><td>M<sup>(1&minus;0)</sup> = M<sup>1</sup></td><td></td></tr>
+                        <tr style="background:#d1fae5;"><td><strong>1</strong></td><td><strong>s<sup>&minus;1</sup></strong></td><td>M<sup>(1&minus;1)</sup> = M<sup>0</sup> = 1</td><td style="color:var(--accent); font-weight:700;">&#10003; Match!</td></tr>
+                        <tr><td>2</td><td>M<sup>&minus;1</sup>&middot;s<sup>&minus;1</sup></td><td>M<sup>(1&minus;2)</sup> = M<sup>&minus;1</sup></td><td></td></tr>
+                        <tr><td>3</td><td>M<sup>&minus;2</sup>&middot;s<sup>&minus;1</sup></td><td>M<sup>(1&minus;3)</sup> = M<sup>&minus;2</sup></td><td></td></tr>
+                    </tbody>
+                </table>
+                <div class="final-answer">
+                    <span class="label">Answer</span>
+                    <strong>First order</strong> (overall order = 1), because k has units of s<sup>&minus;1</sup>
+                </div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Calculate E<sub>a</sub> using the Two-Point Arrhenius Equation</h4>
+                <div class="answer-box">
+                    <div class="work-steps">
+                        <div class="work-step">
+                            <span class="step-num">1</span>
+                            <div class="step-content">
+                                <p><strong>Assign values:</strong></p>
+                                <p>T<sub>1</sub> = 300 K, &ensp; k<sub>1</sub> = 1.5 &times; 10<sup>&minus;3</sup> s<sup>&minus;1</sup></p>
+                                <p>T<sub>2</sub> = 350 K, &ensp; k<sub>2</sub> = 4.2 &times; 10<sup>&minus;2</sup> s<sup>&minus;1</sup></p>
+                                <p style="font-size:0.88rem; color:var(--gray-500);"><em>Tip: It doesn&rsquo;t matter which you call &ldquo;1&rdquo; and &ldquo;2&rdquo; as long as you&rsquo;re consistent.</em></p>
+                            </div>
+                        </div>
+                        <div class="work-step">
+                            <span class="step-num">2</span>
+                            <div class="step-content">
+                                <p><strong>Left side &ndash; the rate constant ratio:</strong></p>
+                                <p>k<sub>2</sub> / k<sub>1</sub> = (4.2 &times; 10<sup>&minus;2</sup>) / (1.5 &times; 10<sup>&minus;3</sup>) = <strong>28.0</strong></p>
+                                <p>ln(28.0) = <strong>3.332</strong></p>
+                            </div>
+                        </div>
+                        <div class="work-step">
+                            <span class="step-num">3</span>
+                            <div class="step-content">
+                                <p><strong>Right side &ndash; the temperature term:</strong></p>
+                                <p>1/T<sub>2</sub> = 1/350 = 0.002857 K<sup>&minus;1</sup></p>
+                                <p>1/T<sub>1</sub> = 1/300 = 0.003333 K<sup>&minus;1</sup></p>
+                                <p>1/T<sub>2</sub> &minus; 1/T<sub>1</sub> = 0.002857 &minus; 0.003333 = <strong>&minus;4.762 &times; 10<sup>&minus;4</sup> K<sup>&minus;1</sup></strong></p>
+                            </div>
+                        </div>
+                        <div class="work-step">
+                            <span class="step-num">4</span>
+                            <div class="step-content">
+                                <p><strong>Plug into the equation and solve:</strong></p>
+                                <p>3.332 = &minus;(E<sub>a</sub> / 8.314) &times; (&minus;4.762 &times; 10<sup>&minus;4</sup>)</p>
+                                <p>3.332 = E<sub>a</sub> &times; (4.762 &times; 10<sup>&minus;4</sup>) / 8.314</p>
+                                <p>E<sub>a</sub> = (3.332 &times; 8.314) / (4.762 &times; 10<sup>&minus;4</sup>)</p>
+                                <p>E<sub>a</sub> = 27.71 / 4.762 &times; 10<sup>&minus;4</sup> = 58,178 J/mol</p>
+                            </div>
+                        </div>
+                        <div class="work-step">
+                            <span class="step-num">5</span>
+                            <div class="step-content">
+                                <p><strong>Convert to kJ:</strong> 58,178 &divide; 1000 = <strong>58.2 kJ/mol</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="final-answer">
+                    <span class="label">Final Answer</span>
+                    E<sub>a</sub> &asymp; 58.2 kJ/mol
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <span class="section-label tip">How to Check Your Answer</span><br>
+                Plug your E<sub>a</sub> back into the equation: does &minus;(E<sub>a</sub>/R)(1/T<sub>2</sub> &minus; 1/T<sub>1</sub>) equal ln(k<sub>2</sub>/k<sub>1</sub>)?<br>
+                &minus;(58,178/8.314)(&minus;4.762 &times; 10<sup>&minus;4</sup>) = &minus;(6,997)(&minus;0.0004762) = 3.332 &#10003;<br>
+                This matches ln(28) = 3.332. Answer confirmed!
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- 5 THINGS SUMMARY -->
+    <!-- ============================================ -->
+    <div class="summary-card">
+        <h2>The 5 Things You Must Know</h2>
+        <ol>
+            <li><strong>Rate expressions</strong> use stoichiometric coefficients as denominators &ndash; reactants are negative, products are positive. &Delta; means &ldquo;change in,&rdquo; &Delta;t means &ldquo;change in time.&rdquo;</li>
+            <li><strong>Method of initial rates</strong> &ndash; change ONE reactant at a time, compare how the rate changes to find the exponent (order). Use ln(rate ratio)/ln(conc ratio) when ratios aren&rsquo;t clean.</li>
+            <li><strong>Integrated rate laws</strong> &ndash; plot [A] vs t (zero), ln[A] vs t (first), 1/[A] vs t (second); whichever is linear tells you the order. Remember: &ldquo;0-1-2 = C-L-R.&rdquo;</li>
+            <li><strong>Arrhenius equation</strong> &ndash; k = Ae<sup>&minus;E<sub>a</sub>/RT</sup>; plot ln(k) vs 1/T &rarr; slope = &minus;E<sub>a</sub>/R. ALWAYS use Kelvin and R = 8.314.</li>
+            <li><strong>Units of k reveal the order</strong> &ndash; s<sup>&minus;1</sup> = 1st, M<sup>&minus;1</sup>s<sup>&minus;1</sup> = 2nd, M&middot;s<sup>&minus;1</sup> = 0th, M<sup>&minus;2</sup>s<sup>&minus;1</sup> = 3rd. Use M<sup>(1&minus;n)</sup>s<sup>&minus;1</sup>.</li>
+        </ol>
+    </div>
+
+    <p style="text-align:center; color:var(--gray-500); font-size:0.85rem; margin-top:32px;">
+        All numerical answers computationally verified &bull; CHM 152 Workshop 2 &bull; Chemical Kinetics
+    </p>
+
+</div>
+</body>
+</html>

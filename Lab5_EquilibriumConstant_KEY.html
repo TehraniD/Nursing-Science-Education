@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 5: Equilibrium Constant — ANSWER KEY</title>
+<style>
+  :root {
+    --primary: #7b241c;
+    --accent: #e74c3c;
+    --bg: #fdf2f2;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #7f8c8d;
+    --border: #f0d0d0;
+    --highlight: #fef9e7;
+    --key-bg: #fdecea;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  .header {
+    background: linear-gradient(135deg, var(--primary), #a93226);
+    color: #fff; text-align: center; padding: 2rem 1rem;
+  }
+  .header h1 { font-size: 1.5rem; }
+  .header p { opacity: .85; margin-top: .3rem; }
+  .header .badge { display: inline-block; margin-top: .5rem; background: rgba(255,255,255,.2); padding: .25rem .85rem; border-radius: 20px; font-size: .85rem; font-weight: 700; letter-spacing: 1px; }
+
+  .container { max-width: 850px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .section { background: var(--card); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .section h2 { color: var(--primary); font-size: 1.15rem; margin-bottom: .8rem; border-bottom: 2px solid var(--accent); padding-bottom: .4rem; }
+  .section h3 { color: var(--primary); font-size: 1rem; margin: 1rem 0 .5rem; }
+
+  .key-answer {
+    background: var(--key-bg); border-left: 4px solid var(--accent);
+    padding: .8rem 1rem; border-radius: 6px; margin: .5rem 0;
+    font-weight: 600;
+  }
+
+  .eq-box {
+    background: var(--highlight); border-left: 4px solid #f39c12; padding: 1rem 1.2rem;
+    border-radius: 6px; margin: 1rem 0; font-size: 1.05rem; text-align: center;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .85rem; }
+  th { background: var(--primary); color: #fff; padding: .6rem .4rem; text-align: center; font-weight: 600; }
+  td { padding: .5rem .4rem; text-align: center; border: 1px solid var(--border); }
+  tr:nth-child(even) { background: #fdf8f8; }
+  .answer-val { color: var(--primary); font-weight: 700; }
+
+  .calc-step {
+    background: #f8f4ff; border-left: 4px solid #8e44ad; padding: .8rem 1rem;
+    border-radius: 6px; margin: .8rem 0; font-size: .9rem;
+  }
+  .calc-step strong { color: #8e44ad; }
+
+  .note-box {
+    background: #eaf7ff; border-left: 4px solid #3498db; padding: .8rem 1rem;
+    border-radius: 6px; margin: .8rem 0;
+  }
+
+  .footer {
+    text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: .8rem;
+    border-top: 1px solid var(--border); margin-top: 2rem;
+  }
+  .footer a { color: var(--primary); text-decoration: none; }
+
+  .watermark {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-35deg);
+    font-size: 6rem; font-weight: 900; color: rgba(231,76,60,.06);
+    pointer-events: none; z-index: 0; white-space: nowrap;
+  }
+
+  @media print {
+    .watermark { color: rgba(231,76,60,.08); }
+    .section { break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    table { font-size: .75rem; }
+    th, td { padding: .35rem .2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="watermark">ANSWER KEY</div>
+
+<div class="header">
+  <h1>Lab 5: Equilibrium Constant of a Reaction</h1>
+  <p>CHM 152 — General Chemistry II</p>
+  <span class="badge">🔑 INSTRUCTOR ANSWER KEY</span>
+</div>
+
+<div class="container">
+
+  <!-- ── Hypothetical Standard Curve Data ── -->
+  <div class="section">
+    <h2>Part A: Standard Curve — Expected Data</h2>
+
+    <div class="note-box">
+      <strong>📝 Note:</strong> These are hypothetical but realistic values. Actual student data will vary slightly. Beer's Law predicts a linear relationship with the slope equal to the molar absorptivity (ε) × path length.
+    </div>
+
+    <table>
+      <tr><th>Standard</th><th>[FeSCN²⁺] (M)</th><th>Expected Absorbance</th></tr>
+      <tr><td>C1 (Blank)</td><td>0.00</td><td>0.000</td></tr>
+      <tr><td>C2</td><td class="answer-val">8.00 × 10⁻⁵</td><td class="answer-val">0.180</td></tr>
+      <tr><td>C3</td><td class="answer-val">1.20 × 10⁻⁴</td><td class="answer-val">0.270</td></tr>
+      <tr><td>C4</td><td class="answer-val">1.60 × 10⁻⁴</td><td class="answer-val">0.360</td></tr>
+      <tr><td>C5</td><td class="answer-val">2.00 × 10⁻⁴</td><td class="answer-val">0.450</td></tr>
+    </table>
+
+    <h3>Line of Best Fit</h3>
+    <div class="calc-step">
+      <strong>Slope (m):</strong> Absorbance / [FeSCN²⁺] = 0.450 / (2.00 × 10⁻⁴) = <strong>2250 M⁻¹</strong><br>
+      <strong>Y-intercept (b):</strong> ≈ <strong>0.000</strong> (passes through origin)<br>
+      <strong>R²:</strong> <strong>0.999</strong><br>
+      <strong>Equation:</strong> A = 2250 × [FeSCN²⁺]
+    </div>
+
+    <div class="note-box">
+      <strong>💡 Using the standard curve:</strong> To find [FeSCN²⁺]<sub>eq</sub> from absorbance:<br>
+      [FeSCN²⁺] = (Absorbance − b) / m = Absorbance / 2250
+    </div>
+  </div>
+
+  <!-- ── Hypothetical Equilibrium Data ── -->
+  <div class="section">
+    <h2>Part B: Equilibrium Absorbance — Expected Data</h2>
+
+    <table>
+      <tr><th>Test Tube</th><th>Expected Absorbance</th><th>[FeSCN²⁺]<sub>eq</sub> (M)</th></tr>
+      <tr><td>1</td><td class="answer-val">0.050</td><td class="answer-val">2.22 × 10⁻⁵</td></tr>
+      <tr><td>2</td><td class="answer-val">0.090</td><td class="answer-val">4.00 × 10⁻⁵</td></tr>
+      <tr><td>3</td><td class="answer-val">0.122</td><td class="answer-val">5.42 × 10⁻⁵</td></tr>
+      <tr><td>4</td><td class="answer-val">0.148</td><td class="answer-val">6.58 × 10⁻⁵</td></tr>
+      <tr><td>5</td><td class="answer-val">0.170</td><td class="answer-val">7.56 × 10⁻⁵</td></tr>
+    </table>
+
+    <div class="calc-step">
+      <strong>Sample calculation (Test Tube 1):</strong><br>
+      [FeSCN²⁺]<sub>eq</sub> = 0.050 / 2250 = 2.22 × 10⁻⁵ M
+    </div>
+  </div>
+
+  <!-- ── Full KC Calculation ── -->
+  <div class="section">
+    <h2>Part C: K<sub>C</sub> Calculation — Worked Solutions</h2>
+
+    <h3>Step 1: Initial Concentrations</h3>
+    <div class="calc-step">
+      <strong>Formula:</strong> [X]<sub>init</sub> = (Stock Concentration) × (Volume used / Total Volume)<br><br>
+      <strong>[Fe³⁺]<sub>init</sub></strong> = 2.00 × 10⁻³ M × (5.0 mL / 10.0 mL) = <strong>1.00 × 10⁻³ M</strong> (same for all runs)<br><br>
+      <strong>[SCN⁻]<sub>init</sub> for each run:</strong><br>
+      Run 1: 2.00 × 10⁻³ × (1.0/10.0) = <strong>2.00 × 10⁻⁴ M</strong><br>
+      Run 2: 2.00 × 10⁻³ × (2.0/10.0) = <strong>4.00 × 10⁻⁴ M</strong><br>
+      Run 3: 2.00 × 10⁻³ × (3.0/10.0) = <strong>6.00 × 10⁻⁴ M</strong><br>
+      Run 4: 2.00 × 10⁻³ × (4.0/10.0) = <strong>8.00 × 10⁻⁴ M</strong><br>
+      Run 5: 2.00 × 10⁻³ × (5.0/10.0) = <strong>1.00 × 10⁻³ M</strong>
+    </div>
+
+    <h3>Step 2: Equilibrium Concentrations</h3>
+    <div class="calc-step">
+      <strong>Formula:</strong><br>
+      [Fe³⁺]<sub>eq</sub> = [Fe³⁺]<sub>init</sub> − [FeSCN²⁺]<sub>eq</sub><br>
+      [SCN⁻]<sub>eq</sub> = [SCN⁻]<sub>init</sub> − [FeSCN²⁺]<sub>eq</sub>
+    </div>
+
+    <h3>Step 3: Complete Data Table</h3>
+    <table>
+      <tr>
+        <th>Run</th>
+        <th>[Fe³⁺]<sub>init</sub><br>(M)</th>
+        <th>[SCN⁻]<sub>init</sub><br>(M)</th>
+        <th>[FeSCN²⁺]<sub>eq</sub><br>(M)</th>
+        <th>[Fe³⁺]<sub>eq</sub><br>(M)</th>
+        <th>[SCN⁻]<sub>eq</sub><br>(M)</th>
+        <th>K<sub>C</sub></th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>1.00 × 10⁻³</td>
+        <td>2.00 × 10⁻⁴</td>
+        <td class="answer-val">2.22 × 10⁻⁵</td>
+        <td class="answer-val">9.78 × 10⁻⁴</td>
+        <td class="answer-val">1.78 × 10⁻⁴</td>
+        <td class="answer-val">128</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>1.00 × 10⁻³</td>
+        <td>4.00 × 10⁻⁴</td>
+        <td class="answer-val">4.00 × 10⁻⁵</td>
+        <td class="answer-val">9.60 × 10⁻⁴</td>
+        <td class="answer-val">3.60 × 10⁻⁴</td>
+        <td class="answer-val">116</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>1.00 × 10⁻³</td>
+        <td>6.00 × 10⁻⁴</td>
+        <td class="answer-val">5.42 × 10⁻⁵</td>
+        <td class="answer-val">9.46 × 10⁻⁴</td>
+        <td class="answer-val">5.46 × 10⁻⁴</td>
+        <td class="answer-val">105</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>1.00 × 10⁻³</td>
+        <td>8.00 × 10⁻⁴</td>
+        <td class="answer-val">6.58 × 10⁻⁵</td>
+        <td class="answer-val">9.34 × 10⁻⁴</td>
+        <td class="answer-val">7.34 × 10⁻⁴</td>
+        <td class="answer-val">96</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>1.00 × 10⁻³</td>
+        <td>1.00 × 10⁻³</td>
+        <td class="answer-val">7.56 × 10⁻⁵</td>
+        <td class="answer-val">9.24 × 10⁻⁴</td>
+        <td class="answer-val">9.24 × 10⁻⁴</td>
+        <td class="answer-val">89</td>
+      </tr>
+    </table>
+
+    <h3>Step 4: Sample K<sub>C</sub> Calculation (Run 1)</h3>
+    <div class="calc-step">
+      <strong>[Fe³⁺]<sub>eq</sub></strong> = 1.00 × 10⁻³ − 2.22 × 10⁻⁵ = 9.78 × 10⁻⁴ M<br><br>
+      <strong>[SCN⁻]<sub>eq</sub></strong> = 2.00 × 10⁻⁴ − 2.22 × 10⁻⁵ = 1.78 × 10⁻⁴ M<br><br>
+      <strong>K<sub>C</sub></strong> = [FeSCN²⁺]<sub>eq</sub> / ([Fe³⁺]<sub>eq</sub> × [SCN⁻]<sub>eq</sub>)<br>
+      K<sub>C</sub> = (2.22 × 10⁻⁵) / (9.78 × 10⁻⁴ × 1.78 × 10⁻⁴)<br>
+      K<sub>C</sub> = (2.22 × 10⁻⁵) / (1.74 × 10⁻⁷)<br>
+      <strong>K<sub>C</sub> ≈ 128</strong>
+    </div>
+
+    <h3>Summary Statistics</h3>
+    <table>
+      <tr><td style="text-align:left; font-weight:700;">Average K<sub>C</sub></td><td class="answer-val">107</td></tr>
+      <tr><td style="text-align:left; font-weight:700;">Standard Deviation</td><td class="answer-val">±16</td></tr>
+      <tr><td style="text-align:left; font-weight:700;">% RSD</td><td class="answer-val">~15%</td></tr>
+      <tr><td style="text-align:left; font-weight:700;">Literature K<sub>C</sub></td><td class="answer-val">~100–150 (at room temp)</td></tr>
+    </table>
+
+    <div class="note-box">
+      <strong>📝 Grading Note:</strong> Student K<sub>C</sub> values between <strong>80–200</strong> are generally acceptable. The key is that all five runs should be reasonably close to each other (within 30–40%). Values that deviate significantly usually indicate a pipetting error.
+    </div>
+  </div>
+
+  <!-- ── Post-Lab Answers ── -->
+  <div class="section">
+    <h2>Post-Lab Questions — Answers</h2>
+
+    <p><strong>1. For an endothermic reaction, if temperature increases, what happens to K<sub>C</sub>?</strong></p>
+    <div class="key-answer">
+      K<sub>C</sub> <strong>increases</strong>. Raising the temperature of an endothermic reaction adds energy (heat) to the reactant side, which shifts equilibrium toward products, increasing the numerator and decreasing the denominator of the K<sub>C</sub> expression.
+    </div>
+
+    <p style="margin-top:1rem;"><strong>2. For an exothermic reaction, if temperature increases, what happens to K<sub>C</sub>?</strong></p>
+    <div class="key-answer">
+      K<sub>C</sub> <strong>decreases</strong>. Adding heat to an exothermic reaction shifts equilibrium toward reactants (Le Chatelier's principle), decreasing the concentration of products relative to reactants.
+    </div>
+
+    <p style="margin-top:1rem;"><strong>3. For an endothermic reaction, if temperature increases, which direction does the reaction shift?</strong></p>
+    <div class="key-answer">
+      The reaction shifts toward <strong>products</strong>. Heat acts as a "reactant" in endothermic reactions, so adding heat drives the reaction forward.
+    </div>
+
+    <p style="margin-top:1rem;"><strong>4. For an exothermic reaction, if temperature increases, which direction does the reaction shift?</strong></p>
+    <div class="key-answer">
+      The reaction shifts toward <strong>reactants</strong>. Heat is a "product" in exothermic reactions, so adding heat pushes the equilibrium backward to consume the excess energy.
+    </div>
+  </div>
+
+  <!-- ── Common Errors ── -->
+  <div class="section">
+    <h2>Common Student Errors to Watch For</h2>
+    <table>
+      <tr><th>Error</th><th>Effect on K<sub>C</sub></th><th>How to Identify</th></tr>
+      <tr><td style="text-align:left;">Forgetting to dilute to the line</td><td>K<sub>C</sub> values too high</td><td>Absorbance readings much higher than expected</td></tr>
+      <tr><td style="text-align:left;">Using wrong concentration for stock</td><td>Off by factor of 10 or more</td><td>K<sub>C</sub> orders of magnitude off</td></tr>
+      <tr><td style="text-align:left;">Not zeroing with blank</td><td>Systematic offset in all values</td><td>All absorbances shifted up uniformly</td></tr>
+      <tr><td style="text-align:left;">Dirty cuvettes</td><td>Inflated absorbance → higher K<sub>C</sub></td><td>Inconsistent readings between runs</td></tr>
+      <tr><td style="text-align:left;">Dividing by V<sub>total</sub> = 50 instead of 10</td><td>Initial conc. too low → K<sub>C</sub> too high</td><td>K<sub>C</sub> ~5× expected value</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">
+  © Tehrani Labs · CHM 152 · Arizona College of Nursing<br>
+  <a href="https://tehranilabs.org">tehranilabs.org</a> · INSTRUCTOR USE ONLY
+</div>
+
+</body>
+</html>

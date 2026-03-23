@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHM-130 Week 1 — The Molecule Manifesto</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0b1e;
+    --paper: #f5f2ff;
+    --accent: #ff2d55;
+    --gold: #ffb300;
+    --teal: #00c4a7;
+    --blue: #2563eb;
+    --purple: #8b5cf6;
+    --green: #10b981;
+    --muted: #6b6b7b;
+    --border: #e0ddf5;
+    --card: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #f0edff 0%, #fff9ee 40%, #ecfff8 75%, #edf2ff 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0d0b1e 0%, #1a0940 35%, #071832 70%, #0f0b22 100%);
+    color: var(--paper);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 45%, rgba(139, 92, 246, 0.3) 0%, transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(0, 196, 167, 0.22) 0%, transparent 38%),
+      radial-gradient(circle at 55% 85%, rgba(255, 179, 0, 0.18) 0%, transparent 35%),
+      radial-gradient(circle at 70% 55%, rgba(255, 45, 85, 0.14) 0%, transparent 30%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.012) 40px,
+        rgba(255,255,255,0.012) 80px
+      );
+    animation: heroGlow 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #ff6b7a);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    padding: 0.45rem 1.4rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    box-shadow: 0 4px 20px rgba(255, 45, 85, 0.4);
+  }
+  .hero h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+    font-weight: 300;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+  .hero h1 span { color: var(--gold); font-weight: 500; }
+  .hero p {
+    font-size: 0.9rem;
+    color: rgba(250,249,246,0.5);
+    max-width: 440px;
+    margin: 0 auto 2rem;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    text-shadow: 0 0 30px rgba(255, 179, 0, 0.45);
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: rgba(250,249,246,0.55);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* NAV */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(90deg, #0d0b1e 0%, #18083a 50%, #071832 100%);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: rgba(250,249,246,0.6);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, background 0.2s;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: rgba(255, 179, 0, 0.07);
+  }
+
+  /* MAIN LAYOUT */
+  .main { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  /* SECTION */
+  .concept-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .concept-section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes heroGlow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.65; }
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--accent);
+    opacity: 0.18;
+    min-width: 80px;
+    text-align: center;
+  }
+  .section-title-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .section-title-block .subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* COLOR TAGS */
+  .tag {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .tag-red { background: #fee2e2; color: #991b1b; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-gold { background: #fef3c7; color: #92400e; }
+  .tag-purple { background: #ede9fe; color: #5b21b6; }
+  .tag-teal { background: #ccfbf1; color: #134e4a; }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .card:hover {
+    box-shadow: 0 10px 35px rgba(139, 92, 246, 0.1), 0 2px 8px rgba(0,0,0,0.04);
+    transform: translateY(-2px);
+  }
+  .card-accent { border-left: 5px solid var(--accent); }
+  .card-gold { border-left: 5px solid var(--gold); }
+  .card-teal { border-left: 5px solid var(--teal); }
+  .card-blue { border-left: 5px solid var(--blue); }
+  .card-purple { border-left: 5px solid var(--purple); }
+  .card-green { border-left: 5px solid var(--green); }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .card p { color: #3d3d4a; margin-bottom: 0.6rem; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* ANALOGY BOX */
+  .analogy-box {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 60%, #ffe8a0 100%);
+    border: 1px solid #ffb300;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(255, 179, 0, 0.14);
+  }
+  .analogy-box .analogy-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #92400e;
+    margin-bottom: 0.5rem;
+  }
+  .analogy-box p { color: #78350f; font-size: 1rem; }
+
+  /* MEMORY TRICK */
+  .memory-trick {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #bbf7d0 100%);
+    border: 1px solid var(--teal);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 196, 167, 0.12);
+  }
+  .memory-trick .trick-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #065f46;
+    margin-bottom: 0.5rem;
+  }
+  .memory-trick p { color: #064e3b; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .section-header { flex-direction: column; gap: 0.5rem; }
+    .q-number { font-size: 2.5rem; min-width: auto; }
+  }
+
+  /* INTERACTIVE SIG FIG */
+  .sig-fig-demo {
+    background: var(--ink);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    color: var(--paper);
+  }
+  .sig-fig-demo h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--gold);
+  }
+  .sig-fig-input-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .sig-fig-input {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    color: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sig-fig-input:focus { border-color: var(--gold); }
+  .sig-fig-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sig-fig-btn:hover { background: #c73642; }
+  .sig-fig-result {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.95rem;
+    min-height: 2rem;
+  }
+  .sig-fig-result .correct { color: #6ee7b7; }
+  .sig-fig-result .detail { color: rgba(250,249,246,0.6); font-size: 0.85rem; margin-top: 0.3rem; }
+
+  /* RULE BOX */
+  .rule-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .rule-box-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.75rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .rule-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+    align-items: center;
+  }
+  .rule-row:last-child { border-bottom: none; }
+  .rule-row:nth-child(even) { background: #faf9f6; }
+  .rule-row .rule-name { font-weight: 500; }
+  .rule-row .example { font-family: 'DM Mono', monospace; color: var(--blue); }
+  .rule-row .count { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--accent); }
+  .rule-row-header { background: #f1f0ec !important; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+
+  /* PERIODIC TABLE VISUAL */
+  .trend-visual {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .trend-visual h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+  }
+  .pt-grid {
+    display: inline-grid;
+    grid-template-columns: repeat(4, 60px);
+    gap: 4px;
+    margin-bottom: 1rem;
+  }
+  .pt-cell {
+    height: 50px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .pt-cell:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 2; }
+  .pt-cell .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.7rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .pt-cell:hover .tooltip { display: block; }
+  .trend-arrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+  .arrow-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .arrow-right { color: var(--accent); font-size: 1.2rem; }
+  .arrow-down { color: var(--blue); font-size: 1.2rem; }
+
+  /* FORMULA HIGHLIGHT */
+  .formula-display {
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 1.25rem 2rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* ION TABLE */
+  .ion-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+  .ion-table th {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ion-table td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+  }
+  .ion-table tr:nth-child(even) td { background: #faf9f6; }
+  .ion-table tr:hover td { background: #fff8e1; }
+  .cation-row td { color: var(--accent); }
+  .anion-row td { color: var(--blue); }
+
+  /* NAMING BUILDER */
+  .naming-builder {
+    background: linear-gradient(135deg, #f0f4ff, #e8eeff);
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .naming-builder h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--blue);
+  }
+  .name-formula-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .name-formula-row .formula-part {
+    background: white;
+    border: 1px solid #c7d2fe;
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .name-formula-row .arrow-center {
+    color: var(--muted);
+    font-size: 1.2rem;
+  }
+  .name-formula-row .name-result {
+    background: var(--ink);
+    color: var(--gold);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  /* RESOURCES */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .resource-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.1rem 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+    display: block;
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .resource-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .resource-card .res-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .resource-card .res-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  .resource-card .res-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .resource-card .res-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 0.65rem;
+    font-family: 'DM Mono', monospace;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+
+  /* CLINICAL CONNECTION */
+  .clinical-box {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 60%, #a7f3d0 100%);
+    border: 1px solid #6ee7b7;
+    border-left: 5px solid var(--teal);
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 196, 167, 0.1);
+  }
+  .clinical-box .clinical-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #065f46;
+    margin-bottom: 0.5rem;
+  }
+  .clinical-box p { color: #064e3b; font-size: 0.95rem; }
+
+  /* QUIZ */
+  .mini-quiz {
+    background: linear-gradient(135deg, #ffffff, #f8f4ff);
+    border: 2px solid var(--purple);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin: 2rem 0;
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1);
+  }
+  .mini-quiz h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .quiz-q {
+    margin-bottom: 1rem;
+  }
+  .quiz-q p {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .quiz-opt {
+    background: #f5f4f0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: 'DM Mono', monospace;
+    transition: background 0.15s;
+    text-align: left;
+  }
+  .quiz-opt:hover { background: #fffbeb; }
+  .quiz-opt.correct-ans { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
+  .quiz-opt.wrong-ans { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+
+  /* TEMPERATURE CONVERTER */
+  .temp-converter {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .temp-converter h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1rem; }
+  .temp-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+  .temp-input {
+    flex: 1;
+    min-width: 120px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    outline: none;
+  }
+  .temp-input:focus { border-color: var(--blue); }
+  .temp-btn {
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .temp-result {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--blue);
+    min-height: 1.5rem;
+  }
+
+  /* DENSITY CALC */
+  .density-calc {
+    background: linear-gradient(135deg, #faf5ff, #ede9fe);
+    border: 1px solid #c4b5fd;
+    border-radius: 8px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .density-calc h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1rem; color: var(--purple); }
+  .dc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+  .dc-field label { display: block; font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--muted); margin-bottom: 0.3rem; text-transform: uppercase; }
+  .dc-field input {
+    width: 100%;
+    border: 1px solid #c4b5fd;
+    border-radius: 4px;
+    padding: 0.55rem 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.95rem;
+    background: white;
+    outline: none;
+  }
+  .dc-field input:focus { border-color: var(--purple); }
+  .dc-btn {
+    background: var(--purple);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .dc-result { font-family: 'DM Mono', monospace; color: var(--purple); min-height: 1.5rem; margin-top: 0.75rem; }
+
+  /* STEP BREAKDOWN */
+  .steps {
+    counter-reset: step-counter;
+    list-style: none;
+    padding: 0;
+  }
+  .steps li {
+    counter-increment: step-counter;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step-counter);
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .steps li .step-content { flex: 1; }
+  .steps li .step-content strong { display: block; margin-bottom: 0.3rem; }
+  .steps li .step-content p { font-size: 0.9rem; color: var(--muted); margin: 0; }
+
+  /* FOOTER */
+  .footer {
+    background: linear-gradient(135deg, #0d0b1e 0%, #18083a 50%, #071832 100%);
+    color: rgba(250,249,246,0.45);
+    text-align: center;
+    padding: 2.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    border-top: 2px solid rgba(255, 45, 85, 0.4);
+  }
+  .footer span { color: var(--gold); font-weight: 500; font-size: 0.9rem; }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 5px solid var(--accent);
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(90deg, rgba(255, 45, 85, 0.07), transparent);
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+    color: #7f1d1d;
+    border-radius: 0 10px 10px 0;
+  }
+
+  /* HIGHLIGHT */
+  .hl { background: #fef9c3; padding: 0 3px; border-radius: 2px; }
+  code {
+    font-family: 'DM Mono', monospace;
+    background: #f1f0ec;
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--blue);
+  }
+
+  /* PROTON COUNTER */
+  .atom-builder {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .atom-builder h4 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1rem; }
+  .atom-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+  .atom-select {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.55rem 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+  }
+  .atom-select:focus { border-color: var(--teal); }
+  .atom-result {
+    background: var(--ink);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: none;
+    color: var(--paper);
+  }
+  .atom-result.show { display: block; }
+  .atom-result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  .atom-fact {
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+  }
+  .atom-fact .fact-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .atom-fact .fact-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    color: rgba(250,249,246,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">CHM-130 · Week 1 · Prof. Tehrani</div>
+  <h1>The <span>Chemistry</span><br>Survival Guide</h1>
+  <p>Every concept from Week 1 — explained with real analogies, interactive tools, and clinical connections that actually stick.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">13</span><span class="stat-label">Concepts</span></div>
+    <div class="stat"><span class="stat-num">6</span><span class="stat-label">Interactive Tools</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Exam Prep</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <button class="nav-btn active" onclick="showSection('sig-figs')">Q1 · Sig Figs</button>
+  <button class="nav-btn" onclick="showSection('density')">Q2 · Density</button>
+  <button class="nav-btn" onclick="showSection('molecules')">Q3 · Molecules</button>
+  <button class="nav-btn" onclick="showSection('mass')">Q4 · Mass</button>
+  <button class="nav-btn" onclick="showSection('temp')">Q5 · Temperature</button>
+  <button class="nav-btn" onclick="showSection('atomic')">Q6 · Atomic Structure</button>
+  <button class="nav-btn" onclick="showSection('periodic')">Q7 · Periodic Table</button>
+  <button class="nav-btn" onclick="showSection('electrons')">Q8 · Electrons</button>
+  <button class="nav-btn" onclick="showSection('ions')">Q9–10 · Ions</button>
+  <button class="nav-btn" onclick="showSection('trends')">Q11–12 · Trends</button>
+  <button class="nav-btn" onclick="showSection('naming')">Q13 · Naming</button>
+  <button class="nav-btn" onclick="showSection('resources')">🔗 Resources</button>
+</nav>
+
+<div class="main">
+
+<!-- ===================== Q1: SIG FIGS ===================== -->
+<div id="sig-figs" class="concept-section active">
+  <div class="section-header">
+    <div class="q-number">01</div>
+    <div class="section-title-block">
+      <h2>Significant Figures</h2>
+      <div class="subtitle">Q1 · "Which number has the most sig figs?"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-red">Measurement</span>
+        <span class="tag tag-blue">Precision</span>
+        <span class="tag tag-gold">High-Yield</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Analogy That Sticks</div>
+    <p><strong>Sig figs are like witnesses at a crime scene.</strong> A witness who says "the car was traveling about 60 mph" gives you 1 significant piece of info. A forensic analyst who says "62.47 mph" gives you 4 significant, credible data points. The more sig figs, the more <em>trustworthy and precise</em> your measurement.</p>
+  </div>
+
+  <div class="card card-accent">
+    <h3>The 4 Golden Rules</h3>
+    <p>Every single number you'll ever encounter follows these four rules — no exceptions, no loopholes.</p>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-box-header">Sig Fig Rules at a Glance</div>
+    <div class="rule-row rule-row-header">
+      <div>Rule</div><div>Example</div><div>Count</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name">1. Non-zero digits → <strong>always</strong> significant</div>
+      <div class="example">123.456</div>
+      <div class="count">6</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name">2. Leading zeros → <strong>never</strong> significant</div>
+      <div class="example">0.001234</div>
+      <div class="count">4</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name">3. Embedded zeros → <strong>always</strong> significant</div>
+      <div class="example">0.001203</div>
+      <div class="count">4</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-name">4. Trailing zeros + decimal point → <strong>significant</strong></div>
+      <div class="example">0.001200</div>
+      <div class="count">4</div>
+    </div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 Memory Trick — "The Pacific/Atlantic Rule"</div>
+    <p>If a decimal point is <strong>P</strong>resent → count from the <strong>P</strong>acific (left) side, starting at the first non-zero digit. If <strong>A</strong>bsent → count from the <strong>A</strong>tlantic (right) side, starting at the first non-zero digit. This NEVER fails!</p>
+  </div>
+
+  <div class="sig-fig-demo">
+    <h4>🔬 Live Sig Fig Counter — Try It!</h4>
+    <div class="sig-fig-input-row">
+      <input type="text" class="sig-fig-input" id="sfInput" placeholder="Type a number... e.g. 0.00450" oninput="countSigFigs()" />
+    </div>
+    <div class="sig-fig-result" id="sfResult"></div>
+  </div>
+
+  <div class="card card-gold">
+    <h3>The Q1 Answer — Worked Out</h3>
+    <p><strong>a. 17.5000</strong> → 6 sig figs (trailing zeros after decimal = significant)</p>
+    <p><strong>b. 0.0000625</strong> → 3 sig figs (leading zeros never count — the 6, 2, 5 are all that matter)</p>
+    <p><strong>c. 6.2200 × 10²³</strong> → 5 sig figs (scientific notation: only the coefficient counts — 6.2200)</p>
+    <p style="margin-top:0.75rem; font-weight:700; color: #92400e;">🏆 Winner: Option (a) with 6 significant figures!</p>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection — Why This Matters for Nurses</div>
+    <p>When calculating drug doses, sig figs = patient safety. A nurse calculating "0.50 mg" vs "0.5 mg" communicates different precision. The difference between <strong>1.0 mL</strong> and <strong>1 mL</strong> in a syringe can matter enormously with high-alert medications like heparin or insulin. Precision in measurement is literally life-saving.</p>
+  </div>
+</div>
+
+<!-- ===================== Q2: DENSITY ===================== -->
+<div id="density" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">02</div>
+    <div class="section-title-block">
+      <h2>Density & Mass/Volume</h2>
+      <div class="subtitle">Q2 · "If methanol has density 0.70 g/mL, find volume for 80g"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-purple">Calculation</span>
+        <span class="tag tag-gold">Formula Algebra</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Concert Crowd Analogy</div>
+    <p>Prof. Tehrani already nailed this one — density is like <strong>how packed a concert crowd is</strong>. An empty arena has low density. Mosh pit at a Metallica show? Maximum density. Same space, different "packing." In chemistry: same <em>volume</em>, different <em>mass</em> = different density.</p>
+  </div>
+
+  <div class="formula-display">Density = Mass (g) ÷ Volume (mL)</div>
+
+  <div class="card card-purple">
+    <h3>The Magic Triangle — Never Forget Which Formula to Use</h3>
+    <p>Cover the variable you WANT to find:</p>
+    <p>🔺 Cover <strong>D</strong> → you get M ÷ V</p>
+    <p>🔺 Cover <strong>M</strong> → you get D × V</p>
+    <p>🔺 Cover <strong>V</strong> → you get M ÷ D</p>
+  </div>
+
+  <div class="card card-blue">
+    <h3>Q2 Worked Solution — Step by Step</h3>
+    <ol class="steps" style="margin-top:0.75rem">
+      <li><div class="step-content"><strong>Identify what you know</strong><p>Density = 0.70 g/mL, Mass = 80 g, Volume = ? (unknown)</p></div></li>
+      <li><div class="step-content"><strong>Rearrange the formula</strong><p>D = M/V → V = M/D → V = 80g ÷ 0.70 g/mL</p></div></li>
+      <li><div class="step-content"><strong>Calculate</strong><p>V = 114.3 mL ← note the sig figs: 2 sig figs in 0.70, but we report 3 here for clarity</p></div></li>
+    </ol>
+  </div>
+
+  <div class="density-calc">
+    <h4>🧪 Interactive Density Calculator</h4>
+    <div class="dc-row">
+      <div class="dc-field"><label>Mass (g)</label><input type="number" id="dcMass" placeholder="e.g. 80"></div>
+      <div class="dc-field"><label>Density (g/mL)</label><input type="number" id="dcDens" placeholder="e.g. 0.70"></div>
+      <div class="dc-field"><label>Volume (mL)</label><input type="number" id="dcVol" placeholder="e.g. 114.3"></div>
+    </div>
+    <button class="dc-btn" onclick="calcDensity('V')">Find Volume</button>
+    <button class="dc-btn" onclick="calcDensity('M')">Find Mass</button>
+    <button class="dc-btn" onclick="calcDensity('D')">Find Density</button>
+    <div class="dc-result" id="dcResult"></div>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection</div>
+    <p>IV fluid preparation uses this exact formula. Normal saline is <strong>~1.005 g/mL</strong>. Knowing density lets pharmacists and nurses calculate how many grams of NaCl are in a given volume bag — critical for patients with hypo/hypernatremia. Blood has a density of ~1.06 g/mL, which is how a centrifuge separates plasma from red blood cells!</p>
+  </div>
+</div>
+
+<!-- ===================== Q3: MOLECULES ===================== -->
+<div id="molecules" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">03</div>
+    <div class="section-title-block">
+      <h2>Classifying Molecules</h2>
+      <div class="subtitle">Q3 · "CO₂ is both triatomic and heteroatomic"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-teal">Classification</span>
+        <span class="tag tag-blue">Vocabulary</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Family Analogy</div>
+    <p>Think of molecules like families at a dinner table. <strong>Diatomic</strong> = couple (2 people). <strong>Triatomic</strong> = family of 3. <strong>Homoatomic</strong> = identical twins (same kind). <strong>Heteroatomic</strong> = mixed family (different people from different backgrounds). CO₂ is like a mom with two identical kids — 3 total family members, but two different "types" of people.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-teal">
+      <h3>By Atom Count</h3>
+      <p><strong>Monatomic:</strong> 1 atom — He, Ne, Ar (noble gases)</p>
+      <p><strong>Diatomic:</strong> 2 atoms — H₂, O₂, N₂, Cl₂</p>
+      <p><strong>Triatomic:</strong> 3 atoms — H₂O, CO₂, SO₂</p>
+      <p><strong>Polyatomic:</strong> 4+ atoms — CH₄, C₆H₁₂O₆</p>
+    </div>
+    <div class="card card-blue">
+      <h3>By Atom Type</h3>
+      <p><strong>Homoatomic:</strong> Only ONE element — O₂, N₂, P₄</p>
+      <p><strong>Heteroatomic:</strong> TWO or more elements — H₂O, CO₂, NaCl</p>
+      <br>
+      <p style="font-size:0.85rem; color:var(--muted)">These two classification systems are independent — a molecule can be both diatomic AND homoatomic (like O₂), or triatomic AND heteroatomic (like CO₂).</p>
+    </div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 Memory Trick — Greek Prefixes</div>
+    <p><strong>Mono</strong>=1, <strong>Di</strong>=2, <strong>Tri</strong>=3, <strong>Tetra</strong>=4, <strong>Penta</strong>=5... These same Greek prefixes appear EVERYWHERE — covalent naming, surgical prefixes (trimeter?), drug names. Learn them once, use them forever. <em>Trigeminal</em> neuralgia? Tri = 3 branches of the nerve!</p>
+  </div>
+
+  <div class="card card-accent">
+    <h3>CO₂ Breakdown</h3>
+    <p>CO₂ = 1 Carbon + 2 Oxygen = <strong>3 atoms total</strong> → <span class="hl">Triatomic ✓</span></p>
+    <p>CO₂ has C AND O = <strong>two different elements</strong> → <span class="hl">Heteroatomic ✓</span></p>
+    <p style="margin-top:0.5rem; font-size:0.88rem; color:var(--muted)">So CO₂ earns BOTH labels simultaneously — just like a person can be both "tall" and "brunette"!</p>
+  </div>
+</div>
+
+<!-- ===================== Q4: MASS ===================== -->
+<div id="mass" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">04</div>
+    <div class="section-title-block">
+      <h2>Mass vs. Weight</h2>
+      <div class="subtitle">Q4 · "Define Mass"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-blue">Definitions</span>
+        <span class="tag tag-gold">Conceptual</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Astronaut Analogy</div>
+    <p>Here's the most mind-bending distinction in basic science: <strong>Mass never changes. Weight does.</strong> If you weigh 70 kg on Earth, you'd weigh about 11.5 kg on the Moon — but your <em>mass</em> is still exactly 70 kg everywhere in the universe. Mass is <em>how much matter you ARE</em>. Weight is how hard gravity pulls on that matter.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-blue">
+      <h3>Mass</h3>
+      <p><strong>Definition:</strong> The amount of matter in an object</p>
+      <p><strong>Unit:</strong> grams (g), kilograms (kg)</p>
+      <p><strong>Changes with gravity?</strong> ❌ Never</p>
+      <p><strong>Measured by:</strong> Balance/scale</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Weight</h3>
+      <p><strong>Definition:</strong> The force of gravity on an object</p>
+      <p><strong>Unit:</strong> Newtons (N), pounds (lbs)</p>
+      <p><strong>Changes with gravity?</strong> ✅ Yes!</p>
+      <p><strong>Formula:</strong> W = m × g</p>
+    </div>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection</div>
+    <p>In pharmacology and nursing, we ALWAYS use <strong>mass</strong> (kg or g), never "weight" in the colloquial sense. Drug dosing is in mg/kg — the patient's <em>mass</em> in kilograms. This is why scales in hospitals read out in kg. Dosing error prevention starts with understanding this distinction.</p>
+  </div>
+</div>
+
+<!-- ===================== Q5: TEMPERATURE ===================== -->
+<div id="temp" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">05</div>
+    <div class="section-title-block">
+      <h2>Temperature Conversions</h2>
+      <div class="subtitle">Q5 · "Convert 88°F to Kelvin"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-red">Math</span>
+        <span class="tag tag-gold">High-Yield</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Three Scales Explained</div>
+    <p><strong>Fahrenheit</strong> = the American way (water freezes at 32°F, boils at 212°F). <strong>Celsius</strong> = the scientific/world way (water: 0°C to 100°C). <strong>Kelvin</strong> = the universe's way — starts at <em>absolute zero</em>, the coldest anything can ever be (-273°C). There's no such thing as negative Kelvin. It's the only scale with a true zero.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>The Conversion Formulas</h3>
+      <div class="formula-display" style="font-size:1rem; margin: 0.5rem 0;">°C = (°F − 32) × 5/9</div>
+      <div class="formula-display" style="font-size:1rem; margin: 0.5rem 0;">K = °C + 273</div>
+      <div class="formula-display" style="font-size:1rem; margin: 0.5rem 0;">K = (5/9)(°F − 32) + 273</div>
+    </div>
+    <div class="card card-gold">
+      <h3>Q5 Worked — 88°F to Kelvin</h3>
+      <ol class="steps">
+        <li><div class="step-content"><strong>Start with the combined formula</strong><p>K = (5/9)(°F − 32) + 273</p></div></li>
+        <li><div class="step-content"><strong>Plug in 88°F</strong><p>K = (5/9)(88 − 32) + 273 = (0.556)(56) + 273</p></div></li>
+        <li><div class="step-content"><strong>Calculate</strong><p>= 31.11 + 273 = <strong>304.11 K ≈ 304 K</strong></p></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="temp-converter">
+    <h4>🌡️ Live Temperature Converter</h4>
+    <div class="temp-row">
+      <input type="number" class="temp-input" id="tempInput" placeholder="Enter temperature" />
+      <select class="atom-select" id="tempFrom">
+        <option value="F">°F (Fahrenheit)</option>
+        <option value="C">°C (Celsius)</option>
+        <option value="K">K (Kelvin)</option>
+      </select>
+      <button class="temp-btn" onclick="convertTemp()">Convert All →</button>
+    </div>
+    <div class="temp-result" id="tempResult"></div>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection</div>
+    <p>Normal body temperature is <strong>37°C = 98.6°F = 310 K</strong>. A fever of 40°C (104°F) = 313 K. Kelvin matters in lab contexts: gas law calculations for respiratory therapy, anesthesia machines, and hyperbaric oxygen chambers all use Kelvin — PV = nRT requires absolute temperature!</p>
+  </div>
+</div>
+
+<!-- ===================== Q6: ATOMIC STRUCTURE ===================== -->
+<div id="atomic" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">06</div>
+    <div class="section-title-block">
+      <h2>Atomic Structure</h2>
+      <div class="subtitle">Q6 · "¹⁶O has 8 protons, 8 electrons, and 8 neutrons"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-teal">Atomic Theory</span>
+        <span class="tag tag-gold">High-Yield</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Solar System Analogy</div>
+    <p>An atom is like a tiny solar system. The <strong>nucleus</strong> (protons + neutrons) is the Sun — heavy, dense, at the center. The <strong>electrons</strong> are the planets — zipping around in orbits (shells), incredibly light, covering huge distances relative to the nucleus. If the nucleus were the size of a marble, the atom itself would be the size of a football stadium!</p>
+  </div>
+
+  <div class="card card-teal">
+    <h3>The Three Key Relationships</h3>
+    <p>🔵 <strong>Atomic Number (Z)</strong> = # of protons = <em>defines what element it is</em> — change this and you change the element entirely!</p>
+    <p>🟡 <strong>Atomic Mass Number (A)</strong> = # of protons + # of neutrons</p>
+    <p>⚡ <strong># Electrons = # Protons</strong> (in a neutral atom, always!)</p>
+    <p>🔶 <strong># Neutrons = A − Z</strong> (mass number minus atomic number)</p>
+  </div>
+
+  <div class="formula-display">ᴬ_Z Symbol | Neutrons = A − Z</div>
+
+  <div class="atom-builder">
+    <h4>⚛️ Atom Explorer — Select Any Element</h4>
+    <div class="atom-row">
+      <select class="atom-select" id="atomSelect" onchange="exploreAtom()">
+        <option value="">-- Choose an element --</option>
+        <option value="H,1,1,0">Hydrogen-1 (¹H)</option>
+        <option value="C,6,12,6">Carbon-12 (¹²C)</option>
+        <option value="O,8,16,8">Oxygen-16 (¹⁶O)</option>
+        <option value="Na,11,23,12">Sodium-23 (²³Na)</option>
+        <option value="Cl,17,35,18">Chlorine-35 (³⁵Cl)</option>
+        <option value="Ca,20,40,20">Calcium-40 (⁴⁰Ca)</option>
+        <option value="Fe,26,56,30">Iron-56 (⁵⁶Fe)</option>
+        <option value="I,53,127,74">Iodine-127 (¹²⁷I)</option>
+      </select>
+    </div>
+    <div class="atom-result" id="atomResult">
+      <div id="atomName" style="font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:0.75rem; color:var(--gold)"></div>
+      <div class="atom-result-grid">
+        <div class="atom-fact"><span class="fact-val" id="atomProtons">—</span><span class="fact-label">Protons (Z)</span></div>
+        <div class="atom-fact"><span class="fact-val" id="atomElectrons">—</span><span class="fact-label">Electrons</span></div>
+        <div class="atom-fact"><span class="fact-val" id="atomNeutrons">—</span><span class="fact-label">Neutrons</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 Memory Trick for ¹⁶O</div>
+    <p>Oxygen is always atomic number 8 (8th on periodic table). Mass number is 16. So neutrons = 16 − 8 = <strong>8</strong>. Neutral atom so electrons = protons = <strong>8</strong>. Everything about oxygen at its most common isotope = 8, 8, 8. The "lucky number" isotope!</p>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection — Isotopes in Medicine</div>
+    <p>Isotopes are atoms of the same element with different neutron counts. <strong>¹³¹I</strong> (iodine-131) is a radioactive isotope used to treat thyroid cancer — same protons as normal ¹²⁷I, but 4 extra neutrons make it unstable and radioactive. The thyroid gland absorbs ALL iodine indiscriminately, delivering targeted radiation. This is nuclear medicine in action!</p>
+  </div>
+</div>
+
+<!-- ===================== Q7: PERIODIC TABLE ===================== -->
+<div id="periodic" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">07</div>
+    <div class="section-title-block">
+      <h2>Periodic Table Navigation</h2>
+      <div class="subtitle">Q7 · "Period 3, Group 2 = Magnesium (Mg)"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-blue">Periodic Table</span>
+        <span class="tag tag-green">Orientation</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The City Grid Analogy</div>
+    <p>The periodic table is literally a grid map. <strong>Groups</strong> (columns) are like avenues running <em>north-south</em> — families of similar elements. <strong>Periods</strong> (rows) are like streets running <em>east-west</em> — elements in the same electron shell level. Finding an element? "Take Street 3, Avenue 2" = Magnesium. It's Manhattan for molecules!</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-blue">
+      <h3>Orientation Rules</h3>
+      <p>🔛 <strong>Period</strong> = horizontal row (left → right)</p>
+      <p>↕️ <strong>Group</strong> = vertical column (up ↕ down)</p>
+      <p>There are <strong>7 periods</strong> and <strong>18 groups</strong></p>
+      <p style="margin-top:0.75rem; font-size:0.85rem; color:var(--muted)">Period 1 = H and He (only 2 elements — 1 shell). Period 2 = Li to Ne (8 elements — 2nd shell fills up). Etc.</p>
+    </div>
+    <div class="card card-green">
+      <h3>Finding Period 3, Group 2</h3>
+      <p>Period 3 = <strong>row 3</strong> (Na, Mg, Al, Si, P, S, Cl, Ar)</p>
+      <p>Group 2 = <strong>column 2</strong> (Be, Mg, Ca, Sr, Ba, Ra)</p>
+      <p>Intersection = <strong>Magnesium (Mg)</strong> ✓</p>
+      <p style="margin-top:0.5rem; font-size:0.85rem">Group 2 = alkaline earth metals. All form 2+ cations. All have 2 valence electrons!</p>
+    </div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 Mnemonic — Periods vs Groups</div>
+    <p><strong>"Periods go across like pages"</strong> — you read across a page (left to right) = periods go horizontal. <strong>"Groups go up like Grapes on a vine"</strong> — grapes grow on vertical vines = groups are vertical. Period → horizontal. Group → vertical.</p>
+  </div>
+</div>
+
+<!-- ===================== Q8: ELECTRONS ===================== -->
+<div id="electrons" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">08</div>
+    <div class="section-title-block">
+      <h2>Valence Electrons & Groups</h2>
+      <div class="subtitle">Q8 · "Calcium is in Group 2, so it has 2 valence electrons"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-purple">Electron Config</span>
+        <span class="tag tag-gold">Reactivity</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Apartment Building Analogy</div>
+    <p>Think of an atom as an apartment building. Each floor (shell/energy level) has a limited number of rooms. <strong>Valence electrons</strong> are the tenants on the <em>top floor</em> — they're the ones who interact with neighbors (other atoms), sign leases (form bonds), and drive all of chemistry. Electrons on lower floors? They're safely tucked away and chemically inert in most reactions.</p>
+  </div>
+
+  <div class="card card-purple">
+    <h3>The Shortcut: Group Number = Valence Electrons</h3>
+    <p>For the <strong>main group elements</strong> (Groups 1, 2, 13–18), the group number tells you the valence electron count directly:</p>
+    <p>Group 1 → 1 valence e⁻ (Li, Na, K...)</p>
+    <p>Group 2 → 2 valence e⁻ (Be, Mg, Ca...)</p>
+    <p>Group 13 → 3 valence e⁻ (B, Al...)</p>
+    <p>Group 17 → 7 valence e⁻ (F, Cl, Br...)</p>
+    <p>Group 18 → 8 valence e⁻ (Noble gases — full outer shell!)</p>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection — Calcium's 2 Valence Electrons</div>
+    <p>Calcium (Group 2) readily loses its 2 valence electrons to form Ca²⁺. This ion is fundamental in physiology: cardiac action potentials, muscle contraction (including the heart!), neurotransmitter release, bone mineralization, and blood clotting. The drug class "calcium channel blockers" (amlodipine, diltiazem) exploits this directly — blocking Ca²⁺ entry into cardiac muscle cells to lower heart rate and BP.</p>
+  </div>
+</div>
+
+<!-- ===================== Q9–10: IONS ===================== -->
+<div id="ions" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">09–10</div>
+    <div class="section-title-block">
+      <h2>Ions: Cations & Anions</h2>
+      <div class="subtitle">Q9 · "Sulfur → S²⁻" | Q10 · "Magnesium → Mg²⁺"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-red">Cations</span>
+        <span class="tag tag-blue">Anions</span>
+        <span class="tag tag-gold">High-Yield</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Popularity Contest Analogy</div>
+    <p>Electrons are like social media followers. <strong>Atoms want a full outer shell</strong> — that's the "perfect follower count" (8 for most = octet rule). Metals on the left side say <em>"I have too many — I'll donate them"</em> → become <strong>cations (+)</strong>. Nonmetals on the right say <em>"I need more!"</em> → steal electrons → become <strong>anions (−)</strong>. The driving force of ALL ionic chemistry!</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>Cations (+) — Metals Lose</h3>
+      <p><strong>Formula:</strong> Lose electrons → fewer electrons than protons → net positive charge</p>
+      <p><strong>Examples:</strong></p>
+      <p>Na → Na⁺ (loses 1e⁻)</p>
+      <p>Mg → Mg²⁺ (loses 2e⁻) ✓ Q10</p>
+      <p>Ca → Ca²⁺ (loses 2e⁻)</p>
+      <p>Al → Al³⁺ (loses 3e⁻)</p>
+    </div>
+    <div class="card card-blue">
+      <h3>Anions (−) — Nonmetals Gain</h3>
+      <p><strong>Formula:</strong> Gain electrons → more electrons than protons → net negative charge</p>
+      <p><strong>Examples:</strong></p>
+      <p>F → F⁻ (gains 1e⁻)</p>
+      <p>O → O²⁻ (gains 2e⁻)</p>
+      <p>N → N³⁻ (gains 3e⁻)</p>
+      <p>S → S²⁻ (gains 2e⁻) ✓ Q9</p>
+    </div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 Memory Tricks</div>
+    <p><strong>CAT-ion</strong> — a CAT has PAWS (PAWSitive = positive). Cations are positive.<br>
+    <strong>AN-ion</strong> — AN-ion has a negative connotation. Anions are negative.<br>
+    <strong>Why S²⁻?</strong> Sulfur is in Group 16 → has 6 valence electrons → needs 2 more to fill its outer shell to 8 → gains 2 electrons → charge = −2.</p>
+  </div>
+
+  <table class="ion-table">
+    <thead>
+      <tr><th>Element</th><th>Group</th><th>Ion Formed</th><th>Electrons Lost/Gained</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+      <tr class="cation-row"><td>Na</td><td>1</td><td>Na⁺</td><td>Loses 1</td><td>Cation</td></tr>
+      <tr class="cation-row"><td>Mg</td><td>2</td><td>Mg²⁺</td><td>Loses 2</td><td>Cation</td></tr>
+      <tr class="cation-row"><td>Al</td><td>13</td><td>Al³⁺</td><td>Loses 3</td><td>Cation</td></tr>
+      <tr class="anion-row"><td>N</td><td>15</td><td>N³⁻</td><td>Gains 3</td><td>Anion</td></tr>
+      <tr class="anion-row"><td>O</td><td>16</td><td>O²⁻</td><td>Gains 2</td><td>Anion</td></tr>
+      <tr class="anion-row"><td>S</td><td>16</td><td>S²⁻</td><td>Gains 2</td><td>Anion</td></tr>
+      <tr class="anion-row"><td>Cl</td><td>17</td><td>Cl⁻</td><td>Gains 1</td><td>Anion</td></tr>
+    </tbody>
+  </table>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection — Electrolytes ARE Ions</div>
+    <p>Every single electrolyte on a BMP/CMP panel is an ion: Na⁺, K⁺, Cl⁻, HCO₃⁻, Ca²⁺, Mg²⁺. When a patient has hypokalemia (low K⁺), we're talking about insufficient potassium cations in the blood. IV replacement therapy literally puts ions back into circulation. Understanding ionic charges = understanding electrolyte physiology.</p>
+  </div>
+</div>
+
+<!-- ===================== Q11–12: PERIODIC TRENDS ===================== -->
+<div id="trends" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">11–12</div>
+    <div class="section-title-block">
+      <h2>Periodic Trends</h2>
+      <div class="subtitle">Q11 · Ionization Energy | Q12 · Atomic Size</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-red">Ionization Energy</span>
+        <span class="tag tag-blue">Atomic Radius</span>
+        <span class="tag tag-gold">High-Yield</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Gravitational Pull Analogy — The Single Best Explanation</div>
+    <p>Imagine a tug-of-war between the nucleus and the outer electrons. <strong>More protons</strong> = stronger pull = harder to remove an electron = higher ionization energy + smaller atomic radius. <strong>More electron shells</strong> = electrons are farther away = weaker pull = easier to remove = lower ionization energy + larger radius. It's ALL about nuclear attraction vs distance!</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="trend-visual">
+      <h4>⚡ Ionization Energy</h4>
+      <div style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem">Energy needed to REMOVE an electron from a neutral atom</div>
+      <div style="background: linear-gradient(135deg, #fef3c7, #f59e0b); height: 100px; border-radius: 8px; display:flex; align-items:center; justify-content:center; position:relative; margin-bottom:0.75rem;">
+        <div style="position:absolute; top:8px; left:8px; font-size:0.75rem; color:#92400e;">Low (Na)</div>
+        <div style="position:absolute; top:8px; right:8px; font-size:0.75rem; color:#78350f; font-weight:bold">High (Cl)</div>
+        <div style="font-size:2rem;">→</div>
+        <div style="position:absolute; bottom:8px; font-size:0.75rem; color:#78350f">Increases left to right across period</div>
+      </div>
+      <div style="background: linear-gradient(to bottom, #f59e0b, #fef3c7); height: 80px; border-radius: 8px; display:flex; align-items:center; justify-content:center; position:relative;">
+        <div style="position:absolute; top:8px; font-size:0.75rem; color:#78350f; font-weight:bold">High (Li)</div>
+        <div style="position:absolute; bottom:8px; font-size:0.75rem; color:#92400e">Low (Cs)</div>
+        <div style="font-size:2rem;">↓</div>
+      </div>
+      <div style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem">Decreases down a group</div>
+    </div>
+
+    <div class="trend-visual">
+      <h4>⚛️ Atomic Size (Radius)</h4>
+      <div style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem">Opposite trend to ionization energy!</div>
+      <div style="background: linear-gradient(135deg, #bfdbfe, #3b82f6); height: 100px; border-radius: 8px; display:flex; align-items:center; justify-content:center; position:relative; margin-bottom:0.75rem;">
+        <div style="position:absolute; top:8px; left:8px; font-size:0.75rem; color:#fff; font-weight:bold">Large (Na)</div>
+        <div style="position:absolute; top:8px; right:8px; font-size:0.75rem; color:#dbeafe;">Small (Cl)</div>
+        <div style="font-size:2rem; color:white">←</div>
+        <div style="position:absolute; bottom:8px; font-size:0.75rem; color:#dbeafe">Decreases left to right across period</div>
+      </div>
+      <div style="background: linear-gradient(to bottom, #dbeafe, #3b82f6); height: 80px; border-radius: 8px; display:flex; align-items:center; justify-content:center; position:relative;">
+        <div style="position:absolute; top:8px; font-size:0.75rem; color:#1e40af">Small (Li)</div>
+        <div style="position:absolute; bottom:8px; font-size:0.75rem; color:#bfdbfe; font-weight:bold">Large (Cs)</div>
+        <div style="font-size:2rem; color:white">↓</div>
+      </div>
+      <div style="font-size:0.8rem; color:var(--muted); margin-top:0.5rem">Increases down a group</div>
+    </div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 The ONLY Trick You Need — "They're OPPOSITES"</div>
+    <p>Ionization energy and atomic size move in <strong>exactly opposite directions</strong>. Big atom = low IE. Small atom = high IE. If you know one trend, you automatically know the other. Think: a small, dense nucleus with lots of protons holds electrons TIGHTLY (hard to remove = high IE, small size). Big fluffy atom with few protons? Electrons hang loose (easy to remove = low IE, large size).</p>
+  </div>
+
+  <div class="callout">
+    <strong>Why does size decrease left → right across a period?</strong> As you add protons (moving right), the nucleus becomes more positive and pulls all the electrons in TIGHTER — even though you're adding electrons too, they go into the same shell, so they don't add much shielding. Net result: stronger pull → smaller atom.
+  </div>
+</div>
+
+<!-- ===================== Q13: NAMING ===================== -->
+<div id="naming" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">13</div>
+    <div class="section-title-block">
+      <h2>Chemical Nomenclature</h2>
+      <div class="subtitle">Q13 · Na₂S = "Sodium Sulfide" | CBr₄ = "Carbon Tetrabromide"</div>
+      <div style="margin-top:0.5rem">
+        <span class="tag tag-red">Ionic Naming</span>
+        <span class="tag tag-blue">Covalent Naming</span>
+        <span class="tag tag-gold">High-Yield</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Naming Game Analogy</div>
+    <p>Chemical naming is like baby naming with rules. <strong>Ionic compounds</strong> are like traditional families — the metal parent's name comes first, unchanged (Dad's name). The nonmetal parent gets a nickname ending in "-ide" (Mom becomes "oxide" or "sulfide"). <strong>Covalent compounds</strong> are like modern naming — we count how many of each child there are with Greek prefixes (one child = no prefix/mono, two = di, four = tetra).</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h3>Ionic Naming Rules</h3>
+      <p><strong>Formula:</strong> Metal name + Nonmetal stem + "-ide"</p>
+      <p><code>NaCl</code> → Sodium + chlor + ide = <strong>Sodium Chloride</strong></p>
+      <p><code>Na₂S</code> → Sodium + sulf + ide = <strong>Sodium Sulfide</strong> ✓</p>
+      <p><code>CaO</code> → Calcium + ox + ide = <strong>Calcium Oxide</strong></p>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted)">The subscript numbers in Na₂S tell you the ratio (charge balance), not the name!</p>
+    </div>
+    <div class="card card-blue">
+      <h3>Covalent Naming Rules</h3>
+      <p><strong>Formula:</strong> [Prefix]element1 + [Prefix]element2stem + "-ide"</p>
+      <p><code>CO</code> = carbon <strong>mon</strong>oxide (1 oxygen)</p>
+      <p><code>CO₂</code> = carbon <strong>di</strong>oxide (2 oxygens)</p>
+      <p><code>CBr₄</code> = carbon <strong>tetra</strong>bromide ✓</p>
+      <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--muted)">"mono" is SKIPPED for the FIRST element only — never say "monocarbon"!</p>
+    </div>
+  </div>
+
+  <div class="naming-builder">
+    <h4>🔤 Naming Builder — Ionic Examples</h4>
+    <div class="name-formula-row">
+      <div class="formula-part">Na₂S</div>
+      <div class="arrow-center">→</div>
+      <div class="name-result">Sodium Sulfide</div>
+    </div>
+    <div class="name-formula-row">
+      <div class="formula-part">MgO</div>
+      <div class="arrow-center">→</div>
+      <div class="name-result">Magnesium Oxide</div>
+    </div>
+    <div class="name-formula-row">
+      <div class="formula-part">AlCl₃</div>
+      <div class="arrow-center">→</div>
+      <div class="name-result">Aluminum Chloride</div>
+    </div>
+    <div class="name-formula-row">
+      <div class="formula-part">CBr₄</div>
+      <div class="arrow-center">→</div>
+      <div class="name-result">Carbon Tetrabromide</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-box-header">Greek Prefixes for Covalent Naming</div>
+    <div class="rule-row rule-row-header"><div>Number</div><div>Prefix</div><div>Example</div></div>
+    <div class="rule-row"><div>1</div><div class="example">mono* (skip for first element)</div><div class="count">CO</div></div>
+    <div class="rule-row"><div>2</div><div class="example">di-</div><div class="count">CO₂</div></div>
+    <div class="rule-row"><div>3</div><div class="example">tri-</div><div class="count">PCl₃</div></div>
+    <div class="rule-row"><div>4</div><div class="example">tetra-</div><div class="count">CBr₄ ✓</div></div>
+    <div class="rule-row"><div>5</div><div class="example">penta-</div><div class="count">PCl₅</div></div>
+    <div class="rule-row"><div>6</div><div class="example">hexa-</div><div class="count">SF₆</div></div>
+  </div>
+
+  <div class="memory-trick">
+    <div class="trick-label">🧠 How to tell Ionic from Covalent INSTANTLY</div>
+    <p><strong>Metal + Nonmetal = Ionic</strong> (use "-ide" naming, no prefixes)<br>
+    <strong>Nonmetal + Nonmetal = Covalent</strong> (use Greek prefix naming)<br>
+    Quick check: Is the first element a metal? Look at the left side of the periodic table. Metals = ionic. Both elements on the right? Covalent. Na₂S → Na is a metal → ionic. CBr₄ → C is a nonmetal → covalent!</p>
+  </div>
+
+  <div class="clinical-box">
+    <div class="clinical-label">🏥 Clinical Connection — Drug Names Use This!</div>
+    <p>Pharmaceutical nomenclature borrows directly from chemistry. <strong>Sodium chloride</strong> (NaCl = ionic, metal + nonmetal) is normal saline. <strong>Nitrous oxide</strong> (N₂O = covalent, nonmetal + nonmetal) is laughing gas used in anesthesia. <strong>Carbon dioxide</strong> (CO₂) — the molecule we're constantly monitoring in ABGs. You're already naming clinical compounds correctly!</p>
+  </div>
+</div>
+
+<!-- ===================== RESOURCES ===================== -->
+<div id="resources" class="concept-section">
+  <div class="section-header">
+    <div class="q-number">🔗</div>
+    <div class="section-title-block">
+      <h2>Interactive Resources</h2>
+      <div class="subtitle">Curated online tools — interactive, visual, and free</div>
+    </div>
+  </div>
+
+  <div class="card card-gold">
+    <h3>🌐 Best Interactive Websites for CHM-130</h3>
+    <p>These are handpicked resources that complement exactly what's in Week 1. Bookmark them all!</p>
+  </div>
+
+  <div class="resources-grid">
+    <a class="resource-card" href="https://www.ptable.com" target="_blank">
+      <span class="res-icon">⚛️</span>
+      <div class="res-badge">FREE</div>
+      <div class="res-title">PTable.com</div>
+      <div class="res-desc">Click any element to see atomic structure, isotopes, electron config, trends — the most interactive periodic table online</div>
+    </a>
+    <a class="resource-card" href="https://phet.colorado.edu/en/simulations/build-an-atom" target="_blank">
+      <span class="res-icon">🔬</span>
+      <div class="res-badge">PHET</div>
+      <div class="res-title">Build an Atom (PhET)</div>
+      <div class="res-desc">University of Colorado simulation — drag protons/neutrons/electrons to build atoms and see the resulting element and ion</div>
+    </a>
+    <a class="resource-card" href="https://phet.colorado.edu/en/simulations/isotopes-and-atomic-mass" target="_blank">
+      <span class="res-icon">⚖️</span>
+      <div class="res-badge">PHET</div>
+      <div class="res-title">Isotopes & Atomic Mass</div>
+      <div class="res-desc">Interactive isotope exploration — see how neutrons affect atomic mass and stability</div>
+    </a>
+    <a class="resource-card" href="https://www.chemicalaid.com/tools/sigfigcalculator.php" target="_blank">
+      <span class="res-icon">🔢</span>
+      <div class="res-badge">TOOL</div>
+      <div class="res-title">Sig Fig Calculator</div>
+      <div class="res-desc">Enter any number and get detailed sig fig analysis with explanations for each digit</div>
+    </a>
+    <a class="resource-card" href="https://www.khanacademy.org/science/chemistry/atomic-structure-and-properties" target="_blank">
+      <span class="res-icon">📚</span>
+      <div class="res-badge">KHAN</div>
+      <div class="res-title">Khan Academy Chemistry</div>
+      <div class="res-desc">Free videos and practice problems covering all Week 1 topics — atomic structure, periodic trends, naming</div>
+    </a>
+    <a class="resource-card" href="https://www.sciencemadeeasy.co.uk/gcse_science/chemistry/periodic_table/periodic_trends/index.htm" target="_blank">
+      <span class="res-icon">📊</span>
+      <div class="res-badge">VISUAL</div>
+      <div class="res-title">Periodic Trends Visual</div>
+      <div class="res-desc">Color-coded visual maps of atomic radius, ionization energy, and electronegativity across the periodic table</div>
+    </a>
+    <a class="resource-card" href="https://phet.colorado.edu/en/simulations/density" target="_blank">
+      <span class="res-icon">🪨</span>
+      <div class="res-badge">PHET</div>
+      <div class="res-title">Density Simulation (PhET)</div>
+      <div class="res-desc">Visual density lab — compare masses and volumes of materials in virtual water tanks</div>
+    </a>
+    <a class="resource-card" href="https://www.chemspider.com" target="_blank">
+      <span class="res-icon">🧬</span>
+      <div class="res-badge">DATABASE</div>
+      <div class="res-title">ChemSpider</div>
+      <div class="res-desc">Royal Society of Chemistry's free database — search any compound name or formula to see 3D structure, properties, and clinical uses</div>
+    </a>
+    <a class="resource-card" href="https://quizlet.com/search?query=chm+130+significant+figures&type=sets" target="_blank">
+      <span class="res-icon">🃏</span>
+      <div class="res-badge">QUIZ</div>
+      <div class="res-title">Quizlet — Sig Figs & Naming</div>
+      <div class="res-desc">Thousands of flashcard sets for sig figs, periodic trends, ion formation, and chemical naming</div>
+    </a>
+  </div>
+
+  <div class="card card-teal" style="margin-top:1.5rem">
+    <h3>📱 Recommended YouTube Channels</h3>
+    <p><strong>Professor Dave Explains</strong> — Short, clear chemistry videos perfect for CHM-130 level</p>
+    <p><strong>Crash Course Chemistry</strong> — Entertaining, fast-paced overviews of every topic</p>
+    <p><strong>Tyler DeWitt</strong> — Best for visual learners; specializes in making chemistry analogies memorable</p>
+    <p><strong>The Organic Chemistry Tutor</strong> — Extensive practice problems with worked solutions; excellent for exam prep</p>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<footer class="footer">
+  <span>© Tehranilabs</span> · CHM-130 Week 1 Interactive Study Guide · Arizona College of Nursing
+</footer>
+
+<script>
+// NAV
+function showSection(id) {
+  document.querySelectorAll('.concept-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// SIG FIG COUNTER
+function countSigFigs() {
+  const raw = document.getElementById('sfInput').value.trim();
+  const res = document.getElementById('sfResult');
+  if (!raw) { res.innerHTML = ''; return; }
+
+  // Remove scientific notation for analysis
+  let numStr = raw.toLowerCase().replace(/\s/g, '');
+  let coeff = numStr;
+  if (numStr.includes('e') || numStr.includes('x10')) {
+    coeff = numStr.split(/e|x10/)[0];
+  }
+  coeff = coeff.replace(/^[+-]/, '');
+
+  const hasDec = coeff.includes('.');
+  const digits = coeff.replace('.', '');
+  
+  let count = 0;
+  let explanation = [];
+  let started = false;
+  
+  for (let i = 0; i < digits.length; i++) {
+    const d = digits[i];
+    if (d !== '0') {
+      started = true;
+      count++;
+    } else {
+      if (!started) {
+        // leading zero — not sig
+      } else if (i < digits.length - 1 || hasDec) {
+        // embedded or trailing with decimal
+        count++;
+        if (!started) started = true;
+      }
+    }
+  }
+  
+  // trailing zeros in integers without decimal
+  if (!hasDec) {
+    // already handled above
+  }
+  
+  if (isNaN(parseFloat(raw))) {
+    res.innerHTML = '<span style="color:#f87171">Not a valid number</span>';
+    return;
+  }
+
+  res.innerHTML = `<span class="correct">→ ${count} significant figure${count !== 1 ? 's' : ''}</span>
+  <div class="detail">Number analyzed: ${coeff}${numStr.includes('e') ? ' (coefficient only)' : ''}</div>`;
+}
+
+// DENSITY CALC
+function calcDensity(solve) {
+  const m = parseFloat(document.getElementById('dcMass').value);
+  const d = parseFloat(document.getElementById('dcDens').value);
+  const v = parseFloat(document.getElementById('dcVol').value);
+  const res = document.getElementById('dcResult');
+  
+  if (solve === 'V') {
+    if (isNaN(m) || isNaN(d)) { res.textContent = 'Enter Mass and Density'; return; }
+    res.textContent = `Volume = ${m} ÷ ${d} = ${(m/d).toFixed(2)} mL`;
+    document.getElementById('dcVol').value = (m/d).toFixed(2);
+  } else if (solve === 'M') {
+    if (isNaN(d) || isNaN(v)) { res.textContent = 'Enter Density and Volume'; return; }
+    res.textContent = `Mass = ${d} × ${v} = ${(d*v).toFixed(2)} g`;
+    document.getElementById('dcMass').value = (d*v).toFixed(2);
+  } else {
+    if (isNaN(m) || isNaN(v)) { res.textContent = 'Enter Mass and Volume'; return; }
+    res.textContent = `Density = ${m} ÷ ${v} = ${(m/v).toFixed(3)} g/mL`;
+    document.getElementById('dcDens').value = (m/v).toFixed(3);
+  }
+}
+
+// TEMP CONVERTER
+function convertTemp() {
+  const val = parseFloat(document.getElementById('tempInput').value);
+  const from = document.getElementById('tempFrom').value;
+  const res = document.getElementById('tempResult');
+  if (isNaN(val)) { res.textContent = 'Enter a valid number'; return; }
+  
+  let c, f, k;
+  if (from === 'F') { f = val; c = (val - 32) * 5/9; k = c + 273.15; }
+  else if (from === 'C') { c = val; f = c * 9/5 + 32; k = c + 273.15; }
+  else { k = val; c = val - 273.15; f = c * 9/5 + 32; }
+  
+  res.innerHTML = `${f.toFixed(2)}°F &nbsp;|&nbsp; ${c.toFixed(2)}°C &nbsp;|&nbsp; ${k.toFixed(2)} K`;
+}
+
+// ATOM EXPLORER
+function exploreAtom() {
+  const val = document.getElementById('atomSelect').value;
+  if (!val) return;
+  const [sym, Z, A, N] = val.split(',');
+  document.getElementById('atomName').textContent = `${sym} — Atomic #${Z}, Mass #${A}`;
+  document.getElementById('atomProtons').textContent = Z;
+  document.getElementById('atomElectrons').textContent = Z;
+  document.getElementById('atomNeutrons').textContent = N;
+  document.getElementById('atomResult').classList.add('show');
+}
+</script>
+</body>
+</html>

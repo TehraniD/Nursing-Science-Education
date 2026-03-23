@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 2: Freezing Point Depression - Road Salt Edition</title>
+    <style>
+        body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.5; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #1a5276; border-bottom: 3px solid #1a5276; padding-bottom: 10px; text-align: center; }
+        h2 { color: #2874a6; border-bottom: 2px solid #2874a6; padding-bottom: 5px; margin-top: 25px; }
+        h3 { color: #3498db; margin-top: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #2874a6; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .equation { font-family: "Times New Roman", serif; font-size: 14pt; text-align: center; padding: 15px; background-color: #eef4f9; border: 2px solid #2874a6; margin: 15px 0; font-weight: bold; }
+        .info-box { background-color: #e8f4f8; border: 1px solid #2874a6; padding: 15px; margin: 15px 0; border-radius: 5px; }
+        .warning-box { background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin: 15px 0; }
+        .example-box { background-color: #d4edda; border: 2px solid #28a745; padding: 15px; margin: 15px 0; }
+        .answer-line { border-bottom: 1px solid #333; display: inline-block; min-width: 100px; margin: 5px 0; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #1a5276; }
+        .calc-box { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; margin: 10px 0; }
+        .graph-box { border: 2px solid #333; padding: 20px; margin: 15px 0; min-height: 150px; background-color: #fff; }
+    </style>
+</head>
+<body>
+
+<h1>⚗ Lab 2: Freezing Point Depression</h1>
+<h2 style="text-align: center; border: none; color: #666;">"Why Is My City Dumping Salt Everywhere?"</h2>
+
+<p style="text-align: center;"><strong>Name:</strong> _______________________ <strong>Date:</strong> _______ <strong>Section:</strong> _______</p>
+
+<hr>
+
+<h2>The Big Picture</h2>
+<p>Every winter, cities spend millions dumping salt on roads. Why? Because salt <strong>lowers the freezing point of water</strong>, preventing ice from forming. Today you'll calculate exactly how much protection different salts provide — and discover why salt stops working in extreme cold.</p>
+
+<h2>The Formula</h2>
+<div class="equation">
+    ΔT = i × k<sub>f</sub> × m
+</div>
+
+<table>
+    <tr><th>Symbol</th><th>Meaning</th><th>Value</th></tr>
+    <tr><td><strong>ΔT</strong></td><td>Freezing point depression</td><td>°C (what we calculate)</td></tr>
+    <tr><td><strong>i</strong></td><td>van't Hoff factor (# of particles)</td><td>NaCl = 2, CaCl₂ = 3</td></tr>
+    <tr><td><strong>k<sub>f</sub></strong></td><td>Freezing point constant for water</td><td>1.86 °C/m</td></tr>
+    <tr><td><strong>m</strong></td><td>Molality (mol solute / kg solvent)</td><td>mol/kg</td></tr>
+</table>
+
+<hr>
+
+<h2>Worked Example: Calculating Freezing Point Depression</h2>
+
+<div class="example-box">
+    <h3>Example: Light Salt (2.5 g NaCl in 50 g water)</h3>
+    <p><em>Given: Molar mass NaCl = 58.44 g/mol, k<sub>f</sub> = 1.86 °C/m, i = 2</em></p>
+    
+    <p><strong>Step 1: Calculate moles of NaCl</strong></p>
+    <p style="margin-left: 30px;">moles = mass ÷ molar mass = 2.5 g ÷ 58.44 g/mol = <strong>0.0428 mol</strong></p>
+    
+    <p><strong>Step 2: Calculate molality</strong></p>
+    <p style="margin-left: 30px;">m = moles ÷ kg solvent = 0.0428 mol ÷ 0.050 kg = <strong>0.856 m</strong></p>
+    
+    <p><strong>Step 3: Calculate ΔT</strong></p>
+    <p style="margin-left: 30px;">ΔT = i × k<sub>f</sub> × m = 2 × 1.86 × 0.856 = <strong>3.18 °C</strong></p>
+    
+    <p><strong>Step 4: Find new freezing point</strong></p>
+    <p style="margin-left: 30px;">FP = 0°C − ΔT = 0°C − 3.18°C = <strong>−3.18°C</strong></p>
+</div>
+
+<hr>
+
+<h2>Your Calculations</h2>
+
+<h3>Calculation 1: Heavy Salt (7.5 g NaCl in 50 g water)</h3>
+<div class="calc-box">
+    <p><strong>Step 1:</strong> moles = 7.5 g ÷ 58.44 g/mol = <span class="answer-line"></span> mol</p>
+    <p><strong>Step 2:</strong> m = <span class="answer-line"></span> mol ÷ 0.050 kg = <span class="answer-line"></span> m</p>
+    <p><strong>Step 3:</strong> ΔT = 2 × 1.86 × <span class="answer-line"></span> = <span class="answer-line"></span> °C</p>
+    <p><strong>Step 4:</strong> FP = 0°C − <span class="answer-line"></span> = <span class="answer-line"></span> °C</p>
+</div>
+
+<div class="example-box">
+    <h3>Example: CaCl₂ Calculation (Note: i = 3!)</h3>
+    <p><em>Given: 3.0 g CaCl₂ in 50 g water. Molar mass CaCl₂ = 110.98 g/mol</em></p>
+    
+    <p><strong>Step 1:</strong> moles = 3.0 g ÷ 110.98 g/mol = <strong>0.0270 mol</strong></p>
+    <p><strong>Step 2:</strong> m = 0.0270 mol ÷ 0.050 kg = <strong>0.541 m</strong></p>
+    <p><strong>Step 3:</strong> ΔT = <u>3</u> × 1.86 × 0.541 = <strong>3.02 °C</strong></p>
+    <p><strong>Step 4:</strong> FP = 0°C − 3.02°C = <strong>−3.02°C</strong></p>
+    <p><em>Notice: CaCl₂ uses i = 3 because it dissociates into 3 ions: Ca²⁺ + 2Cl⁻</em></p>
+</div>
+
+<h3>Calculation 2: Premium Salt (5.0 g CaCl₂ in 50 g water)</h3>
+<div class="calc-box">
+    <p><strong>Step 1:</strong> moles = 5.0 g ÷ 110.98 g/mol = <span class="answer-line"></span> mol</p>
+    <p><strong>Step 2:</strong> m = <span class="answer-line"></span> mol ÷ 0.050 kg = <span class="answer-line"></span> m</p>
+    <p><strong>Step 3:</strong> ΔT = 3 × 1.86 × <span class="answer-line"></span> = <span class="answer-line"></span> °C</p>
+    <p><strong>Step 4:</strong> FP = 0°C − <span class="answer-line"></span> = <span class="answer-line"></span> °C</p>
+</div>
+
+<h3>Pre-Lab Summary Table</h3>
+<table>
+    <tr><th>Solution</th><th>Salt</th><th>Water</th><th>Molality (m)</th><th>i</th><th>ΔT (°C)</th><th>Expected FP (°C)</th></tr>
+    <tr><td>Control</td><td>0 g</td><td>50 g</td><td>0</td><td>—</td><td>0</td><td>0</td></tr>
+    <tr><td>Light NaCl</td><td>2.5 g</td><td>50 g</td><td>0.856</td><td>2</td><td>3.18</td><td>−3.18 (given)</td></tr>
+    <tr><td>Heavy NaCl</td><td>7.5 g</td><td>50 g</td><td></td><td>2</td><td></td><td></td></tr>
+    <tr><td>CaCl₂</td><td>5.0 g</td><td>50 g</td><td></td><td>3</td><td></td><td></td></tr>
+</table>
+
+<hr>
+
+<h2>The Experiment</h2>
+
+<h3>Materials</h3>
+<ul>
+    <li>Crushed ice, Rock salt (NaCl), Calcium chloride (CaCl₂)</li>
+    <li>Digital thermometer, Beakers (250 mL), Balance, Stirring rod, Stopwatch</li>
+</ul>
+
+<div class="warning-box">
+    <strong>⚠ Safety:</strong> Wear goggles. CaCl₂ releases heat when dissolving. Don't taste anything.
+</div>
+
+<h3>Part A: Calibration (5 min)</h3>
+<ol>
+    <li>Make ice-water slurry, stir 2 min, record stable temperature</li>
+    <li>Thermometer reading: <span class="answer-line"></span> °C &nbsp; Correction: <span class="answer-line"></span> °C</li>
+</ol>
+
+<h3>Part B: Prepare & Test Solutions (30 min)</h3>
+<ol>
+    <li>Label 4 beakers: Control, Light, Heavy, Premium</li>
+    <li>Add 50 g crushed ice + salt (per table above) to each</li>
+    <li>Stir and record temperature every 60 seconds until stable</li>
+</ol>
+
+<h3>Data Collection</h3>
+<table>
+    <tr><th>Time (s)</th><th>Control</th><th>Light NaCl</th><th>Heavy NaCl</th><th>CaCl₂</th></tr>
+    <tr><td>0</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>60</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>120</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>180</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>240</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>300</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>Final</td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h3>Part C: Cold Limit Test (10 min)</h3>
+<p>Create a super-cold bath (ice + lots of salt, target −15°C). Test which solutions freeze:</p>
+<table>
+    <tr><th>Solution</th><th>Freezes at −15°C?</th><th>Why?</th></tr>
+    <tr><td>Control (water)</td><td></td><td></td></tr>
+    <tr><td>Light NaCl</td><td></td><td></td></tr>
+    <tr><td>Heavy NaCl</td><td></td><td></td></tr>
+    <tr><td>CaCl₂</td><td></td><td></td></tr>
+</table>
+
+<hr>
+
+<h2>Results</h2>
+<table>
+    <tr><th>Treatment</th><th>Predicted FP</th><th>Actual FP</th><th>% Error</th></tr>
+    <tr><td>Control</td><td>0°C</td><td></td><td>—</td></tr>
+    <tr><td>Light NaCl</td><td>−3.18°C</td><td></td><td></td></tr>
+    <tr><td>Heavy NaCl</td><td></td><td></td><td></td></tr>
+    <tr><td>CaCl₂</td><td></td><td></td><td></td></tr>
+</table>
+
+<div class="example-box">
+    <h3>% Error Calculation Example</h3>
+    <p>If you predicted −3.18°C but measured −2.8°C:</p>
+    <p style="margin-left: 30px;">% Error = |predicted − actual| ÷ |predicted| × 100</p>
+    <p style="margin-left: 30px;">% Error = |−3.18 − (−2.8)| ÷ 3.18 × 100 = 0.38 ÷ 3.18 × 100 = <strong>12%</strong></p>
+    
+    <p style="margin-top: 15px;"><strong>⚠ Why |predicted| in the denominator?</strong></p>
+    <p style="margin-left: 30px;">Your predicted freezing points are <em>negative</em> numbers (like −3.18°C). If you divide by a negative number, you'd get a negative percent error — which doesn't make sense!</p>
+    <p style="margin-left: 30px;">The absolute value bars | | around "predicted" turn it positive: |−3.18| = 3.18</p>
+    <p style="margin-left: 30px;"><strong>This is correct.</strong> Always divide by the absolute value of your theoretical value.</p>
+</div>
+
+<hr>
+
+<h2>Cost Analysis</h2>
+<div class="example-box">
+    <h3>Example: Cost per Degree of Protection</h3>
+    <p><em>NaCl costs $60/ton. Heavy salt (7.5 g) achieved ΔT = 9.56°C</em></p>
+    <p><strong>Step 1:</strong> Cost of 7.5 g = 7.5 g × ($60 / 907,185 g) = $0.000496</p>
+    <p><strong>Step 2:</strong> Cost per °C = $0.000496 ÷ 9.56°C = <strong>$0.000052 per °C</strong></p>
+</div>
+
+<table>
+    <tr><th>Salt</th><th>Cost/ton</th><th>Mass Used</th><th>ΔT Achieved</th><th>Cost per °C</th></tr>
+    <tr><td>NaCl (Heavy)</td><td>$60</td><td>7.5 g</td><td><span class="answer-line"></span></td><td><span class="answer-line"></span></td></tr>
+    <tr><td>CaCl₂</td><td>$300</td><td>5.0 g</td><td><span class="answer-line"></span></td><td><span class="answer-line"></span></td></tr>
+</table>
+
+<p><strong>Which is more cost-effective?</strong> <span class="answer-line" style="width: 400px;"></span></p>
+
+<hr>
+
+<h2>Analysis Questions</h2>
+
+<p><strong>1.</strong> Why does CaCl₂ produce a greater freezing point depression than NaCl at the same molality?</p>
+<p><span class="answer-line" style="width: 100%;"></span></p>
+
+<p><strong>2.</strong> Why do cities switch from NaCl to CaCl₂ when temperatures drop below −10°C?</p>
+<p><span class="answer-line" style="width: 100%;"></span></p>
+
+<p><strong>3.</strong> Why do cities spray salt brine BEFORE a storm instead of spreading dry salt after?</p>
+<p><span class="answer-line" style="width: 100%;"></span></p>
+
+<p><strong>4.</strong> How does road salt damage the environment? (Name 2 effects)</p>
+<p><span class="answer-line" style="width: 100%;"></span></p>
+
+<p><strong>5.</strong> Storm forecast: −5°C. Which salt should the city use, and why?</p>
+<p><span class="answer-line" style="width: 100%;"></span></p>
+
+<hr>
+
+<h2>Quick Reference</h2>
+<table>
+    <tr><th>Salt</th><th>i</th><th>Effective To</th><th>Cost</th></tr>
+    <tr><td>NaCl</td><td>2</td><td>−9°C (15°F)</td><td>$60/ton</td></tr>
+    <tr><td>CaCl₂</td><td>3</td><td>−29°C (−20°F)</td><td>$300/ton</td></tr>
+    <tr><td>MgCl₂</td><td>3</td><td>−15°C (5°F)</td><td>$180/ton</td></tr>
+</table>
+
+<hr>
+
+<div class="footer">
+    <h2>⚗ TEHRANI ⚗</h2>
+    <p style="font-size: 1.1em;">© Tehrani 2028</p>
+    <p><em>"Every atom in your body was once inside a star that didn't know it was making you — which means you are the universe's most elaborate accident."</em></p>
+    <p style="margin-top:8px; font-size:0.85em; letter-spacing:2px;">H₂O · NaCl · ΔG · ΔH · Kf · Kb</p>
+</div>
+
+</body>
+</html>

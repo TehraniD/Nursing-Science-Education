@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 2: Chemical Kinetics &mdash; Student Worksheet</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --primary: #1a56db;
+            --primary-light: #e8effc;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --teal: #0d9488;
+            --teal-light: #ccfbf1;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container { max-width: 920px; margin: 0 auto; padding: 40px 24px 80px; }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #064e3b 0%, #059669 60%, #34d399 100%);
+            color: white; padding: 48px 40px; border-radius: var(--radius);
+            margin-bottom: 32px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; right: -20%;
+            width: 400px; height: 400px; background: rgba(255,255,255,0.06); border-radius: 50%;
+        }
+        .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; position: relative; z-index: 1; }
+        .hero .subtitle { font-size: 1.05rem; opacity: 0.9; position: relative; z-index: 1; }
+        .hero .course-tag {
+            display: inline-block; background: rgba(255,255,255,0.2);
+            padding: 4px 14px; border-radius: 20px; font-size: 0.85rem;
+            font-weight: 500; margin-bottom: 16px; position: relative; z-index: 1;
+        }
+        .hero .meta { margin-top: 18px; font-size: 0.92rem; opacity: 0.85; position: relative; z-index: 1; }
+        .hero .meta span { margin-right: 20px; }
+
+        /* Info banner */
+        .info-banner {
+            background: var(--primary-light); border-left: 4px solid var(--primary);
+            padding: 18px 24px; border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 32px; font-size: 1rem;
+        }
+        .info-banner strong { color: var(--primary); }
+
+        /* Question cards */
+        .question-card {
+            background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+            margin-bottom: 28px; overflow: hidden; border: 1px solid var(--gray-200);
+        }
+        .question-header {
+            padding: 20px 28px; display: flex; align-items: center; gap: 14px;
+        }
+        .question-header.blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-bottom: 2px solid #93c5fd; }
+        .question-header.green { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-bottom: 2px solid #6ee7b7; }
+        .question-header.purple { background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-bottom: 2px solid #c4b5fd; }
+        .question-header.amber { background: linear-gradient(135deg, #fffbeb, #fef3c7); border-bottom: 2px solid #fcd34d; }
+        .question-header.rose { background: linear-gradient(135deg, #fff1f2, #ffe4e6); border-bottom: 2px solid #fda4af; }
+
+        .q-number {
+            font-size: 1.5rem; font-weight: 800; min-width: 44px; height: 44px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; color: white; flex-shrink: 0;
+        }
+        .q-number.blue { background: var(--primary); }
+        .q-number.green { background: var(--accent); }
+        .q-number.purple { background: var(--purple); }
+        .q-number.amber { background: var(--warning); }
+        .q-number.rose { background: var(--danger); }
+
+        .q-info { flex: 1; }
+        .q-info h2 { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); }
+        .q-pts {
+            font-size: 0.8rem; font-weight: 600; padding: 2px 10px;
+            border-radius: 12px; white-space: nowrap;
+        }
+        .q-pts.blue { background: #bfdbfe; color: #1e40af; }
+        .q-pts.green { background: #a7f3d0; color: #065f46; }
+        .q-pts.purple { background: #c4b5fd; color: #5b21b6; }
+        .q-pts.amber { background: #fde68a; color: #92400e; }
+        .q-pts.rose { background: #fecdd3; color: #9f1239; }
+
+        .question-body { padding: 28px; }
+
+        /* Section labels */
+        .section-label {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; padding: 4px 12px; border-radius: 6px; margin-bottom: 12px;
+        }
+        .section-label.walkthrough { background: #e0f2fe; color: #0369a1; }
+        .section-label.method { background: #dbeafe; color: #1e40af; }
+        .section-label.glossary { background: #ccfbf1; color: #115e59; }
+        .section-label.tip { background: #fce7f3; color: #9d174d; }
+        .section-label.mistake { background: #fee2e2; color: #991b1b; }
+        .section-label.memory { background: #ede9fe; color: #5b21b6; }
+
+        /* Walkthrough (hint) boxes */
+        .walkthrough-box {
+            background: #f0f9ff; border: 1px solid #7dd3fc;
+            border-radius: 10px; padding: 18px 22px; margin-bottom: 18px; font-size: 0.96rem;
+        }
+        .walkthrough-box p { margin-bottom: 8px; }
+        .walkthrough-box p:last-child { margin-bottom: 0; }
+
+        /* Blank answer areas */
+        .blank-area {
+            border: 2px dashed #94a3b8; border-radius: 10px;
+            padding: 16px 20px; margin: 12px 0; min-height: 80px; background: #f8fafc;
+            position: relative;
+        }
+        .blank-area::after {
+            content: 'Write your answer here'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 0.82rem; color: #cbd5e1;
+            font-style: italic; pointer-events: none;
+        }
+        .blank-area.has-content::after { display: none; }
+        .blank-area.tall { min-height: 130px; }
+        .blank-area.short { min-height: 52px; }
+        .blank-area.xl { min-height: 180px; }
+
+        /* Scaffolded equation (structure shown, values blank) */
+        .scaffold {
+            background: var(--gray-100); border: 2px dashed #94a3b8;
+            border-radius: 10px; padding: 18px 24px; margin: 12px 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 1rem;
+            text-align: center; line-height: 2.4; overflow-x: auto;
+        }
+        .scaffold .frac {
+            display: inline-flex; flex-direction: column; align-items: center;
+            vertical-align: middle; margin: 0 4px;
+        }
+        .scaffold .frac .num { border-bottom: 2px solid var(--gray-700); padding: 0 6px 3px; }
+        .scaffold .frac .den { padding: 3px 6px 0; }
+        .blank {
+            display: inline-block; border-bottom: 2.5px solid #374151;
+            min-width: 56px; margin: 0 3px; vertical-align: bottom;
+        }
+        .blank.sm { min-width: 32px; }
+        .blank.lg { min-width: 100px; }
+
+        /* Equation display (for given formulas) */
+        .equation {
+            background: var(--gray-100); border: 1px solid var(--gray-200);
+            border-radius: 10px; padding: 18px 24px; margin: 14px 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 1.05rem;
+            text-align: center; line-height: 2; overflow-x: auto;
+        }
+        .equation .frac {
+            display: inline-flex; flex-direction: column; align-items: center;
+            vertical-align: middle; margin: 0 4px;
+        }
+        .equation .frac .num { border-bottom: 2px solid var(--gray-700); padding: 0 6px 3px; }
+        .equation .frac .den { padding: 3px 6px 0; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.95rem; }
+        thead th {
+            background: var(--gray-800); color: white; font-weight: 600;
+            padding: 10px 14px; text-align: center; font-size: 0.88rem;
+        }
+        thead th:first-child { border-radius: 8px 0 0 0; }
+        thead th:last-child { border-radius: 0 8px 0 0; }
+        tbody td { padding: 10px 14px; text-align: center; border-bottom: 1px solid var(--gray-200); }
+        tbody tr:nth-child(even) { background: var(--gray-50); }
+        .data-table thead th { background: var(--primary); }
+
+        /* Sub-parts */
+        .sub-part {
+            background: var(--gray-50); border: 1px solid var(--gray-200);
+            border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+        }
+        .sub-part h4 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+
+        /* Tip/strategy boxes */
+        .tip-box {
+            background: #fce7f3; border: 1px solid #f9a8d4;
+            border-radius: 10px; padding: 16px 20px; margin: 14px 0; font-size: 0.95rem;
+        }
+        .glossary-box {
+            background: var(--teal-light); border: 1px solid #99f6e4;
+            border-radius: 10px; padding: 18px 22px; margin: 14px 0; font-size: 0.95rem;
+        }
+        .glossary-box table { margin: 8px 0 0 0; }
+        .glossary-box td { text-align: left; padding: 6px 12px; }
+        .glossary-box td:first-child { font-weight: 700; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+        .memory-box {
+            background: var(--purple-light); border: 1px solid #c4b5fd;
+            border-radius: 10px; padding: 16px 20px; margin: 14px 0; font-size: 0.95rem;
+        }
+        .mistake-box {
+            background: var(--danger-light); border: 1px solid #fca5a5;
+            border-radius: 10px; padding: 16px 20px; margin: 14px 0; font-size: 0.95rem;
+        }
+        .mistake-box ul { margin: 8px 0 0 18px; }
+        .mistake-box li { margin-bottom: 6px; }
+
+        /* Work steps */
+        .work-steps { margin: 12px 0; }
+        .work-step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+        .step-num {
+            background: var(--primary); color: white; font-weight: 700; font-size: 0.8rem;
+            min-width: 28px; height: 28px; display: flex; align-items: center;
+            justify-content: center; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+        }
+        .step-content { flex: 1; }
+        .step-content p { margin-bottom: 6px; }
+
+        /* Name / date header */
+        .student-header {
+            display: flex; gap: 32px; margin-bottom: 32px; flex-wrap: wrap;
+        }
+        .student-field { flex: 1; min-width: 200px; }
+        .student-field label { font-size: 0.82rem; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px; }
+        .student-field .field-line { border-bottom: 2px solid var(--gray-300); height: 32px; }
+
+        h3 { font-size: 1rem; font-weight: 700; margin: 18px 0 10px; color: var(--gray-900); }
+        sup { font-size: 0.75em; }
+        sub { font-size: 0.75em; }
+        .answer-box ol, .answer-box ul { margin: 8px 0 0 18px; }
+
+        .score-box {
+            display: inline-block; border: 2px solid var(--gray-300);
+            border-radius: 8px; padding: 6px 18px; font-size: 0.85rem;
+            font-weight: 600; color: var(--gray-500); margin-left: auto;
+        }
+
+        @media print {
+            body { background: white; font-size: 10.5pt; }
+            .container { max-width: 100%; padding: 0; }
+            .hero { break-after: avoid; }
+            .question-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; margin-bottom: 18px; }
+        }
+        @media (max-width: 640px) {
+            .container { padding: 16px 12px 60px; }
+            .hero { padding: 28px 20px; }
+            .hero h1 { font-size: 1.5rem; }
+            .question-body { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <span class="course-tag">CHM 152 &bull; Workshop 2</span>
+        <h1>Chemical Kinetics</h1>
+        <div class="subtitle">Student Worksheet &mdash; All 10 Questions (100 pts)</div>
+        <div class="meta">
+            <span>&#128100; Name: _____________________________</span>
+            <span>&#128197; Date: _______________</span>
+            <span>&#128203; Score: _______ / 100</span>
+        </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="info-banner">
+        <strong>How to use this worksheet:</strong> Each question includes a walkthrough hint to guide your thinking. Read the hint, then write your full work and answer in the blank areas provided. Show all steps for full credit.
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q1 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header blue">
+            <div class="q-number blue">1</div>
+            <div class="q-info"><h2>Define Chemical Kinetics &amp; Real-World Examples</h2></div>
+            <span class="q-pts blue">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p><strong>a)</strong> In your own words, define chemical kinetics. What does it study, and what does it NOT tell you?</p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>Think about the difference between <em>whether</em> something happens and <em>how fast</em> it happens.<br>
+                Thermodynamics answers the first question. Kinetics answers the second.<br>
+                <strong>Kitchen analogy:</strong> Thermodynamics tells you that bread will eventually go stale. Kinetics tells you it happens in 3 days on the counter vs. 3 weeks in the freezer.</p>
+            </div>
+
+            <p style="font-size:0.88rem; color:var(--gray-500); margin-bottom:6px;">Definition (3&ndash;4 sentences):</p>
+            <div class="blank-area tall"></div>
+
+            <p style="margin-top:16px;"><strong>b)</strong> Give two real-world examples where the rate of a chemical reaction matters. For each, explain <em>why</em> the rate is important.</p>
+            <p style="font-size:0.88rem; color:var(--gray-500); margin-bottom:6px;">Example 1:</p>
+            <div class="blank-area"></div>
+            <p style="font-size:0.88rem; color:var(--gray-500); margin-bottom:6px;">Example 2:</p>
+            <div class="blank-area"></div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q2 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header green">
+            <div class="q-number green">2</div>
+            <div class="q-info"><h2>Rate Expression: Propane Combustion</h2></div>
+            <span class="q-pts green">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p style="font-size:1.2rem; font-weight:600; margin-bottom:16px; padding:12px 16px; background:var(--gray-100); border-radius:8px;">
+                C<sub>3</sub>H<sub>8</sub>(g) + 5O<sub>2</sub>(g) &rarr; 3CO<sub>2</sub>(g) + 4H<sub>2</sub>O(g)
+            </p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>Imagine a factory where different things are consumed and produced at different speeds, but they&rsquo;re all linked by the recipe (the balanced equation).<br>
+                The rate expression divides each species&rsquo; rate by its stoichiometric coefficient so every term gives the same overall reaction rate.<br>
+                <strong>Rules:</strong> Coefficient goes in the denominator &bull; Reactants get a minus sign &bull; Products stay positive.</p>
+            </div>
+
+            <span class="section-label method">The Rule</span>
+            <div class="equation">
+                For &ensp; aA + bB &rarr; cC + dD:<br>
+                Rate = &minus;<span class="frac"><span class="num">1</span><span class="den">a</span></span><span class="frac"><span class="num">&Delta;[A]</span><span class="den">&Delta;t</span></span>
+                = &minus;<span class="frac"><span class="num">1</span><span class="den">b</span></span><span class="frac"><span class="num">&Delta;[B]</span><span class="den">&Delta;t</span></span>
+                = +<span class="frac"><span class="num">1</span><span class="den">c</span></span><span class="frac"><span class="num">&Delta;[C]</span><span class="den">&Delta;t</span></span>
+                = +<span class="frac"><span class="num">1</span><span class="den">d</span></span><span class="frac"><span class="num">&Delta;[D]</span><span class="den">&Delta;t</span></span>
+            </div>
+
+            <p style="margin-top:14px;">Write the complete rate expression for this reaction. Fill in the blanks:</p>
+            <div class="scaffold">
+                Rate = <span class="blank sm"></span>
+                <span class="frac"><span class="num">&Delta;[C<sub>3</sub>H<sub>8</sub>]</span><span class="den">&Delta;t</span></span>
+                = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[O<sub>2</sub>]</span><span class="den">&Delta;t</span></span>
+                = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[CO<sub>2</sub>]</span><span class="den">&Delta;t</span></span>
+                = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[H<sub>2</sub>O]</span><span class="den">&Delta;t</span></span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q3 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header green">
+            <div class="q-number green">3</div>
+            <div class="q-info"><h2>Rate Expression: Iron + Hydrochloric Acid</h2></div>
+            <span class="q-pts green">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p style="font-size:1.1rem; font-weight:600; margin-bottom:16px; padding:12px 16px; background:var(--gray-100); border-radius:8px;">
+                2Fe(s) + 6HCl(aq) &rarr; 2FeCl<sub>3</sub>(aq) + 3H<sub>2</sub>(g)
+            </p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>Same three rules as Q2: coefficient &rarr; denominator, reactants &rarr; minus, products &rarr; positive.<br>
+                Watch out: Fe is a solid, but it still appears in the rate <em>expression</em> (you only drop solids from rate <em>laws</em>).<br>
+                Also: the &ldquo;3&rdquo; in FeCl<sub>3</sub> is a <em>subscript</em> (part of the formula). The <em>coefficient</em> of FeCl<sub>3</sub> is 2.</p>
+            </div>
+
+            <p>Write the complete rate expression. Fill in the blanks:</p>
+            <div class="scaffold">
+                Rate = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[Fe]</span><span class="den">&Delta;t</span></span>
+                = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[HCl]</span><span class="den">&Delta;t</span></span>
+                = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[FeCl<sub>3</sub>]</span><span class="den">&Delta;t</span></span>
+                = <span class="blank sm"></span>
+                <span class="frac"><span class="num">1</span><span class="den"><span class="blank sm"></span></span></span>
+                <span class="frac"><span class="num">&Delta;[H<sub>2</sub>]</span><span class="den">&Delta;t</span></span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q4 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header purple">
+            <div class="q-number purple">4</div>
+            <div class="q-info"><h2>Rate Law &amp; k: NO<sub>2</sub> + O<sub>3</sub></h2></div>
+            <span class="q-pts purple">14 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p style="margin-bottom:12px;"><strong>Reaction:</strong>&ensp; NO<sub>2</sub>(g) + O<sub>3</sub>(g) &rarr; NO<sub>3</sub>(g) + O<sub>2</sub>(g)</p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>You want to isolate the effect of each reactant, so find experiment pairs where only ONE concentration changes.<br>
+                Use this formula for every sub-part:<br>
+                <strong>(Concentration Multiplier)<sup>order</sup> = Rate Multiplier</strong><br>
+                If both multiply by 2 &rarr; order = 1. If conc &times;2 but rate &times;4 &rarr; order = 2.</p>
+            </div>
+
+            <h3>Given Data</h3>
+            <table class="data-table">
+                <thead><tr><th>Experiment</th><th>[NO<sub>2</sub>] (M)</th><th>[O<sub>3</sub>] (M)</th><th>Initial Rate (M&middot;s<sup>&minus;1</sup>)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>5.0 &times; 10<sup>&minus;5</sup></td><td>1.0 &times; 10<sup>&minus;5</sup></td><td>0.022</td></tr>
+                    <tr><td>2</td><td>5.0 &times; 10<sup>&minus;5</sup></td><td>2.0 &times; 10<sup>&minus;5</sup></td><td>0.044</td></tr>
+                    <tr><td>3</td><td>2.5 &times; 10<sup>&minus;5</sup></td><td>2.0 &times; 10<sup>&minus;5</sup></td><td>0.022</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-part">
+                <h4>(a) Find the order with respect to NO<sub>2</sub></h4>
+                <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">Which two experiments hold [O<sub>3</sub>] constant? Experiments <span class="blank sm"></span> and <span class="blank sm"></span></p>
+                <div class="scaffold">
+                    Rate Multiplier =
+                    <span class="frac"><span class="num">Rate<span class="blank sm"></span></span><span class="den">Rate<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                    &emsp;
+                    Conc Multiplier =
+                    <span class="frac"><span class="num">[NO<sub>2</sub>]<span class="blank sm"></span></span><span class="den">[NO<sub>2</sub>]<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                </div>
+                <div class="scaffold">
+                    <span class="blank sm"></span><sup>order</sup> = <span class="blank sm"></span> &ensp;&rArr;&ensp; order = <span class="blank sm"></span>
+                </div>
+                <p style="margin-top:8px;">NO<sub>2</sub> is <span class="blank lg"></span> order.</p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Find the order with respect to O<sub>3</sub></h4>
+                <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">Which two experiments hold [NO<sub>2</sub>] constant? Experiments <span class="blank sm"></span> and <span class="blank sm"></span></p>
+                <div class="scaffold">
+                    Rate Multiplier =
+                    <span class="frac"><span class="num">Rate<span class="blank sm"></span></span><span class="den">Rate<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                    &emsp;
+                    Conc Multiplier =
+                    <span class="frac"><span class="num">[O<sub>3</sub>]<span class="blank sm"></span></span><span class="den">[O<sub>3</sub>]<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                </div>
+                <div class="scaffold">
+                    <span class="blank sm"></span><sup>order</sup> = <span class="blank sm"></span> &ensp;&rArr;&ensp; order = <span class="blank sm"></span>
+                </div>
+                <p style="margin-top:8px;">O<sub>3</sub> is <span class="blank lg"></span> order.</p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Write the complete rate law and state the overall order</h4>
+                <div class="scaffold">Rate = k <span class="blank lg"></span> &emsp; Overall order = <span class="blank sm"></span></div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(d) Calculate k using Experiment 1. Include units.</h4>
+                <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:8px;">Rearrange Rate = k[NO<sub>2</sub>][O<sub>3</sub>] to solve for k, then plug in Exp 1 values.</p>
+                <div class="blank-area tall"></div>
+                <p style="margin-top:8px;">k = <span class="blank lg"></span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q5 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header purple">
+            <div class="q-number purple">5</div>
+            <div class="q-info"><h2>Rate Law &amp; k: 2NO + Cl<sub>2</sub></h2></div>
+            <span class="q-pts purple">14 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p style="margin-bottom:8px;"><strong>Reaction:</strong>&ensp; 2NO(g) + Cl<sub>2</sub>(g) &rarr; 2NOCl(g)</p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>Same method as Q4. Use the formula: <strong>(Concentration Multiplier)<sup>order</sup> = Rate Multiplier</strong><br>
+                Watch carefully: if the concentration doubles but the rate <em>quadruples</em>, you are looking at 2nd order (because 2<sup>2</sup> = 4).<br>
+                There are 4 experiments here. Pick pairs where only one concentration changes.</p>
+            </div>
+
+            <h3>Given Data</h3>
+            <table class="data-table">
+                <thead><tr><th>Exp</th><th>[NO] (M)</th><th>[Cl<sub>2</sub>] (M)</th><th>Initial Rate (M&middot;s<sup>&minus;1</sup>)</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>0.10</td><td>0.10</td><td>2.53 &times; 10<sup>&minus;6</sup></td></tr>
+                    <tr><td>2</td><td>0.10</td><td>0.20</td><td>5.06 &times; 10<sup>&minus;6</sup></td></tr>
+                    <tr><td>3</td><td>0.20</td><td>0.10</td><td>10.1 &times; 10<sup>&minus;6</sup></td></tr>
+                    <tr><td>4</td><td>0.30</td><td>0.10</td><td>22.8 &times; 10<sup>&minus;6</sup></td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-part">
+                <h4>(a) Find the order with respect to NO</h4>
+                <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">Which two experiments hold [Cl<sub>2</sub>] constant? Experiments <span class="blank sm"></span> and <span class="blank sm"></span></p>
+                <div class="scaffold">
+                    Rate Multiplier =
+                    <span class="frac"><span class="num">Rate<span class="blank sm"></span></span><span class="den">Rate<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                    &emsp;
+                    Conc Multiplier =
+                    <span class="frac"><span class="num">[NO]<span class="blank sm"></span></span><span class="den">[NO]<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                </div>
+                <div class="scaffold">
+                    <span class="blank sm"></span><sup>order</sup> = <span class="blank sm"></span> &ensp;&rArr;&ensp; order = <span class="blank sm"></span>
+                </div>
+                <p style="margin-top:8px;">NO is <span class="blank lg"></span> order. &emsp; Explanation: <span class="blank lg"></span></p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Find the order with respect to Cl<sub>2</sub></h4>
+                <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">Which two experiments hold [NO] constant? Experiments <span class="blank sm"></span> and <span class="blank sm"></span></p>
+                <div class="scaffold">
+                    Rate Multiplier =
+                    <span class="frac"><span class="num">Rate<span class="blank sm"></span></span><span class="den">Rate<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                    &emsp;
+                    Conc Multiplier =
+                    <span class="frac"><span class="num">[Cl<sub>2</sub>]<span class="blank sm"></span></span><span class="den">[Cl<sub>2</sub>]<span class="blank sm"></span></span></span> =
+                    <span class="frac"><span class="num"><span class="blank"></span></span><span class="den"><span class="blank"></span></span></span> = <span class="blank sm"></span>
+                </div>
+                <div class="scaffold">
+                    <span class="blank sm"></span><sup>order</sup> = <span class="blank sm"></span> &ensp;&rArr;&ensp; order = <span class="blank sm"></span>
+                </div>
+                <p style="margin-top:8px;">Cl<sub>2</sub> is <span class="blank lg"></span> order.</p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Write the complete rate law, overall order, and calculate k</h4>
+                <div class="scaffold">Rate = k <span class="blank lg"></span> &emsp; Overall order = <span class="blank sm"></span></div>
+                <p style="margin-top:12px; margin-bottom:6px;">Show your work for k below (use Experiment 1):</p>
+                <div class="blank-area tall"></div>
+                <p style="margin-top:8px;">k = <span class="blank lg"></span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q6 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header amber">
+            <div class="q-number amber">6</div>
+            <div class="q-info"><h2>Integrated Rate Laws: Zero, First &amp; Second Order</h2></div>
+            <span class="q-pts amber">10 pts</span>
+        </div>
+        <div class="question-body">
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p><strong>Zero order:</strong> like an IV drip, constant rate regardless of concentration.<br>
+                <strong>First order:</strong> like a leaky bucket, rate proportional to amount left. Half-life is constant.<br>
+                <strong>Second order:</strong> rate drops dramatically as concentration falls.<br>
+                <strong>Memory trick &mdash; &ldquo;Can Larry Run?&rdquo;:</strong> 0 &rarr; Concentration, 1 &rarr; Ln, 2 &rarr; Reciprocal (1/[A]).</p>
+            </div>
+
+            <p>Complete the table. Fill in every blank cell:</p>
+            <table>
+                <thead>
+                    <tr><th>Order</th><th>Integrated Rate Law</th><th>Linear Plot (y vs. x)</th><th>Slope =</th><th>Units of k</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Zero</strong></td>
+                        <td style="text-align:left; padding-left:12px;">[A]<sub>t</sub> = &minus;kt + [A]<sub>0</sub></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:110px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:60px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:80px;">&nbsp;</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>First</strong></td>
+                        <td style="text-align:left; padding-left:12px;"><span style="border-bottom:2px solid #374151; display:inline-block; min-width:200px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:110px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:60px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:80px;">&nbsp;</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Second</strong></td>
+                        <td style="text-align:left; padding-left:12px;"><span style="border-bottom:2px solid #374151; display:inline-block; min-width:200px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:110px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:60px;">&nbsp;</span></td>
+                        <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:80px;">&nbsp;</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q7 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header blue">
+            <div class="q-number blue">7</div>
+            <div class="q-info"><h2>Determine Reaction Order from Data: N<sub>2</sub>O<sub>5</sub></h2></div>
+            <span class="q-pts blue">12 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p style="margin-bottom:12px;"><strong>Reaction:</strong>&ensp; 2N<sub>2</sub>O<sub>5</sub> &rarr; 4NO<sub>2</sub> + O<sub>2</sub></p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>You have three suspects: zero order, first order, second order.<br>
+                Run three transformations on the data and see which gives a straight line:<br>
+                &bull; Plot [N<sub>2</sub>O<sub>5</sub>] vs. t &rarr; straight? Zero order.<br>
+                &bull; Plot ln[N<sub>2</sub>O<sub>5</sub>] vs. t &rarr; straight? First order.<br>
+                &bull; Plot 1/[N<sub>2</sub>O<sub>5</sub>] vs. t &rarr; straight? Second order.<br>
+                A &ldquo;straight line&rdquo; means the differences between consecutive values are roughly constant.</p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(a) Calculate ln[N<sub>2</sub>O<sub>5</sub>] and 1/[N<sub>2</sub>O<sub>5</sub>] for each data point</h4>
+                <table class="data-table">
+                    <thead><tr><th>Time (s)</th><th>[N<sub>2</sub>O<sub>5</sub>] (M)</th><th>ln[N<sub>2</sub>O<sub>5</sub>]</th><th>1/[N<sub>2</sub>O<sub>5</sub>] (M<sup>&minus;1</sup>)</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>5.00</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td>500</td><td>3.52</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td>1000</td><td>2.48</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td>1500</td><td>1.75</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td>2000</td><td>1.23</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td>2500</td><td>0.87</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td>3000</td><td>0.61</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Which plot gives a straight line? How can you tell?</h4>
+                <p style="font-size:0.88rem; color:var(--gray-500); margin-bottom:8px;">Check if the change between consecutive values is constant for each column.</p>
+                <div class="blank-area tall"></div>
+                <p style="margin-top:8px;">The reaction is <span class="blank lg"></span> order with respect to N<sub>2</sub>O<sub>5</sub>.</p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Calculate the rate constant k from the slope</h4>
+                <p style="font-size:0.88rem; color:var(--gray-500);">For first order: slope = &minus;k &ensp; &bull; &ensp; For second order: slope = +k</p>
+                <div class="scaffold">
+                    slope = <span class="frac"><span class="num">y<sub>final</sub> &minus; y<sub>initial</sub></span><span class="den">t<sub>final</sub> &minus; t<sub>initial</sub></span></span>
+                    = <span class="frac"><span class="num"><span class="blank"></span> &minus; <span class="blank"></span></span><span class="den"><span class="blank"></span> &minus; <span class="blank"></span></span></span>
+                    = <span class="blank lg"></span>
+                </div>
+                <p style="margin-top:8px;">k = <span class="blank lg"></span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q8 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header amber">
+            <div class="q-number amber">8</div>
+            <div class="q-info"><h2>The Arrhenius Equation</h2></div>
+            <span class="q-pts amber">10 pts</span>
+        </div>
+        <div class="question-body">
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>Think of a bouncer who only lets in people who are energetic enough.<br>
+                E<sub>a</sub> is the energy threshold. At low temperature, few molecules have enough energy. At high temperature, many do.<br>
+                The Arrhenius equation quantifies this: k = Ae<sup>&minus;E<sub>a</sub>/RT</sup>.<br>
+                Taking ln of both sides gives a straight-line form: ln k = &minus;(E<sub>a</sub>/R)(1/T) + ln A.</p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(a) Write the Arrhenius equation</h4>
+                <div class="scaffold">k = <span class="blank lg"></span></div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Define each variable in the equation</h4>
+                <table>
+                    <thead><tr><th>Variable</th><th>Name</th><th>What It Means</th><th>Units</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>k</strong></td><td style="min-width:80px;">&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td><strong>A</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td><strong>E<sub>a</sub></strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td><strong>R</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr><td><strong>T</strong></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sub-part">
+                <h4>(c) Write the linearized (ln) form and explain how to use an Arrhenius plot to find E<sub>a</sub></h4>
+                <div class="scaffold">ln k = <span class="blank xl"></span></div>
+                <p style="margin-top:10px; font-size:0.9rem; color:var(--gray-500);">In the form y = mx + b, identify each part:</p>
+                <table>
+                    <thead><tr><th>y =</th><th>x =</th><th>slope (m) =</th><th>y-intercept (b) =</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:60px;">&nbsp;</span></td>
+                            <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:60px;">&nbsp;</span></td>
+                            <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:80px;">&nbsp;</span></td>
+                            <td><span style="border-bottom:2px solid #374151; display:inline-block; min-width:80px;">&nbsp;</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:10px;">To get E<sub>a</sub> from the slope: E<sub>a</sub> = <span class="blank lg"></span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q9 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header rose">
+            <div class="q-number rose">9</div>
+            <div class="q-info"><h2>Calculate E<sub>a</sub> from Arrhenius Slope</h2></div>
+            <span class="q-pts rose">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <p><strong>Given:</strong> slope of Arrhenius plot (ln k vs. 1/T) = &minus;15,200 K</p>
+            <p><strong>Formula:</strong> slope = &minus;E<sub>a</sub> / R &nbsp; where R = 8.314 J/(mol&middot;K)</p>
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>The Arrhenius plot is like a ski slope: the steeper the run, the higher the energy mountain.<br>
+                The slope is negative, and E<sub>a</sub> is always positive.<br>
+                <strong>Steps:</strong> (1) Start with slope = &minus;E<sub>a</sub>/R &nbsp; (2) Rearrange to E<sub>a</sub> = &minus;slope &times; R &nbsp; (3) Plug in &nbsp; (4) Convert J &rarr; kJ.</p>
+            </div>
+
+            <p style="margin-bottom:8px;">Show each step:</p>
+            <div class="work-steps">
+                <div class="work-step">
+                    <span class="step-num">1</span>
+                    <div class="step-content">
+                        <p>Write the formula: slope = &minus;E<sub>a</sub> / R</p>
+                    </div>
+                </div>
+                <div class="work-step">
+                    <span class="step-num">2</span>
+                    <div class="step-content">
+                        <p>Rearrange for E<sub>a</sub>: E<sub>a</sub> = <span class="blank lg"></span></p>
+                    </div>
+                </div>
+                <div class="work-step">
+                    <span class="step-num">3</span>
+                    <div class="step-content">
+                        <p>Substitute values: E<sub>a</sub> = &minus;(<span class="blank"></span>) &times; (<span class="blank"></span>) = <span class="blank lg"></span> J/mol</p>
+                    </div>
+                </div>
+                <div class="work-step">
+                    <span class="step-num">4</span>
+                    <div class="step-content">
+                        <p>Convert J &rarr; kJ: <span class="blank lg"></span> &divide; 1000 = <span class="blank lg"></span> kJ/mol</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scaffold" style="margin-top:14px;">
+                <strong>E<sub>a</sub> = <span class="blank lg"></span> kJ/mol</strong>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- Q10 -->
+    <!-- ============================================================ -->
+    <div class="question-card">
+        <div class="question-header rose">
+            <div class="q-number rose">10</div>
+            <div class="q-info"><h2>Conceptual Synthesis: Order from Units + Two-Point Arrhenius</h2></div>
+            <span class="q-pts rose">8 pts</span>
+        </div>
+        <div class="question-body">
+
+            <span class="section-label walkthrough">Walkthrough Hint</span>
+            <div class="walkthrough-box">
+                <p>The units of k are the reaction&rsquo;s ID card &mdash; they immediately tell you the order.<br>
+                Use: k units = M<sup>(1&minus;n)</sup> &middot; s<sup>&minus;1</sup> &nbsp; (n = overall order)<br>
+                For the two-point Arrhenius: you don&rsquo;t need a graph. Two temperatures give you enough to solve for E<sub>a</sub> directly.</p>
+            </div>
+
+            <h3>Given Data</h3>
+            <table class="data-table">
+                <thead><tr><th>Temperature</th><th>k</th></tr></thead>
+                <tbody>
+                    <tr><td>300 K</td><td>1.5 &times; 10<sup>&minus;3</sup> s<sup>&minus;1</sup></td></tr>
+                    <tr><td>350 K</td><td>4.2 &times; 10<sup>&minus;2</sup> s<sup>&minus;1</sup></td></tr>
+                </tbody>
+            </table>
+
+            <span class="section-label glossary">Two-Point Arrhenius Formula</span>
+            <div class="glossary-box">
+                <div class="equation" style="font-size:0.95rem; background:white;">
+                    ln(<span class="frac"><span class="num">k<sub>2</sub></span><span class="den">k<sub>1</sub></span></span>) = &minus;<span class="frac"><span class="num">E<sub>a</sub></span><span class="den">R</span></span> &middot; (<span class="frac"><span class="num">1</span><span class="den">T<sub>2</sub></span></span> &minus; <span class="frac"><span class="num">1</span><span class="den">T<sub>1</sub></span></span>)
+                </div>
+            </div>
+
+            <div class="sub-part">
+                <h4>(a) What is the overall reaction order? How do you know from the units of k?</h4>
+                <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:8px;">The units of k here are: <strong>s<sup>&minus;1</sup></strong></p>
+                <div class="blank-area"></div>
+                <p style="margin-top:6px;">Overall order = <span class="blank sm"></span></p>
+            </div>
+
+            <div class="sub-part">
+                <h4>(b) Calculate E<sub>a</sub> using the two-point Arrhenius equation. Show all work.</h4>
+                <div class="work-steps">
+                    <div class="work-step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <p>Assign values: T<sub>1</sub> = <span class="blank sm"></span>, k<sub>1</sub> = <span class="blank lg"></span> &ensp; T<sub>2</sub> = <span class="blank sm"></span>, k<sub>2</sub> = <span class="blank lg"></span></p>
+                        </div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <p>Calculate ln(k<sub>2</sub>/k<sub>1</sub>) = ln(<span class="blank lg"></span>) = <span class="blank"></span></p>
+                        </div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <p>Calculate (1/T<sub>2</sub> &minus; 1/T<sub>1</sub>) = <span class="blank"></span> &minus; <span class="blank"></span> = <span class="blank lg"></span> K<sup>&minus;1</sup></p>
+                        </div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">4</span>
+                        <div class="step-content">
+                            <p>Solve for E<sub>a</sub>:</p>
+                            <div class="blank-area"></div>
+                        </div>
+                    </div>
+                    <div class="work-step">
+                        <span class="step-num">5</span>
+                        <div class="step-content">
+                            <p>Convert J &rarr; kJ: E<sub>a</sub> = <span class="blank lg"></span> kJ/mol</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Score Summary -->
+    <div style="background:white; border:1px solid var(--gray-200); border-radius:var(--radius); padding:28px; box-shadow:var(--shadow);">
+        <h2 style="font-size:1.1rem; font-weight:700; margin-bottom:16px; color:var(--gray-900);">Score Summary</h2>
+        <table>
+            <thead><tr><th>Question</th><th>Topic</th><th>Points Possible</th><th>Points Earned</th></tr></thead>
+            <tbody>
+                <tr><td>1</td><td>Definition + real-world examples</td><td>8</td><td>&nbsp;</td></tr>
+                <tr><td>2</td><td>Rate expression (propane combustion)</td><td>8</td><td>&nbsp;</td></tr>
+                <tr><td>3</td><td>Rate expression (iron + HCl)</td><td>8</td><td>&nbsp;</td></tr>
+                <tr><td>4</td><td>Rate law by initial rates (NO<sub>2</sub> + O<sub>3</sub>)</td><td>14</td><td>&nbsp;</td></tr>
+                <tr><td>5</td><td>Rate law by initial rates (NO + Cl<sub>2</sub>)</td><td>14</td><td>&nbsp;</td></tr>
+                <tr><td>6</td><td>Integrated rate law comparison table</td><td>10</td><td>&nbsp;</td></tr>
+                <tr><td>7</td><td>Determine order from data (N<sub>2</sub>O<sub>5</sub>)</td><td>12</td><td>&nbsp;</td></tr>
+                <tr><td>8</td><td>Arrhenius equation + definitions</td><td>10</td><td>&nbsp;</td></tr>
+                <tr><td>9</td><td>Calculate E<sub>a</sub> from slope</td><td>8</td><td>&nbsp;</td></tr>
+                <tr><td>10</td><td>Order from units + two-point Arrhenius</td><td>8</td><td>&nbsp;</td></tr>
+                <tr style="font-weight:700; background:var(--accent-light);"><td colspan="2">Total</td><td>100</td><td>&nbsp;</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p style="text-align:center; color:var(--gray-500); font-size:0.85rem; margin-top:32px;">
+        CHM 152L &bull; Workshop 2: Chemical Kinetics &bull; Student Worksheet
+    </p>
+
+</div>
+</body>
+</html>

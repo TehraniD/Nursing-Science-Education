@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3: Heat of Fusion - Interactive Simulator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.2em; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .nav-tab:hover { background: #e9ecef; }
+        .nav-tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        .content { padding: 30px 40px; }
+        .tab-content { display: none; animation: fadeIn 0.4s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Simulator Controls */
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .sim-grid { grid-template-columns: 1fr; }
+        }
+        .sim-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+        }
+        .sim-panel h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .input-group {
+            margin: 12px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95em;
+        }
+        .input-group input[type="range"] {
+            width: 100%;
+            margin: 5px 0;
+            accent-color: #667eea;
+        }
+        .input-group .value-display {
+            text-align: right;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 8px 5px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+        .btn-reset { background: #6c757d; color: white; }
+        .btn-reset:hover { background: #5a6268; }
+
+        /* Calorimeter Visualization */
+        .calorimeter-viz {
+            position: relative;
+            width: 280px;
+            height: 340px;
+            margin: 20px auto;
+        }
+        .cal-outer {
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            width: 240px;
+            height: 280px;
+            background: linear-gradient(180deg, #bdc3c7, #95a5a6);
+            border-radius: 10px 10px 20px 20px;
+            border: 3px solid #7f8c8d;
+        }
+        .cal-inner {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            right: 15px;
+            height: 240px;
+            background: #ecf0f1;
+            border-radius: 5px 5px 15px 15px;
+            overflow: hidden;
+        }
+        .water-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            background: linear-gradient(180deg, #74b9ff, #0984e3);
+            transition: all 1s;
+        }
+        .ice-cubes {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            transition: all 2s;
+        }
+        .ice-cube {
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #dfe6e9, #b2bec3, #ffffff);
+            border: 1px solid #b2bec3;
+            border-radius: 4px;
+            opacity: 1;
+            transition: all 2s;
+        }
+        .ice-cube.melting {
+            opacity: 0.3;
+            transform: scale(0.3);
+        }
+        .ice-cube.melted {
+            opacity: 0;
+            transform: scale(0);
+        }
+        .thermometer {
+            position: absolute;
+            top: -30px;
+            right: 50px;
+            width: 16px;
+            height: 200px;
+            background: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px 8px 0 0;
+        }
+        .therm-mercury {
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+            height: 60%;
+            background: linear-gradient(180deg, #e74c3c, #c0392b);
+            border-radius: 0 0 4px 4px;
+            transition: height 2s;
+        }
+        .therm-bulb {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22px;
+            height: 22px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid #bdc3c7;
+        }
+        .temp-display {
+            position: absolute;
+            top: -30px;
+            right: 10px;
+            background: #2d3436;
+            color: #00cec9;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        /* Results */
+        .result-card {
+            background: linear-gradient(135deg, #dfe6e9, #b2bec3);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 10px 0;
+            transition: all 0.5s;
+        }
+        .result-card.highlight {
+            background: linear-gradient(135deg, #a8e063, #56ab2f);
+            color: white;
+        }
+        .result-card h4 { margin-bottom: 8px; }
+        .result-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Energy Bar Chart */
+        .energy-bar-container {
+            margin: 20px 0;
+        }
+        .energy-bar {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .energy-bar-label {
+            width: 160px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .energy-bar-track {
+            flex: 1;
+            height: 30px;
+            background: #ecf0f1;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        .energy-bar-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: width 2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        .bar-warm { background: linear-gradient(90deg, #e74c3c, #fd79a8); }
+        .bar-ice { background: linear-gradient(90deg, #0984e3, #74b9ff); }
+        .bar-fusion { background: linear-gradient(90deg, #6c5ce7, #a29bfe); }
+
+        /* Cooling Curve Chart */
+        .chart-container {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        canvas { width: 100%; max-height: 350px; }
+
+        /* Calculator */
+        .calc-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .calc-section h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+        .calc-input {
+            width: 120px;
+            padding: 8px 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: center;
+        }
+        .calc-input:focus { border-color: #667eea; outline: none; }
+        .calc-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .calc-result {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+            display: none;
+        }
+        .calc-result.show { display: block; animation: fadeIn 0.5s; }
+
+        /* Quiz */
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .quiz-option:hover { background: #e9ecef; transform: translateX(5px); }
+        .quiz-option.correct { background: #d4edda; border-color: #28a745; }
+        .quiz-option.incorrect { background: #f8d7da; border-color: #dc3545; }
+        .quiz-explanation {
+            background: #e2e3f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Error Analysis */
+        .error-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 5px solid #ffc107;
+        }
+        .error-card h4 { color: #e67e22; margin-bottom: 8px; }
+        .arrow-up { color: #e74c3c; font-weight: bold; }
+        .arrow-down { color: #0984e3; font-weight: bold; }
+
+        /* Phase diagram */
+        .phase-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .phase-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .phase-card:hover { transform: translateY(-5px); }
+        .phase-card .icon { font-size: 2.5em; margin-bottom: 10px; }
+        .phase-card h4 { color: #667eea; margin-bottom: 5px; }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        .warning-box {
+            background: #fff3cd;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .score-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .step-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+        .step-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>◇ Lab 3: Heat of Fusion of Water</h1>
+        <p>Interactive Calorimetry Simulator — © Tehrani 2028</p>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('simulator')">⚛ Simulator</button>
+        <button class="nav-tab" onclick="showTab('concepts')">📖 Concepts</button>
+        <button class="nav-tab" onclick="showTab('calculator')">🧮 Calculator</button>
+        <button class="nav-tab" onclick="showTab('errors')">⚠ Error Analysis</button>
+        <button class="nav-tab" onclick="showTab('quiz')">📝 Quiz</button>
+    </div>
+
+    <div class="content">
+        <!-- ====== SIMULATOR TAB ====== -->
+        <div id="simulator" class="tab-content active">
+            <h2 style="color:#667eea; margin-bottom:20px;">Calorimetry Experiment Simulator</h2>
+            <p>Adjust the sliders to set up your virtual experiment, then click <strong>Run Experiment</strong> to watch the energy transfer in real time.</p>
+
+            <div class="sim-grid">
+                <div class="sim-panel">
+                    <h3>⚙️ Setup Parameters</h3>
+                    <div class="input-group">
+                        <label>Mass of Warm Water (g):</label>
+                        <input type="range" id="massWater" min="50" max="200" value="110" oninput="updateSliders()">
+                        <div class="value-display" id="massWaterVal">110 g</div>
+                    </div>
+                    <div class="input-group">
+                        <label>Initial Temperature of Warm Water (°C):</label>
+                        <input type="range" id="tempWater" min="25" max="50" value="35" step="0.5" oninput="updateSliders()">
+                        <div class="value-display" id="tempWaterVal">35.0 °C</div>
+                    </div>
+                    <div class="input-group">
+                        <label>Mass of Ice at 0°C (g):</label>
+                        <input type="range" id="massIce" min="5" max="80" value="28" oninput="updateSliders()">
+                        <div class="value-display" id="massIceVal">28 g</div>
+                    </div>
+                    <div style="margin-top:20px; text-align:center;">
+                        <button class="btn btn-primary" onclick="runExperiment()">▶ Run Experiment</button>
+                        <button class="btn btn-reset" onclick="resetSim()">↺ Reset</button>
+                    </div>
+                </div>
+
+                <div style="text-align:center;">
+                    <div class="calorimeter-viz">
+                        <div class="temp-display" id="liveTempDisplay">--.- °C</div>
+                        <div class="cal-outer">
+                            <div class="cal-inner">
+                                <div class="water-level" id="waterLevel"></div>
+                                <div class="ice-cubes" id="iceCubes">
+                                    <div class="ice-cube" id="cube1"></div>
+                                    <div class="ice-cube" id="cube2"></div>
+                                    <div class="ice-cube" id="cube3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="thermometer">
+                            <div class="therm-mercury" id="thermMercury"></div>
+                            <div class="therm-bulb"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Energy Transfer Bars -->
+            <div class="energy-bar-container" id="energyBars" style="display:none;">
+                <h3 style="color:#667eea; margin-bottom:10px;">Energy Transfer Breakdown</h3>
+                <div class="energy-bar">
+                    <div class="energy-bar-label">🔴 Heat Lost by<br>Warm Water</div>
+                    <div class="energy-bar-track">
+                        <div class="energy-bar-fill bar-warm" id="barWarm" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="energy-bar">
+                    <div class="energy-bar-label">🔵 Heat Gained<br>by Ice (melting)</div>
+                    <div class="energy-bar-track">
+                        <div class="energy-bar-fill bar-ice" id="barIce" style="width:0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Cards -->
+            <div id="resultsSection" style="display:none;">
+                <h3 style="color:#667eea; margin:20px 0 10px;">📊 Results</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:15px;">
+                    <div class="result-card" id="resTf">
+                        <h4>Final Temperature</h4>
+                        <div class="result-value" id="resTfVal">--</div>
+                    </div>
+                    <div class="result-card" id="resQ">
+                        <h4>Q<sub>warm water</sub></h4>
+                        <div class="result-value" id="resQVal">--</div>
+                    </div>
+                    <div class="result-card" id="resQice">
+                        <h4>Q<sub>ice</sub></h4>
+                        <div class="result-value" id="resQiceVal">--</div>
+                    </div>
+                    <div class="result-card highlight" id="resHf">
+                        <h4>ΔH<sub>f</sub> (calculated)</h4>
+                        <div class="result-value" id="resHfVal">--</div>
+                    </div>
+                    <div class="result-card" id="resError">
+                        <h4>% Error</h4>
+                        <div class="result-value" id="resErrorVal">--</div>
+                    </div>
+                </div>
+
+                <!-- Step-by-step solution -->
+                <div style="margin-top:20px;">
+                    <button class="btn btn-success" onclick="toggleSolution()">📖 Show Step-by-Step Solution</button>
+                    <div id="solutionSteps" style="display:none; margin-top:15px;">
+                        <div id="solutionContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cooling Curve -->
+            <div class="chart-container" id="chartSection" style="display:none;">
+                <h3 style="color:#667eea; margin-bottom:10px;">Temperature vs Time (Simulated Cooling Curve)</h3>
+                <canvas id="coolingChart" height="300"></canvas>
+            </div>
+        </div>
+
+        <!-- ====== CONCEPTS TAB ====== -->
+        <div id="concepts" class="tab-content">
+            <h2 style="color:#667eea; margin-bottom:20px;">Understanding Heat of Fusion</h2>
+
+            <div class="phase-info">
+                <div class="phase-card">
+                    <div class="icon">◇</div>
+                    <h4>Solid (Ice)</h4>
+                    <p>Molecules locked in hexagonal crystal. Hydrogen bonds hold structure rigid.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="icon">➡️ +333.55 J/g</div>
+                    <h4>Melting (Fusion)</h4>
+                    <p>Energy breaks H-bonds. Temperature stays at 0°C until ALL bonds broken.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="icon">∘</div>
+                    <h4>Liquid (Water)</h4>
+                    <p>Molecules free to move. Some H-bonds remain but constantly break and reform.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>⚷ The Key Insight</h3>
+                <p><strong>Melting 1 g of ice at 0°C requires 333.55 J</strong> — almost the same energy as heating 1 g of water from 0°C all the way to 80°C! All that energy goes into breaking intermolecular bonds, NOT increasing temperature.</p>
+            </div>
+
+            <h3 style="color:#764ba2; margin-top:25px;">Water's Energy Numbers</h3>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0;">
+                <thead>
+                    <tr style="background:#667eea; color:white;">
+                        <th style="padding:12px; text-align:left;">Process</th>
+                        <th style="padding:12px; text-align:center;">Energy (J/g)</th>
+                        <th style="padding:12px; text-align:center;">Energy (kJ/mol)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#f0f0ff;">
+                        <td style="padding:10px;">Heating ice (per °C)</td>
+                        <td style="padding:10px; text-align:center;">2.09</td>
+                        <td style="padding:10px; text-align:center;">0.0376</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px;"><strong>Melting ice (ΔH<sub>f</sub>)</strong></td>
+                        <td style="padding:10px; text-align:center; font-weight:bold; color:#667eea;">333.55</td>
+                        <td style="padding:10px; text-align:center; font-weight:bold; color:#667eea;">6.01</td>
+                    </tr>
+                    <tr style="background:#f0f0ff;">
+                        <td style="padding:10px;">Heating water (per °C)</td>
+                        <td style="padding:10px; text-align:center;">4.184</td>
+                        <td style="padding:10px; text-align:center;">0.0753</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px;">Boiling water (ΔH<sub>v</sub>)</td>
+                        <td style="padding:10px; text-align:center;">2,260</td>
+                        <td style="padding:10px; text-align:center;">40.7</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="color:#764ba2; margin-top:25px;">The Calorimetry Equations</h3>
+            <div class="step-card">
+                <p><span class="step-number">1</span><strong>Heat transfer (no phase change):</strong></p>
+                <div style="text-align:center; font-size:1.3em; margin:10px; font-family:serif;">
+                    Q = m × c × ΔT
+                </div>
+                <p>where c<sub>water</sub> = 4.184 J/(g·°C) and ΔT = T<sub>f</sub> − T<sub>i</sub></p>
+            </div>
+            <div class="step-card">
+                <p><span class="step-number">2</span><strong>Conservation of energy:</strong></p>
+                <div style="text-align:center; font-size:1.3em; margin:10px; font-family:serif;">
+                    Q<sub>ice</sub> = −Q<sub>warm water</sub>
+                </div>
+                <p>Energy lost by warm water = Energy gained by ice</p>
+            </div>
+            <div class="step-card">
+                <p><span class="step-number">3</span><strong>Heat of fusion:</strong></p>
+                <div style="text-align:center; font-size:1.3em; margin:10px; font-family:serif;">
+                    ΔH<sub>f</sub> = Q<sub>ice</sub> / m<sub>ice</sub>
+                </div>
+                <p>Theoretical value: <strong>333.55 J/g</strong></p>
+            </div>
+
+            <h3 style="color:#764ba2; margin-top:25px;">Real-World Applications</h3>
+            <div class="phase-info">
+                <div class="phase-card">
+                    <div class="icon">🏥</div>
+                    <h4>Ice Packs</h4>
+                    <p>Absorb 333 J/g from swollen tissue — far more effective than a cold towel.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="icon">🌍</div>
+                    <h4>Climate Buffer</h4>
+                    <p>Polar ice absorbs enormous energy as it melts, slowing global temperature rise.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="icon">◇</div>
+                    <h4>Coolers</h4>
+                    <p>Ice keeps food at 0°C until ALL ice melts — the phase change absorbs all the heat.</p>
+                </div>
+                <div class="phase-card">
+                    <div class="icon">🍦</div>
+                    <h4>Ice Cream</h4>
+                    <p>Salt + ice gets cold enough to freeze cream because melting ice pulls energy from the cream.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== CALCULATOR TAB ====== -->
+        <div id="calculator" class="tab-content">
+            <h2 style="color:#667eea; margin-bottom:20px;">🧮 Lab Calculator</h2>
+            <p>Enter your actual lab data to calculate ΔH<sub>f</sub> step by step.</p>
+
+            <div class="calc-section">
+                <h3>Enter Your Lab Data</h3>
+                <div class="calc-row">
+                    <label>Mass of empty calorimeter:</label>
+                    <input type="number" class="calc-input" id="calcMassCal" step="0.1" placeholder="g"> g
+                </div>
+                <div class="calc-row">
+                    <label>Mass of calorimeter + warm water:</label>
+                    <input type="number" class="calc-input" id="calcMassCalWater" step="0.1" placeholder="g"> g
+                </div>
+                <div class="calc-row">
+                    <label>Initial temperature (T<sub>i</sub>):</label>
+                    <input type="number" class="calc-input" id="calcTi" step="0.1" placeholder="°C"> °C
+                </div>
+                <div class="calc-row">
+                    <label>Final temperature (T<sub>f</sub>):</label>
+                    <input type="number" class="calc-input" id="calcTf" step="0.1" placeholder="°C"> °C
+                </div>
+                <div class="calc-row">
+                    <label>Mass of calorimeter + water + ice:</label>
+                    <input type="number" class="calc-input" id="calcMassAll" step="0.1" placeholder="g"> g
+                </div>
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="btn btn-primary" onclick="calculateLab()">Calculate ΔH<sub>f</sub></button>
+                    <button class="btn btn-reset" onclick="clearCalc()">Clear</button>
+                </div>
+            </div>
+
+            <div class="calc-result" id="calcResults">
+                <div id="calcSteps"></div>
+            </div>
+        </div>
+
+        <!-- ====== ERROR ANALYSIS TAB ====== -->
+        <div id="errors" class="tab-content">
+            <h2 style="color:#667eea; margin-bottom:20px;">⚠ Error Analysis Guide</h2>
+            <p>Understanding why your answer differs from 333.55 J/g is more important than getting it "right."</p>
+
+            <div class="error-card">
+                <h4>◇ Excess Water on Ice Surface</h4>
+                <p><span class="arrow-down">↓ Makes ΔH<sub>f</sub> TOO LOW</span></p>
+                <p>Liquid water on the ice gets counted as "ice mass" but doesn't need fusion energy to melt. The denominator (m<sub>ice</sub>) is too large → ΔH<sub>f</sub> = Q/m is too small.</p>
+                <p><strong>Prevention:</strong> Pat ice dry with paper towels before adding to calorimeter.</p>
+            </div>
+
+            <div class="error-card">
+                <h4>Δt Heat Loss to Surroundings</h4>
+                <p><span class="arrow-up">↑ Makes ΔH<sub>f</sub> TOO HIGH</span></p>
+                <p>Warm water loses heat to both the ice AND the air/calorimeter walls. We attribute ALL heat loss to ice → Q<sub>ice</sub> is overestimated → ΔH<sub>f</sub> is too high.</p>
+                <p><strong>Prevention:</strong> Use water only ~10°C above room temp. Work quickly. Keep lid on.</p>
+            </div>
+
+            <div class="error-card">
+                <h4>✻ Ice Below 0°C (from freezer)</h4>
+                <p><span class="arrow-up">↑ Makes ΔH<sub>f</sub> TOO HIGH</span></p>
+                <p>Sub-zero ice first absorbs energy to warm TO 0°C, then absorbs fusion energy. We count all of it as fusion → ΔH<sub>f</sub> appears too high.</p>
+                <p><strong>Prevention:</strong> Use ice from an ice-water slurry (guaranteed to be at 0°C).</p>
+            </div>
+
+            <div class="error-card">
+                <h4>🥄 Poor Stirring</h4>
+                <p><span style="color:#e67e22; font-weight:bold;">↕ Could go EITHER way</span></p>
+                <p>Without stirring, the thermometer reads a local temperature, not the true average. If it's near warm water → T<sub>f</sub> too high → ΔH<sub>f</sub> too low. If near ice → ΔH<sub>f</sub> too high.</p>
+                <p><strong>Prevention:</strong> Stir continuously and gently throughout the experiment.</p>
+            </div>
+
+            <div class="error-card">
+                <h4>⏱️ Reading T<sub>f</sub> Too Early</h4>
+                <p><span class="arrow-up">↑ Makes ΔH<sub>f</sub> TOO HIGH</span></p>
+                <p>If ice hasn't fully melted, temperature is still dropping. You record a T<sub>f</sub> that's higher than the true equilibrium → |ΔT| appears larger → Q and ΔH<sub>f</sub> too high.</p>
+                <p><strong>Prevention:</strong> Wait until T<sub>f</sub> is stable for 30+ seconds with all ice melted.</p>
+            </div>
+
+            <h3 style="color:#764ba2; margin-top:25px;">Percent Error Guide</h3>
+            <table style="width:100%; border-collapse:collapse; margin:15px 0;">
+                <thead>
+                    <tr style="background:#667eea; color:white;">
+                        <th style="padding:12px;">Quality</th>
+                        <th style="padding:12px;">ΔH<sub>f</sub> Range (J/g)</th>
+                        <th style="padding:12px;">% Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#d4edda;">
+                        <td style="padding:10px;">★ Excellent</td>
+                        <td style="padding:10px; text-align:center;">320 – 350</td>
+                        <td style="padding:10px; text-align:center;">< 5%</td>
+                    </tr>
+                    <tr style="background:#d1ecf1;">
+                        <td style="padding:10px;">✓ Good</td>
+                        <td style="padding:10px; text-align:center;">300 – 370</td>
+                        <td style="padding:10px; text-align:center;">5 – 10%</td>
+                    </tr>
+                    <tr style="background:#fff3cd;">
+                        <td style="padding:10px;">⚠ Acceptable</td>
+                        <td style="padding:10px; text-align:center;">270 – 400</td>
+                        <td style="padding:10px; text-align:center;">10 – 20%</td>
+                    </tr>
+                    <tr style="background:#f8d7da;">
+                        <td style="padding:10px;">✗ Review technique</td>
+                        <td style="padding:10px; text-align:center;">Outside above</td>
+                        <td style="padding:10px; text-align:center;">> 20%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ====== QUIZ TAB ====== -->
+        <div id="quiz" class="tab-content">
+            <h2 style="color:#667eea; margin-bottom:20px;">📝 Practice Quiz</h2>
+            <p>Test your understanding before and after the lab. Click an answer to check it!</p>
+
+            <div id="quizScore" class="score-display" style="display:none;"></div>
+
+            <!-- Q1 -->
+            <div class="quiz-question">
+                <p><strong>1.</strong> During the melting of ice at 0°C, the added energy goes into:</p>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">a) Increasing the kinetic energy of water molecules</div>
+                <div class="quiz-option" onclick="checkAnswer(this, true, 'q1')">b) Breaking hydrogen bonds between water molecules in the crystal</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">c) Increasing the temperature of the ice</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q1')">d) Converting water to steam</div>
+                <div class="quiz-explanation" id="q1-exp">✓ During a phase change, temperature remains constant. ALL energy goes into breaking the intermolecular hydrogen bonds that hold the ice crystal together.</div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-question">
+                <p><strong>2.</strong> If warm water in a calorimeter loses 8,368 J of heat when ice is added, the ice gains:</p>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">a) 4,184 J</div>
+                <div class="quiz-option" onclick="checkAnswer(this, true, 'q2')">b) 8,368 J</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">c) 16,736 J</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q2')">d) It depends on the mass of ice</div>
+                <div class="quiz-explanation" id="q2-exp">✓ Conservation of energy: Q<sub>lost</sub> = -Q<sub>gained</sub>. The magnitude is EXACTLY the same. Energy is transferred, not created or destroyed.</div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-question">
+                <p><strong>3.</strong> A student's experimental ΔH<sub>f</sub> is 290 J/g (lower than the theoretical 333.55 J/g). The most likely cause is:</p>
+                <div class="quiz-option" onclick="checkAnswer(this, true, 'q3')">a) The ice had excess surface water that wasn't dried off</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">b) Heat was lost to the surrounding air</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">c) The ice came straight from a -20°C freezer</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q3')">d) The student didn't stir enough</div>
+                <div class="quiz-explanation" id="q3-exp">✓ Excess water on ice adds mass without requiring fusion energy. This inflates m<sub>ice</sub> in the denominator of ΔH<sub>f</sub> = Q/m, making the result too LOW. Heat loss to air and sub-zero ice would make it too HIGH.</div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-question">
+                <p><strong>4.</strong> How much energy is needed to melt 50 g of ice at 0°C? (ΔH<sub>f</sub> = 333.55 J/g)</p>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">a) 333.55 J</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">b) 6,671 J</div>
+                <div class="quiz-option" onclick="checkAnswer(this, true, 'q4')">c) 16,678 J</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q4')">d) 167 J</div>
+                <div class="quiz-explanation" id="q4-exp">✓ Q = m × ΔH<sub>f</sub> = 50 g × 333.55 J/g = 16,677.5 J ≈ 16,678 J. That's about 16.7 kJ just to melt 50 grams of ice!</div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-question">
+                <p><strong>5.</strong> In a calorimetry experiment, ΔT for the warm water is:</p>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">a) Always positive because temperature drops</div>
+                <div class="quiz-option" onclick="checkAnswer(this, true, 'q5')">b) Negative because T<sub>f</sub> < T<sub>i</sub></div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">c) Zero because the calorimeter is insulated</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q5')">d) Equal to the heat of fusion</div>
+                <div class="quiz-explanation" id="q5-exp">✓ ΔT = T<sub>f</sub> − T<sub>i</sub>. Since the warm water cools down, T<sub>f</sub> < T<sub>i</sub>, making ΔT negative. This is correct! The negative sign means the water LOST energy.</div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="quiz-question">
+                <p><strong>6.</strong> Why does water have such a high heat of fusion compared to most substances?</p>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q6')">a) Water molecules are very heavy</div>
+                <div class="quiz-option" onclick="checkAnswer(this, true, 'q6')">b) Water forms an extensive hydrogen bonding network in its solid state</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q6')">c) Water has a low boiling point</div>
+                <div class="quiz-option" onclick="checkAnswer(this, false, 'q6')">d) Water is a poor conductor of heat</div>
+                <div class="quiz-explanation" id="q6-exp">✓ Ice has each molecule hydrogen-bonded to ~4 neighbors in a hexagonal crystal. Breaking this extensive H-bonding network requires significant energy, giving water one of the highest heats of fusion among common substances.</div>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+                <button class="btn btn-reset" onclick="resetQuiz()">Reset Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h2>⚗ TEHRANI ⚗</h2>
+        <p>© Tehrani 2028</p>
+        <p><em>"The calorimeter doesn't care about your hypothesis — it just measures what the water already knew. Science is mostly eavesdropping on nature's conversations."</em></p>
+        <p style="margin-top:8px; font-size:0.85em; letter-spacing:2px;">Q = mcΔT · ΔHₒ · H₂O(s) → H₂O(l)</p>
+    </div>
+</div>
+
+<script>
+// ============ TAB NAVIGATION ============
+function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// ============ SLIDER UPDATES ============
+function updateSliders() {
+    document.getElementById('massWaterVal').textContent = document.getElementById('massWater').value + ' g';
+    document.getElementById('tempWaterVal').textContent = parseFloat(document.getElementById('tempWater').value).toFixed(1) + ' °C';
+    document.getElementById('massIceVal').textContent = document.getElementById('massIce').value + ' g';
+}
+
+// ============ SIMULATION ============
+let simRunning = false;
+
+function runExperiment() {
+    if (simRunning) return;
+    simRunning = true;
+
+    const mw = parseFloat(document.getElementById('massWater').value);
+    const Ti = parseFloat(document.getElementById('tempWater').value);
+    const mice = parseFloat(document.getElementById('massIce').value);
+    const cw = 4.184;
+    const Hf = 333.55;
+
+    // Calculate final temperature: mw*cw*(Tf-Ti) + mice*Hf = 0
+    // mw*cw*Tf - mw*cw*Ti + mice*Hf = 0
+    // Tf = (mw*cw*Ti - mice*Hf) / (mw*cw)
+    // But ice also warms from 0 to Tf as liquid:
+    // mw*cw*(Tf-Ti) + mice*Hf + mice*cw*(Tf - 0) = 0
+    // Tf*(mw*cw + mice*cw) = mw*cw*Ti - mice*Hf
+    const Tf = (mw * cw * Ti - mice * Hf) / ((mw + mice) * cw);
+
+    if (Tf < 0) {
+        alert('Too much ice! Not enough warm water to melt it all. Reduce ice mass or increase water mass/temperature.');
+        simRunning = false;
+        return;
+    }
+
+    const Qwarm = mw * cw * (Tf - Ti);
+    const Qice = -Qwarm;
+    const calcHf = Qice / mice;
+    const pctError = Math.abs((calcHf - Hf) / Hf) * 100;
+
+    // Animate calorimeter
+    const mercury = document.getElementById('thermMercury');
+    const waterLvl = document.getElementById('waterLevel');
+    const cubes = document.querySelectorAll('.ice-cube');
+    const display = document.getElementById('liveTempDisplay');
+
+    // Start animation
+    display.textContent = Ti.toFixed(1) + ' °C';
+    mercury.style.height = (20 + (Ti / 50) * 70) + '%';
+
+    // Phase 1: Ice appears and temp drops
+    setTimeout(() => {
+        cubes.forEach(c => c.classList.remove('melted', 'melting'));
+        display.style.color = '#74b9ff';
+    }, 300);
+
+    // Phase 2: Ice melting
+    setTimeout(() => {
+        cubes.forEach(c => c.classList.add('melting'));
+        const midTemp = (Ti + Tf) / 2;
+        display.textContent = midTemp.toFixed(1) + ' °C';
+        mercury.style.height = (20 + (midTemp / 50) * 70) + '%';
+    }, 1500);
+
+    // Phase 3: Ice melted, final temp
+    setTimeout(() => {
+        cubes.forEach(c => { c.classList.remove('melting'); c.classList.add('melted'); });
+        display.textContent = Tf.toFixed(1) + ' °C';
+        display.style.color = '#00cec9';
+        mercury.style.height = (20 + (Tf / 50) * 70) + '%';
+        waterLvl.style.height = '80%';
+        waterLvl.style.background = 'linear-gradient(180deg, #74b9ff, #0984e3)';
+    }, 3000);
+
+    // Phase 4: Show results
+    setTimeout(() => {
+        document.getElementById('energyBars').style.display = 'block';
+        document.getElementById('resultsSection').style.display = 'block';
+
+        const maxQ = Math.abs(Qwarm);
+        document.getElementById('barWarm').style.width = '100%';
+        document.getElementById('barWarm').innerHTML = Math.abs(Qwarm).toFixed(0) + ' J';
+        document.getElementById('barIce').style.width = (Qice / maxQ * 100).toFixed(0) + '%';
+        document.getElementById('barIce').innerHTML = Qice.toFixed(0) + ' J';
+
+        document.getElementById('resTfVal').textContent = Tf.toFixed(1) + ' °C';
+        document.getElementById('resQVal').textContent = Qwarm.toFixed(0) + ' J';
+        document.getElementById('resQiceVal').textContent = Qice.toFixed(0) + ' J';
+        document.getElementById('resHfVal').textContent = calcHf.toFixed(1) + ' J/g';
+        document.getElementById('resErrorVal').textContent = pctError.toFixed(2) + '%';
+
+        // Solution steps
+        document.getElementById('solutionContent').innerHTML = `
+            <div class="step-card">
+                <p><span class="step-number">1</span><strong>Temperature change:</strong></p>
+                <p style="margin-left:50px;">ΔT = T<sub>f</sub> − T<sub>i</sub> = ${Tf.toFixed(1)} − ${Ti.toFixed(1)} = <strong>${(Tf-Ti).toFixed(1)}°C</strong></p>
+            </div>
+            <div class="step-card">
+                <p><span class="step-number">2</span><strong>Heat lost by warm water:</strong></p>
+                <p style="margin-left:50px;">Q<sub>warm</sub> = m × c × ΔT = ${mw.toFixed(0)} g × 4.184 J/(g·°C) × (${(Tf-Ti).toFixed(1)}°C)</p>
+                <p style="margin-left:50px;">Q<sub>warm</sub> = <strong>${Qwarm.toFixed(1)} J</strong></p>
+            </div>
+            <div class="step-card">
+                <p><span class="step-number">3</span><strong>Heat gained by ice:</strong></p>
+                <p style="margin-left:50px;">Q<sub>ice</sub> = −Q<sub>warm</sub> = −(${Qwarm.toFixed(1)}) = <strong>${Qice.toFixed(1)} J</strong></p>
+            </div>
+            <div class="step-card" style="border-left:4px solid #667eea;">
+                <p><span class="step-number">4</span><strong>Heat of Fusion:</strong></p>
+                <p style="margin-left:50px;">ΔH<sub>f</sub> = Q<sub>ice</sub> / m<sub>ice</sub> = ${Qice.toFixed(1)} / ${mice.toFixed(0)}</p>
+                <p style="margin-left:50px; font-size:1.3em; color:#667eea;">ΔH<sub>f</sub> = <strong>${calcHf.toFixed(1)} J/g</strong></p>
+            </div>
+            <div class="step-card">
+                <p><span class="step-number">5</span><strong>Percent Error:</strong></p>
+                <p style="margin-left:50px;">% Error = |${calcHf.toFixed(1)} − 333.55| / 333.55 × 100 = <strong>${pctError.toFixed(2)}%</strong></p>
+            </div>
+            <div class="info-box">
+                <p><strong>Note:</strong> In this ideal simulation, ΔH<sub>f</sub> = 333.55 J/g exactly (with tiny rounding differences). 
+                The slight deviation comes from the ice also warming from 0°C to T<sub>f</sub> as liquid water after melting. 
+                In a real lab, expect 3-10% error from heat loss, wet ice, and thermometer precision.</p>
+            </div>
+        `;
+
+        // Draw cooling curve
+        drawCoolingCurve(Ti, Tf, mw, mice);
+        simRunning = false;
+    }, 3500);
+}
+
+function resetSim() {
+    simRunning = false;
+    document.getElementById('energyBars').style.display = 'none';
+    document.getElementById('resultsSection').style.display = 'none';
+    document.getElementById('chartSection').style.display = 'none';
+    document.getElementById('solutionSteps').style.display = 'none';
+    document.querySelectorAll('.ice-cube').forEach(c => { c.classList.remove('melting','melted'); });
+    document.getElementById('liveTempDisplay').textContent = '--.- °C';
+    document.getElementById('liveTempDisplay').style.color = '#00cec9';
+    document.getElementById('thermMercury').style.height = '60%';
+    document.getElementById('waterLevel').style.height = '70%';
+    document.getElementById('barWarm').style.width = '0%';
+    document.getElementById('barIce').style.width = '0%';
+}
+
+function toggleSolution() {
+    const el = document.getElementById('solutionSteps');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// ============ COOLING CURVE (simple canvas) ============
+function drawCoolingCurve(Ti, Tf, mw, mice) {
+    document.getElementById('chartSection').style.display = 'block';
+    const canvas = document.getElementById('coolingChart');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.parentElement.offsetWidth - 40;
+    canvas.height = 300;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const pad = { top: 30, right: 30, bottom: 50, left: 60 };
+    const w = canvas.width - pad.left - pad.right;
+    const h = canvas.height - pad.top - pad.bottom;
+
+    // Temp range
+    const tMax = Math.ceil(Ti / 5) * 5 + 5;
+    const tMin = Math.floor(Tf / 5) * 5 - 5;
+    const tRange = tMax - tMin;
+
+    // Time: 0 to 600s
+    const timeMax = 600;
+
+    // Generate curve data points
+    const points = [];
+    const iceEndTime = 180; // ice finishes melting around 3 min
+    const eqTime = 300; // equilibrium reached around 5 min
+
+    for (let t = 0; t <= timeMax; t += 5) {
+        let temp;
+        if (t < 30) {
+            temp = Ti; // initial
+        } else if (t < iceEndTime) {
+            // rapid cooling as ice absorbs energy
+            const frac = (t - 30) / (iceEndTime - 30);
+            temp = Ti - (Ti - (Tf + 2)) * (1 - Math.exp(-3 * frac));
+        } else if (t < eqTime) {
+            // slow approach to equilibrium
+            const frac = (t - iceEndTime) / (eqTime - iceEndTime);
+            temp = (Tf + 2) - 2 * frac;
+        } else {
+            // slight warming from room temp
+            temp = Tf + (t - eqTime) / timeMax * 1.5;
+        }
+        points.push({ t, temp });
+    }
+
+    // Grid lines
+    ctx.strokeStyle = '#ecf0f1';
+    ctx.lineWidth = 1;
+    for (let tg = Math.ceil(tMin / 5) * 5; tg <= tMax; tg += 5) {
+        const y = pad.top + h - (tg - tMin) / tRange * h;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(pad.left + w, y);
+        ctx.stroke();
+        ctx.fillStyle = '#666';
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(tg + '°C', pad.left - 8, y + 4);
+    }
+    for (let ts = 0; ts <= timeMax; ts += 60) {
+        const x = pad.left + (ts / timeMax) * w;
+        ctx.beginPath();
+        ctx.moveTo(x, pad.top);
+        ctx.lineTo(x, pad.top + h);
+        ctx.stroke();
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.fillText(ts + 's', x, pad.top + h + 20);
+    }
+
+    // Axes
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top);
+    ctx.lineTo(pad.left, pad.top + h);
+    ctx.lineTo(pad.left + w, pad.top + h);
+    ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle = '#333';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Time (seconds)', pad.left + w / 2, canvas.height - 5);
+    ctx.save();
+    ctx.translate(15, pad.top + h / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('Temperature (°C)', 0, 0);
+    ctx.restore();
+
+    // Draw curve
+    ctx.strokeStyle = '#e74c3c';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    points.forEach((p, i) => {
+        const x = pad.left + (p.t / timeMax) * w;
+        const y = pad.top + h - (p.temp - tMin) / tRange * h;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Mark Tf
+    const tfY = pad.top + h - (Tf - tMin) / tRange * h;
+    ctx.strokeStyle = '#0984e3';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 5]);
+    ctx.beginPath();
+    ctx.moveTo(pad.left, tfY);
+    ctx.lineTo(pad.left + w, tfY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#0984e3';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('T_f = ' + Tf.toFixed(1) + '°C', pad.left + w - 120, tfY - 8);
+
+    // Mark Ti
+    const tiY = pad.top + h - (Ti - tMin) / tRange * h;
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillText('T_i = ' + Ti.toFixed(1) + '°C', pad.left + 10, tiY - 8);
+
+    // Annotation: "Ice added"
+    const iceAddX = pad.left + (30 / timeMax) * w;
+    ctx.strokeStyle = '#2d3436';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath();
+    ctx.moveTo(iceAddX, pad.top);
+    ctx.lineTo(iceAddX, pad.top + h);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#2d3436';
+    ctx.font = '11px sans-serif';
+    ctx.fillText('Ice added', iceAddX + 5, pad.top + 15);
+
+    // Title
+    ctx.fillStyle = '#667eea';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Warm Water Cooling Curve (Simulated)', pad.left + w / 2, pad.top - 10);
+}
+
+// ============ LAB CALCULATOR ============
+function calculateLab() {
+    const massCal = parseFloat(document.getElementById('calcMassCal').value);
+    const massCalWater = parseFloat(document.getElementById('calcMassCalWater').value);
+    const Ti = parseFloat(document.getElementById('calcTi').value);
+    const Tf = parseFloat(document.getElementById('calcTf').value);
+    const massAll = parseFloat(document.getElementById('calcMassAll').value);
+
+    if ([massCal, massCalWater, Ti, Tf, massAll].some(v => isNaN(v))) {
+        alert('Please fill in all fields with valid numbers.');
+        return;
+    }
+
+    const mw = massCalWater - massCal;
+    const mice = massAll - massCalWater;
+    const deltaT = Tf - Ti;
+    const Qwarm = mw * 4.184 * deltaT;
+    const Qice = -Qwarm;
+    const Hf = Qice / mice;
+    const pctError = Math.abs((Hf - 333.55) / 333.55) * 100;
+
+    const div = document.getElementById('calcSteps');
+    div.innerHTML = `
+        <h3 style="color:#28a745;">✓ Step-by-Step Solution</h3>
+        <p><strong>Step 1:</strong> Mass of warm water<br>
+        m<sub>w</sub> = ${massCalWater.toFixed(1)} − ${massCal.toFixed(1)} = <strong>${mw.toFixed(1)} g</strong></p>
+        <hr>
+        <p><strong>Step 2:</strong> Mass of ice<br>
+        m<sub>ice</sub> = ${massAll.toFixed(1)} − ${massCalWater.toFixed(1)} = <strong>${mice.toFixed(1)} g</strong></p>
+        <hr>
+        <p><strong>Step 3:</strong> Temperature change<br>
+        ΔT = ${Tf.toFixed(1)} − ${Ti.toFixed(1)} = <strong>${deltaT.toFixed(1)}°C</strong></p>
+        <hr>
+        <p><strong>Step 4:</strong> Heat lost by warm water<br>
+        Q<sub>warm</sub> = ${mw.toFixed(1)} × 4.184 × (${deltaT.toFixed(1)}) = <strong>${Qwarm.toFixed(1)} J</strong></p>
+        <hr>
+        <p><strong>Step 5:</strong> Heat gained by ice<br>
+        Q<sub>ice</sub> = −(${Qwarm.toFixed(1)}) = <strong>${Qice.toFixed(1)} J</strong></p>
+        <hr>
+        <p><strong>Step 6:</strong> Heat of Fusion<br>
+        ΔH<sub>f</sub> = ${Qice.toFixed(1)} / ${mice.toFixed(1)} = <strong style="font-size:1.3em; color:#667eea;">${Hf.toFixed(1)} J/g</strong></p>
+        <hr>
+        <p><strong>Percent Error:</strong><br>
+        |${Hf.toFixed(1)} − 333.55| / 333.55 × 100 = <strong style="font-size:1.3em; color:${pctError < 5 ? '#28a745' : pctError < 10 ? '#ffc107' : '#dc3545'};">${pctError.toFixed(2)}%</strong>
+        ${pctError < 5 ? ' ★ Excellent!' : pctError < 10 ? ' ✓ Good result!' : pctError < 20 ? ' ⚠ Acceptable — check for errors' : ' ✗ Large error — review technique'}
+        </p>
+    `;
+    document.getElementById('calcResults').classList.add('show');
+}
+
+function clearCalc() {
+    ['calcMassCal','calcMassCalWater','calcTi','calcTf','calcMassAll'].forEach(id => {
+        document.getElementById(id).value = '';
+    });
+    document.getElementById('calcResults').classList.remove('show');
+}
+
+// ============ QUIZ ============
+let quizAnswered = {};
+
+function checkAnswer(el, isCorrect, qId) {
+    if (quizAnswered[qId]) return;
+    quizAnswered[qId] = true;
+
+    if (isCorrect) {
+        el.classList.add('correct');
+    } else {
+        el.classList.add('incorrect');
+        // highlight correct
+        el.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+            if (opt.onclick && opt.onclick.toString().includes('true')) {
+                // can't easily check, so show explanation
+            }
+        });
+    }
+    document.getElementById(qId + '-exp').style.display = 'block';
+    updateQuizScore();
+}
+
+function updateQuizScore() {
+    const total = 6;
+    let correct = 0;
+    document.querySelectorAll('.quiz-option.correct').forEach(() => correct++);
+    const answered = Object.keys(quizAnswered).length;
+    if (answered > 0) {
+        document.getElementById('quizScore').style.display = 'block';
+        document.getElementById('quizScore').textContent = `Score: ${correct} / ${answered}`;
+    }
+}
+
+function resetQuiz() {
+    quizAnswered = {};
+    document.querySelectorAll('.quiz-option').forEach(el => {
+        el.classList.remove('correct', 'incorrect');
+    });
+    document.querySelectorAll('.quiz-explanation').forEach(el => {
+        el.style.display = 'none';
+    });
+    document.getElementById('quizScore').style.display = 'none';
+}
+</script>
+</body>
+</html>

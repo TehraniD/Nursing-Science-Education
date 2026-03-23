@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 4 Kinetics V2 — Student Interactive Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; line-height: 1.7; }
+  header { background: linear-gradient(135deg, #1f2d3d 0%, #0d1117 100%); padding: 40px; text-align: center; border-bottom: 2px solid #21262d; }
+  header h1 { font-size: 2rem; font-weight: 800; color: #58a6ff; }
+  header p { color: #8b949e; margin-top: 8px; }
+  .tab-nav { display: flex; background: #161b22; border-bottom: 1px solid #21262d; overflow-x: auto; position: sticky; top: 0; z-index: 100; }
+  .tab-btn { padding: 13px 20px; background: none; border: none; color: #8b949e; cursor: pointer; font-size: 0.88rem; font-weight: 600; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tab-btn:hover { color: #e6edf3; background: #21262d; }
+  .tab-btn.active { color: #58a6ff; border-bottom-color: #58a6ff; }
+  .tab-content { display: none; max-width: 960px; margin: 0 auto; padding: 36px 20px; }
+  .tab-content.active { display: block; }
+  h2 { font-size: 1.5rem; color: #58a6ff; margin-bottom: 14px; }
+  h3 { font-size: 1.1rem; color: #e6edf3; margin: 20px 0 8px; font-weight: 700; }
+  p { color: #c9d1d9; margin-bottom: 12px; font-size: 0.97rem; }
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { color: #c9d1d9; margin-bottom: 6px; }
+  .card { background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  .card.blue { border-left: 4px solid #58a6ff; }
+  .card.green { border-left: 4px solid #3fb950; }
+  .card.orange { border-left: 4px solid #f0883e; }
+  .card.red { border-left: 4px solid #f85149; }
+  .card.purple { border-left: 4px solid #a371f7; }
+  .formula { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px 18px; font-family: 'Courier New', monospace; color: #79c0ff; text-align: center; margin: 12px 0; font-size: 1rem; }
+  .interactive-section { background: #1c2128; border: 1px solid #30363d; border-radius: 12px; padding: 22px; margin: 18px 0; }
+  .slider-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; }
+  .slider-row label { color: #8b949e; font-size: 0.85rem; width: 140px; flex-shrink: 0; }
+  input[type=range] { flex: 1; accent-color: #58a6ff; }
+  .slider-val { color: #58a6ff; font-weight: 700; width: 90px; text-align: right; font-size: 0.88rem; }
+  canvas { width: 100%; border-radius: 8px; background: #0d1117; border: 1px solid #21262d; display: block; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .run-badge { display: inline-block; padding: 4px 12px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; margin: 4px 4px 4px 0; }
+  .badge-a { background: #fff3e0; color: #e65100; border: 1px solid #ff9800; }
+  .badge-b { background: #fff8e1; color: #f57f17; border: 1px solid #ffc107; }
+  .badge-c { background: #ffe0b2; color: #bf360c; border: 1px solid #ff5722; }
+  .badge-d { background: #e3f2fd; color: #0d47a1; border: 1px solid #2196f3; }
+  .badge-e { background: #f3e5f5; color: #4a148c; border: 1px solid #9c27b0; }
+  .step-item { display: flex; gap: 14px; margin: 12px 0; }
+  .step-circle { width: 32px; height: 32px; border-radius: 50%; background: #1f6feb; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.88rem; }
+  .step-body { flex: 1; background: #1c2128; border-radius: 8px; padding: 12px 16px; }
+  .step-body h4 { color: #58a6ff; font-size: 0.92rem; margin: 0 0 5px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.88rem; }
+  th { background: #21262d; color: #8b949e; padding: 9px 12px; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 9px 12px; border-bottom: 1px solid #21262d; color: #c9d1d9; }
+  .quiz-q { background: #1c2128; border: 1px solid #30363d; border-radius: 10px; padding: 18px; margin: 14px 0; }
+  .quiz-q p { color: #e6edf3; font-weight: 600; margin-bottom: 10px; }
+  .quiz-option { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-radius: 8px; margin: 5px 0; cursor: pointer; border: 1px solid #30363d; background: #0d1117; transition: all 0.2s; }
+  .quiz-option:hover { border-color: #58a6ff; }
+  .quiz-option label { color: #c9d1d9; cursor: pointer; font-size: 0.93rem; }
+  .quiz-option.correct { border-color: #3fb950; background: #0f2a1a; }
+  .quiz-option.wrong { border-color: #f85149; background: #2a0f0f; }
+  .feedback { margin-top: 8px; padding: 9px 13px; border-radius: 8px; font-weight: 600; display: none; font-size: 0.9rem; }
+  .feedback.correct { background: #0f2a1a; color: #3fb950; border: 1px solid #3fb950; }
+  .feedback.wrong { background: #2a0f0f; color: #f85149; border: 1px solid #f85149; }
+  .btn { display: inline-block; padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; font-size: 0.88rem; }
+  .btn-blue { background: #1f6feb; color: white; }
+  .btn-blue:hover { background: #388bfd; }
+  .btn-green { background: #2ea043; color: white; }
+  .btn-green:hover { background: #3fb950; }
+  .key-insight { background: #1a2535; border-left: 4px solid #f0883e; border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; }
+  .ki-label { color: #f0883e; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .excel-tip { background: #0d1117; border: 1px solid #30363d; border-radius: 6px; padding: 8px 13px; font-family: 'Courier New', monospace; color: #a5d6ff; font-size: 0.88rem; margin: 6px 0; }
+  .aha-box { background: linear-gradient(135deg, #1a2535, #1c1f26); border: 2px solid #58a6ff; border-radius: 12px; padding: 22px; margin: 18px 0; text-align: center; }
+  .aha-box .aha-title { font-size: 1.3rem; font-weight: 800; color: #58a6ff; margin-bottom: 8px; }
+  .parallel-demo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .pd-card { background: #1c2128; border-radius: 8px; padding: 14px; text-align: center; border: 2px solid transparent; }
+  .pd-card.a { border-color: #ff9800; }
+  .pd-card.b { border-color: #ffc107; }
+  .pd-card.c { border-color: #ff5722; }
+  .pd-card .pd-title { font-weight: 700; font-size: 0.9rem; }
+  .pd-card .pd-val { font-size: 1.2rem; font-weight: 700; font-family: 'Courier New'; margin: 6px 0; }
+  .pd-card .pd-sub { font-size: 0.78rem; color: #8b949e; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } .parallel-demo { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Lab 4: Rate of a Reaction — V2</h1>
+  <p>Scheme 1 Design · CHM152 Student Interactive Guide</p>
+</header>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('scheme1')">🎯 The Big Reveal</button>
+  <button class="tab-btn" onclick="showTab('mechanism')">Why Zero Order?</button>
+  <button class="tab-btn" onclick="showTab('sim')">Simulator</button>
+  <button class="tab-btn" onclick="showTab('week1')">Week 1 Lab</button>
+  <button class="tab-btn" onclick="showTab('week2')">Week 2 Excel</button>
+  <button class="tab-btn" onclick="showTab('quiz')">Check Yourself</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="tab-overview" class="tab-content active">
+  <h2>What You're Doing and Why</h2>
+  <div class="card blue">
+    <p>You're figuring out the <strong>rate law</strong> for acetone reacting with bromine. The rate law tells you which ingredients control how fast the reaction goes — and by how much.</p>
+    <div class="formula">rate = k [acetone]ⁿ [H⁺]ᵐ [Br₂]ᵖ</div>
+    <p>Your job: find the actual values of n, m, and p. The result will be surprising.</p>
+  </div>
+
+  <h3>The 5-Run Plan</h3>
+  <div class="card" style="border-left:4px solid #f0883e;">
+    <p><strong>Part 1 — The Zero Order Proof (Runs A, B, C)</strong></p>
+    <p>Three reactions. Same [HCl] and [acetone] in all three. Different amounts of Br₂: 1×, 2×, and 4×. You measure how fast Br₂ disappears in each. If the rate is the same in all three despite having 4× more Br₂ in Run C — that's your proof that Br₂ is zero order.</p>
+  </div>
+  <div class="card" style="border-left:4px solid #58a6ff;">
+    <p><strong>Part 2 — Finding n and m (Runs D and E)</strong></p>
+    <p>Two more reactions using Run B as your baseline. Run D doubles the HCl. Run E doubles the acetone. Compare the rates to find the orders for each.</p>
+  </div>
+
+  <h3>What You'll Measure</h3>
+  <p>Bromine is orange. As it reacts, the solution goes colorless. You'll measure how fast the orange disappears using a spectrophotometer at 395 nm. The fading speed IS the reaction rate.</p>
+
+  <div class="key-insight">
+    <div class="ki-label">Heads up before you start</div>
+    <p>Run C will look much more orange than Run A — it has 4× more Br₂. Your first instinct will be that it should react faster. It won't. Same rate. That's the whole point of the experiment.</p>
+  </div>
+</div>
+
+<!-- THE BIG REVEAL -->
+<div id="tab-scheme1" class="tab-content">
+  <h2>🎯 The Big Reveal — Why Scheme 1 Works</h2>
+
+  <div class="aha-box">
+    <div class="aha-title">What You'll See in Your Graph</div>
+    <p style="color:#c9d1d9;">Three [Br₂] vs time lines — different starting heights, but identical slopes.</p>
+    <p style="color:#58a6ff; font-weight:700; font-size:1.1rem; margin-top:8px;">Same slope = same rate = zero order in Br₂.</p>
+  </div>
+
+  <h3>Interactive: The Parallel Lines Demo</h3>
+  <div class="interactive-section">
+    <p style="color:#8b949e; font-size:0.85rem;">This shows what your graph should look like. Notice: different starting [Br₂], but all three lines fall at the same rate.</p>
+    <div class="slider-row">
+      <label>Rate k' (M/s)</label>
+      <input type="range" id="kpScheme" min="1" max="15" value="6" oninput="updateScheme1()">
+      <span class="slider-val" id="kp-scheme-val">6 × 10⁻⁶</span>
+    </div>
+    <canvas id="scheme1Canvas" height="320"></canvas>
+    <div id="scheme1-verdict" style="text-align:center; margin-top:12px; font-size:0.95rem; color:#3fb950; font-weight:700;"></div>
+  </div>
+
+  <h3>What the Parallel Lines Mean</h3>
+  <div class="parallel-demo">
+    <div class="pd-card a">
+      <div class="pd-title" style="color:#ff9800;">Run A — Low Br₂</div>
+      <div class="pd-val">1×10⁻³ M</div>
+      <div class="pd-sub">Pale yellow<br>Finishes in ~3 min</div>
+      <div style="margin-top:8px; font-size:0.85rem; color:#c9d1d9;">slope = −k'</div>
+    </div>
+    <div class="pd-card b">
+      <div class="pd-title" style="color:#ffc107;">Run B — Mid Br₂</div>
+      <div class="pd-val">2×10⁻³ M</div>
+      <div class="pd-sub">Orange<br>Finishes in ~6 min</div>
+      <div style="margin-top:8px; font-size:0.85rem; color:#c9d1d9;">slope = −k' (same!)</div>
+    </div>
+    <div class="pd-card c">
+      <div class="pd-title" style="color:#ff5722;">Run C — High Br₂</div>
+      <div class="pd-val">4×10⁻³ M</div>
+      <div class="pd-sub">Deep orange<br>Finishes in ~12 min</div>
+      <div style="margin-top:8px; font-size:0.85rem; color:#c9d1d9;">slope = −k' (same!)</div>
+    </div>
+  </div>
+
+  <div class="key-insight">
+    <div class="ki-label">The Bathtub Analogy</div>
+    <p>Imagine three bathtubs with the same drain. One has 1 inch of water, one has 2 inches, one has 4 inches. The drain rate (gallons per minute) is the same in all three — but the full tub takes longer to empty. The drain doesn't care how much water is in the tub. That's zero order.</p>
+    <p>In your lab: [Br₂] is the water level. k' is the drain rate. The drain (enolization step) doesn't involve Br₂ — so Br₂ level doesn't affect how fast it drains.</p>
+  </div>
+
+  <div class="card green">
+    <p><strong>Once you've proven p = 0 from Runs A, B, C:</strong></p>
+    <p>You don't need to test first-order or second-order plots. You're done with Br₂. Now you just compare Runs D and E against B to find n and m — same type of graph, same logic.</p>
+  </div>
+</div>
+
+<!-- MECHANISM -->
+<div id="tab-mechanism" class="tab-content">
+  <h2>Why Is Br₂ Zero Order?</h2>
+
+  <div class="card red">
+    <p>The surprising result has a real explanation. The reaction happens in two steps, and only one of them is slow.</p>
+  </div>
+
+  <div class="step-item">
+    <div class="step-circle" style="background:#e65100;">1</div>
+    <div class="step-body">
+      <h4>Step 1 — Enolization (SLOW — controls the rate)</h4>
+      <p>Acetone + H⁺ → enol form of acetone</p>
+      <div class="formula" style="font-size:0.85rem;">CH₃COCH₃ + H⁺ → CH₂=C(OH)CH₃ + H⁺</div>
+      <p style="font-size:0.9rem;">This step requires acetone AND H⁺. Br₂ is NOT involved. This is the bottleneck — the factory floor that can only work so fast.</p>
+    </div>
+  </div>
+
+  <div class="step-item">
+    <div class="step-circle" style="background:#2ea043;">2</div>
+    <div class="step-body">
+      <h4>Step 2 — Bromination (FAST — not the bottleneck)</h4>
+      <p>Enol + Br₂ → bromoacetone + HBr</p>
+      <div class="formula" style="font-size:0.85rem;">CH₂=C(OH)CH₃ + Br₂ → CH₂BrCOCH₃ + HBr</div>
+      <p style="font-size:0.9rem;">This step IS so fast it's essentially instant once the enol forms. Having more Br₂ doesn't make this step faster — it's already waiting for enol to be produced.</p>
+    </div>
+  </div>
+
+  <div class="card orange">
+    <h3 style="margin-top:0;">The Factory Analogy</h3>
+    <p>Step 1 is the factory making car bodies (slow). Step 2 is painting them (fast). The factory produces 10 bodies/hour regardless of how much paint you have. Bringing in more paint (= more Br₂) doesn't help — the bottleneck is making the bodies.</p>
+    <p><strong>Zero order in Br₂ because Br₂ isn't at the bottleneck.</strong></p>
+  </div>
+
+  <h3>But Why Does [H⁺] Matter?</h3>
+  <p>H⁺ IS at the bottleneck (Step 1). More H⁺ → faster enolization → faster overall reaction. That's why m = 1 (first order in H⁺). Same logic: more acetone → faster Step 1 → n = 1.</p>
+
+  <div class="card" style="border-left:4px solid #a371f7;">
+    <p><strong>H⁺ is a catalyst.</strong> It helps make the enol in Step 1, then gets released in Step 2 and recycled. Net: H⁺ is not consumed overall. But its concentration still controls the rate of Step 1 — which is why it appears in the rate law.</p>
+  </div>
+</div>
+
+<!-- SIMULATOR -->
+<div id="tab-sim" class="tab-content">
+  <h2>Lab Simulator — All 5 Runs</h2>
+  <p style="color:#8b949e; font-size:0.88rem;">Adjust the rate constant and see how all 5 runs behave. Notice that changing k' speeds up or slows down all runs equally — but the relative slopes between D/E vs B reveal the orders.</p>
+
+  <div class="interactive-section">
+    <div class="slider-row">
+      <label>Rate constant k'(B)</label>
+      <input type="range" id="kBase" min="2" max="14" value="6" oninput="updateSim()">
+      <span class="slider-val" id="kbase-val">6×10⁻⁶ M/s</span>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
+      <div>
+        <p style="color:#f0883e; font-weight:700; text-align:center; margin-bottom:4px; font-size:0.9rem;">Part 1: Runs A, B, C — Proof of Zero Order</p>
+        <canvas id="part1Canvas" height="250"></canvas>
+        <p id="part1-slopes" style="font-size:0.82rem; color:#8b949e; margin-top:6px; text-align:center;"></p>
+      </div>
+      <div>
+        <p style="color:#58a6ff; font-weight:700; text-align:center; margin-bottom:4px; font-size:0.9rem;">Part 2: Runs B, D, E — Finding n and m</p>
+        <canvas id="part2Canvas" height="250"></canvas>
+        <p id="part2-slopes" style="font-size:0.82rem; color:#8b949e; margin-top:6px; text-align:center;"></p>
+      </div>
+    </div>
+
+    <div id="sim-conclusion" style="background:#0f2a1a; border:1px solid #3fb950; border-radius:8px; padding:14px; margin-top:14px; text-align:center; color:#3fb950; font-weight:700;"></div>
+  </div>
+
+  <h3>Reading the Graphs</h3>
+  <div class="two-col">
+    <div class="card" style="border-left:4px solid #f0883e;">
+      <h3 style="margin-top:0; color:#f0883e;">Part 1 — What to Look For</h3>
+      <p>Runs A, B, C start at different heights (different [Br₂]₀) but fall with <strong>identical slopes</strong>. Three parallel lines. This is zero order.</p>
+      <p>The run with lowest [Br₂] (A) reaches zero first. The run with most Br₂ (C) takes longest. But the rate — the slope — is the same.</p>
+    </div>
+    <div class="card" style="border-left:4px solid #58a6ff;">
+      <h3 style="margin-top:0; color:#58a6ff;">Part 2 — What to Look For</h3>
+      <p>Run D has twice the H⁺ of Run B → slope is 2× steeper → m = 1.</p>
+      <p>Run E has twice the acetone of Run B → slope is 2× steeper → n = 1.</p>
+      <p>All three lines start at the same [Br₂]₀ (2×10⁻³ M) so comparing slopes is direct.</p>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK 1 -->
+<div id="tab-week1" class="tab-content">
+  <h2>Week 1 — In the Lab</h2>
+
+  <h3>Reaction Mixtures — Use 10⁻² M Br₂ Stock</h3>
+  <table>
+    <tr><th>Run</th><th>mL Br₂ (10⁻²M)</th><th>mL HCl (2M)</th><th>mL Acetone (8M)</th><th>mL DI</th><th>[Br₂]₀</th><th>[HCl]₀</th><th>[Acetone]₀</th></tr>
+    <tr style="background:#1a1208;"><td><span class="run-badge badge-a">A</span></td><td>1.0</td><td>1.0</td><td>1.0</td><td>7.0</td><td>1×10⁻³ M</td><td>0.20 M</td><td>0.80 M</td></tr>
+    <tr style="background:#1a1610;"><td><span class="run-badge badge-b">B</span></td><td>2.0</td><td>1.0</td><td>1.0</td><td>6.0</td><td>2×10⁻³ M</td><td>0.20 M</td><td>0.80 M</td></tr>
+    <tr style="background:#1a0e08;"><td><span class="run-badge badge-c">C</span></td><td>4.0</td><td>1.0</td><td>1.0</td><td>4.0</td><td>4×10⁻³ M</td><td>0.20 M</td><td>0.80 M</td></tr>
+    <tr style="background:#08101a;"><td><span class="run-badge badge-d">D</span></td><td>2.0</td><td>2.0</td><td>1.0</td><td>5.0</td><td>2×10⁻³ M</td><td>0.40 M</td><td>0.80 M</td></tr>
+    <tr style="background:#100818;"><td><span class="run-badge badge-e">E</span></td><td>2.0</td><td>1.0</td><td>2.0</td><td>5.0</td><td>2×10⁻³ M</td><td>0.20 M</td><td>1.60 M</td></tr>
+  </table>
+
+  <h3>Procedure for Each Run</h3>
+  <div class="step-item"><div class="step-circle">1</div><div class="step-body"><h4>Set up</h4><p>Get your 10 mL volumetric flask. Measure out the correct volumes before combining.</p></div></div>
+  <div class="step-item"><div class="step-circle">2</div><div class="step-body"><h4>Add reagents in order</h4><p>Br₂ solution first → HCl → acetone last. Adding acetone starts the reaction. Fill to 10 mL with DI water.</p></div></div>
+  <div class="step-item"><div class="step-circle">3</div><div class="step-body"><h4>Mix and transfer immediately</h4><p>Parafilm → invert 3× → into cuvette → into spectrophotometer. <strong>Start your stopwatch when acetone is added.</strong></p></div></div>
+  <div class="step-item"><div class="step-circle">4</div><div class="step-body"><h4>Record every 15 seconds</h4><p>Continue until the solution goes colorless (absorbance ≈ 0) or 5–12 minutes (Run C takes longest).</p></div></div>
+
+  <div class="card red" style="margin-top:16px;">
+    <p><strong>⚠️ Critical tip:</strong> The biggest mistake is spending too long mixing and transferring. You'll miss the beginning of the reaction. Practice the sequence once before mixing reagents. Aim for: mixed → cuvette → reading, all within 30 seconds.</p>
+  </div>
+
+  <div class="card orange">
+    <p><strong>What to observe before starting each run:</strong></p>
+    <ul>
+      <li>Run A: pale yellow (low Br₂)</li>
+      <li>Run B: orange (2× more Br₂)</li>
+      <li>Run C: deep orange (4× more Br₂ — noticeably darker)</li>
+    </ul>
+    <p><strong>Prediction before Run C:</strong> Will it react faster, slower, or the same speed as Run A?</p>
+    <p><em>Write your prediction, then see if you're right.</em></p>
+  </div>
+</div>
+
+<!-- WEEK 2 -->
+<div id="tab-week2" class="tab-content">
+  <h2>Week 2 — Excel Analysis</h2>
+
+  <div class="card green">
+    <p><strong>Good news:</strong> You only need ONE type of graph — [Br₂] vs time — for all 5 runs. No comparing zero vs first vs second order plots.</p>
+  </div>
+
+  <h3>Step 1: Standard Curve (Sheet 1)</h3>
+  <div class="step-item"><div class="step-circle">1</div><div class="step-body"><h4>Enter data</h4><p>Column A: [Br₂] concentrations. Column B: absorbance values.</p></div></div>
+  <div class="step-item"><div class="step-circle">2</div><div class="step-body"><h4>Insert scatter plot → Add linear trendline</h4><p>Right-click trendline → Format → Display Equation + R². You'll get: y = slope × x + intercept</p></div></div>
+  <div class="step-item"><div class="step-circle">3</div><div class="step-body"><h4>Note your conversion equation</h4><p><span class="excel-tip">[Br₂] = (Absorbance − intercept) / slope</span></p></div></div>
+
+  <h3>Step 2: Convert absorbance to [Br₂] for each run</h3>
+  <div class="step-item"><div class="step-circle">4</div><div class="step-body">
+    <h4>For each run's sheet</h4>
+    <p>A1: absorbance | B1: time | C1: concentration</p>
+    <span class="excel-tip">C2: =(A2 - intercept)/slope</span>
+    <p style="margin-top:6px;">Drag formula down. Column C = [Br₂] at each time point.</p>
+  </div></div>
+
+  <h3>Step 3: Graph 1 — Runs A, B, C on same axes</h3>
+  <div class="step-item"><div class="step-circle">5</div><div class="step-body">
+    <h4>Select and plot</h4>
+    <p>On one chart: plot time vs [Br₂] for Runs A, B, and C as separate series. Add a trendline to each. Record the 3 slopes.</p>
+    <p><strong>If slopes are equal → p = 0. Zero order in Br₂. Proven.</strong></p>
+  </div></div>
+
+  <h3>Step 4: Graph 2 — Runs B, D, E on same axes</h3>
+  <div class="step-item"><div class="step-circle">6</div><div class="step-body">
+    <h4>Compare slopes</h4>
+    <p>Plot time vs [Br₂] for Runs B, D, E. Add trendlines. Compare slopes:</p>
+    <span class="excel-tip">slope_D / slope_B = ratio → = 2ᵐ → solve for m</span>
+    <span class="excel-tip">slope_E / slope_B = ratio → = 2ⁿ → solve for n</span>
+  </div></div>
+
+  <h3>Step 5: Calculate k</h3>
+  <div class="formula">k = k' / ([acetone] × [H⁺]) &nbsp;&nbsp;(when n=1, m=1)</div>
+  <p>Use the slope from Runs B, D, and E (they all share the same [Br₂]₀). Average your 3 k values.</p>
+
+  <div class="key-insight">
+    <div class="ki-label">Why not use Runs A and C for calculating k?</div>
+    <p>Runs A and C have different [Br₂]₀ than B, D, E — but since p=0, their slopes equal k×[acetone]×[H⁺] just the same. You CAN use them — but to keep comparisons clean, most instructors use B, D, E since they're designed as a matching set for finding n and m.</p>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="tab-quiz" class="tab-content">
+  <h2>Check Yourself</h2>
+
+  <div class="quiz-q" id="q1">
+    <p>1. You plot [Br₂] vs time for Runs A, B, and C. They show three parallel lines with equal slopes. What does this prove?</p>
+    <div class="quiz-option" onclick="checkQ(1,'a')"><input type="radio" name="q1"><label>The rate constant k changes with concentration</label></div>
+    <div class="quiz-option" onclick="checkQ(1,'b')"><input type="radio" name="q1"><label>Br₂ is zero order — its concentration does not affect the rate</label></div>
+    <div class="quiz-option" onclick="checkQ(1,'c')"><input type="radio" name="q1"><label>The reaction is first order in Br₂</label></div>
+    <div class="quiz-option" onclick="checkQ(1,'d')"><input type="radio" name="q1"><label>The spectrophotometer is malfunctioning</label></div>
+    <div class="feedback" id="q1-fb"></div>
+  </div>
+
+  <div class="quiz-q" id="q2">
+    <p>2. Run C has 4× more Br₂ than Run A. Why does Run C take 4× longer to go colorless even though the rate is the same?</p>
+    <div class="quiz-option" onclick="checkQ(2,'a')"><input type="radio" name="q2"><label>Because Run C has a slower rate constant</label></div>
+    <div class="quiz-option" onclick="checkQ(2,'b')"><input type="radio" name="q2"><label>Because there are 4× more Br₂ molecules that must all be consumed at the same per-second rate</label></div>
+    <div class="quiz-option" onclick="checkQ(2,'c')"><input type="radio" name="q2"><label>Because high [Br₂] slows down the enolization step</label></div>
+    <div class="quiz-option" onclick="checkQ(2,'d')"><input type="radio" name="q2"><label>Because Run C uses more DI water</label></div>
+    <div class="feedback" id="q2-fb"></div>
+  </div>
+
+  <div class="quiz-q" id="q3">
+    <p>3. Slope of Run D is 1.4×10⁻⁵ M/s. Slope of Run B is 7×10⁻⁶ M/s. [H⁺] was doubled from B to D. What is m?</p>
+    <div class="quiz-option" onclick="checkQ(3,'a')"><input type="radio" name="q3"><label>0 (zero order)</label></div>
+    <div class="quiz-option" onclick="checkQ(3,'b')"><input type="radio" name="q3"><label>1 (first order)</label></div>
+    <div class="quiz-option" onclick="checkQ(3,'c')"><input type="radio" name="q3"><label>2 (second order)</label></div>
+    <div class="quiz-option" onclick="checkQ(3,'d')"><input type="radio" name="q3"><label>0.5 (half order)</label></div>
+    <div class="feedback" id="q3-fb"></div>
+  </div>
+
+  <div class="quiz-q" id="q4">
+    <p>4. Why does Run E go faster than Run B even though they have the same amount of Br₂?</p>
+    <div class="quiz-option" onclick="checkQ(4,'a')"><input type="radio" name="q4"><label>Run E has more HCl</label></div>
+    <div class="quiz-option" onclick="checkQ(4,'b')"><input type="radio" name="q4"><label>Run E has double the acetone — more fuel for the rate-determining enolization step</label></div>
+    <div class="quiz-option" onclick="checkQ(4,'c')"><input type="radio" name="q4"><label>Run E uses less DI water so the reaction is more concentrated</label></div>
+    <div class="quiz-option" onclick="checkQ(4,'d')"><input type="radio" name="q4"><label>Run E was prepared at higher temperature</label></div>
+    <div class="feedback" id="q4-fb"></div>
+  </div>
+
+  <div class="quiz-q" id="q5">
+    <p>5. In the formula k = k' / ([acetone] × [H⁺]), what is k'?</p>
+    <div class="quiz-option" onclick="checkQ(5,'a')"><input type="radio" name="q5"><label>The rate constant at a different temperature</label></div>
+    <div class="quiz-option" onclick="checkQ(5,'b')"><input type="radio" name="q5"><label>The slope of your [Br₂] vs time graph (absolute value)</label></div>
+    <div class="quiz-option" onclick="checkQ(5,'c')"><input type="radio" name="q5"><label>The molar absorptivity of Br₂</label></div>
+    <div class="quiz-option" onclick="checkQ(5,'d')"><input type="radio" name="q5"><label>The intercept of the standard curve</label></div>
+    <div class="feedback" id="q5-fb"></div>
+  </div>
+
+  <div class="quiz-q" id="q6">
+    <p>6. What is the final rate law for this reaction based on the expected experimental results?</p>
+    <div class="quiz-option" onclick="checkQ(6,'a')"><input type="radio" name="q6"><label>rate = k [acetone][H⁺][Br₂]</label></div>
+    <div class="quiz-option" onclick="checkQ(6,'b')"><input type="radio" name="q6"><label>rate = k [Br₂]</label></div>
+    <div class="quiz-option" onclick="checkQ(6,'c')"><input type="radio" name="q6"><label>rate = k [acetone][H⁺]</label></div>
+    <div class="quiz-option" onclick="checkQ(6,'d')"><input type="radio" name="q6"><label>rate = k [acetone]²[H⁺]</label></div>
+    <div class="feedback" id="q6-fb"></div>
+  </div>
+
+  <div style="margin-top:20px;">
+    <button class="btn btn-blue" onclick="showAllAnswers()">Show All Answers</button>
+    <button class="btn btn-green" onclick="resetQuiz()" style="margin-left:10px;">Reset</button>
+  </div>
+</div>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+    if(name === 'scheme1') setTimeout(updateScheme1, 50);
+    if(name === 'sim') setTimeout(updateSim, 50);
+  }
+
+  function updateScheme1() {
+    const kp = parseFloat(document.getElementById('kpScheme').value) * 1e-6;
+    document.getElementById('kp-scheme-val').textContent = document.getElementById('kpScheme').value + ' × 10⁻⁶';
+    const canvas = document.getElementById('scheme1Canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = 320 * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    const W = canvas.offsetWidth, H = 320;
+    ctx.fillStyle = '#0d1117'; ctx.fillRect(0,0,W,H);
+    const pad = {l:65,r:20,t:30,b:50};
+    const runs = [
+      {br20: 1e-3, color: '#FF9800', label: 'Run A'},
+      {br20: 2e-3, color: '#FFC107', label: 'Run B'},
+      {br20: 4e-3, color: '#FF5722', label: 'Run C'},
+    ];
+    const tmax = runs[2].br20 / kp * 1.05;
+    const npts = 50;
+    const times = Array.from({length:npts}, (_,i) => i*tmax/(npts-1));
+    const maxBr2 = 4.5e-3;
+    function px(t) { return pad.l + (t/tmax)*(W-pad.l-pad.r); }
+    function py(b) { return H - pad.b - (b/maxBr2)*(H-pad.t-pad.b); }
+    // Grid
+    ctx.strokeStyle = '#21262d'; ctx.lineWidth = 0.5;
+    for(let i=0;i<=5;i++){
+      const y = H-pad.b-(i/5)*(H-pad.t-pad.b);
+      ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+      ctx.fillStyle='#8b949e'; ctx.font='10px Arial';
+      ctx.fillText((maxBr2*i/5*1000).toFixed(1)+'e-3', 4, y+4);
+    }
+    // Runs
+    runs.forEach((run, ri) => {
+      const pts = times.map(t => Math.max(run.br20 - kp*t, 0));
+      ctx.strokeStyle = run.color; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(px(0), py(run.br20));
+      let ended = false;
+      times.forEach((t,i) => {
+        if(!ended) { ctx.lineTo(px(t), py(pts[i])); if(pts[i]===0) ended=true; }
+        else { ctx.lineTo(px(t), py(0)); }
+      });
+      ctx.stroke();
+      // Label
+      ctx.fillStyle = run.color; ctx.font = 'bold 11px Arial';
+      ctx.fillText(run.label, pad.l + 8 + ri*2, py(run.br20) - 6);
+    });
+    // Axes
+    ctx.strokeStyle='#8b949e'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,H-pad.b); ctx.lineTo(W-pad.r,H-pad.b); ctx.stroke();
+    ctx.fillStyle='#8b949e'; ctx.font='11px Arial';
+    ctx.fillText('Time (seconds)', W/2-40, H-8);
+    ctx.save(); ctx.translate(14, H/2); ctx.rotate(-Math.PI/2);
+    ctx.fillText('[Br₂] (M)', -25, 0); ctx.restore();
+    // Slope arrows
+    ctx.fillStyle = '#3fb950'; ctx.font = 'bold 11px Arial';
+    ctx.fillText('All slopes equal = −k\' = p = 0', pad.l + 10, pad.t + 14);
+    document.getElementById('scheme1-verdict').textContent =
+      `Slope of A ≈ Slope of B ≈ Slope of C ≈ −${(kp*1e6).toFixed(1)}×10⁻⁶ M/s → Zero order in Br₂ ✓`;
+  }
+
+  function updateSim() {
+    const kb = parseFloat(document.getElementById('kBase').value) * 1e-6;
+    document.getElementById('kbase-val').textContent = document.getElementById('kBase').value + '×10⁻⁶ M/s';
+    const br2_0 = 2e-3; // Runs B,D,E all share same Br2_0
+    const n_acetone = 1, m_HCl = 1;
+    const [acetoneB, acetoneE] = [0.80, 1.60];
+    const [HClB, HClD] = [0.20, 0.40];
+    const kD = kb * (HClD/HClB);   // doubled HCl → 2x kb
+    const kE = kb * (acetoneE/acetoneB); // doubled acetone → 2x kb
+    const tmax_p1 = (4e-3)/kb * 1.05;
+    const tmax_p2 = (2e-3)/kb * 1.05;
+    drawSimPlot('part1Canvas', tmax_p1, [
+      {br20:1e-3, kp:kb, color:'#FF9800', label:'Run A'},
+      {br20:2e-3, kp:kb, color:'#FFC107', label:'Run B'},
+      {br20:4e-3, kp:kb, color:'#FF5722', label:'Run C'},
+    ]);
+    drawSimPlot('part2Canvas', tmax_p2, [
+      {br20:2e-3, kp:kb, color:'#FFC107', label:'Run B'},
+      {br20:2e-3, kp:kD, color:'#42A5F5', label:'Run D (2×H⁺)'},
+      {br20:2e-3, kp:kE, color:'#CE93D8', label:'Run E (2×acetone)'},
+    ]);
+    document.getElementById('part1-slopes').innerHTML = `A: −${(kb*1e6).toFixed(1)}×10⁻⁶ &nbsp; B: −${(kb*1e6).toFixed(1)}×10⁻⁶ &nbsp; C: −${(kb*1e6).toFixed(1)}×10⁻⁶ &nbsp; → Equal → p=0`;
+    document.getElementById('part2-slopes').innerHTML = `B: −${(kb*1e6).toFixed(1)}×10⁻⁶ &nbsp; D: −${(kD*1e6).toFixed(1)}×10⁻⁶ &nbsp; E: −${(kE*1e6).toFixed(1)}×10⁻⁶`;
+    document.getElementById('sim-conclusion').innerHTML =
+      `Part 1: slopes A=B=C → p=0 ✓&nbsp;&nbsp;|&nbsp;&nbsp; Part 2: D/B = ${(kD/kb).toFixed(1)} → m=1 ✓ &nbsp; E/B = ${(kE/kb).toFixed(1)} → n=1 ✓`;
+  }
+
+  function drawSimPlot(id, tmax, runs) {
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = 250 * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    const W = canvas.offsetWidth, H = 250;
+    ctx.fillStyle = '#0d1117'; ctx.fillRect(0,0,W,H);
+    const pad = {l:55,r:15,t:30,b:40};
+    const maxBr2 = Math.max(...runs.map(r=>r.br20)) * 1.1;
+    const npts = 40;
+    const times = Array.from({length:npts}, (_,i) => i*tmax/(npts-1));
+    function px(t){return pad.l+(t/tmax)*(W-pad.l-pad.r);}
+    function py(b){return H-pad.b-(b/maxBr2)*(H-pad.t-pad.b);}
+    ctx.strokeStyle='#21262d'; ctx.lineWidth=0.4;
+    for(let i=0;i<=4;i++){const y=H-pad.b-(i/4)*(H-pad.t-pad.b);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();}
+    runs.forEach(run=>{
+      const pts=times.map(t=>Math.max(run.br20-run.kp*t,0));
+      ctx.strokeStyle=run.color; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(px(0),py(pts[0]));
+      pts.forEach((b,i)=>ctx.lineTo(px(times[i]),py(b))); ctx.stroke();
+      ctx.fillStyle=run.color; ctx.font='bold 10px Arial';
+      ctx.fillText(run.label, pad.l+5, py(run.br20)-4);
+    });
+    ctx.strokeStyle='#8b949e'; ctx.lineWidth=0.8;
+    ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,H-pad.b); ctx.lineTo(W-pad.r,H-pad.b); ctx.stroke();
+    ctx.fillStyle='#8b949e'; ctx.font='10px Arial';
+    ctx.fillText('Time', W/2-15, H-6);
+    ctx.save(); ctx.translate(12,H/2); ctx.rotate(-Math.PI/2); ctx.fillText('[Br₂]',-15,0); ctx.restore();
+  }
+
+  const answers = {1:'b',2:'b',3:'b',4:'b',5:'b',6:'c'};
+  const exps = {
+    1:'Correct! Equal slopes across different [Br₂] values is the direct proof of zero order. Rate = slope, and all slopes are the same.',
+    2:'Correct! Same drain rate, bigger bathtub. k\' is identical, but more Br₂ needs to be consumed. Time = [Br₂]₀ / k\'.',
+    3:'Correct! Ratio = 1.4×10⁻⁵ / 7×10⁻⁶ = 2 = 2ᵐ → m=1.',
+    4:'Correct! Acetone is in the rate-determining step. Double acetone → double enolization rate → double overall rate.',
+    5:'Correct! k\' = the slope (absolute value) from your [Br₂] vs time graph. It\'s k× [acetone]ⁿ × [H⁺]ᵐ.',
+    6:'Correct! Since p=0, Br₂ drops out: rate = k[acetone]¹[H⁺]¹.'
+  };
+  const wrong = {
+    1:'Not quite. Equal slopes on a [Br₂] vs time plot specifically indicates zero-order kinetics in Br₂.',
+    2:'Not quite. The rate (M/s removed per second) is identical. More total Br₂ just means more to remove at that fixed rate.',
+    3:'Ratio = 2 = 2ᵐ → m = 1, not 2.',
+    4:'Not quite. [H⁺] and [Br₂] are the same in B and E — only acetone changes.',
+    5:'Not quite. k\' is the pseudo-rate constant, equal to the magnitude of the slope of your [Br₂] vs time line.',
+    6:'Not quite. Since Br₂ is zero order (p=0), it doesn\'t appear in the rate law.'
+  };
+
+  function checkQ(num, chosen) {
+    const correct = answers[num];
+    const letters = ['a','b','c','d'];
+    const opts = document.querySelectorAll('#q'+num+' .quiz-option');
+    opts.forEach(o=>o.classList.remove('correct','wrong'));
+    opts[letters.indexOf(chosen)].classList.add(chosen===correct?'correct':'wrong');
+    opts[letters.indexOf(correct)].classList.add('correct');
+    const fb = document.getElementById('q'+num+'-fb');
+    fb.textContent = (chosen===correct?'✓ ':'✗ ') + (chosen===correct?exps[num]:wrong[num]);
+    fb.className='feedback '+(chosen===correct?'correct':'wrong');
+    fb.style.display='block';
+  }
+
+  function showAllAnswers(){Object.keys(answers).forEach(n=>checkQ(parseInt(n),answers[n]));}
+  function resetQuiz(){
+    for(let i=1;i<=6;i++){
+      document.getElementById('q'+i+'-fb').style.display='none';
+      document.querySelectorAll('#q'+i+' .quiz-option').forEach(o=>o.classList.remove('correct','wrong'));
+      document.querySelectorAll('#q'+i+' input').forEach(r=>r.checked=false);
+    }
+  }
+
+  window.addEventListener('load', ()=>{
+    const activeTab = document.querySelector('.tab-content.active');
+    if(activeTab && activeTab.id==='tab-scheme1') updateScheme1();
+    if(activeTab && activeTab.id==='tab-sim') updateSim();
+  });
+  window.addEventListener('resize', ()=>{
+    const active = document.querySelector('.tab-content.active');
+    if(active && active.id==='tab-scheme1') updateScheme1();
+    if(active && active.id==='tab-sim') updateSim();
+  });
+</script>
+</body>
+</html>

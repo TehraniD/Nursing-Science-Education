@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 4 — Student Template</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: white; color: #1a1a2e; font-size: 11pt; line-height: 1.5; }
+
+  /* Print-optimized layout */
+  .page { max-width: 750px; margin: 0 auto; padding: 20px 30px; }
+  .no-print { background: #0f3460; color: white; padding: 10px 20px; text-align: center; font-size: 0.85rem; }
+  .no-print a { color: #7fdbff; }
+
+  h1 { font-size: 16pt; text-align: center; margin-bottom: 4px; }
+  h2 { font-size: 12pt; background: #0f3460; color: white; padding: 5px 10px; margin: 18px 0 10px; }
+  h3 { font-size: 11pt; font-weight: bold; margin: 12px 0 6px; }
+  p  { margin-bottom: 6px; }
+
+  .header-box { border: 2px solid #0f3460; padding: 10px 14px; margin: 12px 0; }
+  .header-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .field-line { border-bottom: 1px solid #333; min-height: 22px; margin: 4px 0; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 10pt; }
+  th { background: #0f3460; color: white; padding: 5px 8px; text-align: center; border: 1px solid #0f3460; }
+  td { border: 1px solid #ccc; padding: 5px 8px; text-align: center; min-height: 24px; }
+  td.label { text-align: left; background: #f7f9fc; font-weight: bold; }
+  td.input-cell { min-height: 28px; background: #fafcff; }
+
+  /* Kinetics data tables — run-colored headers */
+  .run1-header { background: #e67e22; }
+  .run2-header { background: #1565c0; }
+  .run3-header { background: #6a1b9a; }
+
+  /* Answer lines */
+  .ans { border-bottom: 1.5px solid #333; min-height: 24px; margin: 4px 0 10px; display: block; }
+  .ans-long { border-bottom: 1.5px solid #333; min-height: 40px; margin: 4px 0 12px; display: block; }
+
+  /* Formula box */
+  .formula { border: 1px solid #0f3460; background: #f0f4ff; padding: 7px 12px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 10.5pt; text-align: center; margin: 6px 0; }
+
+  /* Checkbox */
+  .check-item { display: flex; align-items: flex-start; gap: 8px; margin: 4px 0; }
+  .checkbox { width: 14px; height: 14px; border: 1.5px solid #333; flex-shrink: 0; margin-top: 2px; }
+
+  /* Run table side by side */
+  .kinetics-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .page-break { page-break-before: always; padding-top: 20px; }
+
+  /* Note box */
+  .note { border-left: 4px solid #f39c12; background: #fff8e1; padding: 7px 11px; margin: 8px 0; font-size: 10pt; }
+  .calc-box { border: 1px solid #ccc; background: #fafcff; padding: 10px; min-height: 70px; margin: 6px 0; }
+
+  @media print {
+    .no-print { display: none; }
+    .page { padding: 15px 20px; }
+    body { font-size: 10.5pt; }
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  PRINT THIS PAGE → File → Print (or Ctrl/Cmd+P). For best results: Letter size, portrait, margins Normal.
+</div>
+
+<div class="page">
+
+<!-- ══════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════ -->
+<h1>Lab 4 — Rate of a Reaction</h1>
+<p style="text-align:center;font-size:10pt;color:#555">CHM152 · Bromination of Acetone · SPEC 20 Spectrophotometry</p>
+
+<div class="header-box">
+  <div class="header-grid">
+    <div>
+      <p><strong>Name:</strong></p>
+      <div class="field-line"></div>
+    </div>
+    <div>
+      <p><strong>Partner(s):</strong></p>
+      <div class="field-line"></div>
+    </div>
+    <div>
+      <p><strong>Date — Week 1:</strong></p>
+      <div class="field-line"></div>
+    </div>
+    <div>
+      <p><strong>Date — Week 2:</strong></p>
+      <div class="field-line"></div>
+    </div>
+    <div>
+      <p><strong>Section / Lab Time:</strong></p>
+      <div class="field-line"></div>
+    </div>
+    <div>
+      <p><strong>Instructor:</strong></p>
+      <div class="field-line"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BACKGROUND SUMMARY
+════════════════════════════════════════════ -->
+<h2>Background Summary</h2>
+
+<p>The overall reaction is:</p>
+<div class="formula">CH₃COCH₃ + Br₂ → CH₃COCH₂Br + HBr</div>
+
+<p>The rate law has the form: <strong>rate = k [acetone]ⁿ [H⁺]ᵐ [Br₂]ᵖ</strong></p>
+<p>Your goal is to determine the exponents n, m, and p, and calculate the rate constant k.</p>
+
+<div class="note">
+  <strong>Key concept:</strong> Br₂ is only in the <em>fast</em> step of the mechanism. The rate-determining step is the acid-catalyzed enolization, which does not involve Br₂. Therefore p = 0 (zero order in Br₂), and your plot of [Br₂] vs time should be a straight line.
+</div>
+
+<!-- ══════════════════════════════════════════
+     PART A — STANDARD CURVE
+════════════════════════════════════════════ -->
+<h2>WEEK 1 — Part A: Standard Curve</h2>
+<p><strong>Stock:</strong> 10⁻² M Br₂ &nbsp;|&nbsp; <strong>Wavelength:</strong> 395 nm &nbsp;|&nbsp; <strong>Blank:</strong> DI water</p>
+
+<table>
+  <tr>
+    <th>Standard</th>
+    <th>mL of 10⁻² M Br₂</th>
+    <th>mL DI Water</th>
+    <th>[Br₂] (M)</th>
+    <th>Absorbance (A)</th>
+  </tr>
+  <tr><td>1</td><td>0.50</td><td>4.50</td><td>1.0 × 10⁻³</td><td class="input-cell"></td></tr>
+  <tr><td>2</td><td>1.00</td><td>4.00</td><td>2.0 × 10⁻³</td><td class="input-cell"></td></tr>
+  <tr><td>3</td><td>1.50</td><td>3.50</td><td>3.0 × 10⁻³</td><td class="input-cell"></td></tr>
+  <tr><td>4</td><td>2.00</td><td>3.00</td><td>4.0 × 10⁻³</td><td class="input-cell"></td></tr>
+  <tr><td>5</td><td>2.50</td><td>2.50</td><td>5.0 × 10⁻³</td><td class="input-cell"></td></tr>
+</table>
+
+<p style="margin-top:8px"><strong>A.1</strong> &nbsp; From your Excel trendline of A vs [Br₂], record the equation of the line:</p>
+<div class="formula">A = __________ × [Br₂] + __________</div>
+<p>R² = ___________</p>
+
+<!-- ══════════════════════════════════════════
+     PART B — MIXTURE TABLE
+════════════════════════════════════════════ -->
+<h2>WEEK 1 — Part B: Mixture Table</h2>
+<p><strong>Total volume = 10.0 mL per run.</strong> Add Br₂ last. Start timer at the moment of mixing. Zero SPEC 20 with DI water.</p>
+
+<table>
+  <tr>
+    <th>Reagent / Stock</th>
+    <th class="run1-header">Run 1 (baseline)<br>mL added</th>
+    <th class="run2-header">Run 2 ([HCl] × 2)<br>mL added</th>
+    <th class="run3-header">Run 3 ([acetone] × 2)<br>mL added</th>
+  </tr>
+  <tr>
+    <td class="label">10⁻² M Br₂</td>
+    <td>2.0</td><td>2.0</td><td>2.0</td>
+  </tr>
+  <tr>
+    <td class="label">4.0 M HCl</td>
+    <td>1.0</td><td>2.0</td><td>1.0</td>
+  </tr>
+  <tr>
+    <td class="label">4.0 M Acetone</td>
+    <td>1.0</td><td>1.0</td><td>2.0</td>
+  </tr>
+  <tr>
+    <td class="label">DI Water</td>
+    <td>6.0</td><td>5.0</td><td>5.0</td>
+  </tr>
+  <tr>
+    <td class="label"><strong>Total</strong></td>
+    <td><strong>10.0</strong></td><td><strong>10.0</strong></td><td><strong>10.0</strong></td>
+  </tr>
+</table>
+
+<h3>Initial Concentrations After Mixing (C₁V₁ = C₂V₂)</h3>
+<p>Show your work in the boxes below.</p>
+
+<table>
+  <tr>
+    <th>Concentration</th>
+    <th class="run1-header">Run 1</th>
+    <th class="run2-header">Run 2</th>
+    <th class="run3-header">Run 3</th>
+  </tr>
+  <tr>
+    <td class="label">[Br₂]₀ (M)</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label">[H⁺]₀ (M)</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label">[acetone]₀ (M)</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+</table>
+
+<p style="margin-top:8px">Sample calculation for [Br₂]₀ in Run 1:</p>
+<div class="calc-box"></div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 2 — KINETICS DATA
+════════════════════════════════════════════ -->
+<div class="page-break">
+<h2>WEEK 1 — Part B: Kinetics Data</h2>
+<p>Record absorbance every 15 seconds for 300 seconds. Stop if A drops below 0.02.</p>
+
+<!-- 3-column side by side data tables -->
+<table>
+  <tr>
+    <th colspan="3" class="run1-header" style="padding:6px">RUN 1 — Baseline</th>
+    <th style="width:20px;border:none;background:white"></th>
+    <th colspan="3" class="run2-header" style="padding:6px">RUN 2 — [HCl] doubled</th>
+    <th style="width:20px;border:none;background:white"></th>
+    <th colspan="3" class="run3-header" style="padding:6px">RUN 3 — [Acetone] doubled</th>
+  </tr>
+  <tr>
+    <th>t (s)</th><th>A</th><th>[Br₂]</th>
+    <th style="border:none;background:white"></th>
+    <th>t (s)</th><th>A</th><th>[Br₂]</th>
+    <th style="border:none;background:white"></th>
+    <th>t (s)</th><th>A</th><th>[Br₂]</th>
+  </tr>
+  <!-- 21 rows: 0 to 300 in steps of 15 -->
+  <tr><td>0</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>0</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>0</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>15</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>15</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>15</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>30</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>30</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>30</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>45</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>45</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>45</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>60</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>60</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>60</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>75</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>75</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>75</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>90</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>90</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>90</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>105</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>105</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>105</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>120</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>120</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>120</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>135</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>135</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>135</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>150</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>150</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>150</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>165</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>165</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>165</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>180</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>180</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>180</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>195</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>195</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>195</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>210</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>210</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>210</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>225</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>225</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>225</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>240</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>240</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>240</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>255</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>255</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>255</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>270</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>270</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>270</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>285</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>285</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>285</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+  <tr><td>300</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>300</td><td class="input-cell"></td><td class="input-cell"></td><td style="border:none;background:white"></td><td>300</td><td class="input-cell"></td><td class="input-cell"></td></tr>
+</table>
+
+<div class="note" style="margin-top:10px">
+  <strong>[Br₂] column:</strong> Leave blank during Week 1. Fill in Week 2 using your Beer's Law equation: [Br₂] = (A − intercept) / slope
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 3 — WEEK 2 ANALYSIS
+════════════════════════════════════════════ -->
+<div class="page-break">
+<h2>WEEK 2 — Analysis</h2>
+
+<h3>Section 1 — Kinetics Plots (Excel)</h3>
+<p>In Excel: plot [Br₂] (y-axis) vs time (x-axis) for all 3 runs. Add a linear trendline to each run. Record results below.</p>
+
+<table>
+  <tr>
+    <th>Run</th>
+    <th>Trendline Slope (M/s)</th>
+    <th>y-intercept</th>
+    <th>R²</th>
+    <th>k' = |slope| (M/s)</th>
+  </tr>
+  <tr>
+    <td class="label run1-header" style="color:white">Run 1</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label run2-header" style="color:white">Run 2</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label run3-header" style="color:white">Run 3</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+</table>
+
+<p style="margin-top:8px"><strong>2.1</strong> &nbsp; Are all 3 R² values ≥ 0.97? Circle: &nbsp; YES &nbsp; / &nbsp; NO</p>
+<p>What does a straight line in [Br₂] vs time tell you about the order in Br₂?</p>
+<span class="ans-long"></span>
+
+<h3>Section 2 — Finding the Orders (m and n)</h3>
+<p>Between Run 1 and Run 2, only [HCl] changed (doubled). The ratio of k' values gives m.</p>
+<div class="formula">k'₂ / k'₁ = 2ᵐ &nbsp;→&nbsp; m = log(k'₂/k'₁) / log(2)</div>
+
+<p><strong>2.2</strong> &nbsp; Calculate k'₂/k'₁:</p>
+<div class="calc-box"></div>
+<p>m = _______________ &nbsp; (round to nearest integer)</p>
+
+<p style="margin-top:10px">Between Run 1 and Run 3, only [acetone] changed (doubled). The ratio of k' values gives n.</p>
+<div class="formula">k'₃ / k'₁ = 2ⁿ &nbsp;→&nbsp; n = log(k'₃/k'₁) / log(2)</div>
+
+<p><strong>2.3</strong> &nbsp; Calculate k'₃/k'₁:</p>
+<div class="calc-box"></div>
+<p>n = _______________ &nbsp; (round to nearest integer)</p>
+
+<h3>Section 3 — Finding the Rate Constant k</h3>
+<div class="formula">k = k' / ([acetone]₀ⁿ × [H⁺]₀ᵐ)</div>
+<p>Calculate k from each run using your values of n and m:</p>
+
+<table>
+  <tr>
+    <th>Run</th>
+    <th>k' (M/s)</th>
+    <th>[acetone]₀ (M)</th>
+    <th>[H⁺]₀ (M)</th>
+    <th>k (M⁻¹s⁻¹)</th>
+  </tr>
+  <tr>
+    <td class="label run1-header" style="color:white">Run 1</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label run2-header" style="color:white">Run 2</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label run3-header" style="color:white">Run 3</td>
+    <td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td><td class="input-cell"></td>
+  </tr>
+  <tr>
+    <td class="label" colspan="4" style="text-align:right"><strong>Average k</strong></td>
+    <td class="input-cell"></td>
+  </tr>
+</table>
+
+<p style="margin-top:8px">Sample calculation for k (Run 1):</p>
+<div class="calc-box"></div>
+
+<h3>Section 4 — Final Rate Law</h3>
+<p><strong>2.4</strong> &nbsp; Write the complete rate law using your experimentally determined values:</p>
+<div class="formula">rate = k [acetone]<sup>&nbsp;&nbsp;&nbsp;</sup> [H⁺]<sup>&nbsp;&nbsp;&nbsp;</sup> [Br₂]<sup>&nbsp;&nbsp;&nbsp;</sup></div>
+<p style="text-align:center;font-size:10pt;color:#666">(fill in n, m, and p=0 above)</p>
+
+<p style="margin-top:10px">k = _____________ M⁻¹s⁻¹ &nbsp;&nbsp;&nbsp; n = _______ &nbsp;&nbsp;&nbsp; m = _______ &nbsp;&nbsp;&nbsp; p = _______</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 4 — DISCUSSION QUESTIONS
+════════════════════════════════════════════ -->
+<div class="page-break">
+<h2>Discussion Questions</h2>
+
+<p><strong>D1.</strong> &nbsp; The reaction is zero order in Br₂. Explain, using the reaction mechanism, why changing the initial concentration of Br₂ does not affect the reaction rate.</p>
+<span class="ans-long" style="min-height:80px"></span>
+
+<p><strong>D2.</strong> &nbsp; Your three [Br₂] vs time plots should each be approximately linear. If one run gave a noticeably curved plot (poor R²), list two possible experimental sources of error that could cause this.</p>
+<p style="margin-left:10px">a) <span class="ans"></span></p>
+<p style="margin-left:10px">b) <span class="ans"></span></p>
+
+<p><strong>D3.</strong> &nbsp; You used pseudo-order conditions in this lab — the concentrations of acetone and HCl were kept in large excess over Br₂. Why is this experimental design necessary? What would happen to your analysis if acetone and HCl were at the same concentration as Br₂?</p>
+<span class="ans-long" style="min-height:80px"></span>
+
+<p><strong>D4.</strong> &nbsp; For Run 2, [H⁺] was doubled. If you found m = 1, how much did the rate change? Show mathematically using the rate law you determined.</p>
+<div class="calc-box"></div>
+
+<p><strong>D5.</strong> &nbsp; The k values you calculated from each run should be similar but not identical. List two reasons why they might differ slightly.</p>
+<p style="margin-left:10px">a) <span class="ans"></span></p>
+<p style="margin-left:10px">b) <span class="ans"></span></p>
+
+<h2>Week 1 Pre-Lab Checklist</h2>
+<p>Complete before coming to lab:</p>
+<div class="check-item"><div class="checkbox"></div><p>Read the lab procedure completely</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Know what Beer's Law is and how A relates to [Br₂]</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Understand the 2-step mechanism — why is Br₂ zero order?</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Know how to use C₁V₁ = C₂V₂ to calculate initial concentrations</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Know how to zero the SPEC 20 and read absorbance</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Understand which variable changes between runs (and which stays fixed)</p></div>
+
+<h2>Week 2 Pre-Analysis Checklist</h2>
+<p>Before starting Excel calculations:</p>
+<div class="check-item"><div class="checkbox"></div><p>All 63 absorbance readings recorded (21 per run)</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Standard curve equation recorded (slope, intercept, R²)</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Initial concentrations ([Br₂]₀, [H⁺]₀, [acetone]₀) calculated for all 3 runs</p></div>
+<div class="check-item"><div class="checkbox"></div><p>Beer's Law equation applied to convert all A values to [Br₂]</p></div>
+<div class="check-item"><div class="checkbox"></div><p>3 scatter plots (t vs [Br₂]) created with linear trendlines</p></div>
+</div>
+
+</div><!-- end .page -->
+</body>
+</html>

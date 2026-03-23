@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCR-240 Final Exam Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .exam-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-card h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .stat-card .number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .module-section {
+            margin-bottom: 40px;
+            border-left: 5px solid;
+            padding-left: 30px;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .module-section.module4 { border-color: #e74c3c; }
+        .module-section.module5 { border-color: #f39c12; }
+        .module-section.module6 { border-color: #3498db; }
+        .module-section.module7 { border-color: #2ecc71; }
+
+        .module-section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-section .icon {
+            font-size: 1.5em;
+        }
+
+        .topic-group {
+            margin: 20px 0;
+        }
+
+        .topic-group h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .topic-list {
+            list-style: none;
+        }
+
+        .topic-item {
+            background: #fff;
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .topic-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .topic-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .topic-count {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .priority-high .topic-count {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .priority-medium .topic-count {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .alert-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .alert-box.danger {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .alert-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .alert-box.info {
+            background: #d1ecf1;
+            border-left-color: #17a2b8;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .tips-section h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .tips-section ul {
+            list-style: none;
+        }
+
+        .tips-section li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 1.1em;
+        }
+
+        .tips-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .chapter-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .chapter-table th {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        .chapter-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chapter-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 HCR-240 Final Exam Study Guide</h1>
+            <p>Modules 4, 5, 6, and 7</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Disorders of the Musculoskeletal, Digestive, Endocrine, Nervous, Urinary and Reproductive Systems</p>
+        </div>
+
+        <div class="exam-stats">
+            <div class="stat-card">
+                <h3>Total Questions</h3>
+                <div class="number">75</div>
+                <p>All Multiple Choice</p>
+            </div>
+            <div class="stat-card">
+                <h3>Module 4</h3>
+                <div class="number">17</div>
+                <p>Musculoskeletal</p>
+            </div>
+            <div class="stat-card">
+                <h3>Module 5</h3>
+                <div class="number">17</div>
+                <p>Digestive</p>
+            </div>
+            <div class="stat-card">
+                <h3>Module 6</h3>
+                <div class="number">19</div>
+                <p>Endocrine & Nervous</p>
+            </div>
+            <div class="stat-card">
+                <h3>Module 7</h3>
+                <div class="number">22</div>
+                <p>Urinary & Reproductive</p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="alert-box danger">
+                <strong>⚠️ BIGGEST SECTION:</strong> Module 7 has 22 questions - make sure to prioritize Renal Disorders (8 questions) and Reproductive Disorders (7 questions)!
+            </div>
+
+            <div class="alert-box success">
+                <strong>✅ GOOD NEWS:</strong> All 75 questions are multiple choice - no complex question formats!
+            </div>
+
+            <!-- MODULE 4 -->
+            <div class="module-section module4">
+                <h2><span class="icon">🦴</span> MODULE 4: Musculoskeletal System</h2>
+                <p style="margin-bottom: 20px;"><strong>17 questions | Chapters 38 & 39</strong></p>
+
+                <div class="topic-group">
+                    <h3>⭐ High Priority (3 questions each)</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Osteoarthritis</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Osteoporosis</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Rheumatology & Musculoskeletal Terms</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>📌 Medium Priority (2 questions each)</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Degenerative Disc Disease</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Infectious Processes (Musculoskeletal)</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Lyme Disease</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>✓ Know the Basics (1 question each)</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item">
+                            <span class="topic-name">Gout</span>
+                            <span class="topic-count">1 question</span>
+                        </li>
+                        <li class="topic-item">
+                            <span class="topic-name">Osteopenia</span>
+                            <span class="topic-count">1 question</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MODULE 5 -->
+            <div class="module-section module5">
+                <h2><span class="icon">🍽️</span> MODULE 5: Digestive System</h2>
+                <p style="margin-bottom: 20px;"><strong>17 questions | Chapters 29-32</strong></p>
+
+                <div class="topic-group">
+                    <h3>⭐ High Priority</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Physical Exam Findings</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Digestive System Terms</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Hernia</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>✓ Single Question Topics</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item"><span class="topic-name">Pancreatitis</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Peptic Ulcer Disease</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">H. pylori</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Celiac Disease</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Gastroenteritis</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Diverticulitis</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Choledocholithiasis</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Crohn's Disease</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Hepatitis</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Diet Considerations</span><span class="topic-count">1 question</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MODULE 6 -->
+            <div class="module-section module6">
+                <h2><span class="icon">🧠</span> MODULE 6: Endocrine & Nervous Systems</h2>
+                <p style="margin-bottom: 20px;"><strong>19 questions | Chapters 24-25, 33-34</strong></p>
+
+                <div class="topic-group">
+                    <h3>⭐ High Priority (3 questions each)</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Diabetes Insipidus (DI)</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Endocrine Disorders</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Neurological Disorders</span>
+                            <span class="topic-count">3 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>📌 Medium Priority (2 questions each)</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Type 2 Diabetes Mellitus</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Strokes/TIA</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Neurological System Terms</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>✓ Single Question Topics</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item"><span class="topic-name">Type 1 Diabetes Mellitus</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Function of Cerebellum</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">TAC (Trigeminal Autonomic Cephalgia)</span><span class="topic-count">1 question</span></li>
+                        <li class="topic-item"><span class="topic-name">Neurological Events</span><span class="topic-count">1 question</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MODULE 7 -->
+            <div class="module-section module7">
+                <h2><span class="icon">🔬</span> MODULE 7: Urinary & Reproductive Systems</h2>
+                <p style="margin-bottom: 20px;"><strong>22 questions | Chapters 22-23, 26-27</strong></p>
+                
+                <div class="alert-box danger">
+                    <strong>🎯 LARGEST SECTION - 22 QUESTIONS!</strong> This module has the most questions on the exam.
+                </div>
+
+                <div class="topic-group">
+                    <h3>⭐⭐⭐ HIGHEST Priority</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Renal Disorders</span>
+                            <span class="topic-count">8 questions 🔥</span>
+                        </li>
+                        <li class="topic-item priority-high">
+                            <span class="topic-name">Reproductive Disorders</span>
+                            <span class="topic-count">7 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>📌 Medium Priority (2 questions each)</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Menstrual Disorders</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Incontinence</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                        <li class="topic-item priority-medium">
+                            <span class="topic-name">Renal System Terms</span>
+                            <span class="topic-count">2 questions</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="topic-group">
+                    <h3>✓ Single Question Topics</h3>
+                    <ul class="topic-list">
+                        <li class="topic-item"><span class="topic-name">Lab Results</span><span class="topic-count">1 question</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CHAPTER REFERENCE -->
+            <h2 style="margin: 40px 0 20px 0; color: #2c3e50;">📖 Chapter Reference Guide</h2>
+            <table class="chapter-table">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        <th>Topic Area</th>
+                        <th>Chapters</th>
+                        <th>Questions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Module 4</strong></td>
+                        <td>Musculoskeletal System</td>
+                        <td>38 & 39</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Module 5</strong></td>
+                        <td>Digestive System</td>
+                        <td>29-32</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Module 6</strong></td>
+                        <td>Endocrine & Nervous Systems</td>
+                        <td>24-25, 33-34</td>
+                        <td>19</td>
+                    </tr>
+                    <tr style="background: #d4edda;">
+                        <td><strong>Module 7</strong></td>
+                        <td>Urinary & Reproductive Systems</td>
+                        <td>22-23, 26-27</td>
+                        <td><strong>22 (Most!)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- STUDY TIPS -->
+            <div class="tips-section">
+                <h2>💡 Study Tips for Success</h2>
+                <ul>
+                    <li><strong>Prioritize Module 7</strong> - It has the most questions (22) and includes Renal Disorders (8 questions alone!)</li>
+                    <li><strong>Master the "Big 3" in Module 6</strong> - Diabetes Insipidus, Endocrine Disorders, and Neurological Disorders (3 questions each)</li>
+                    <li><strong>Don't neglect Module 4</strong> - Osteoarthritis and Osteoporosis are heavily tested</li>
+                    <li><strong>Know your terminology</strong> - Multiple modules test system-specific terms</li>
+                    <li><strong>Physical exam findings matter</strong> - 3 questions in Module 5 focus on this</li>
+                    <li><strong>All multiple choice format</strong> - No complex question types means you can focus on content mastery</li>
+                    <li><strong>Use the Jeopardy game</strong> - Practice with the Week 6 Jeopardy game to reinforce Module 6 concepts</li>
+                    <li><strong>Review lecture notes and practice quizzes</strong> - Your Week 6 materials are excellent review resources</li>
+                </ul>
+            </div>
+
+            <div class="alert-box info" style="margin-top: 30px; text-align: center; font-size: 1.2em;">
+                <strong>🎓 Good luck on your final exam!</strong><br>
+                You've got this! 💪
+            </div>
+        </div>
+    </div>
+</body>
+</html>

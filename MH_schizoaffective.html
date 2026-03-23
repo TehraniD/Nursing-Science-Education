@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Schizoaffective Disorder — Mental Health Nursing</title>
+<style>
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🔄 Schizoaffective Disorder</h1>
+  <p>Mental Health Nursing • Tehrani Labs</p>
+</div>
+<nav class="nav"><a href="MH_Index.html">Home</a>
+<a href="MH_schizophrenia.html">🧠 Schizophrenia</a>
+<a href="MH_schizoaffective.html" class="active">🔄 Schizoaffective Disorder</a>
+<a href="MH_delusional.html">💭 Delusional Disorder</a>
+<a href="MH_delusions.html">👁️ Delusions & Hallucinations</a>
+<a href="MH_alcohol.html">🍷 Alcohol Use Disorder</a>
+<a href="MH_opioids.html">💊 Opioids, Substances & Assessment</a>
+<a href="MH_assessment.html">📋 Mental Status Exam</a></nav>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="stats" id="statsText">0 of 12 answered (0%)</div>
+  <div style="text-align:right;margin-bottom:15px"><button onclick="resetAll()" style="padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.8em">Reset All</button></div>
+  <div class="q-card" data-answered="false">
+  <div class="q-num">Question 1</div>
+  <div class="q-stem">Based on the information in the nurse's note, what assessment of the client is a <strong>priority</strong>? Use the chart exhibit to answer this question.<br><br><em>Chart: Name: James Justi, Age: 25. Diagnosis of schizoaffective disorder admitted from ER. Client with flat affect, pulled cover up to neck, curled up in bed, refused to speak with nurse. Family states client has been acting strange and reported hearing "voices" that no one else hears. Client refusing to leave the house, unable to take care of self-care needs, appears withdrawn and depressed. Unable to get the client to take a bath in 4 days.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'8P',true,false)">Assessing what the voices are saying to the client.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8P',false,false)">Assessing the client's hygiene status.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8P',false,false)">Measuring the client's vital signs.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8P',false,false)">Asking the client what triggers the depression.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The priority assessment is "Assessing what the voices are saying to the client." This is important because auditory hallucinations, such as hearing voices, are a key symptom of schizoaffective disorder and can be linked to the client's mental state. Understanding the content of the hallucinations is crucial to assess for potential safety risks.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 2</div>
+  <div class="q-stem">A 28-year-old client with schizoaffective disorder is admitted to the psychiatric unit. The client is displaying symptoms of severe depression, including lack of interest in activities, poor grooming, and excessive sleeping. The nurse notes that the client has not eaten in 24 hours and appears to have lost weight. What assessment is the <strong>priority</strong>?<br><br><em>Chart: Name: Sarah Manning, Age: 28. Diagnosis of schizoaffective disorder admitted from outpatient clinic. Client presents with poor hygiene, disheveled appearance, and appears withdrawn. Family member reports client has been isolating, not engaging in activities, has refused meals, and has been sleeping excessively. Client reports feeling "empty" and has been tearful.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8C1',false,false)">Assessing the client's hydration status.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'8C1',true,false)">Assessing the client's potential risk for suicide.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8C1',false,false)">Checking the client's vital signs.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8C1',false,false)">Offering the client food and fluids.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client is exhibiting signs of severe depression, withdrawal, and poor appetite, which are often associated with an increased risk of suicide. It is essential to assess the client for any suicidal thoughts or plans to ensure immediate safety.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 3</div>
+  <div class="q-stem">A 40-year-old client with schizoaffective disorder is being evaluated for medication management. The client is currently experiencing symptoms of mania, including excessive energy, rapid speech, and impulsive behaviors. The nurse is planning to assess the client's medication adherence. What question would be <strong>most</strong> important to ask the client?<br><br><em>Chart: Name: John Walker, Age: 40, Allergies: Penicillin. Diagnosis of schizoaffective disorder, currently in a manic episode. Client exhibits rapid speech, impulsive behavior, elevated mood, spending large amounts of money, making impulsive decisions. Client denies any recent medication adjustments.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'8C2',true,false)">"Have you been taking your prescribed medications regularly?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8C2',false,false)">"Do you notice any side effects from the medication you're taking?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8C2',false,false)">"Are you experiencing any changes in your sleep patterns?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'8C2',false,false)">"Do you think the medications are helping you feel better?"</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> In manic episodes, clients with schizoaffective disorder may be at risk for medication nonadherence, either due to impulsivity or a belief that they do not need the medications. Assessing adherence is crucial to understanding whether the symptoms are exacerbated by nonadherence.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 4</div>
+  <div class="q-stem">The nurse in the emergency department calls admission report to the unit for a client with schizoaffective disorder who is experiencing command hallucinations and is restless and agitated. What plan should the nurse have for the client's arrival on the unit?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'9P',true,false)">Provision of a safe outlet for physical energy for the client.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9P',false,false)">Agreement with the client's view of the hallucinations to keep the client calm.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9P',false,false)">Placement of the client in restraints until the restlessness has ceased.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9P',false,false)">Forcing the client to see that the hallucinations are not real.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Providing a safe outlet for physical energy, such as a quiet space or supervised physical activity, can help reduce agitation and prevent harm. Restraints should be avoided unless absolutely necessary, and validating or forcing the client to confront hallucinations is not therapeutic.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 5</div>
+  <div class="q-stem">The nurse is caring for a client with schizoaffective disorder who has been prescribed an antipsychotic medication for the past few weeks. The client reports feeling better and says, "I feel like I can think clearly now, but I still have these voices in my head telling me to do things." What is an appropriate response by the nurse?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9C1',false,false)">"It's normal to feel better after a few weeks, and the voices will likely stop soon."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9C1',false,false)">"I'll notify the healthcare provider to adjust your medication since the voices are still present."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'9C1',true,false)">"Let's talk about what the voices are telling you and what you think they mean."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9C1',false,false)">"It's a good sign that you feel better. You may be able to stop your medication soon."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client's statement indicates ongoing auditory hallucinations, which can pose a safety risk depending on the nature of the commands. The nurse's priority is to assess the content of the hallucinations to determine if the client is at risk of harm.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 6</div>
+  <div class="q-stem">The nurse is caring for a client with schizoaffective disorder who has been prescribed a mood stabilizer and an antipsychotic medication. The client is showing signs of increased irritability, poor concentration, and excessive energy. What is the nurse's <strong>priority</strong> action?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'9C2',true,false)">Assessing the client for symptoms of mania or hypomania.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9C2',false,false)">Instructing the client to rest and take naps to reduce irritability.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9C2',false,false)">Encouraging the client to engage in social activities to use up energy.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'9C2',false,false)">Checking the client's medication history for potential drug interactions.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client's increased irritability, poor concentration, and excessive energy could be indicative of a manic episode, which is a common feature of schizoaffective disorder. It's important to assess the client's mood and behavior to determine if an adjustment in the medication regimen is needed.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 7</div>
+  <div class="q-stem">A client on the behavioral unit is pacing the floor in the room and having an audible conversation with invisible persons. What nursing action is appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'10P',true,false)">Try to use distraction to divert the client's attention from the hallucination.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10P',false,false)">Agree with the client by stating, "I hear the voices too. I try to ignore them."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10P',false,false)">Turn the client's television on loudly to drown out the voices.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10P',false,false)">Ask the health care provider to increase the dosage of the client's antipsychotic drug.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The nurse should attempt to engage the client in an activity or conversation that diverts their attention away from the hallucinations, which can help reduce the client's focus on the hallucinations and decrease agitation.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 8</div>
+  <div class="q-stem">A client with schizoaffective disorder is admitted to the psychiatric unit and is exhibiting disorganized behavior. The client is incoherent in speech, is unable to complete tasks, and has difficulty maintaining hygiene. What is nurse's <strong>best</strong> approach to support the client's immediate needs?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'10C1',true,false)">Ask the client if they would like assistance with their hygiene needs.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10C1',false,false)">Remind the client of the importance of personal hygiene and encourage independence.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10C1',false,false)">Provide the client with a written list of tasks to complete throughout the day.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10C1',false,false)">Educate the client about the typical course of schizoaffective disorder.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> When a client with schizoaffective disorder is experiencing disorganized behavior, the priority is to support their basic needs in a calm, nonjudgmental manner. Assisting the client with hygiene provides direct support and promotes dignity, safety, and comfort during an acute episode.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 9</div>
+  <div class="q-stem">A client diagnosed with schizoaffective disorder is admitted to the behavioral health unit. The client appears anxious, stating, "I feel like everything is moving too fast. I can't keep up with the noise in my head." The nurse notes the client is talking to unseen others and pacing the room. What is the <strong>most</strong> appropriate nursing action at this time?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10C2',false,false)">Instruct the client to lie down and rest in a darkened room.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'10C2',true,false)">Provide a calm, quiet environment and acknowledge the client's feelings.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10C2',false,false)">Tell the client to ignore the voices and focus on reality.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'10C2',false,false)">Confront the client about their hallucinations and correct their misperceptions.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The most appropriate nursing action is to provide a calm, quiet environment and acknowledge the client's feelings. This approach helps decrease external stimulation, supports safety, and establishes trust. Confrontation and commands to ignore the voices are typically not effective and may escalate the situation.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 10</div>
+  <div class="q-stem">When the nurse provides discharge teaching to a client who was admitted with an acute psychotic episode, what statement by the client causes the nurse to believe that teaching needs to be <strong>reinforced</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'11P',true,false)">"After I've taken the medication for a while and I feel better, I can stop taking it."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11P',false,false)">"I love drinking a few beers daily so I hate that I will need to stop drinking it."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11P',false,false)">"My aftercare therapy should include my family with whom I live."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11P',false,false)">"I should find an activity on which I can focus if the voices start to speak to me."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The statement indicates a misunderstanding of the importance of consistent medication adherence. Clients with schizophrenia often experience symptom improvement while on medication, but discontinuing medication can lead to a relapse of symptoms.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 11</div>
+  <div class="q-stem">A client diagnosed with schizoaffective disorder is discussing discharge plans with the nurse. The nurse provides education on recognizing early warning signs of relapse. Which statement by the client requires <strong>further</strong> teaching?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11C1',false,false)">"I need to watch for trouble sleeping or not wanting to eat."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11C1',false,false)">"If I start hearing voices again, I should tell my healthcare provider right away."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'11C1',true,false)">"If I feel my mood swings returning, I can wait to see if it gets better on its own."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11C1',false,false)">"I will ask my family to help me notice any changes in my behavior."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Waiting to see if mood swings improve on their own may delay treatment and worsen symptoms. Clients need to seek help immediately when experiencing early warning signs of relapse.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 12</div>
+  <div class="q-stem">A client with schizoaffective disorder is participating in a group therapy session and discussing their treatment plan. The nurse emphasizes the importance of medication adherence. Which statement by the client indicates the need for <strong>further</strong> education?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11C2',false,false)">"I know I need to take my medications even if I feel fine."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11C2',false,false)">"I will talk to my provider if I have any side effects from my medication."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'11C2',true,false)">"I only need to take my medications when I start to hear voices again."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'11C2',false,false)">"I will set up a pillbox to make sure I take my medications at the right time."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The statement about taking medications only when hearing voices indicates a misunderstanding. Schizoaffective disorder requires consistent medication use to maintain stability and prevent relapse, even when symptoms are not present.</div>
+</div>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+<script>
+function selectChoice(btn,qid,isCorrect,isSATA){
+  const card=btn.closest('.q-card');
+  if(!isSATA && card.dataset.answered==='true')return;
+  if(isSATA){
+    btn.classList.toggle('selected');
+    return;
+  }
+  card.dataset.answered='true';
+  const choices=card.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    if(c===btn){c.classList.add('selected',isCorrect?'correct':'wrong');}
+    if(cor&&!isCorrect){c.classList.add('reveal-correct');}
+    c.style.pointerEvents='none';
+  });
+  card.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function submitSATA(cardEl){
+  if(cardEl.dataset.answered==='true')return;
+  cardEl.dataset.answered='true';
+  const choices=cardEl.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    const sel=c.classList.contains('selected');
+    if(sel&&cor)c.classList.add('correct');
+    else if(sel&&!cor)c.classList.add('wrong');
+    else if(!sel&&cor)c.classList.add('reveal-correct');
+    c.style.pointerEvents='none';
+  });
+  cardEl.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.q-card').length;
+  const done=document.querySelectorAll('.q-card[data-answered=true]').length;
+  const pct=Math.round((done/total)*100);
+  const fill=document.getElementById('progressFill');
+  const stats=document.getElementById('statsText');
+  if(fill)fill.style.width=pct+'%';
+  if(stats)stats.textContent=done+' of '+total+' answered ('+pct+'%)';
+  try{localStorage.setItem(window.location.pathname+'_progress',JSON.stringify({done,total}));}catch(e){}
+}
+function resetAll(){
+  document.querySelectorAll('.q-card').forEach(c=>{
+    c.dataset.answered='false';
+    c.querySelectorAll('.choice-btn').forEach(b=>{
+      b.className='choice-btn';b.style.pointerEvents='auto';
+    });
+    c.querySelector('.rationale').classList.remove('show');
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

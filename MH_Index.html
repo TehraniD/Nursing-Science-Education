@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mental Health Nursing — Interactive Study Guide</title>
+<style>
+
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+
+.hero{padding:40px 20px;text-align:center}
+.hero h2{font-size:1.8em;color:var(--primary);margin-bottom:10px}
+.hero .total{font-size:1.2em;color:var(--accent);margin-bottom:5px}
+.hero p{color:#666;max-width:600px;margin:0 auto}
+.sections{max-width:800px;margin:30px auto;padding:0 20px}
+.sec-card{display:flex;align-items:center;gap:20px;padding:20px;margin:12px 0;background:var(--card);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-decoration:none;color:var(--text);transition:.2s;border-left:4px solid var(--accent)}
+.sec-card:hover{transform:translateX(5px);box-shadow:0 4px 15px rgba(0,0,0,.12)}
+.sec-icon{font-size:2.5em}
+.sec-info h3{color:var(--primary);margin-bottom:4px}
+.sec-info p{font-size:.85em;color:#666}
+.sec-count{display:inline-block;margin-top:6px;padding:3px 10px;background:var(--hover);border-radius:12px;font-size:.8em;color:var(--accent);font-weight:600}
+.tip{max-width:700px;margin:20px auto;padding:20px;background:#fff3cd;border-radius:10px;text-align:center;font-size:.9em;color:#856404}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Mental Health Nursing Study Guide</h1>
+  <p>Tehrani Labs</p>
+</div>
+<div class="hero">
+  <h2>Practice Questions</h2>
+  <div class="total">107 Practice Questions</div>
+  <p>Covering Thought Disorders and Substance Abuse Disorders. Each question includes the correct answer and detailed rationale.</p>
+</div>
+<div class="tip">💡 <strong>How to use:</strong> Click a section below → read each question → select your answer → the correct answer and rationale will be revealed. Track your progress with the progress bar on each page.</div>
+<div class="sections">
+  <a href="MH_schizophrenia.html" class="sec-card">
+  <div class="sec-icon">🧠</div>
+  <div class="sec-info">
+    <h3>Schizophrenia</h3>
+    <p>Medications, symptoms, communication, positive vs. negative symptoms, EPS, clozapine</p>
+    <span class="sec-count">24 questions</span>
+  </div>
+</a><a href="MH_schizoaffective.html" class="sec-card">
+  <div class="sec-icon">🔄</div>
+  <div class="sec-info">
+    <h3>Schizoaffective Disorder</h3>
+    <p>Assessment priorities, medication adherence, mania, discharge teaching</p>
+    <span class="sec-count">12 questions</span>
+  </div>
+</a><a href="MH_delusional.html" class="sec-card">
+  <div class="sec-icon">💭</div>
+  <div class="sec-info">
+    <h3>Delusional Disorder</h3>
+    <p>Grandiose & persecutory delusions, assessment findings, diagnosis criteria</p>
+    <span class="sec-count">3 questions</span>
+  </div>
+</a><a href="MH_delusions.html" class="sec-card">
+  <div class="sec-icon">👁️</div>
+  <div class="sec-info">
+    <h3>Delusions & Hallucinations</h3>
+    <p>Therapeutic communication, command hallucinations, safety interventions, plan of care</p>
+    <span class="sec-count">15 questions</span>
+  </div>
+</a><a href="MH_alcohol.html" class="sec-card">
+  <div class="sec-icon">🍷</div>
+  <div class="sec-info">
+    <h3>Alcohol Use Disorder</h3>
+    <p>Withdrawal, seizure precautions, chlordiazepoxide, disulfiram, thiamine, AA, codependency</p>
+    <span class="sec-count">23 questions</span>
+  </div>
+</a><a href="MH_opioids.html" class="sec-card">
+  <div class="sec-icon">💊</div>
+  <div class="sec-info">
+    <h3>Opioids, Substances & Assessment</h3>
+    <p>Opioid withdrawal, methadone, buprenorphine, naloxone, naltrexone, screening tools, group therapy, treatment programs, mental status exam</p>
+    <span class="sec-count">27 questions</span>
+  </div>
+</a><a href="MH_assessment.html" class="sec-card">
+  <div class="sec-icon">📋</div>
+  <div class="sec-info">
+    <h3>Mental Status Exam</h3>
+    <p>Components of the mental status exam (select-all-that-apply)</p>
+    <span class="sec-count">3 questions</span>
+  </div>
+</a>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+</body>
+</html>

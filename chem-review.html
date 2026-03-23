@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2 Practice Quiz — Answers & Walkthrough</title>
+<style>
+  :root {
+    --primary: #1a5276;
+    --accent: #2ecc71;
+    --accent-dark: #27ae60;
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #7f8c8d;
+    --border: #dce1e6;
+    --highlight: #fef9e7;
+    --step-bg: #eaf2f8;
+    --correct: #27ae60;
+    --wrong: #e74c3c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary), #1a6e96);
+    color: #fff;
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+    position: relative;
+  }
+  .site-header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: .5px; }
+  .site-header p { font-size: .95rem; opacity: .85; margin-top: .35rem; }
+  .site-header .badge {
+    display: inline-block;
+    margin-top: .6rem;
+    background: rgba(255,255,255,.15);
+    padding: .25rem .85rem;
+    border-radius: 20px;
+    font-size: .8rem;
+    letter-spacing: .3px;
+  }
+
+  /* ── Progress Bar ── */
+  .progress-wrap {
+    background: rgba(255,255,255,.15);
+    height: 6px;
+    border-radius: 3px;
+    margin: 1rem auto 0;
+    max-width: 500px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width .4s ease;
+  }
+  .progress-label {
+    font-size: .75rem;
+    opacity: .7;
+    margin-top: .3rem;
+  }
+
+  /* ── Main Container ── */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  /* ── Question Card ── */
+  .q-card {
+    display: none;
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.07);
+    overflow: hidden;
+    animation: fadeUp .35s ease;
+  }
+  .q-card.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-header {
+    background: var(--primary);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  .q-number {
+    background: rgba(255,255,255,.2);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .q-topic { font-size: .8rem; opacity: .7; }
+  .q-title { font-size: 1rem; font-weight: 600; }
+
+  .q-body { padding: 1.5rem; }
+
+  /* ── Problem Statement ── */
+  .problem {
+    background: var(--highlight);
+    border-left: 4px solid #f1c40f;
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    font-size: .95rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── Try It (interactive input) ── */
+  .try-it {
+    background: #f0f4f8;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .try-it label {
+    font-weight: 600;
+    font-size: .85rem;
+    display: block;
+    margin-bottom: .5rem;
+    color: var(--primary);
+  }
+  .try-row {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .try-row input {
+    flex: 1;
+    min-width: 120px;
+    padding: .55rem .85rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .try-row input:focus { border-color: var(--primary); }
+  .try-row button {
+    padding: .55rem 1.25rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .try-row button:hover { background: #154360; }
+  .feedback {
+    margin-top: .5rem;
+    font-size: .9rem;
+    font-weight: 600;
+    min-height: 1.4em;
+  }
+  .feedback.correct { color: var(--correct); }
+  .feedback.wrong { color: var(--wrong); }
+
+  /* ── Steps ── */
+  .steps { margin-bottom: .5rem; }
+  .step {
+    display: none;
+    background: var(--step-bg);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: .75rem;
+    animation: fadeUp .3s ease;
+    position: relative;
+    border-left: 4px solid var(--primary);
+  }
+  .step.visible { display: block; }
+  .step-label {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--primary);
+    margin-bottom: .35rem;
+  }
+  .step p, .step div { font-size: .93rem; }
+  .math {
+    font-family: 'Courier New', monospace;
+    background: #fff;
+    display: inline-block;
+    padding: .2rem .6rem;
+    border-radius: 5px;
+    margin: .25rem 0;
+    font-size: .92rem;
+    border: 1px solid var(--border);
+  }
+  .step table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .5rem 0;
+    font-size: .9rem;
+  }
+  .step th {
+    background: var(--primary);
+    color: #fff;
+    padding: .45rem .65rem;
+    text-align: left;
+    font-size: .8rem;
+  }
+  .step td {
+    padding: .4rem .65rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .step tr:nth-child(even) td { background: #f9fbfd; }
+
+  /* ── Answer Box ── */
+  .answer-box {
+    display: none;
+    background: linear-gradient(135deg, #d5f5e3, #abebc6);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-top: .75rem;
+    animation: fadeUp .3s ease;
+  }
+  .answer-box.visible { display: block; }
+  .answer-box .label {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--accent-dark);
+    margin-bottom: .2rem;
+  }
+  .answer-box .value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  /* ── Teaching Tip ── */
+  .tip {
+    display: none;
+    background: #fdf2e9;
+    border-left: 4px solid #e67e22;
+    border-radius: 0 8px 8px 0;
+    padding: .85rem 1.15rem;
+    margin-top: .75rem;
+    font-size: .88rem;
+    animation: fadeUp .3s ease;
+  }
+  .tip.visible { display: block; }
+  .tip strong { color: #e67e22; }
+
+  /* ── Button Row ── */
+  .btn-row {
+    display: flex;
+    gap: .5rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: .6rem 1.3rem;
+    border: none;
+    border-radius: 8px;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .btn-step {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-step:hover { background: var(--accent-dark); }
+  .btn-step:disabled {
+    background: #bdc3c7;
+    cursor: default;
+  }
+  .btn-nav {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .btn-nav:hover { background: var(--primary); color: #fff; }
+  .btn-nav:disabled {
+    border-color: #bdc3c7;
+    color: #bdc3c7;
+    cursor: default;
+    background: transparent;
+  }
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: .8rem;
+    color: var(--muted);
+  }
+  .site-footer a { color: var(--primary); text-decoration: none; }
+
+  /* ── Table of Contents (landing) ── */
+  .toc-card {
+    display: none;
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.07);
+    overflow: hidden;
+    animation: fadeUp .35s ease;
+  }
+  .toc-card.active { display: block; }
+  .toc-header {
+    background: var(--primary);
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+  }
+  .toc-header h2 { font-size: 1.15rem; }
+  .toc-list {
+    list-style: none;
+    padding: 1rem 1.5rem;
+  }
+  .toc-list li {
+    padding: .65rem .75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background .15s;
+  }
+  .toc-list li:hover { background: var(--step-bg); }
+  .toc-list li:last-child { border-bottom: none; }
+  .toc-num {
+    width: 30px; height: 30px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .toc-text { font-size: .9rem; }
+  .toc-start {
+    display: block;
+    margin: 1rem 1.5rem 1.5rem;
+    width: calc(100% - 3rem);
+    padding: .75rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .toc-start:hover { background: var(--accent-dark); }
+
+  /* ── Completion Card ── */
+  .done-card {
+    display: none;
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.07);
+    text-align: center;
+    padding: 3rem 2rem;
+    animation: fadeUp .35s ease;
+  }
+  .done-card.active { display: block; }
+  .done-card .icon { font-size: 3rem; margin-bottom: 1rem; }
+  .done-card h2 { color: var(--primary); margin-bottom: .5rem; }
+  .done-card p { color: var(--muted); margin-bottom: 1.5rem; }
+
+  /* ── Responsive ── */
+  @media (max-width: 500px) {
+    .site-header h1 { font-size: 1.25rem; }
+    .q-body { padding: 1rem; }
+    .btn { font-size: .82rem; padding: .5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════ HEADER ════════ -->
+<header class="site-header">
+  <h1>Week 2 Practice Quiz</h1>
+  <p>Answers & Walkthrough</p>
+  <span class="badge">10 Practice Questions · CHM 130 Week 2</span>
+  <div class="progress-wrap">
+    <div class="progress-fill" id="progressBar" style="width:0%"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">Start</div>
+</header>
+
+<div class="container">
+
+<!-- ════════ TABLE OF CONTENTS ════════ -->
+<div class="toc-card active" id="tocCard">
+  <div class="toc-header">
+    <h2>What You'll Practice</h2>
+  </div>
+  <ol class="toc-list">
+    <li onclick="goTo(1)"><span class="toc-num">1</span><span class="toc-text">Molar Mass of CaCO&#8323;</span></li>
+    <li onclick="goTo(2)"><span class="toc-num">2</span><span class="toc-text">Counting Oxygen Atoms in Glucose</span></li>
+    <li onclick="goTo(3)"><span class="toc-num">3</span><span class="toc-text">Molecules to Moles Conversion</span></li>
+    <li onclick="goTo(4)"><span class="toc-num">4</span><span class="toc-text">Balancing a Chemical Equation</span></li>
+    <li onclick="goTo(5)"><span class="toc-num">5</span><span class="toc-text">Classifying Reaction Types</span></li>
+    <li onclick="goTo(6)"><span class="toc-num">6</span><span class="toc-text">Endothermic vs. Exothermic</span></li>
+    <li onclick="goTo(7)"><span class="toc-num">7</span><span class="toc-text">Stoichiometry — Mole to Mole</span></li>
+    <li onclick="goTo(8)"><span class="toc-num">8</span><span class="toc-text">Stoichiometry — Mole to Gram</span></li>
+    <li onclick="goTo(9)"><span class="toc-num">9</span><span class="toc-text">Ideal Gas Law (PV = nRT)</span></li>
+    <li onclick="goTo(10)"><span class="toc-num">10</span><span class="toc-text">Dalton's Law of Partial Pressures</span></li>
+  </ol>
+  <button class="toc-start" onclick="goTo(1)">Begin Review</button>
+</div>
+
+<!-- ════════ Q1 — Molar Mass ════════ -->
+<div class="q-card" id="q1">
+  <div class="q-header">
+    <div class="q-number">1</div>
+    <div><div class="q-topic">Molar Mass</div><div class="q-title">Calculate the Molar Mass of CaCO&#8323;</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">Calculate the molar mass of calcium carbonate (CaCO&#8323;).</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (g/mol):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans1" placeholder="e.g. 100.09">
+        <button onclick="checkAns(1)">Check</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <div class="steps" id="steps1">
+      <div class="step" data-q="1">
+        <div class="step-label">Step 1 — Identify Each Element</div>
+        <p>Break the formula into its atoms: <strong>Ca</strong>, <strong>C</strong>, and <strong>O</strong> (×3).</p>
+      </div>
+      <div class="step" data-q="1">
+        <div class="step-label">Step 2 — Look Up Atomic Masses</div>
+        <table>
+          <tr><th>Atom</th><th>Count</th><th>Atomic Mass</th><th>Subtotal</th></tr>
+          <tr><td>Ca</td><td>1</td><td>40.08</td><td>40.08</td></tr>
+          <tr><td>C</td><td>1</td><td>12.01</td><td>12.01</td></tr>
+          <tr><td>O</td><td>3</td><td>16.00</td><td>48.00</td></tr>
+        </table>
+      </div>
+      <div class="step" data-q="1">
+        <div class="step-label">Step 3 — Add Them Up</div>
+        <div class="math">40.08 + 12.01 + 48.00 = 100.09 g/mol</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer1">
+      <div class="label">Final Answer</div>
+      <div class="value">100.09 g/mol</div>
+    </div>
+    <div class="tip" id="tip1">
+      <strong>Study Tip:</strong> Always multiply atomic mass × number of atoms for each element, then sum everything. This is the foundation for every stoichiometry problem.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(1)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo('toc')">Contents</button>
+      <button class="btn btn-nav" onclick="goTo(2)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q2 — Counting Atoms ════════ -->
+<div class="q-card" id="q2">
+  <div class="q-header">
+    <div class="q-number">2</div>
+    <div><div class="q-topic">Mole Ratios in a Formula</div><div class="q-title">Moles of Oxygen in Glucose</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">A student has 1.5 moles of glucose (C&#8326;H&#8321;&#8322;O&#8326;). How many moles of oxygen atoms are in the sample?</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (mol O):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans2" placeholder="e.g. 9">
+        <button onclick="checkAns(2)">Check</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <div class="steps" id="steps2">
+      <div class="step" data-q="2">
+        <div class="step-label">Step 1 — Read the Subscript</div>
+        <p>The formula C&#8326;H&#8321;&#8322;O&#8326; tells us each molecule has <strong>6 oxygen atoms</strong>.</p>
+      </div>
+      <div class="step" data-q="2">
+        <div class="step-label">Step 2 — Multiply</div>
+        <div class="math">1.5 mol glucose &times; 6 mol O / 1 mol glucose</div>
+      </div>
+      <div class="step" data-q="2">
+        <div class="step-label">Step 3 — Solve</div>
+        <div class="math">= 9.0 mol O atoms</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer2">
+      <div class="label">Final Answer</div>
+      <div class="value">9.0 moles of oxygen atoms</div>
+    </div>
+    <div class="tip" id="tip2">
+      <strong>Study Tip:</strong> Subscripts in a formula directly give you the mole-to-mole ratio of atoms within one molecule. This concept extends to every formula you encounter.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(2)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(1)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(3)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q3 — Avogadro's Number ════════ -->
+<div class="q-card" id="q3">
+  <div class="q-header">
+    <div class="q-number">3</div>
+    <div><div class="q-topic">Avogadro's Number</div><div class="q-title">Molecules to Moles</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">Convert 3.01 &times; 10&#178;&#179; molecules of water (H&#8322;O) into moles.</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (mol):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans3" placeholder="e.g. 0.5">
+        <button onclick="checkAns(3)">Check</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <div class="steps" id="steps3">
+      <div class="step" data-q="3">
+        <div class="step-label">Step 1 — Recall Avogadro's Number</div>
+        <p>1 mole = <strong>6.022 &times; 10&#178;&#179;</strong> particles (molecules, atoms, etc.)</p>
+      </div>
+      <div class="step" data-q="3">
+        <div class="step-label">Step 2 — Set Up the Conversion</div>
+        <div class="math">moles = molecules &divide; 6.022 &times; 10&#178;&#179;</div>
+      </div>
+      <div class="step" data-q="3">
+        <div class="step-label">Step 3 — Calculate</div>
+        <div class="math">3.01 &times; 10&#178;&#179; &divide; 6.022 &times; 10&#178;&#179; = 0.500 mol</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer3">
+      <div class="label">Final Answer</div>
+      <div class="value">0.500 mol H&#8322;O</div>
+    </div>
+    <div class="tip" id="tip3">
+      <strong>Study Tip:</strong> Think of Avogadro's number as the "dozen" of chemistry. Just as 12 items = 1 dozen, 6.022 &times; 10&#178;&#179; particles = 1 mole.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(3)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(2)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(4)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q4 — Balancing ════════ -->
+<div class="q-card" id="q4">
+  <div class="q-header">
+    <div class="q-number">4</div>
+    <div><div class="q-topic">Balancing Equations</div><div class="q-title">Al + O&#8322; &rarr; Al&#8322;O&#8323;</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">Balance the equation: __Al + __O&#8322; &rarr; __Al&#8322;O&#8323;</div>
+
+    <div class="try-it">
+      <label>Try It — Enter coefficients (e.g. "4,3,2"):</label>
+      <div class="try-row">
+        <input type="text" id="ans4" placeholder="Al, O₂, Al₂O₃">
+        <button onclick="checkAns(4)">Check</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+
+    <div class="steps" id="steps4">
+      <div class="step" data-q="4">
+        <div class="step-label">Step 1 — Count Atoms (Unbalanced)</div>
+        <table>
+          <tr><th>Element</th><th>Left</th><th>Right</th></tr>
+          <tr><td>Al</td><td>1</td><td>2</td></tr>
+          <tr><td>O</td><td>2</td><td>3</td></tr>
+        </table>
+      </div>
+      <div class="step" data-q="4">
+        <div class="step-label">Step 2 — Balance Oxygen First</div>
+        <p>LCM of 2 and 3 = 6. Place <strong>3</strong> in front of O&#8322; (gives 6 O on left) and <strong>2</strong> in front of Al&#8322;O&#8323; (gives 6 O on right).</p>
+      </div>
+      <div class="step" data-q="4">
+        <div class="step-label">Step 3 — Balance Aluminum</div>
+        <p>Right side now has 2 &times; 2 = 4 Al. Place <strong>4</strong> in front of Al on the left.</p>
+        <div class="math">4Al + 3O&#8322; &rarr; 2Al&#8322;O&#8323;</div>
+      </div>
+      <div class="step" data-q="4">
+        <div class="step-label">Step 4 — Verify</div>
+        <table>
+          <tr><th>Element</th><th>Left</th><th>Right</th></tr>
+          <tr><td>Al</td><td>4</td><td>4</td></tr>
+          <tr><td>O</td><td>6</td><td>6</td></tr>
+        </table>
+        <p>Balanced!</p>
+      </div>
+    </div>
+    <div class="answer-box" id="answer4">
+      <div class="label">Final Answer</div>
+      <div class="value">4Al + 3O&#8322; &rarr; 2Al&#8322;O&#8323;</div>
+    </div>
+    <div class="tip" id="tip4">
+      <strong>Study Tip:</strong> Start by balancing the element that appears in the fewest formulas, then work outward. Always verify your count at the end.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(4)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(3)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(5)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q5 — Reaction Classification ════════ -->
+<div class="q-card" id="q5">
+  <div class="q-header">
+    <div class="q-number">5</div>
+    <div><div class="q-topic">Reaction Types</div><div class="q-title">Classify 2KClO&#8323; &rarr; 2KCl + 3O&#8322;</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">Classify this reaction: 2KClO&#8323; &rarr; 2KCl + 3O&#8322;<br>
+    (Synthesis, Decomposition, Single Replacement, or Double Replacement?)</div>
+
+    <div class="try-it">
+      <label>Try It — Type your answer:</label>
+      <div class="try-row">
+        <input type="text" id="ans5" placeholder="e.g. Decomposition">
+        <button onclick="checkAns(5)">Check</button>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+
+    <div class="steps" id="steps5">
+      <div class="step" data-q="5">
+        <div class="step-label">Step 1 — Count Reactants vs. Products</div>
+        <p><strong>1 reactant</strong> (KClO&#8323;) &rarr; <strong>2 products</strong> (KCl + O&#8322;)</p>
+      </div>
+      <div class="step" data-q="5">
+        <div class="step-label">Step 2 — Match the Pattern</div>
+        <table>
+          <tr><th>Type</th><th>Pattern</th></tr>
+          <tr><td>Synthesis</td><td>A + B &rarr; AB</td></tr>
+          <tr><td><strong>Decomposition</strong></td><td><strong>AB &rarr; A + B</strong></td></tr>
+          <tr><td>Single Replacement</td><td>A + BC &rarr; AC + B</td></tr>
+          <tr><td>Double Replacement</td><td>AB + CD &rarr; AD + CB</td></tr>
+        </table>
+        <p>One compound breaks into two or more products = <strong>Decomposition</strong>.</p>
+      </div>
+    </div>
+    <div class="answer-box" id="answer5">
+      <div class="label">Final Answer</div>
+      <div class="value">Decomposition</div>
+    </div>
+    <div class="tip" id="tip5">
+      <strong>Study Tip:</strong> "De-compose" = to break apart. If one thing becomes many, it's decomposition. If many become one, it's synthesis.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(5)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(4)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(6)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q6 — Endo/Exothermic ════════ -->
+<div class="q-card" id="q6">
+  <div class="q-header">
+    <div class="q-number">6</div>
+    <div><div class="q-topic">Thermochemistry</div><div class="q-title">Endothermic or Exothermic?</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">A student dissolves ammonium nitrate (NH&#8324;NO&#8323;) in water and the beaker becomes very cold to the touch. Is this endothermic or exothermic?</div>
+
+    <div class="try-it">
+      <label>Try It — Type your answer:</label>
+      <div class="try-row">
+        <input type="text" id="ans6" placeholder="Endothermic or Exothermic?">
+        <button onclick="checkAns(6)">Check</button>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+
+    <div class="steps" id="steps6">
+      <div class="step" data-q="6">
+        <div class="step-label">Step 1 — Observe the Evidence</div>
+        <p>The beaker feels <strong>cold</strong>. This means heat is leaving your hand and entering the solution — the solution is absorbing energy from the surroundings.</p>
+      </div>
+      <div class="step" data-q="6">
+        <div class="step-label">Step 2 — Apply the Definitions</div>
+        <table>
+          <tr><th>Process</th><th>Energy Flow</th><th>Surroundings Feel…</th></tr>
+          <tr><td><strong>Endothermic</strong></td><td><strong>Absorbs heat</strong></td><td><strong>Cold</strong></td></tr>
+          <tr><td>Exothermic</td><td>Releases heat</td><td>Hot</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="answer-box" id="answer6">
+      <div class="label">Final Answer</div>
+      <div class="value">Endothermic</div>
+    </div>
+    <div class="tip" id="tip6">
+      <strong>Study Tip:</strong> "Endo" = in (energy goes <em>into</em> the system). Think of instant cold packs — they use NH&#8324;NO&#8323; dissolving in water, an endothermic process.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(6)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(5)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(7)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q7 — Stoichiometry Mol-Mol ════════ -->
+<div class="q-card" id="q7">
+  <div class="q-header">
+    <div class="q-number">7</div>
+    <div><div class="q-topic">Stoichiometry</div><div class="q-title">Mole-to-Mole Conversion</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">Using: 2H&#8322; + O&#8322; &rarr; 2H&#8322;O<br>If you start with 4.0 moles of H&#8322;, how many moles of H&#8322;O are produced?</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (mol H&#8322;O):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans7" placeholder="e.g. 4">
+        <button onclick="checkAns(7)">Check</button>
+      </div>
+      <div class="feedback" id="fb7"></div>
+    </div>
+
+    <div class="steps" id="steps7">
+      <div class="step" data-q="7">
+        <div class="step-label">Step 1 — Identify the Mole Ratio</div>
+        <p>From the balanced equation: <strong>2 mol H&#8322; : 2 mol H&#8322;O</strong><br>This simplifies to a <strong>1 : 1</strong> ratio.</p>
+      </div>
+      <div class="step" data-q="7">
+        <div class="step-label">Step 2 — Apply the Ratio</div>
+        <div class="math">4.0 mol H&#8322; &times; (2 mol H&#8322;O / 2 mol H&#8322;) = 4.0 mol H&#8322;O</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer7">
+      <div class="label">Final Answer</div>
+      <div class="value">4.0 mol H&#8322;O</div>
+    </div>
+    <div class="tip" id="tip7">
+      <strong>Study Tip:</strong> Coefficients in a balanced equation are your mole ratios. Always start stoichiometry by writing the ratio between the substance you <em>have</em> and the substance you <em>want</em>.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(7)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(6)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(8)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q8 — Stoichiometry Mol-Gram ════════ -->
+<div class="q-card" id="q8">
+  <div class="q-header">
+    <div class="q-number">8</div>
+    <div><div class="q-topic">Stoichiometry</div><div class="q-title">Mole-to-Gram Conversion</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">Using: 2H&#8322; + O&#8322; &rarr; 2H&#8322;O<br>How many grams of H&#8322;O are produced from 2.0 moles of O&#8322;?</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (grams):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans8" placeholder="e.g. 72">
+        <button onclick="checkAns(8)">Check</button>
+      </div>
+      <div class="feedback" id="fb8"></div>
+    </div>
+
+    <div class="steps" id="steps8">
+      <div class="step" data-q="8">
+        <div class="step-label">Step 1 — Mole Ratio</div>
+        <p>From the equation: <strong>1 mol O&#8322; : 2 mol H&#8322;O</strong></p>
+        <div class="math">2.0 mol O&#8322; &times; (2 mol H&#8322;O / 1 mol O&#8322;) = 4.0 mol H&#8322;O</div>
+      </div>
+      <div class="step" data-q="8">
+        <div class="step-label">Step 2 — Convert Moles to Grams</div>
+        <p>Molar mass of H&#8322;O = 2(1.01) + 16.00 = <strong>18.02 g/mol</strong></p>
+        <div class="math">4.0 mol &times; 18.02 g/mol = 72.08 g</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer8">
+      <div class="label">Final Answer</div>
+      <div class="value">72.08 g H&#8322;O</div>
+    </div>
+    <div class="tip" id="tip8">
+      <strong>Study Tip:</strong> The stoichiometry roadmap: <strong>Grams &rarr; Moles &rarr; (use ratio) &rarr; Moles &rarr; Grams</strong>. Always convert to moles first before crossing the equation bridge.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(8)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(7)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(9)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q9 — Ideal Gas Law ════════ -->
+<div class="q-card" id="q9">
+  <div class="q-header">
+    <div class="q-number">9</div>
+    <div><div class="q-topic">Gas Laws</div><div class="q-title">Ideal Gas Law (PV = nRT)</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">A 3.5 mol sample of N&#8322; gas is in a 10.0 L container at 37.0&deg;C. Calculate the pressure.</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (atm):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans9" placeholder="e.g. 8.9">
+        <button onclick="checkAns(9)">Check</button>
+      </div>
+      <div class="feedback" id="fb9"></div>
+    </div>
+
+    <div class="steps" id="steps9">
+      <div class="step" data-q="9">
+        <div class="step-label">Step 1 — Convert Temperature to Kelvin</div>
+        <div class="math">T = 37.0 + 273.15 = 310.15 K</div>
+        <p>Gas law calculations <strong>always</strong> require Kelvin!</p>
+      </div>
+      <div class="step" data-q="9">
+        <div class="step-label">Step 2 — List Known Values</div>
+        <table>
+          <tr><th>Variable</th><th>Value</th></tr>
+          <tr><td>n</td><td>3.5 mol</td></tr>
+          <tr><td>V</td><td>10.0 L</td></tr>
+          <tr><td>T</td><td>310.15 K</td></tr>
+          <tr><td>R</td><td>0.08206 L&middot;atm/mol&middot;K</td></tr>
+        </table>
+      </div>
+      <div class="step" data-q="9">
+        <div class="step-label">Step 3 — Solve for P</div>
+        <div class="math">P = nRT / V</div>
+        <div class="math">P = (3.5 &times; 0.08206 &times; 310.15) / 10.0</div>
+        <div class="math">P = 89.04 / 10.0 = 8.9 atm</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer9">
+      <div class="label">Final Answer</div>
+      <div class="value">P &approx; 8.9 atm</div>
+    </div>
+    <div class="tip" id="tip9">
+      <strong>Study Tip:</strong> The #1 mistake on gas law problems is forgetting to convert &deg;C to K. Make it your first step every time. Also remember which R value matches your units.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(9)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(8)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo(10)">Next &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Q10 — Dalton's Law ════════ -->
+<div class="q-card" id="q10">
+  <div class="q-header">
+    <div class="q-number">10</div>
+    <div><div class="q-topic">Gas Laws</div><div class="q-title">Dalton's Law of Partial Pressures</div></div>
+  </div>
+  <div class="q-body">
+    <div class="problem">A mixture of three gases has a total pressure of 2.50 atm. Gas A = 0.80 atm, Gas B = 1.05 atm. What is the partial pressure of Gas C?</div>
+
+    <div class="try-it">
+      <label>Try It — Enter your answer (atm):</label>
+      <div class="try-row">
+        <input type="number" step="any" id="ans10" placeholder="e.g. 0.65">
+        <button onclick="checkAns(10)">Check</button>
+      </div>
+      <div class="feedback" id="fb10"></div>
+    </div>
+
+    <div class="steps" id="steps10">
+      <div class="step" data-q="10">
+        <div class="step-label">Step 1 — State Dalton's Law</div>
+        <div class="math">P_total = P_A + P_B + P_C</div>
+        <p>The total pressure equals the sum of all individual (partial) pressures.</p>
+      </div>
+      <div class="step" data-q="10">
+        <div class="step-label">Step 2 — Rearrange and Solve</div>
+        <div class="math">P_C = P_total &minus; P_A &minus; P_B</div>
+        <div class="math">P_C = 2.50 &minus; 0.80 &minus; 1.05 = 0.65 atm</div>
+      </div>
+    </div>
+    <div class="answer-box" id="answer10">
+      <div class="label">Final Answer</div>
+      <div class="value">P_C = 0.65 atm</div>
+    </div>
+    <div class="tip" id="tip10">
+      <strong>Study Tip:</strong> Dalton's Law is straightforward addition/subtraction. In clinical settings, this is how we understand O&#8322; and CO&#8322; partial pressures in blood gas analysis (ABGs).
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-step" onclick="revealStep(10)">Show Next Step</button>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-nav" onclick="goTo(9)">&larr; Prev</button>
+      <button class="btn btn-nav" onclick="goTo('done')">Finish</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ COMPLETION ════════ -->
+<div class="done-card" id="doneCard">
+  <div class="icon">&#9989;</div>
+  <h2>Review Complete!</h2>
+  <p>You've worked through all 10 chemistry problems. Revisit any question from the table of contents to reinforce the concepts.</p>
+  <button class="btn btn-step" onclick="goTo('toc')" style="margin-top:.5rem">Back to Contents</button>
+</div>
+
+</div><!-- /container -->
+
+<footer class="site-footer">
+  Tehrani Labs &mdash; <a href="https://tehranilabs.org" target="_blank">tehranilabs.org</a>
+</footer>
+
+<script>
+// ── State ──
+const TOTAL = 10;
+const stepIndex = {};  // tracks revealed step count per question
+for (let i = 1; i <= TOTAL; i++) stepIndex[i] = 0;
+
+// ── Correct Answers ──
+const answers = {
+  1: { value: 100.09, tol: 0.5, type: 'number' },
+  2: { value: 9, tol: 0.5, type: 'number' },
+  3: { value: 0.5, tol: 0.05, type: 'number' },
+  4: { value: '4,3,2', type: 'text' },
+  5: { value: 'decomposition', type: 'keyword' },
+  6: { value: 'endothermic', type: 'keyword' },
+  7: { value: 4, tol: 0.5, type: 'number' },
+  8: { value: 72.08, tol: 1, type: 'number' },
+  9: { value: 8.9, tol: 0.3, type: 'number' },
+  10: { value: 0.65, tol: 0.05, type: 'number' }
+};
+
+function checkAns(q) {
+  const input = document.getElementById('ans' + q);
+  const fb = document.getElementById('fb' + q);
+  const a = answers[q];
+  let correct = false;
+
+  if (a.type === 'number') {
+    const v = parseFloat(input.value);
+    if (!isNaN(v) && Math.abs(v - a.value) <= a.tol) correct = true;
+  } else if (a.type === 'keyword') {
+    correct = input.value.trim().toLowerCase().includes(a.value);
+  } else if (a.type === 'text') {
+    const cleaned = input.value.replace(/\s+/g, '').replace(/[^0-9,]/g, '');
+    correct = cleaned === a.value;
+  }
+
+  if (!input.value.trim()) {
+    fb.textContent = 'Enter an answer first.';
+    fb.className = 'feedback wrong';
+    return;
+  }
+
+  if (correct) {
+    fb.textContent = 'Correct! Great work.';
+    fb.className = 'feedback correct';
+  } else {
+    fb.textContent = 'Not quite — try again or reveal the steps below.';
+    fb.className = 'feedback wrong';
+  }
+}
+
+// ── Step Reveal ──
+function revealStep(q) {
+  const steps = document.querySelectorAll('#steps' + q + ' .step');
+  const idx = stepIndex[q];
+
+  if (idx < steps.length) {
+    steps[idx].classList.add('visible');
+    stepIndex[q]++;
+  }
+
+  // If all steps revealed, show answer + tip
+  if (stepIndex[q] >= steps.length) {
+    document.getElementById('answer' + q).classList.add('visible');
+    document.getElementById('tip' + q).classList.add('visible');
+    // Disable button
+    const btn = document.querySelector('#q' + q + ' .btn-step');
+    if (btn) { btn.disabled = true; btn.textContent = 'All Steps Shown'; }
+  }
+}
+
+// ── Navigation ──
+function goTo(target) {
+  // Hide everything
+  document.getElementById('tocCard').classList.remove('active');
+  document.getElementById('doneCard').classList.remove('active');
+  for (let i = 1; i <= TOTAL; i++) {
+    document.getElementById('q' + i).classList.remove('active');
+  }
+
+  if (target === 'toc') {
+    document.getElementById('tocCard').classList.add('active');
+    updateProgress(0);
+  } else if (target === 'done') {
+    document.getElementById('doneCard').classList.add('active');
+    updateProgress(TOTAL);
+  } else {
+    document.getElementById('q' + target).classList.add('active');
+    updateProgress(target);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(current) {
+  const pct = current === 0 ? 0 : Math.round((current / TOTAL) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    current === 0 ? 'Start' : 'Question ' + current + ' of ' + TOTAL;
+}
+
+// Allow Enter key to submit answers
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+    const id = e.target.id;
+    if (id && id.startsWith('ans')) {
+      const q = parseInt(id.replace('ans', ''));
+      if (q >= 1 && q <= TOTAL) checkAns(q);
+    }
+  }
+});
+</script>
+</body>
+</html>

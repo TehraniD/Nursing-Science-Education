@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHM 130 Lab 3: Red Cabbage pH Indicator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #8E2DE2;
+            border-bottom: 3px solid #8E2DE2;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .safety-warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .safety-warning strong {
+            color: #856404;
+        }
+        .timer {
+            background-color: #f3e5f5;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: #8E2DE2;
+            margin-bottom: 15px;
+        }
+        .question-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #8E2DE2;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #8E2DE2;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .step {
+            background-color: #f3e5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #8E2DE2;
+        }
+        .step-number {
+            background-color: #8E2DE2;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 12px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .checkpoint {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .ph-scale {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(to right,
+                #ff0000 0%, #ff4500 14%, #ffa500 28%,
+                #ffff00 42%, #00ff00 56%,
+                #00ffff 70%, #0000ff 84%, #8b00ff 100%);
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .learning-objectives {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .learning-objectives ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .btn {
+            background-color: #8E2DE2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #7526c4;
+        }
+        .fun-fact {
+            background-color: #e1f5fe;
+            border-left: 4px solid #03a9f4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .color-guide {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .color-swatch {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 60px;
+            font-weight: bold;
+        }
+        @media print {
+            .btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CHM 130 Laboratory 3</h1>
+        <h2>Natural pH Indicators: Red Cabbage Chemistry</h2>
+        <p><strong>Total Lab Time:</strong> 3 Hours | <strong>Post-Lab Assignment:</strong> 2 Hours</p>
+    </div>
+
+    <!-- PRE-LAB SECTION (40-45 minutes total) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB REVIEW: 30 minutes</div>
+        <h2 class="section-title">Pre-Lab: Background Information</h2>
+
+        <div class="learning-objectives">
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Understand the pH scale and the concepts of acids and bases</li>
+                <li>Learn how natural pH indicators work at the molecular level</li>
+                <li>Practice measuring and interpreting pH values</li>
+                <li>Recognize the importance of pH in biological systems and healthcare</li>
+                <li>Apply pH concepts to clinical scenarios (blood pH, urine pH, wound care)</li>
+            </ul>
+        </div>
+
+        <h3>Introduction: Why pH Matters in Healthcare</h3>
+        <p>As a future nurse, you'll encounter pH in many clinical situations: blood gas analysis, urine tests, wound care, medication administration, and IV fluid management. Understanding pH is essential for recognizing acid-base imbalances, which can be life-threatening.</p>
+
+        <div class="fun-fact">
+            <strong>🩺 Clinical Insight:</strong> Normal blood pH is tightly regulated between 7.35-7.45. A pH below 7.35 (acidosis) or above 7.45 (alkalosis) can indicate serious medical conditions requiring immediate intervention!
+        </div>
+
+        <h3>What is pH?</h3>
+        <p><strong>pH</strong> stands for "power of hydrogen" and measures the concentration of hydrogen ions (H⁺) in a solution. The pH scale ranges from 0 to 14:</p>
+
+        <div class="ph-scale">
+            <p style="margin: 5px;">0 ← ACIDIC | 7 NEUTRAL | BASIC → 14</p>
+        </div>
+
+        <ul>
+            <li><strong>pH < 7:</strong> Acidic (more H⁺ ions)</li>
+            <li><strong>pH = 7:</strong> Neutral (equal H⁺ and OH⁻ ions)</li>
+            <li><strong>pH > 7:</strong> Basic/Alkaline (fewer H⁺ ions, more OH⁻ ions)</li>
+        </ul>
+
+        <div class="fun-fact">
+            <strong>🔬 Chemistry Fact:</strong> The pH scale is logarithmic! This means each whole number change represents a 10-fold change in H⁺ concentration. A pH of 4 has 10 times more H⁺ ions than pH 5, and 100 times more than pH 6!
+        </div>
+
+        <h3>What is a pH Indicator?</h3>
+        <p>A <strong>pH indicator</strong> is a substance that changes color depending on the pH of the solution. These compounds are weak acids or bases that exist in different colored forms depending on whether they gain or lose protons (H⁺).</p>
+
+        <p><strong>Anthocyanins</strong> are natural pH indicators found in red cabbage (and other purple/red fruits and vegetables like blueberries, grapes, and red onions). These molecules change structure and color when pH changes:</p>
+
+        <div class="color-guide">
+            <h3>Expected Red Cabbage Indicator Colors</h3>
+            <div style="text-align: center;">
+                <div class="color-swatch" style="background-color: #ff0033; color: white;">pH 2<br>Red</div>
+                <div class="color-swatch" style="background-color: #ff6699;">pH 4<br>Pink</div>
+                <div class="color-swatch" style="background-color: #cc99ff;">pH 6<br>Purple</div>
+                <div class="color-swatch" style="background-color: #9966cc;">pH 8<br>Blue</div>
+                <div class="color-swatch" style="background-color: #66cc66;">pH 10<br>Green</div>
+                <div class="color-swatch" style="background-color: #ccff33;">pH 12<br>Yellow</div>
+                <div class="color-swatch" style="background-color: #ffff66;">pH 14<br>Yellow</div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;"><em>Note: Exact colors may vary slightly based on cabbage variety and extraction method</em></p>
+        </div>
+
+        <h3>Clinical Applications of pH</h3>
+
+        <h4>1. Blood pH (Acid-Base Balance)</h4>
+        <ul>
+            <li><strong>Normal:</strong> 7.35-7.45</li>
+            <li><strong>Acidosis:</strong> pH < 7.35 (causes: diabetic ketoacidosis, respiratory failure, kidney disease)</li>
+            <li><strong>Alkalosis:</strong> pH > 7.45 (causes: hyperventilation, excessive vomiting, diuretic overuse)</li>
+        </ul>
+
+        <h4>2. Urine pH</h4>
+        <ul>
+            <li><strong>Normal range:</strong> 4.5-8.0 (typically around 6.0)</li>
+            <li><strong>Clinical use:</strong> Diagnosing kidney stones, urinary tract infections, metabolic disorders</li>
+            <li>Certain medications and diets affect urine pH</li>
+        </ul>
+
+        <h4>3. Wound Care</h4>
+        <ul>
+            <li><strong>Healthy skin pH:</strong> 4.5-5.5 (slightly acidic)</li>
+            <li><strong>Chronic wounds:</strong> Often have elevated pH (more alkaline), which impairs healing</li>
+            <li>pH-balanced wound dressings can promote healing</li>
+        </ul>
+
+        <h4>4. Stomach pH</h4>
+        <ul>
+            <li><strong>Normal stomach acid:</strong> pH 1.5-3.5 (very acidic!)</li>
+            <li><strong>Clinical relevance:</strong> GERD, ulcers, medication absorption</li>
+            <li>Antacids raise stomach pH to reduce heartburn</li>
+        </ul>
+
+        <div class="safety-warning">
+            <strong>⚠️ SAFETY PRECAUTIONS</strong>
+            <ul>
+                <li>Some acids (like HCl) and bases (like NaOH) can cause chemical burns</li>
+                <li>Wear safety goggles and gloves when handling acids and bases</li>
+                <li>Never taste or smell chemicals directly</li>
+                <li>Clean up spills immediately</li>
+                <li>Hot cabbage water can cause burns - handle carefully</li>
+            </ul>
+        </div>
+
+        <h3>Key Chemistry Concepts</h3>
+
+        <div class="step">
+            <strong>Acid:</strong> A substance that donates H⁺ ions (protons) in solution. Examples: HCl, vinegar (acetic acid), lemon juice (citric acid)
+        </div>
+
+        <div class="step">
+            <strong>Base:</strong> A substance that accepts H⁺ ions or donates OH⁻ ions. Examples: NaOH, ammonia, baking soda (sodium bicarbonate)
+        </div>
+
+        <div class="step">
+            <strong>Neutralization:</strong> When an acid and base react to form water and a salt: HCl + NaOH → H₂O + NaCl
+        </div>
+
+        <div class="step">
+            <strong>Buffer:</strong> A solution that resists pH changes when small amounts of acid or base are added. Blood contains several buffer systems!
+        </div>
+
+        <div class="fun-fact">
+            <strong>🎨 Natural pH Indicators in Nature:</strong> Many flowers change color based on soil pH! Hydrangeas bloom blue in acidic soil (pH 5-6) and pink in alkaline soil (pH 6.5-7.5). This is due to anthocyanins, the same compounds in red cabbage!
+        </div>
+    </div>
+
+    <!-- PRE-LAB QUESTIONS (10-15 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB QUESTIONS: 10-15 minutes</div>
+        <h2 class="section-title">Pre-Lab Questions</h2>
+        <p><em>Answer these questions before beginning the experiment. Your instructor will review answers before you proceed.</em></p>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> Define pH and explain what the numbers on the pH scale represent.
+            <textarea id="prelab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> What is the normal pH range for human blood? What conditions occur if blood pH goes outside this range?
+            <textarea id="prelab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> How does a pH indicator work? Why does red cabbage juice change color at different pH values?
+            <textarea id="prelab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> If solution A has a pH of 3 and solution B has a pH of 5, which is more acidic? How many times more acidic is it?
+            <textarea id="prelab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> Give three clinical examples where nurses need to monitor or consider pH in patient care.
+            <textarea id="prelab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor review your pre-lab questions before proceeding to the experiment.
+            <br><input type="checkbox" id="instructor-check1"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials1">
+        </div>
+    </div>
+
+    <!-- EXPERIMENT SECTION (90 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ EXPERIMENT: 90 minutes</div>
+        <h2 class="section-title">Experimental Procedure</h2>
+
+        <h3>Materials Needed</h3>
+        <table class="data-table">
+            <tr>
+                <th>Chemicals & Household Items</th>
+                <th>Equipment</th>
+            </tr>
+            <tr>
+                <td>
+                    • Red cabbage (1/4 head or 100g)<br>
+                    • Distilled water<br>
+                    • Vinegar (acetic acid)<br>
+                    • Lemon juice (citric acid)<br>
+                    • Baking soda solution (base)<br>
+                    • Ammonia cleaner (base)<br>
+                    • Tap water<br>
+                    • Antacid tablet<br>
+                    • Vitamin C tablet<br>
+                    • Hand soap solution<br>
+                    • Various household items to test
+                </td>
+                <td>
+                    • Hot plate or Bunsen burner<br>
+                    • 500 mL beaker<br>
+                    • Test tubes or small clear cups (12-15)<br>
+                    • Test tube rack<br>
+                    • Strainer or cheesecloth<br>
+                    • Graduated cylinder<br>
+                    • Dropper or pipette<br>
+                    • Stirring rods<br>
+                    • White paper (for observing colors)<br>
+                    • pH paper strips (for comparison)<br>
+                    • Camera or phone for photos
+                </td>
+            </tr>
+        </table>
+
+        <h3>Part 1: Preparing the Cabbage pH Indicator (20 minutes)</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Chop the cabbage (5 min)</strong><br>
+            Tear or chop about 1/4 head of red cabbage (approximately 100 g or 2 cups) into small pieces. The smaller the pieces, the more anthocyanins will be extracted.
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Boil the cabbage (10 min)</strong><br>
+            Place the cabbage pieces in a 500 mL beaker. Add approximately 300 mL of distilled water. Heat on a hot plate or Bunsen burner until boiling. Reduce heat and simmer for 5-10 minutes. The water should turn deep purple/blue.
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Strain and cool (5 min)</strong><br>
+            Carefully remove from heat. Strain the liquid through cheesecloth or a fine strainer into a clean container, removing all cabbage pieces. Allow the indicator solution to cool to room temperature. The solution should be deep purple/blue (approximately neutral pH 7).
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Lab Partner Check:</strong> Is your cabbage indicator a deep purple/blue color?
+            <br><input type="checkbox" id="partner-check1"> Partner initials: <input type="text" style="width: 200px;" id="partner-initials1">
+        </div>
+
+        <h3>Part 2: Creating a pH Standard Scale (20 minutes)</h3>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Prepare pH standards (15 min)</strong><br>
+            You'll create solutions of known pH to serve as color standards:
+            <ul>
+                <li><strong>pH 2:</strong> Add 1 drop of concentrated HCl to 10 mL water (or use lemon juice straight)</li>
+                <li><strong>pH 4:</strong> Vinegar (dilute with equal parts water)</li>
+                <li><strong>pH 6:</strong> Mix small amounts of vinegar and baking soda solution until pink</li>
+                <li><strong>pH 7:</strong> Distilled water (neutral)</li>
+                <li><strong>pH 8:</strong> Dissolve 1/4 tsp baking soda in 20 mL water</li>
+                <li><strong>pH 10:</strong> Dissolve 1/2 tsp baking soda in 20 mL water</li>
+                <li><strong>pH 12:</strong> Diluted ammonia cleaner (1:1 with water)</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <strong>Add cabbage indicator to standards (5 min)</strong><br>
+            To each pH standard (in a test tube), add approximately 5 mL of your cabbage indicator. Record the color that develops. Arrange tubes in order from lowest to highest pH. Take a photo for your records!
+        </div>
+
+        <h3>Part 3: Testing Unknown Solutions (35 minutes)</h3>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <strong>Prepare test solutions (10 min)</strong><br>
+            Select 8-10 household items or chemicals to test. Some suggestions:
+            <ul>
+                <li>Carbonated soda</li>
+                <li>Milk</li>
+                <li>Shampoo solution</li>
+                <li>Antacid tablet dissolved in water</li>
+                <li>Vitamin C tablet dissolved in water</li>
+                <li>Hand soap solution</li>
+                <li>Sports drink</li>
+                <li>Coffee</li>
+                <li>Orange juice</li>
+                <li>Tap water</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">7</span>
+            <strong>Test each solution with cabbage indicator (20 min)</strong><br>
+            For each test solution:
+            <ol>
+                <li>Place 5-10 mL of the solution in a test tube</li>
+                <li>Add 5 mL of cabbage indicator</li>
+                <li>Observe and record the color</li>
+                <li>Compare to your pH standard scale</li>
+                <li>Estimate the pH</li>
+                <li>Test with pH paper to verify</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <span class="step-number">8</span>
+            <strong>Take photos (5 min)</strong><br>
+            Arrange all your test tubes on white paper and photograph them. This will help with your post-lab analysis and video assignment.
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor verify your pH standard scale colors.
+            <br><input type="checkbox" id="instructor-check2"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials2">
+        </div>
+
+        <h3>Part 4: Neutralization Demonstration (15 minutes)</h3>
+
+        <div class="step">
+            <span class="step-number">9</span>
+            <strong>Acid + Base = Neutral (15 min)</strong><br>
+            <ol>
+                <li>Place 20 mL of vinegar in a beaker</li>
+                <li>Add 10 mL of cabbage indicator - note the acidic color (pink/red)</li>
+                <li>Slowly add baking soda solution drop by drop while stirring</li>
+                <li>Watch the color change from acidic → neutral → basic</li>
+                <li>Record your observations of the color changes and any gas produced (CO₂!)</li>
+            </ol>
+        </div>
+
+        <h3>Data Collection Tables</h3>
+
+        <h4>Table 1: pH Standard Scale</h4>
+        <table class="data-table">
+            <tr>
+                <th>pH Value</th>
+                <th>Solution Used</th>
+                <th>Color Observed</th>
+                <th>pH Paper Reading</th>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><input type="text" id="std-ph2-sol"></td>
+                <td><input type="text" id="std-ph2-color"></td>
+                <td><input type="text" id="std-ph2-paper"></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><input type="text" id="std-ph4-sol"></td>
+                <td><input type="text" id="std-ph4-color"></td>
+                <td><input type="text" id="std-ph4-paper"></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td><input type="text" id="std-ph6-sol"></td>
+                <td><input type="text" id="std-ph6-color"></td>
+                <td><input type="text" id="std-ph6-paper"></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Distilled water</td>
+                <td><input type="text" id="std-ph7-color"></td>
+                <td><input type="text" id="std-ph7-paper"></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td><input type="text" id="std-ph8-sol"></td>
+                <td><input type="text" id="std-ph8-color"></td>
+                <td><input type="text" id="std-ph8-paper"></td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td><input type="text" id="std-ph10-sol"></td>
+                <td><input type="text" id="std-ph10-color"></td>
+                <td><input type="text" id="std-ph10-paper"></td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td><input type="text" id="std-ph12-sol"></td>
+                <td><input type="text" id="std-ph12-color"></td>
+                <td><input type="text" id="std-ph12-paper"></td>
+            </tr>
+        </table>
+
+        <h4>Table 2: Unknown Solution Testing</h4>
+        <table class="data-table">
+            <tr>
+                <th>Test #</th>
+                <th>Solution Tested</th>
+                <th>Color with Indicator</th>
+                <th>Estimated pH (from color)</th>
+                <th>pH Paper Reading</th>
+                <th>Acid/Base/Neutral</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><input type="text" id="test1-sol"></td>
+                <td><input type="text" id="test1-color"></td>
+                <td><input type="text" id="test1-est"></td>
+                <td><input type="text" id="test1-paper"></td>
+                <td><select id="test1-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><input type="text" id="test2-sol"></td>
+                <td><input type="text" id="test2-color"></td>
+                <td><input type="text" id="test2-est"></td>
+                <td><input type="text" id="test2-paper"></td>
+                <td><select id="test2-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><input type="text" id="test3-sol"></td>
+                <td><input type="text" id="test3-color"></td>
+                <td><input type="text" id="test3-est"></td>
+                <td><input type="text" id="test3-paper"></td>
+                <td><select id="test3-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><input type="text" id="test4-sol"></td>
+                <td><input type="text" id="test4-color"></td>
+                <td><input type="text" id="test4-est"></td>
+                <td><input type="text" id="test4-paper"></td>
+                <td><select id="test4-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><input type="text" id="test5-sol"></td>
+                <td><input type="text" id="test5-color"></td>
+                <td><input type="text" id="test5-est"></td>
+                <td><input type="text" id="test5-paper"></td>
+                <td><select id="test5-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td><input type="text" id="test6-sol"></td>
+                <td><input type="text" id="test6-color"></td>
+                <td><input type="text" id="test6-est"></td>
+                <td><input type="text" id="test6-paper"></td>
+                <td><select id="test6-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td><input type="text" id="test7-sol"></td>
+                <td><input type="text" id="test7-color"></td>
+                <td><input type="text" id="test7-est"></td>
+                <td><input type="text" id="test7-paper"></td>
+                <td><select id="test7-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td><input type="text" id="test8-sol"></td>
+                <td><input type="text" id="test8-color"></td>
+                <td><input type="text" id="test8-est"></td>
+                <td><input type="text" id="test8-paper"></td>
+                <td><select id="test8-type"><option>Acid</option><option>Base</option><option>Neutral</option></select></td>
+            </tr>
+        </table>
+
+        <h4>Table 3: Neutralization Observations</h4>
+        <div class="question-box">
+            <strong>Describe what happened when you added baking soda to vinegar + cabbage indicator:</strong>
+            <textarea id="neutralization-obs" placeholder="Describe color changes, gas production, and final pH..." style="min-height: 100px;"></textarea>
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor verify your data tables before cleanup.
+            <br><input type="checkbox" id="instructor-check3"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials3">
+        </div>
+    </div>
+
+    <!-- POST-LAB SECTION (30-45 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ POST-LAB: 30-45 minutes</div>
+        <h2 class="section-title">Post-Lab Analysis and Questions</h2>
+
+        <h3>Analysis Questions</h3>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> Based on your results, which tested solution was the most acidic? Which was the most basic? How do you know?
+            <textarea id="postlab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> How accurately did your cabbage indicator estimate pH compared to pH paper? Were there any solutions where the estimates differed significantly? Why might this happen?
+            <textarea id="postlab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> Explain what happened during the neutralization demonstration at the molecular level. Write the chemical equation for the reaction between acetic acid (vinegar) and sodium bicarbonate (baking soda).
+            <textarea id="postlab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> Were any of your results surprising? For example, was a solution more acidic or basic than you expected? Explain.
+            <textarea id="postlab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> The anthocyanins in red cabbage are what type of molecule? Research and explain why they change color at different pH values (hint: think about protonation and deprotonation).
+            <textarea id="postlab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 6:</strong> Why is it important that pH indicators show different colors across the pH scale rather than just two colors (like litmus paper)?
+            <textarea id="postlab-q6" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <h3>Clinical Application Questions</h3>
+
+        <div class="question-box">
+            <strong>Clinical Question 1:</strong> A patient comes to the ER with diabetic ketoacidosis (DKA). Their blood gas shows pH 7.10. Explain whether this is acidosis or alkalosis, how serious this is, and what you would expect to see clinically.
+            <textarea id="clinical-q1" placeholder="Type your answer here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Clinical Question 2:</strong> You're conducting a urinalysis on a patient. The urine pH is 8.5 (more alkaline than normal). What might this indicate? What questions would you ask the patient?
+            <textarea id="clinical-q2" placeholder="Type your answer here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Clinical Question 3:</strong> A patient taking antacids for GERD asks you how they work. Using your knowledge of pH and neutralization, explain to the patient (in simple terms) how antacids relieve heartburn.
+            <textarea id="clinical-q3" placeholder="Type your patient education response here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Clinical Question 4:</strong> Chronic wounds often have an elevated pH (more alkaline than healthy skin). Research and explain why this impairs wound healing and what interventions nurses can use to address this.
+            <textarea id="clinical-q4" placeholder="Type your answer here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Research & Reflection:</strong> Blood contains several buffer systems (bicarbonate, phosphate, protein) that maintain pH homeostasis. Research ONE of these buffer systems and explain how it works to resist pH changes. Why is this critical for survival?
+            <textarea id="clinical-q5" placeholder="Type your research and reflection here..." style="min-height: 150px;"></textarea>
+        </div>
+
+        <div class="checkpoint">
+            <strong>Before Leaving Lab:</strong>
+            <ul>
+                <li><input type="checkbox"> Dispose of all solutions properly (follow instructor directions)</li>
+                <li><input type="checkbox"> Clean and dry all glassware</li>
+                <li><input type="checkbox"> Wipe down your work station</li>
+                <li><input type="checkbox"> Complete all post-lab questions above</li>
+                <li><input type="checkbox"> Upload photos of your pH standard scale and test results</li>
+                <li><input type="checkbox"> Submit this worksheet to Canvas</li>
+            </ul>
+        </div>
+
+        <button class="btn" onclick="window.print()">🖨️ Print Worksheet</button>
+        <button class="btn" onclick="alert('Save your work! Use your browser\'s save function or copy your responses to Canvas.')">💾 Save Responses</button>
+    </div>
+
+    <!-- POST-LAB ASSIGNMENT (2 hours, completed outside of lab) -->
+    <div class="section">
+        <div class="timer">📹 POST-LAB VIDEO ASSIGNMENT: 2 hours (complete outside of lab)</div>
+        <h2 class="section-title">Post-Lab Video Assignment</h2>
+
+        <p><strong>Due:</strong> Within 48 hours of lab completion</p>
+
+        <div class="learning-objectives">
+            <h3>Assignment Instructions</h3>
+            <p>Create a 2-3 minute video that includes:</p>
+            <ol>
+                <li><strong>Lab Summary (30-45 seconds):</strong> Show your photos/videos from lab. Briefly explain how you created the cabbage pH indicator and what you tested.</li>
+                <li><strong>pH in Healthcare (60-90 seconds):</strong> Choose ONE clinical application of pH (blood pH, urine pH, wound pH, or gastric pH) and explain:
+                    <ul>
+                        <li>Normal pH range</li>
+                        <li>What abnormal pH indicates</li>
+                        <li>How you would assess/monitor this as a nurse</li>
+                        <li>Nursing interventions related to pH imbalance</li>
+                    </ul>
+                </li>
+                <li><strong>Creative Demonstration (30-45 seconds):</strong> Show your pH standard scale or demonstrate a neutralization reaction on camera. Explain what's happening chemically.</li>
+            </ol>
+        </div>
+
+        <div class="question-box">
+            <strong>Video Link Submission:</strong><br>
+            Upload your video to Canvas or paste your YouTube/OneDrive link here:
+            <input type="text" id="video-link" placeholder="Paste video link here...">
+        </div>
+
+        <div class="safety-warning">
+            <strong>💡 Pro Tips for Your Video:</strong>
+            <ul>
+                <li>Show your colorful pH test tubes! The visual impact is great</li>
+                <li>Consider creating a "rainbow" of pH values to show</li>
+                <li>Use props or visuals (diagrams, acid-base charts)</li>
+                <li>For the clinical section, you could show a sample patient scenario</li>
+                <li>Make it educational but engaging - imagine teaching fellow students</li>
+            </ul>
+        </div>
+
+        <div class="fun-fact">
+            <strong>🎯 Extra Credit Opportunity:</strong> Conduct a mini "pH scavenger hunt" at home! Test 5 additional household items with a natural indicator you make at home (red cabbage or another source). Create a pH chart and include in your video for bonus points!
+        </div>
+    </div>
+
+    <div class="section" style="background-color: #f3e5f5;">
+        <h3>Additional Resources</h3>
+        <ul>
+            <li>📖 Textbook: Chapters on Acids, Bases, and pH</li>
+            <li>🔗 <a href="https://www.youtube.com/watch?v=DupXDD87oHc" target="_blank">Khan Academy: pH, pOH, and the pH Scale</a></li>
+            <li>🔗 <a href="https://www.ncbi.nlm.nih.gov/books/NBK507807/" target="_blank">StatPearls: Acid-Base Balance</a></li>
+            <li>🔗 <a href="https://www.who.int/news-room/fact-sheets/detail/burns" target="_blank">WHO: Chemical Burns Information</a></li>
+            <li>🎥 Crash Course Chemistry: Acids and Bases</li>
+            <li>📱 Office Hours: Wednesdays 2-4 PM or by appointment</li>
+        </ul>
+
+        <div class="fun-fact">
+            <strong>🌺 DIY at Home:</strong> You can make pH indicators from many purple/red fruits and vegetables! Try blueberries, blackberries, red roses, or red onion skins. Each contains anthocyanins that change color with pH!
+        </div>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        function autoSave() {
+            const formData = {};
+            const inputs = document.querySelectorAll('input[type="text"], textarea, select');
+            inputs.forEach(input => {
+                if(input.id) {
+                    formData[input.id] = input.value;
+                    localStorage.setItem('cabbage_lab_' + input.id, input.value);
+                }
+            });
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const inputs = document.querySelectorAll('input[type="text"], textarea, select');
+            inputs.forEach(input => {
+                if(input.id) {
+                    const savedValue = localStorage.getItem('cabbage_lab_' + input.id);
+                    if(savedValue) {
+                        input.value = savedValue;
+                    }
+                }
+            });
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(autoSave, 30000);
+
+        // Load saved data when page loads
+        window.onload = loadSavedData;
+
+        // Save before closing
+        window.addEventListener('beforeunload', autoSave);
+    </script>
+</body>
+</html>

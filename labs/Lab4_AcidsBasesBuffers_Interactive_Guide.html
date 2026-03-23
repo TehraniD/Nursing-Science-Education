@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 4: Acids, Bases & Buffers — Interactive Learning Guide</title>
+    <style>
+        /* ========== RESET & BASE ========== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #dbeafe;
+            --accent: #7c3aed;
+            --accent-light: #ede9fe;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            --radius: 12px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,.1);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,.15);
+            --shadow-xl: 0 25px 60px rgba(0,0,0,.22);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 40%, #7c3aed 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.7;
+            color: var(--neutral-800);
+        }
+
+        /* ========== LAYOUT ========== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%);
+            color: #fff;
+            padding: 50px 40px 40px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,.15);
+            backdrop-filter: blur(6px);
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: .85em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .header h1 {
+            font-size: 2.6em;
+            font-weight: 800;
+            text-shadow: 0 2px 8px rgba(0,0,0,.25);
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            font-size: 1.25em;
+            opacity: .9;
+            font-weight: 400;
+        }
+        .header .hook {
+            max-width: 700px;
+            margin: 16px auto 0;
+            font-size: 1em;
+            opacity: .8;
+            font-style: italic;
+        }
+
+        /* ========== ANIMATED pH STRIP (header decoration) ========== */
+        .ph-strip-deco {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            margin-top: 24px;
+        }
+        .ph-strip-deco span {
+            width: 28px;
+            height: 10px;
+            border-radius: 3px;
+            animation: pulse-strip 3s ease-in-out infinite;
+        }
+        .ph-strip-deco span:nth-child(1)  { background: #ff1a1a; animation-delay: 0s; }
+        .ph-strip-deco span:nth-child(2)  { background: #ff4d00; animation-delay: .15s; }
+        .ph-strip-deco span:nth-child(3)  { background: #ff8c00; animation-delay: .3s; }
+        .ph-strip-deco span:nth-child(4)  { background: #ffc800; animation-delay: .45s; }
+        .ph-strip-deco span:nth-child(5)  { background: #e6e600; animation-delay: .6s; }
+        .ph-strip-deco span:nth-child(6)  { background: #99cc00; animation-delay: .75s; }
+        .ph-strip-deco span:nth-child(7)  { background: #33cc33; animation-delay: .9s; }
+        .ph-strip-deco span:nth-child(8)  { background: #00b386; animation-delay: 1.05s; }
+        .ph-strip-deco span:nth-child(9)  { background: #0099cc; animation-delay: 1.2s; }
+        .ph-strip-deco span:nth-child(10) { background: #0066cc; animation-delay: 1.35s; }
+        .ph-strip-deco span:nth-child(11) { background: #3333cc; animation-delay: 1.5s; }
+        .ph-strip-deco span:nth-child(12) { background: #6600cc; animation-delay: 1.65s; }
+        .ph-strip-deco span:nth-child(13) { background: #8800aa; animation-delay: 1.8s; }
+        .ph-strip-deco span:nth-child(14) { background: #990099; animation-delay: 1.95s; }
+        @keyframes pulse-strip {
+            0%, 100% { opacity: .6; transform: scaleY(1); }
+            50%      { opacity: 1;  transform: scaleY(1.6); }
+        }
+
+        /* ========== NAVIGATION TABS ========== */
+        .nav-tabs {
+            display: flex;
+            background: var(--neutral-100);
+            border-bottom: 3px solid var(--primary);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .nav-tab {
+            padding: 16px 24px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: .95em;
+            font-weight: 600;
+            color: var(--neutral-600);
+            transition: all .25s;
+            white-space: nowrap;
+            position: relative;
+        }
+        .nav-tab:hover { background: var(--neutral-200); }
+        .nav-tab.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: inset 0 -3px 0 var(--primary);
+        }
+
+        /* ========== TAB CONTENT ========== */
+        .tab-content { display: none; padding: 40px; animation: fadeSlideIn .45s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== SECTIONS & CARDS ========== */
+        .section {
+            margin-bottom: 32px;
+            padding: 28px;
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            border-left: 5px solid var(--primary);
+        }
+        .section h2 {
+            color: var(--primary-dark);
+            font-size: 1.7em;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h3 {
+            color: var(--neutral-800);
+            margin: 22px 0 10px;
+            font-size: 1.25em;
+        }
+
+        .card {
+            background: #fff;
+            padding: 22px;
+            margin: 16px 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow .25s;
+        }
+        .card:hover { box-shadow: var(--shadow-md); }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        /* ========== COLORED BOXES ========== */
+        .info-box    { background: var(--primary-light); border-left: 4px solid var(--primary);  padding: 16px 20px; margin: 16px 0; border-radius: 8px; }
+        .success-box { background: var(--success-light); border-left: 4px solid var(--success);  padding: 16px 20px; margin: 16px 0; border-radius: 8px; }
+        .warning-box { background: var(--warning-light); border-left: 4px solid var(--warning);  padding: 16px 20px; margin: 16px 0; border-radius: 8px; }
+        .danger-box  { background: var(--danger-light);  border-left: 4px solid var(--danger);   padding: 16px 20px; margin: 16px 0; border-radius: 8px; }
+        .accent-box  { background: var(--accent-light);  border-left: 4px solid var(--accent);   padding: 16px 20px; margin: 16px 0; border-radius: 8px; }
+
+        /* ========== EQUATIONS ========== */
+        .equation-box {
+            background: linear-gradient(135deg, var(--neutral-900), var(--primary-dark));
+            color: #fff;
+            padding: 22px 28px;
+            margin: 22px 0;
+            border-radius: var(--radius);
+            text-align: center;
+            font-size: 1.2em;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            letter-spacing: .5px;
+        }
+        .equation-box .eq-label {
+            display: block;
+            font-size: .75em;
+            opacity: .7;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* ========== TABLES ========== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .data-table th {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: .92em;
+            letter-spacing: .4px;
+        }
+        .data-table td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--neutral-200);
+            font-size: .95em;
+        }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: var(--neutral-50); }
+        .data-table input[type="text"],
+        .data-table input[type="number"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 6px;
+            font-size: .95em;
+            transition: border-color .2s;
+        }
+        .data-table input:focus { outline: none; border-color: var(--primary); }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .25s;
+            margin: 8px 5px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary   { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; }
+        .btn-success   { background: linear-gradient(135deg, #059669, #34d399); color: #fff; }
+        .btn-warning   { background: linear-gradient(135deg, #d97706, #fbbf24); color: #fff; }
+        .btn-danger    { background: linear-gradient(135deg, #dc2626, #f87171); color: #fff; }
+        .btn-secondary { background: var(--neutral-200); color: var(--neutral-700); }
+
+        /* ========== INTERACTIVE pH SCALE ========== */
+        .ph-scale-container {
+            position: relative;
+            margin: 30px auto;
+            max-width: 800px;
+        }
+        .ph-scale {
+            display: flex;
+            height: 60px;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            position: relative;
+        }
+        .ph-segment {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: .85em;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,.3);
+            transition: transform .2s, filter .2s;
+            position: relative;
+        }
+        .ph-segment:hover { transform: scaleY(1.15); filter: brightness(1.1); z-index: 2; }
+        .ph-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 4px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .ph-labels span {
+            font-size: .7em;
+            color: var(--neutral-600);
+            width: calc(100%/15);
+            text-align: center;
+        }
+        .ph-pointer {
+            position: absolute;
+            top: -32px;
+            transform: translateX(-50%);
+            transition: left .4s ease;
+            z-index: 10;
+        }
+        .ph-pointer .arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 14px solid var(--neutral-900);
+            margin: 0 auto;
+        }
+        .ph-pointer .ph-val {
+            background: var(--neutral-900);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: .9em;
+            text-align: center;
+            min-width: 50px;
+        }
+        .ph-info-display {
+            text-align: center;
+            margin-top: 16px;
+            min-height: 50px;
+        }
+        .ph-info-display .substance {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        .ph-info-display .description {
+            color: var(--neutral-600);
+            font-size: .95em;
+        }
+
+        /* ========== BEAKER VISUALISATION ========== */
+        .beaker-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        .beaker-wrap {
+            text-align: center;
+            width: 100px;
+        }
+        .beaker {
+            width: 70px;
+            height: 90px;
+            border: 3px solid var(--neutral-300);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            margin: 0 auto 8px;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+        }
+        .beaker-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            transition: background .5s;
+        }
+        .beaker-label {
+            font-size: .72em;
+            font-weight: 600;
+            color: var(--neutral-700);
+            line-height: 1.3;
+        }
+        .beaker-ph {
+            font-size: .8em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 2px;
+        }
+
+        /* ========== BUFFER SIMULATOR ========== */
+        .buffer-sim {
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin: 24px 0;
+            border: 2px solid var(--neutral-200);
+        }
+        .sim-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+        .sim-controls .field {
+            flex: 1;
+            min-width: 200px;
+        }
+        .sim-controls label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: .9em;
+            color: var(--neutral-700);
+        }
+        .sim-controls select,
+        .sim-controls input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color .2s;
+        }
+        .sim-controls select:focus,
+        .sim-controls input:focus { outline: none; border-color: var(--primary); }
+        .sim-result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 600px) { .sim-result-grid { grid-template-columns: 1fr; } }
+        .sim-result-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 22px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .sim-result-card .big-num {
+            font-size: 2.6em;
+            font-weight: 800;
+            transition: color .4s;
+        }
+        .sim-result-card .label {
+            font-size: .85em;
+            color: var(--neutral-600);
+            margin-top: 4px;
+        }
+        .ph-bar {
+            height: 18px;
+            background: linear-gradient(90deg, #ff1a1a, #ff8c00, #e6e600, #33cc33, #0099cc, #3333cc, #990099);
+            border-radius: 9px;
+            position: relative;
+            margin: 16px 0 4px;
+        }
+        .ph-bar-marker {
+            position: absolute;
+            top: -6px;
+            width: 16px;
+            height: 30px;
+            background: var(--neutral-900);
+            border: 2px solid #fff;
+            border-radius: 4px;
+            transition: left .5s ease;
+            transform: translateX(-50%);
+        }
+        .delta-display {
+            text-align: center;
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        /* ========== QUIZ ========== */
+        .quiz-question {
+            background: #fff;
+            padding: 22px;
+            margin: 18px 0;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+        .quiz-question h4 {
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .quiz-option {
+            padding: 12px 16px;
+            border: 2px solid var(--neutral-200);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quiz-option:hover { border-color: var(--accent); background: var(--accent-light); }
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+        .quiz-option.incorrect {
+            border-color: var(--danger);
+            background: var(--danger-light);
+        }
+        .quiz-option.disabled { pointer-events: none; opacity: .85; }
+        .quiz-feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+            font-size: .95em;
+            line-height: 1.6;
+        }
+
+        /* ========== PROGRESS BAR ========== */
+        .progress-bar {
+            width: 100%;
+            height: 28px;
+            background: var(--neutral-200);
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 18px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width .5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: .82em;
+        }
+
+        /* ========== CONJUGATE PAIR MATCHER ========== */
+        .match-game {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .match-tile {
+            padding: 12px 20px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all .2s;
+            user-select: none;
+            font-size: .95em;
+        }
+        .match-tile:hover { border-color: var(--primary); background: var(--primary-light); }
+        .match-tile.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px rgba(37,99,235,.25); }
+        .match-tile.matched  { border-color: var(--success); background: var(--success-light); cursor: default; }
+        .match-tile.wrong    { border-color: var(--danger);  background: var(--danger-light); animation: shake .4s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25%      { transform: translateX(-6px); }
+            75%      { transform: translateX(6px); }
+        }
+
+        /* ========== STEP INDICATORS ========== */
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin: 18px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        .step-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .step-body { flex: 1; }
+        .step-body h4 { color: var(--primary-dark); margin-bottom: 6px; }
+
+        /* ========== REACTION ANIMATION ========== */
+        .rxn-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-size: 1.15em;
+            font-weight: 600;
+        }
+        .rxn-species {
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: all .5s;
+        }
+        .rxn-arrow {
+            font-size: 1.4em;
+            color: var(--neutral-600);
+        }
+
+        /* ========== CALCULATOR ========== */
+        .calc-panel {
+            background: var(--neutral-50);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .calc-panel h3 { color: var(--primary-dark); margin-bottom: 16px; }
+        .calc-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: end;
+            margin-bottom: 14px;
+        }
+        .calc-field {
+            flex: 1;
+            min-width: 160px;
+        }
+        .calc-field label {
+            display: block;
+            font-weight: 600;
+            font-size: .88em;
+            margin-bottom: 4px;
+            color: var(--neutral-700);
+        }
+        .calc-field input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--neutral-300);
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .calc-field input:focus { outline: none; border-color: var(--primary); }
+        .calc-result {
+            background: var(--success-light);
+            border: 2px solid var(--success);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            font-size: 1.15em;
+            font-weight: 700;
+            color: var(--success);
+            display: none;
+            margin-top: 14px;
+        }
+
+        /* ========== SCORE BOARD ========== */
+        .scoreboard {
+            background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+            color: #fff;
+            padding: 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 20px 0;
+        }
+        .scoreboard .big { font-size: 3em; font-weight: 800; }
+        .scoreboard .label { opacity: .8; margin-top: 4px; }
+
+        /* ========== TOOLTIP ========== */
+        .tooltip {
+            position: relative;
+            border-bottom: 2px dotted var(--primary);
+            cursor: help;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        .tooltip .tip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--neutral-900);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: .82em;
+            font-weight: 400;
+            width: 240px;
+            text-align: center;
+            transition: all .2s;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .tooltip:hover .tip-text { visibility: visible; opacity: 1; }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--neutral-100);
+            text-align: center;
+            padding: 20px;
+            font-size: .85em;
+            color: var(--neutral-600);
+            border-top: 1px solid var(--neutral-200);
+        }
+
+        /* ========== PRINT ========== */
+        @media print {
+            body { background: #fff; padding: 0; }
+            .nav-tabs, .btn, .no-print, .ph-strip-deco { display: none !important; }
+            .container { box-shadow: none; border-radius: 0; }
+            .tab-content { display: block !important; page-break-before: always; }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7em; }
+            .tab-content { padding: 24px 18px; }
+            .section { padding: 18px; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- ==================== HEADER ==================== -->
+    <div class="header">
+        <div class="header-badge">General Chemistry Lab</div>
+        <h1>🧪 Lab 4: Acids, Bases &amp; Buffers</h1>
+        <p class="subtitle">"Why Does Your Blood Stay at pH 7.4 — Even After Drinking Lemonade?"</p>
+        <p class="hook">Explore the invisible chemistry controlling everything from your stomach to the ocean</p>
+        <div class="ph-strip-deco">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <!-- ==================== NAVIGATION ==================== -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showTab('concepts')">📚 Core Concepts</button>
+        <button class="nav-tab" onclick="showTab('phscale')">🌈 pH Explorer</button>
+        <button class="nav-tab" onclick="showTab('strongweak')">⚡ Strong vs Weak</button>
+        <button class="nav-tab" onclick="showTab('buffers')">🛡️ Buffer Lab</button>
+        <button class="nav-tab" onclick="showTab('procedure')">🔬 Procedure</button>
+        <button class="nav-tab" onclick="showTab('data')">📊 Data Entry</button>
+        <button class="nav-tab" onclick="showTab('calculator')">🧮 Calculators</button>
+        <button class="nav-tab" onclick="showTab('quiz')">✅ Self-Check</button>
+    </div>
+
+    <!-- =====================================================
+         TAB 1 — CORE CONCEPTS
+         ===================================================== -->
+    <div id="concepts" class="tab-content active">
+
+        <div class="section">
+            <h2>🎯 What You'll Learn Today</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🍋 Acids</h3>
+                    <p>An <strong>acid</strong> is an H⁺ (proton) <em>donor</em>. When dissolved in water, acids release H⁺ ions, creating an excess of <strong>H₃O⁺</strong> (hydronium).</p>
+                    <div class="equation-box" style="font-size:1em; margin-top:12px;">
+                        <span class="eq-label">Example</span>
+                        HCl + H₂O → H₃O⁺ + Cl⁻
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🧼 Bases</h3>
+                    <p>A <strong>base</strong> is an H⁺ (proton) <em>acceptor</em>. In water, bases accept H⁺ from water molecules, producing <strong>OH⁻</strong> (hydroxide).</p>
+                    <div class="equation-box" style="font-size:1em; margin-top:12px;">
+                        <span class="eq-label">Example</span>
+                        NH₃ + H₂O ⇌ NH₄⁺ + OH⁻
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🔄 Conjugate Pairs</h3>
+                    <p>Every acid–base reaction creates a <strong>conjugate pair</strong>. The acid loses H⁺ → conjugate base. The base gains H⁺ → conjugate acid.</p>
+                    <div class="info-box" style="margin-top:10px;">
+                        <strong>HCl / Cl⁻</strong> — conjugate pair<br>
+                        <strong>NH₃ / NH₄⁺</strong> — conjugate pair
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🛡️ Buffers</h3>
+                    <p>A <strong>buffer</strong> is a mixture of a weak acid and its conjugate base. It <em>resists</em> pH changes when small amounts of acid or base are added.</p>
+                    <div class="success-box" style="margin-top:10px;">
+                        Your blood is buffered at pH 7.4 — even after a glass of orange juice (pH 3.5)!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📐 The pH Equation</h2>
+            <div class="equation-box">
+                <span class="eq-label">Definition of pH</span>
+                pH = −log [H⁺]
+            </div>
+            <div class="card-grid" style="margin-top:16px;">
+                <div class="card">
+                    <h4 style="color:var(--danger);">Acidic (pH &lt; 7)</h4>
+                    <p>Higher concentration of H⁺ ions.<br>Example: 0.1 M HCl → [H⁺] = 0.1 M → <strong>pH = 1</strong></p>
+                </div>
+                <div class="card">
+                    <h4 style="color:var(--success);">Neutral (pH = 7)</h4>
+                    <p>[H⁺] = [OH⁻] = 1.0 × 10⁻⁷ M<br>Pure water at 25°C.</p>
+                </div>
+                <div class="card">
+                    <h4 style="color:var(--primary);">Basic (pH &gt; 7)</h4>
+                    <p>Higher concentration of OH⁻ ions.<br>Example: 0.1 M NaOH → pOH = 1 → <strong>pH = 13</strong></p>
+                </div>
+            </div>
+            <div class="equation-box">
+                <span class="eq-label">The Water Relationship</span>
+                [H⁺] × [OH⁻] = 1.0 × 10⁻¹⁴ &nbsp;&nbsp;→&nbsp;&nbsp; pH + pOH = 14
+            </div>
+            <div class="warning-box">
+                <strong>⚠️ The Log Trap:</strong> Each pH unit = a <strong>10× change</strong> in H⁺ concentration. pH 3 is not "a little more acidic" than pH 5 — it's <strong>100 times more acidic!</strong>
+            </div>
+        </div>
+
+        <!-- Conjugate Pair Matching Game -->
+        <div class="section">
+            <h2>🎮 Interactive: Match the Conjugate Pairs</h2>
+            <p>Click an acid, then click its conjugate base. Match all 5 pairs!</p>
+            <div id="matchScore" class="info-box" style="text-align:center; font-weight:700;">Pairs matched: 0 / 5</div>
+            <div class="match-game" id="matchGame"></div>
+            <button class="btn btn-secondary no-print" onclick="resetMatch()">Reset Game</button>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 2 — pH EXPLORER
+         ===================================================== -->
+    <div id="phscale" class="tab-content">
+        <div class="section">
+            <h2>🌈 Interactive pH Scale Explorer</h2>
+            <p>Hover over or click any pH value to explore common substances and their acidity/basicity.</p>
+
+            <div class="ph-scale-container">
+                <div class="ph-pointer" id="phPointer">
+                    <div class="ph-val" id="phPointerVal">7</div>
+                    <div class="arrow"></div>
+                </div>
+                <div class="ph-scale" id="phScale"></div>
+                <div class="ph-labels" id="phLabels"></div>
+            </div>
+            <div class="ph-info-display" id="phInfoDisplay">
+                <div class="substance">Pure Water</div>
+                <div class="description">Neutral — [H⁺] = [OH⁻] = 1.0 × 10⁻⁷ M</div>
+            </div>
+        </div>
+
+        <!-- Animated beaker row -->
+        <div class="section">
+            <h2>🧪 Lab Solutions at a Glance</h2>
+            <p>These are the 10 solutions you'll test in Part 1. Colors approximate the pH indicator reading.</p>
+            <div class="beaker-row" id="beakerRow"></div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 3 — STRONG vs WEAK
+         ===================================================== -->
+    <div id="strongweak" class="tab-content">
+        <div class="section">
+            <h2>⚡ Strong vs Weak: The Big Difference</h2>
+
+            <div class="card-grid">
+                <div class="card" style="border-top: 4px solid var(--danger);">
+                    <h3 style="color:var(--danger);">Strong Acids & Bases</h3>
+                    <p><strong>Dissociate 100%</strong> in water. Every molecule breaks apart.</p>
+                    <div class="equation-box" style="font-size:.95em;">
+                        HCl → H⁺ + Cl⁻ &nbsp;(complete)
+                    </div>
+                    <p>For strong acids: <strong>[H⁺] = [acid]</strong><br>
+                       For strong bases: <strong>[OH⁻] = [base]</strong></p>
+                    <table class="data-table" style="margin-top:14px;">
+                        <thead><tr><th>Strong Acids</th><th>Strong Bases</th></tr></thead>
+                        <tbody>
+                            <tr><td>HCl — hydrochloric acid</td><td>NaOH — sodium hydroxide</td></tr>
+                            <tr><td>HBr — hydrobromic acid</td><td>LiOH — lithium hydroxide</td></tr>
+                            <tr><td>HI — hydroiodic acid</td><td>KOH — potassium hydroxide</td></tr>
+                            <tr><td>H₂SO₄ — sulfuric acid</td><td>Ba(OH)₂ — barium hydroxide</td></tr>
+                            <tr><td>HNO₃ — nitric acid</td><td></td></tr>
+                            <tr><td>HClO₄ — perchloric acid</td><td></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card" style="border-top: 4px solid var(--warning);">
+                    <h3 style="color:var(--warning);">Weak Acids & Bases</h3>
+                    <p><strong>Only partially dissociate</strong> — an equilibrium exists between the undissociated molecule and its ions.</p>
+                    <div class="equation-box" style="font-size:.95em;">
+                        CH₃COOH ⇌ CH₃COO⁻ + H⁺ &nbsp;(partial)
+                    </div>
+                    <p>For weak acids: <strong>[H⁺] ≪ [acid]</strong><br>
+                       Most acid molecules stay intact!</p>
+                    <div class="warning-box" style="margin-top:14px;">
+                        <strong>Key insight:</strong> 0.1 M HCl has pH ≈ 1, but 0.1 M acetic acid has pH ≈ 2.9. Same concentration, very different pH — because acetic acid barely dissociates!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dissociation visualizer -->
+        <div class="section">
+            <h2>🔬 Dissociation Visualizer</h2>
+            <p>See the difference between strong and weak acid dissociation:</p>
+            <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:16px;">
+                <button class="btn btn-danger" onclick="showDissociation('strong')">Show Strong Acid (HCl)</button>
+                <button class="btn btn-warning" onclick="showDissociation('weak')">Show Weak Acid (CH₃COOH)</button>
+            </div>
+            <div id="dissociationViz" style="margin-top:20px;">
+                <div class="card" style="min-height:160px; display:flex; align-items:center; justify-content:center;">
+                    <p style="color:var(--neutral-600); font-style:italic;">Click a button above to visualize dissociation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conjugate acid/base behavior -->
+        <div class="section">
+            <h2>🔄 What Happens to Conjugate Partners?</h2>
+            <div class="card">
+                <h3>Conjugate Base of a <em>Weak</em> Acid acts as a Base</h3>
+                <p>Acetic acid (CH₃COOH) is weak, so its conjugate base <strong>CH₃COO⁻</strong> (acetate) is strong enough to accept an H⁺ from water:</p>
+                <div class="equation-box" style="font-size:1em;">
+                    CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻
+                </div>
+                <p>This is why sodium acetate solution is <strong>basic</strong> (pH &gt; 7).</p>
+            </div>
+            <div class="card">
+                <h3>Conjugate Acid of a <em>Weak</em> Base acts as an Acid</h3>
+                <p>Ammonia (NH₃) is a weak base, so its conjugate acid <strong>NH₄⁺</strong> (ammonium) donates H⁺ to water:</p>
+                <div class="equation-box" style="font-size:1em;">
+                    NH₄⁺ + H₂O ⇌ NH₃ + H₃O⁺
+                </div>
+                <p>This is why ammonium chloride solution is <strong>acidic</strong> (pH &lt; 7).</p>
+            </div>
+            <div class="success-box">
+                <strong>Rule of thumb:</strong> The conjugate of a <em>strong</em> acid/base is so stable it doesn't react with water (spectator). The conjugate of a <em>weak</em> acid/base is reactive enough to shift the pH.
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 4 — BUFFER LAB SIMULATOR
+         ===================================================== -->
+    <div id="buffers" class="tab-content">
+        <div class="section">
+            <h2>🛡️ What Is a Buffer?</h2>
+            <p>A buffer is a solution that <strong>resists changes in pH</strong> when small amounts of acid or base are added. It consists of:</p>
+            <div class="card-grid">
+                <div class="card" style="border-top:3px solid var(--warning);">
+                    <h3>Weak Acid + Conjugate Base</h3>
+                    <p><strong>Acetate buffer:</strong> CH₃COOH + CH₃COO⁻ (from sodium acetate)</p>
+                    <p style="margin-top:8px;">• Weak acid neutralizes added base<br>• Conjugate base neutralizes added acid</p>
+                </div>
+                <div class="card" style="border-top:3px solid var(--primary);">
+                    <h3>Weak Base + Conjugate Acid</h3>
+                    <p><strong>Ammonia buffer:</strong> NH₃ + NH₄⁺ (from ammonium chloride)</p>
+                    <p style="margin-top:8px;">• Weak base neutralizes added acid<br>• Conjugate acid neutralizes added base</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>🩸 Real-world example:</strong> Your blood uses a carbonate buffer (H₂CO₃ / HCO₃⁻) to maintain pH between 7.35–7.45. If blood pH drops below 7.0 or rises above 7.8, it can be fatal. Buffers are <em>literally</em> keeping you alive right now.
+            </div>
+
+            <h3 style="margin-top:24px;">How a Buffer Works — Step by Step</h3>
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h4>Acid is added → Conjugate base absorbs it</h4>
+                    <p>Added H⁺ reacts with the conjugate base (CH₃COO⁻), converting it back to weak acid. The H⁺ is <strong>consumed</strong>, so pH barely changes.</p>
+                    <div class="equation-box" style="font-size:.95em;">CH₃COO⁻ + H⁺ → CH₃COOH</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h4>Base is added → Weak acid absorbs it</h4>
+                    <p>Added OH⁻ reacts with the weak acid (CH₃COOH), converting it to conjugate base + water. The OH⁻ is <strong>consumed</strong>, so pH barely changes.</p>
+                    <div class="equation-box" style="font-size:.95em;">CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buffer simulator -->
+        <div class="section">
+            <h2>🎛️ Interactive Buffer Simulator</h2>
+            <p>Choose a solution, then add acid or base to see how pH responds. Compare buffered vs unbuffered!</p>
+
+            <div class="buffer-sim">
+                <div class="sim-controls">
+                    <div class="field">
+                        <label>Solution Type</label>
+                        <select id="bufferType" onchange="updateBufferSim()">
+                            <option value="water">Distilled Water (unbuffered)</option>
+                            <option value="acetate">Acetate Buffer (CH₃COOH / CH₃COO⁻)</option>
+                            <option value="ammonia">Ammonia Buffer (NH₃ / NH₄⁺)</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Drops of 0.1 M HCl to add</label>
+                        <input type="number" id="dropsHCl" min="0" max="20" value="0" onchange="updateBufferSim()">
+                    </div>
+                    <div class="field">
+                        <label>Drops of 0.1 M NaOH to add</label>
+                        <input type="number" id="dropsNaOH" min="0" max="20" value="0" onchange="updateBufferSim()">
+                    </div>
+                </div>
+
+                <div class="sim-result-grid">
+                    <div class="sim-result-card">
+                        <div class="label">Initial pH</div>
+                        <div class="big-num" id="initialPH">7.00</div>
+                        <div class="ph-bar"><div class="ph-bar-marker" id="initMarker" style="left:50%"></div></div>
+                    </div>
+                    <div class="sim-result-card">
+                        <div class="label">Final pH (after additions)</div>
+                        <div class="big-num" id="finalPH">7.00</div>
+                        <div class="ph-bar"><div class="ph-bar-marker" id="finalMarker" style="left:50%"></div></div>
+                    </div>
+                </div>
+
+                <div class="delta-display" id="deltaDisplay" style="background:var(--success-light); color:var(--success);">
+                    ΔpH = 0.00 — No change yet. Try adding some drops!
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Why Water Has No Defense</h2>
+            <p>Compare what happens when you add 5 drops of HCl to each solution:</p>
+            <table class="data-table">
+                <thead>
+                    <tr><th>Solution</th><th>Initial pH</th><th>After 5 drops HCl</th><th>ΔpH</th><th>Verdict</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Distilled Water</td>
+                        <td>7.00</td>
+                        <td>~3.0</td>
+                        <td style="color:var(--danger); font-weight:700;">−4.0</td>
+                        <td style="color:var(--danger); font-weight:700;">⚠️ Huge swing!</td>
+                    </tr>
+                    <tr>
+                        <td>Acetate Buffer</td>
+                        <td>~4.74</td>
+                        <td>~4.56</td>
+                        <td style="color:var(--success); font-weight:700;">−0.18</td>
+                        <td style="color:var(--success); font-weight:700;">✅ Barely moved</td>
+                    </tr>
+                    <tr>
+                        <td>Ammonia Buffer</td>
+                        <td>~9.25</td>
+                        <td>~9.07</td>
+                        <td style="color:var(--success); font-weight:700;">−0.18</td>
+                        <td style="color:var(--success); font-weight:700;">✅ Barely moved</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="accent-box">
+                <strong>The takeaway:</strong> Water has <em>nothing</em> to neutralize the added acid — so pH plummets. A buffer has a built-in "army" of conjugate base molecules waiting to absorb and neutralize incoming H⁺.
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 5 — PROCEDURE
+         ===================================================== -->
+    <div id="procedure" class="tab-content">
+        <div class="section">
+            <h2>⚠️ Safety First</h2>
+            <div class="danger-box">
+                <strong>Required:</strong> Safety goggles must be worn at all times.<br>
+                <strong>Caution:</strong> 0.1 M HCl and 0.1 M NaOH are dilute but can still irritate skin and eyes. Rinse immediately with water if contact occurs. Notify your instructor.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔬 Part 1: pH of Everyday Chemicals</h2>
+            <p>You'll measure the pH of 10 solutions using pH paper (test strips).</p>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h4>Prepare 10 test tubes</h4>
+                    <p>Place them in a test tube rack. Pour about <strong>3 mL</strong> of each solution into its own test tube.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h4>Test with pH paper</h4>
+                    <p>Dip a clean glass rod into the solution. Touch the rod to the pH test strip. <em>Use a fresh strip for each solution!</em></p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h4>Read and Record</h4>
+                    <p>Compare the color on the strip to the chart on the pH paper box. Record the pH and classify as <strong>acidic</strong>, <strong>basic</strong>, or <strong>neutral</strong>.</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Solutions to test:</strong> Bleach, Vinegar, Lemon Juice, Distilled Water, 0.1 M HCl, 0.1 M NaOH, 0.1 M Acetic Acid (CH₃COOH), 0.1 M Sodium Acetate (CH₃COONa), 0.1 M Ammonia (NH₄OH), 0.1 M Ammonium Chloride (NH₄Cl)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔬 Part 2: Effect of Buffers on pH</h2>
+            <p>You'll compare how water, an acetate buffer, and an ammonia buffer respond to added acid and base.</p>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h4>Set up 6 test tubes</h4>
+                    <p>
+                        <strong>Tubes 1 & 2:</strong> Add 10 mL distilled water to each.<br>
+                        <strong>Tubes 3 & 4:</strong> Add 5 mL of 0.1 M CH₃COOH <strong>+</strong> 5 mL of 0.1 M CH₃COONa to each (acetate buffer).<br>
+                        <strong>Tubes 5 & 6:</strong> Add 5 mL of 0.1 M NH₄OH <strong>+</strong> 5 mL of 0.1 M NH₄Cl to each (ammonia buffer).
+                    </p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h4>Measure initial pH</h4>
+                    <p>Use the <strong>pH meter</strong> to record the pH of all 6 test tubes. Rinse the probe with RO water between measurements!</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h4>Add acid to odd-numbered tubes</h4>
+                    <p>Add <strong>5 drops</strong> of 0.1 M HCl to tubes 1, 3, and 5. Mix well. Measure and record the new pH.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <h4>Add base to even-numbered tubes</h4>
+                    <p>Add <strong>5 drops</strong> of 0.1 M NaOH to tubes 2, 4, and 6. Mix well. Measure and record the new pH.</p>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <strong>💡 What to watch for:</strong> Compare the ΔpH for water vs the buffers. The buffer solutions should show <em>dramatically</em> smaller pH changes — that's the buffer in action!
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 6 — DATA ENTRY
+         ===================================================== -->
+    <div id="data" class="tab-content">
+        <div class="section">
+            <h2>📋 Part 1 Data: pH of Everyday Chemicals</h2>
+            <table class="data-table" id="part1Table">
+                <thead>
+                    <tr>
+                        <th>Solution</th>
+                        <th style="width:100px;">pH</th>
+                        <th style="width:140px;">Classification</th>
+                        <th>Strong/Weak/N/A</th>
+                    </tr>
+                </thead>
+                <tbody id="part1Body"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>📋 Part 2 Data: Buffer Effect</h2>
+            <table class="data-table" id="part2Table">
+                <thead>
+                    <tr>
+                        <th>Test Tube</th>
+                        <th>Solution</th>
+                        <th style="width:90px;">Initial pH</th>
+                        <th>Addition</th>
+                        <th style="width:90px;">Final pH</th>
+                        <th style="width:80px;">ΔpH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td><td>Distilled Water</td>
+                        <td><input type="number" step="0.01" id="p2_init_1" onchange="calcDelta(1)"></td>
+                        <td>5 drops HCl</td>
+                        <td><input type="number" step="0.01" id="p2_final_1" onchange="calcDelta(1)"></td>
+                        <td id="p2_delta_1" style="font-weight:700; text-align:center;">—</td>
+                    </tr>
+                    <tr>
+                        <td>2</td><td>Distilled Water</td>
+                        <td><input type="number" step="0.01" id="p2_init_2" onchange="calcDelta(2)"></td>
+                        <td>5 drops NaOH</td>
+                        <td><input type="number" step="0.01" id="p2_final_2" onchange="calcDelta(2)"></td>
+                        <td id="p2_delta_2" style="font-weight:700; text-align:center;">—</td>
+                    </tr>
+                    <tr>
+                        <td>3</td><td>Acetate Buffer</td>
+                        <td><input type="number" step="0.01" id="p2_init_3" onchange="calcDelta(3)"></td>
+                        <td>5 drops HCl</td>
+                        <td><input type="number" step="0.01" id="p2_final_3" onchange="calcDelta(3)"></td>
+                        <td id="p2_delta_3" style="font-weight:700; text-align:center;">—</td>
+                    </tr>
+                    <tr>
+                        <td>4</td><td>Acetate Buffer</td>
+                        <td><input type="number" step="0.01" id="p2_init_4" onchange="calcDelta(4)"></td>
+                        <td>5 drops NaOH</td>
+                        <td><input type="number" step="0.01" id="p2_final_4" onchange="calcDelta(4)"></td>
+                        <td id="p2_delta_4" style="font-weight:700; text-align:center;">—</td>
+                    </tr>
+                    <tr>
+                        <td>5</td><td>Ammonia Buffer</td>
+                        <td><input type="number" step="0.01" id="p2_init_5" onchange="calcDelta(5)"></td>
+                        <td>5 drops HCl</td>
+                        <td><input type="number" step="0.01" id="p2_final_5" onchange="calcDelta(5)"></td>
+                        <td id="p2_delta_5" style="font-weight:700; text-align:center;">—</td>
+                    </tr>
+                    <tr>
+                        <td>6</td><td>Ammonia Buffer</td>
+                        <td><input type="number" step="0.01" id="p2_init_6" onchange="calcDelta(6)"></td>
+                        <td>5 drops NaOH</td>
+                        <td><input type="number" step="0.01" id="p2_final_6" onchange="calcDelta(6)"></td>
+                        <td id="p2_delta_6" style="font-weight:700; text-align:center;">—</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="bufferVerdict" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 7 — CALCULATORS
+         ===================================================== -->
+    <div id="calculator" class="tab-content">
+        <div class="section">
+            <h2>🧮 pH / pOH Calculator</h2>
+            <div class="calc-panel">
+                <h3>Enter any ONE value — the rest will be calculated:</h3>
+                <div class="calc-row">
+                    <div class="calc-field">
+                        <label>[H⁺] (M)</label>
+                        <input type="text" id="calcH" placeholder="e.g. 0.001 or 1e-5" onkeyup="calcFromH()">
+                    </div>
+                    <div class="calc-field">
+                        <label>pH</label>
+                        <input type="text" id="calcPH" placeholder="e.g. 4.5" onkeyup="calcFromPH()">
+                    </div>
+                    <div class="calc-field">
+                        <label>pOH</label>
+                        <input type="text" id="calcPOH" placeholder="e.g. 9.5" onkeyup="calcFromPOH()">
+                    </div>
+                    <div class="calc-field">
+                        <label>[OH⁻] (M)</label>
+                        <input type="text" id="calcOH" placeholder="e.g. 1e-10" onkeyup="calcFromOH()">
+                    </div>
+                </div>
+                <div class="calc-result" id="calcResult"></div>
+                <button class="btn btn-secondary no-print" onclick="clearCalc()" style="margin-top:10px;">Clear</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Quick Conversions</h2>
+            <table class="data-table">
+                <thead><tr><th>[H⁺] (M)</th><th>pH</th><th>pOH</th><th>[OH⁻] (M)</th><th>Acidic/Basic?</th></tr></thead>
+                <tbody>
+                    <tr><td>1.0 × 10⁻¹</td><td>1.0</td><td>13.0</td><td>1.0 × 10⁻¹³</td><td style="color:var(--danger); font-weight:600;">Strongly Acidic</td></tr>
+                    <tr><td>1.0 × 10⁻³</td><td>3.0</td><td>11.0</td><td>1.0 × 10⁻¹¹</td><td style="color:var(--danger); font-weight:600;">Acidic</td></tr>
+                    <tr><td>1.0 × 10⁻⁵</td><td>5.0</td><td>9.0</td><td>1.0 × 10⁻⁹</td><td style="color:var(--warning); font-weight:600;">Weakly Acidic</td></tr>
+                    <tr><td>1.0 × 10⁻⁷</td><td>7.0</td><td>7.0</td><td>1.0 × 10⁻⁷</td><td style="color:var(--success); font-weight:600;">Neutral</td></tr>
+                    <tr><td>1.0 × 10⁻⁹</td><td>9.0</td><td>5.0</td><td>1.0 × 10⁻⁵</td><td style="color:var(--primary); font-weight:600;">Weakly Basic</td></tr>
+                    <tr><td>1.0 × 10⁻¹¹</td><td>11.0</td><td>3.0</td><td>1.0 × 10⁻³</td><td style="color:var(--primary); font-weight:600;">Basic</td></tr>
+                    <tr><td>1.0 × 10⁻¹³</td><td>13.0</td><td>1.0</td><td>1.0 × 10⁻¹</td><td style="color:var(--accent); font-weight:600;">Strongly Basic</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         TAB 8 — SELF-CHECK QUIZ
+         ===================================================== -->
+    <div id="quiz" class="tab-content">
+        <div class="section">
+            <h2>✅ Self-Check Quiz</h2>
+            <p>Test your understanding before, during, or after the lab. Click an answer to check it — explanations included!</p>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="quizProgress">0 / 10</div>
+            </div>
+
+            <div id="quizContainer"></div>
+
+            <div id="quizScoreboard" class="scoreboard" style="display:none;">
+                <div class="big" id="quizFinalScore">0/10</div>
+                <div class="label">Your Score</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="footer">
+        <strong>CHM125L 2026 </strong> — Interactive Learning Guide<br>
+        <em>"Understanding pH isn't about memorizing numbers; it's about understanding the balance nature maintains."</em>
+    </div>
+</div>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+// ==================== TAB NAVIGATION ====================
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==================== pH SCALE EXPLORER ====================
+const phData = [
+    { ph: 0,  color: '#ff0000', name: 'Battery Acid',           desc: '[H⁺] = 1 M — will destroy tissue on contact' },
+    { ph: 1,  color: '#ff2200', name: '0.1 M HCl / Stomach Acid', desc: '[H⁺] = 0.1 M — your stomach is this acidic!' },
+    { ph: 2,  color: '#ff6600', name: 'Lemon Juice / Vinegar',  desc: '[H⁺] = 0.01 M — sour taste = acid' },
+    { ph: 3,  color: '#ff9900', name: 'Acetic Acid (0.1 M)',    desc: 'Weak acid — only partially dissociated' },
+    { ph: 4,  color: '#cccc00', name: 'Tomato Juice / Acid Rain', desc: '[H⁺] = 10⁻⁴ M' },
+    { ph: 5,  color: '#99cc00', name: 'Coffee / NH₄Cl soln',    desc: 'Conjugate acid of weak base → slightly acidic' },
+    { ph: 6,  color: '#66cc33', name: 'Milk / Saliva',          desc: 'Slightly acidic — close to neutral' },
+    { ph: 7,  color: '#33cc66', name: 'Pure Water',             desc: 'Neutral — [H⁺] = [OH⁻] = 1.0 × 10⁻⁷ M' },
+    { ph: 8,  color: '#00ccaa', name: 'Seawater / Eggs / Sodium Acetate', desc: 'Conjugate base of weak acid → slightly basic' },
+    { ph: 9,  color: '#0099cc', name: 'Baking Soda / NH₃ soln', desc: 'Weak base — partially accepts H⁺' },
+    { ph: 10, color: '#0066cc', name: 'Milk of Magnesia',       desc: '[OH⁻] = 10⁻⁴ M' },
+    { ph: 11, color: '#3333cc', name: 'Ammonia (conc.)',         desc: 'Getting strongly basic' },
+    { ph: 12, color: '#6600cc', name: 'Bleach',                 desc: 'Household bleach — caustic' },
+    { ph: 13, color: '#8800aa', name: '0.1 M NaOH',            desc: '[OH⁻] = 0.1 M — strong base, fully dissociated' },
+    { ph: 14, color: '#990066', name: '1 M NaOH / Drain Cleaner', desc: '[OH⁻] = 1 M — extremely caustic' }
+];
+
+function buildPhScale() {
+    const scale = document.getElementById('phScale');
+    const labels = document.getElementById('phLabels');
+    phData.forEach((d, i) => {
+        const seg = document.createElement('div');
+        seg.className = 'ph-segment';
+        seg.style.background = d.color;
+        seg.textContent = d.ph;
+        seg.addEventListener('mouseenter', () => highlightPH(i));
+        seg.addEventListener('click', () => highlightPH(i));
+        scale.appendChild(seg);
+
+        const lbl = document.createElement('span');
+        lbl.textContent = d.ph;
+        labels.appendChild(lbl);
+    });
+    highlightPH(7);
+}
+
+function highlightPH(i) {
+    const d = phData[i];
+    const pct = (i / 14) * 100;
+    document.getElementById('phPointer').style.left = pct + '%';
+    document.getElementById('phPointerVal').textContent = 'pH ' + d.ph;
+    document.getElementById('phPointerVal').style.background = d.color;
+    const info = document.getElementById('phInfoDisplay');
+    info.querySelector('.substance').textContent = d.name;
+    info.querySelector('.substance').style.color = d.color;
+    info.querySelector('.description').textContent = d.desc;
+}
+
+// ==================== BEAKER ROW ====================
+const labSolutions = [
+    { name: 'Bleach',          ph: 12,  color: '#c8e6c9' },
+    { name: 'Vinegar',         ph: 2.5, color: '#fff9c4' },
+    { name: 'Lemon Juice',     ph: 2,   color: '#fff176' },
+    { name: 'Distilled Water', ph: 7,   color: '#bbdefb' },
+    { name: '0.1 M HCl',      ph: 1,   color: '#ffcdd2' },
+    { name: '0.1 M NaOH',     ph: 13,  color: '#e1bee7' },
+    { name: '0.1 M CH₃COOH',  ph: 2.9, color: '#ffe0b2' },
+    { name: '0.1 M CH₃COONa', ph: 8.9, color: '#b2dfdb' },
+    { name: '0.1 M NH₄OH',    ph: 11.1,color: '#c5cae9' },
+    { name: '0.1 M NH₄Cl',    ph: 4.6, color: '#f0f4c3' }
+];
+
+function buildBeakers() {
+    const row = document.getElementById('beakerRow');
+    labSolutions.forEach(s => {
+        const wrap = document.createElement('div');
+        wrap.className = 'beaker-wrap';
+        wrap.innerHTML = `
+            <div class="beaker"><div class="beaker-liquid" style="background:${s.color};"></div></div>
+            <div class="beaker-label">${s.name}</div>
+            <div class="beaker-ph">pH ≈ ${s.ph}</div>
+        `;
+        row.appendChild(wrap);
+    });
+}
+
+// ==================== CONJUGATE PAIR MATCHING ====================
+const pairs = [
+    { acid: 'HCl',       base: 'Cl⁻' },
+    { acid: 'CH₃COOH',   base: 'CH₃COO⁻' },
+    { acid: 'NH₄⁺',      base: 'NH₃' },
+    { acid: 'H₂O',       base: 'OH⁻' },
+    { acid: 'H₃O⁺',      base: 'H₂O' }
+];
+let matchState = { selected: null, matched: 0 };
+
+function buildMatch() {
+    const game = document.getElementById('matchGame');
+    game.innerHTML = '';
+    // shuffle acids and bases separately
+    const acids = pairs.map((p,i) => ({ text: p.acid, idx: i, type: 'acid' }));
+    const bases = pairs.map((p,i) => ({ text: p.base, idx: i, type: 'base' }));
+    shuffle(acids); shuffle(bases);
+    const all = [...acids, ...bases];
+    shuffle(all);
+    all.forEach(item => {
+        const tile = document.createElement('div');
+        tile.className = 'match-tile';
+        tile.textContent = item.text;
+        tile.dataset.idx = item.idx;
+        tile.dataset.type = item.type;
+        tile.addEventListener('click', () => handleMatch(tile));
+        game.appendChild(tile);
+    });
+    matchState = { selected: null, matched: 0 };
+    document.getElementById('matchScore').textContent = 'Pairs matched: 0 / 5';
+}
+function shuffle(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i+1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } }
+
+function handleMatch(tile) {
+    if (tile.classList.contains('matched')) return;
+    if (!matchState.selected) {
+        matchState.selected = tile;
+        tile.classList.add('selected');
+    } else {
+        const a = matchState.selected;
+        if (a === tile) { a.classList.remove('selected'); matchState.selected = null; return; }
+        if (a.dataset.idx === tile.dataset.idx && a.dataset.type !== tile.dataset.type) {
+            a.classList.remove('selected');
+            a.classList.add('matched');
+            tile.classList.add('matched');
+            matchState.matched++;
+            document.getElementById('matchScore').textContent = `Pairs matched: ${matchState.matched} / 5`;
+            if (matchState.matched === 5) {
+                document.getElementById('matchScore').innerHTML = '🎉 All pairs matched! Great job!';
+                document.getElementById('matchScore').className = 'success-box';
+                document.getElementById('matchScore').style.textAlign = 'center';
+                document.getElementById('matchScore').style.fontWeight = '700';
+            }
+        } else {
+            a.classList.remove('selected');
+            a.classList.add('wrong');
+            tile.classList.add('wrong');
+            setTimeout(() => { a.classList.remove('wrong'); tile.classList.remove('wrong'); }, 500);
+        }
+        matchState.selected = null;
+    }
+}
+function resetMatch() { buildMatch(); }
+
+// ==================== DISSOCIATION VISUALIZER ====================
+function showDissociation(type) {
+    const viz = document.getElementById('dissociationViz');
+    if (type === 'strong') {
+        viz.innerHTML = `
+            <div class="card" style="border-top:4px solid var(--danger);">
+                <h3 style="color:var(--danger);">HCl in Water — 100% Dissociation</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; margin:16px 0;">
+                    ${Array(20).fill(0).map(() => `<span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:var(--danger-light);border:2px solid var(--danger);line-height:36px;text-align:center;font-size:.7em;font-weight:700;color:var(--danger);">H⁺</span>`).join('')}
+                    ${Array(20).fill(0).map(() => `<span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:#e8f5e9;border:2px solid #4caf50;line-height:36px;text-align:center;font-size:.65em;font-weight:700;color:#2e7d32;">Cl⁻</span>`).join('')}
+                </div>
+                <p style="margin-top:12px;"><strong>Every HCl molecule</strong> has broken apart into H⁺ and Cl⁻. Zero intact HCl molecules remain. That's why [H⁺] = [HCl] for strong acids.</p>
+            </div>`;
+    } else {
+        viz.innerHTML = `
+            <div class="card" style="border-top:4px solid var(--warning);">
+                <h3 style="color:var(--warning);">CH₃COOH in Water — Only ~1.3% Dissociation</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:6px; margin:16px 0;">
+                    ${Array(38).fill(0).map(() => `<span style="display:inline-block;width:36px;height:36px;border-radius:18px 8px 18px 8px;background:var(--warning-light);border:2px solid var(--warning);line-height:36px;text-align:center;font-size:.5em;font-weight:700;color:var(--warning);">HA</span>`).join('')}
+                    <span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:var(--danger-light);border:2px solid var(--danger);line-height:36px;text-align:center;font-size:.7em;font-weight:700;color:var(--danger);">H⁺</span>
+                    <span style="display:inline-block;width:36px;height:36px;border-radius:50%;background:#e8f5e9;border:2px solid #4caf50;line-height:36px;text-align:center;font-size:.5em;font-weight:700;color:#2e7d32;">A⁻</span>
+                </div>
+                <p style="margin-top:12px;"><strong>Almost all</strong> acetic acid molecules remain intact (HA). Only ~1 out of 40 have dissociated into H⁺ and CH₃COO⁻ (A⁻). That's why 0.1 M acetic acid has pH ≈ 2.9, not pH 1.</p>
+            </div>`;
+    }
+}
+
+// ==================== BUFFER SIMULATOR ====================
+function updateBufferSim() {
+    const type = document.getElementById('bufferType').value;
+    const hclDrops = parseInt(document.getElementById('dropsHCl').value) || 0;
+    const naohDrops = parseInt(document.getElementById('dropsNaOH').value) || 0;
+
+    let initPH, finalPH;
+    // Simplified model for educational purposes
+    if (type === 'water') {
+        initPH = 7.00;
+        // Water has no buffer capacity — each drop of HCl drops pH significantly
+        const netAcid = hclDrops - naohDrops;
+        if (netAcid > 0) {
+            finalPH = Math.max(1.0, 7.0 - netAcid * 0.8);
+        } else if (netAcid < 0) {
+            finalPH = Math.min(13.0, 7.0 - netAcid * 0.8);
+        } else {
+            finalPH = 7.0;
+        }
+    } else if (type === 'acetate') {
+        initPH = 4.74;
+        const netAcid = hclDrops - naohDrops;
+        // Buffer resists: ~0.04 pH per drop
+        finalPH = initPH - netAcid * 0.04;
+        finalPH = Math.max(2.5, Math.min(7.0, finalPH));
+    } else { // ammonia
+        initPH = 9.25;
+        const netAcid = hclDrops - naohDrops;
+        finalPH = initPH - netAcid * 0.04;
+        finalPH = Math.max(7.0, Math.min(12.0, finalPH));
+    }
+
+    document.getElementById('initialPH').textContent = initPH.toFixed(2);
+    document.getElementById('finalPH').textContent = finalPH.toFixed(2);
+
+    // Color the numbers
+    const iPH = document.getElementById('initialPH');
+    const fPH = document.getElementById('finalPH');
+    iPH.style.color = phNumColor(initPH);
+    fPH.style.color = phNumColor(finalPH);
+
+    // Position markers
+    document.getElementById('initMarker').style.left = (initPH / 14 * 100) + '%';
+    document.getElementById('finalMarker').style.left = (finalPH / 14 * 100) + '%';
+
+    // Delta display
+    const delta = Math.abs(finalPH - initPH);
+    const dd = document.getElementById('deltaDisplay');
+    if (hclDrops === 0 && naohDrops === 0) {
+        dd.textContent = 'ΔpH = 0.00 — No change yet. Try adding some drops!';
+        dd.style.background = 'var(--success-light)';
+        dd.style.color = 'var(--success)';
+    } else if (delta < 0.5) {
+        dd.textContent = `ΔpH = ${delta.toFixed(2)} — Buffer is working! Minimal change. ✅`;
+        dd.style.background = 'var(--success-light)';
+        dd.style.color = 'var(--success)';
+    } else if (delta < 2) {
+        dd.textContent = `ΔpH = ${delta.toFixed(2)} — Moderate change.`;
+        dd.style.background = 'var(--warning-light)';
+        dd.style.color = 'var(--warning)';
+    } else {
+        dd.textContent = `ΔpH = ${delta.toFixed(2)} — Huge swing! No buffer protection. ⚠️`;
+        dd.style.background = 'var(--danger-light)';
+        dd.style.color = 'var(--danger)';
+    }
+}
+
+function phNumColor(ph) {
+    if (ph < 4) return '#dc2626';
+    if (ph < 6) return '#d97706';
+    if (ph < 8) return '#059669';
+    if (ph < 10) return '#2563eb';
+    return '#7c3aed';
+}
+
+// ==================== PART 1 DATA TABLE ====================
+function buildPart1() {
+    const body = document.getElementById('part1Body');
+    const solutions = [
+        'Bleach','Vinegar','Lemon Juice','Distilled Water','0.1 M HCl',
+        '0.1 M NaOH','0.1 M Acetic Acid (CH₃COOH)','0.1 M Sodium Acetate (CH₃COONa)',
+        '0.1 M Ammonia (NH₄OH)','0.1 M Ammonium Chloride (NH₄Cl)'
+    ];
+    solutions.forEach((s, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${s}</td>
+            <td><input type="number" step="0.1" id="p1_ph_${i}"></td>
+            <td>
+                <select id="p1_class_${i}" style="width:100%;padding:8px;border:2px solid var(--neutral-300);border-radius:6px;">
+                    <option value="">— select —</option>
+                    <option value="acidic">Acidic</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="basic">Basic</option>
+                </select>
+            </td>
+            <td>
+                <select id="p1_sw_${i}" style="width:100%;padding:8px;border:2px solid var(--neutral-300);border-radius:6px;">
+                    <option value="">— select —</option>
+                    <option value="strong">Strong</option>
+                    <option value="weak">Weak</option>
+                    <option value="na">N/A</option>
+                </select>
+            </td>
+        `;
+        body.appendChild(tr);
+    });
+}
+
+// ==================== PART 2 DELTA CALCULATIONS ====================
+function calcDelta(n) {
+    const init = parseFloat(document.getElementById(`p2_init_${n}`).value);
+    const fin  = parseFloat(document.getElementById(`p2_final_${n}`).value);
+    const cell = document.getElementById(`p2_delta_${n}`);
+    if (!isNaN(init) && !isNaN(fin)) {
+        const d = fin - init;
+        cell.textContent = (d >= 0 ? '+' : '') + d.toFixed(2);
+        cell.style.color = Math.abs(d) > 1 ? 'var(--danger)' : 'var(--success)';
+
+        // Check if all 6 deltas are filled
+        checkBufferVerdict();
+    }
+}
+
+function checkBufferVerdict() {
+    const deltas = [];
+    for (let i = 1; i <= 6; i++) {
+        const cell = document.getElementById(`p2_delta_${i}`);
+        if (cell.textContent === '—') return;
+        deltas.push(parseFloat(cell.textContent));
+    }
+    const verdict = document.getElementById('bufferVerdict');
+    const waterAvg = (Math.abs(deltas[0]) + Math.abs(deltas[1])) / 2;
+    const bufferAvg = (Math.abs(deltas[2]) + Math.abs(deltas[3]) + Math.abs(deltas[4]) + Math.abs(deltas[5])) / 4;
+    verdict.style.display = 'block';
+    if (bufferAvg < waterAvg) {
+        verdict.className = 'success-box';
+        verdict.innerHTML = `<strong>✅ Your data confirms it!</strong> Average |ΔpH| for water = ${waterAvg.toFixed(2)}, for buffers = ${bufferAvg.toFixed(2)}. The buffers resisted pH change much better than plain water.`;
+    } else {
+        verdict.className = 'warning-box';
+        verdict.innerHTML = `<strong>🤔 Unexpected result.</strong> Average |ΔpH| for water = ${waterAvg.toFixed(2)}, for buffers = ${bufferAvg.toFixed(2)}. Double-check your measurements — buffers should show smaller pH changes.`;
+    }
+}
+
+// ==================== pH CALCULATOR ====================
+function calcFromH() {
+    const v = parseFloat(document.getElementById('calcH').value);
+    if (isNaN(v) || v <= 0) return;
+    const pH = -Math.log10(v);
+    const pOH = 14 - pH;
+    const OH = Math.pow(10, -pOH);
+    showCalcResult(v, pH, pOH, OH);
+}
+function calcFromPH() {
+    const pH = parseFloat(document.getElementById('calcPH').value);
+    if (isNaN(pH)) return;
+    const H = Math.pow(10, -pH);
+    const pOH = 14 - pH;
+    const OH = Math.pow(10, -pOH);
+    showCalcResult(H, pH, pOH, OH);
+}
+function calcFromPOH() {
+    const pOH = parseFloat(document.getElementById('calcPOH').value);
+    if (isNaN(pOH)) return;
+    const pH = 14 - pOH;
+    const H = Math.pow(10, -pH);
+    const OH = Math.pow(10, -pOH);
+    showCalcResult(H, pH, pOH, OH);
+}
+function calcFromOH() {
+    const v = parseFloat(document.getElementById('calcOH').value);
+    if (isNaN(v) || v <= 0) return;
+    const pOH = -Math.log10(v);
+    const pH = 14 - pOH;
+    const H = Math.pow(10, -pH);
+    showCalcResult(H, pH, pOH, v);
+}
+function showCalcResult(H, pH, pOH, OH) {
+    const r = document.getElementById('calcResult');
+    r.style.display = 'block';
+    const acidBasic = pH < 6.99 ? '🔴 Acidic' : pH > 7.01 ? '🔵 Basic' : '🟢 Neutral';
+    r.innerHTML = `
+        <strong>[H⁺]</strong> = ${H.toExponential(3)} M &nbsp;|&nbsp;
+        <strong>pH</strong> = ${pH.toFixed(2)} &nbsp;|&nbsp;
+        <strong>pOH</strong> = ${pOH.toFixed(2)} &nbsp;|&nbsp;
+        <strong>[OH⁻]</strong> = ${OH.toExponential(3)} M &nbsp;|&nbsp;
+        ${acidBasic}
+    `;
+}
+function clearCalc() {
+    ['calcH','calcPH','calcPOH','calcOH'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('calcResult').style.display = 'none';
+}
+
+// ==================== QUIZ ====================
+const quizData = [
+    {
+        q: 'What is the pH of a 0.01 M HCl solution?',
+        opts: ['1', '2', '7', '12'],
+        ans: 1,
+        explain: 'HCl is a strong acid — it dissociates 100%. So [H⁺] = 0.01 = 10⁻² M. pH = −log(10⁻²) = 2.'
+    },
+    {
+        q: 'Which of the following is a WEAK acid?',
+        opts: ['HCl', 'HNO₃', 'CH₃COOH', 'H₂SO₄'],
+        ans: 2,
+        explain: 'Acetic acid (CH₃COOH) only partially dissociates in water. HCl, HNO₃, and H₂SO₄ are all strong acids that dissociate 100%.'
+    },
+    {
+        q: 'A solution with pH = 9 has what [H⁺] concentration?',
+        opts: ['1.0 × 10⁻⁹ M', '9 M', '1.0 × 10⁻⁵ M', '1.0 × 10⁻⁷ M'],
+        ans: 0,
+        explain: 'pH = −log[H⁺], so [H⁺] = 10⁻ᵖᴴ = 10⁻⁹ = 1.0 × 10⁻⁹ M.'
+    },
+    {
+        q: 'What is the conjugate base of NH₄⁺?',
+        opts: ['NH₃', 'OH⁻', 'NH₄OH', 'N₂H₄'],
+        ans: 0,
+        explain: 'A conjugate base is formed by removing one H⁺ from the acid. NH₄⁺ minus H⁺ = NH₃.'
+    },
+    {
+        q: 'Why does 0.1 M sodium acetate (CH₃COONa) have a pH above 7?',
+        opts: [
+            'It\'s a strong base',
+            'The acetate ion accepts H⁺ from water, producing OH⁻',
+            'Sodium is basic',
+            'It doesn\'t fully dissolve'
+        ],
+        ans: 1,
+        explain: 'CH₃COO⁻ is the conjugate base of a weak acid. It\'s reactive enough to accept H⁺ from water: CH₃COO⁻ + H₂O ⇌ CH₃COOH + OH⁻. The produced OH⁻ makes the solution basic.'
+    },
+    {
+        q: 'What two components make up an acetate buffer?',
+        opts: [
+            'HCl and NaOH',
+            'CH₃COOH and CH₃COONa',
+            'NH₃ and NaOH',
+            'H₂O and NaCl'
+        ],
+        ans: 1,
+        explain: 'A buffer requires a weak acid and its conjugate base. Acetic acid (CH₃COOH) is the weak acid, and sodium acetate (CH₃COONa → CH₃COO⁻) provides the conjugate base.'
+    },
+    {
+        q: 'You add 5 drops of HCl to water and to an acetate buffer. What happens?',
+        opts: [
+            'Both show large pH drops',
+            'Water\'s pH drops dramatically; buffer\'s pH barely changes',
+            'Buffer\'s pH drops more than water\'s',
+            'Neither shows any change'
+        ],
+        ans: 1,
+        explain: 'Water has no buffer capacity — nothing to neutralize the added H⁺, so pH plummets. The acetate buffer has CH₃COO⁻ waiting to react: CH₃COO⁻ + H⁺ → CH₃COOH. The H⁺ is consumed, so pH barely changes.'
+    },
+    {
+        q: 'If pH + pOH = 14, what is the pOH of a solution with pH 3?',
+        opts: ['3', '7', '11', '14'],
+        ans: 2,
+        explain: 'pOH = 14 − pH = 14 − 3 = 11.'
+    },
+    {
+        q: 'A solution with pH 4 is how many times more acidic than a solution with pH 6?',
+        opts: ['2 times', '20 times', '100 times', '10,000 times'],
+        ans: 2,
+        explain: 'Each pH unit represents a 10× change in [H⁺]. A difference of 2 pH units = 10² = 100 times more acidic. This logarithmic relationship is critical to understand!'
+    },
+    {
+        q: 'Your blood&#39;s pH is maintained at 7.4 by a buffer system. What would happen if your blood had NO buffer?',
+        opts: [
+            'Nothing — pH would stay the same',
+            'Drinking a soda would cause blood pH to swing dangerously',
+            'Blood would become more basic',
+            'Only exercise would change the pH'
+        ],
+        ans: 1,
+        explain: 'Without the carbonate buffer system (H₂CO₃ / HCO₃⁻), even small metabolic acid production or dietary acid intake would cause life-threatening pH swings. Buffers are literally keeping you alive!'
+    }
+];
+
+let quizAnswered = 0;
+let quizCorrect = 0;
+
+function buildQuiz() {
+    const container = document.getElementById('quizContainer');
+    quizData.forEach((q, qi) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-question';
+        div.id = `qq_${qi}`;
+        let optsHTML = q.opts.map((o, oi) => `
+            <div class="quiz-option" onclick="checkQuiz(${qi}, ${oi})" id="qo_${qi}_${oi}">
+                <strong>${String.fromCharCode(65+oi)}.</strong> ${o}
+            </div>
+        `).join('');
+        div.innerHTML = `
+            <h4>Question ${qi+1} of ${quizData.length}</h4>
+            <p style="margin-bottom:12px; font-size:1.05em;">${q.q}</p>
+            <div class="quiz-options">${optsHTML}</div>
+            <div class="quiz-feedback" id="qf_${qi}"></div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function checkQuiz(qi, oi) {
+    const q = quizData[qi];
+    // Prevent double-answer
+    const opts = document.querySelectorAll(`#qq_${qi} .quiz-option`);
+    if (opts[0].classList.contains('disabled')) return;
+
+    opts.forEach((o, i) => {
+        o.classList.add('disabled');
+        if (i === q.ans) o.classList.add('correct');
+        if (i === oi && i !== q.ans) o.classList.add('incorrect');
+    });
+
+    const fb = document.getElementById(`qf_${qi}`);
+    fb.style.display = 'block';
+    if (oi === q.ans) {
+        fb.style.background = 'var(--success-light)';
+        fb.style.borderLeft = '4px solid var(--success)';
+        fb.innerHTML = `<strong>✅ Correct!</strong> ${q.explain}`;
+        quizCorrect++;
+    } else {
+        fb.style.background = 'var(--danger-light)';
+        fb.style.borderLeft = '4px solid var(--danger)';
+        fb.innerHTML = `<strong>✗ Not quite.</strong> The correct answer is <strong>${String.fromCharCode(65+q.ans)}</strong>. ${q.explain}`;
+    }
+    quizAnswered++;
+
+    // Update progress
+    const pct = (quizAnswered / quizData.length) * 100;
+    const fill = document.getElementById('quizProgress');
+    fill.style.width = pct + '%';
+    fill.textContent = `${quizAnswered} / ${quizData.length}`;
+
+    // Show final score
+    if (quizAnswered === quizData.length) {
+        const sb = document.getElementById('quizScoreboard');
+        sb.style.display = 'block';
+        document.getElementById('quizFinalScore').textContent = `${quizCorrect} / ${quizData.length}`;
+        sb.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', () => {
+    buildPhScale();
+    buildBeakers();
+    buildMatch();
+    buildPart1();
+    buildQuiz();
+    updateBufferSim();
+});
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="Lab2_FPD_Quiz" title="Lab 2: Freezing Point Depression Quiz">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>cc_maxattempts</fieldlabel>
+        <fieldentry>1</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    <section ident="root_section">
+
+      <!-- QUESTION 1: Tricky "Select All" - The i value trap -->
+      <item ident="q1" title="Q1: van't Hoff Factor">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p><strong>Select ALL statements that are TRUE about the van't Hoff factor (i):</strong></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[The van't Hoff factor for NaCl is exactly 2.00 in all real solutions]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[A substance with i = 3 will always cause more freezing point depression than a substance with i = 2 at the same molality]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[The theoretical van't Hoff factor assumes complete dissociation of ionic compounds]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[Glucose has i = 1 because it is a weak electrolyte]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[In concentrated solutions, ion pairing can cause the measured i value to be less than the theoretical i value]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">c</varequal>
+                <varequal respident="response1">e</varequal>
+                <not><varequal respident="response1">a</varequal></not>
+                <not><varequal respident="response1">b</varequal></not>
+                <not><varequal respident="response1">d</varequal></not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 2: Tricky Calculation - Common mistake with units -->
+      <item ident="q2" title="Q2: Freezing Point Calculation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p>A student dissolves 11.7 g of NaCl (molar mass = 58.5 g/mol) in 500 g of water. The freezing point depression constant for water is 1.86 °C/m. What is the <strong>freezing point</strong> of this solution?</p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[-1.49°C]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[-0.74°C]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[1.49°C]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[-2.98°C]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[-1.86°C]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar><varequal respident="response1">a</varequal></conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 3: Tricky Select All - Road salt misconceptions -->
+      <item ident="q3" title="Q3: Road Salt Applications">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p><strong>Select ALL that are TRUE about road salt and freezing point depression:</strong></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[CaCl₂ is more effective per mole than NaCl because it produces more ions when dissolved]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Road salt works by generating heat that melts the ice]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[At -25°C, rock salt (NaCl) is ineffective because the temperature is below its eutectic point]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[Adding more salt always results in a lower freezing point, with no limit]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[The dissolution of CaCl₂ is exothermic, which provides an additional initial melting effect]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">a</varequal>
+                <varequal respident="response1">c</varequal>
+                <varequal respident="response1">e</varequal>
+                <not><varequal respident="response1">b</varequal></not>
+                <not><varequal respident="response1">d</varequal></not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 4: Tricky MC - Molality vs Molarity trap -->
+      <item ident="q4" title="Q4: Molality vs Molarity">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p>Freezing point depression calculations use molality (m) instead of molarity (M) because:</p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[Molality is easier to calculate than molarity]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Molality does not change with temperature, while molarity does]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[Molality accounts for the volume of solute, while molarity does not]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[Molality is always numerically larger than molarity]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[Molality measures the total number of particles, including ions]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar><varequal respident="response1">b</varequal></conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 5: Tricky Select All - Cooling curve interpretation -->
+      <item ident="q5" title="Q5: Cooling Curve Analysis">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p><strong>Select ALL that are TRUE about cooling curves in freezing point experiments:</strong></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[The plateau region represents where liquid and solid exist in equilibrium]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Supercooling causes the measured freezing point to be higher than the actual freezing point]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[The lowest temperature reached on a cooling curve is always the freezing point]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[During the plateau, the temperature remains constant because energy is being released as heat of fusion]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[A solution will have a shorter plateau than pure water at the same volume]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">a</varequal>
+                <varequal respident="response1">d</varequal>
+                <not><varequal respident="response1">b</varequal></not>
+                <not><varequal respident="response1">c</varequal></not>
+                <not><varequal respident="response1">e</varequal></not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 6: Tricky MC - Comparative reasoning -->
+      <item ident="q6" title="Q6: Comparing Solutions">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p>Three solutions are prepared:<br>
+• Solution A: 1.0 m glucose (C₆H₁₂O₆)<br>
+• Solution B: 0.5 m NaCl<br>
+• Solution C: 0.4 m CaCl₂<br><br>
+Which solution has the <strong>lowest</strong> freezing point?</p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[Solution A (glucose)]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Solution B (NaCl)]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[Solution C (CaCl₂)]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[Solutions A and C have the same lowest freezing point]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[All three solutions have the same freezing point]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar><varequal respident="response1">c</varequal></conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 7: Tricky Select All - The "always/never" trap -->
+      <item ident="q7" title="Q7: Electrolyte Behavior">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p><strong>Select ALL that are TRUE about electrolytes and freezing point depression:</strong></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[Strong electrolytes always have higher van't Hoff factors than weak electrolytes]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Acetic acid (CH₃COOH) has an i value between 1 and 2 because it partially dissociates]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[Non-electrolytes cannot cause freezing point depression]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[The experimental van't Hoff factor for 1.0 m NaCl is typically less than 2.0 due to ion pairing]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[K₂SO₄ has a theoretical van't Hoff factor of 3]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">b</varequal>
+                <varequal respident="response1">d</varequal>
+                <varequal respident="response1">e</varequal>
+                <not><varequal respident="response1">a</varequal></not>
+                <not><varequal respident="response1">c</varequal></not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 8: Tricky MC - Word problem with misdirection -->
+      <item ident="q8" title="Q8: Practical Application">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p>A city uses rock salt (NaCl) at $60/ton. Calcium chloride (CaCl₂) costs $300/ton but is 1.5× more effective per kilogram. If the goal is to lower the freezing point to -10°C at minimum cost, which statement is correct?</p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[NaCl is always more cost-effective because it's cheaper per ton]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[CaCl₂ is always more cost-effective because you need less of it]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[NaCl is more cost-effective for this scenario because the cost ratio exceeds the effectiveness ratio]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[CaCl₂ is more cost-effective for this scenario because the effectiveness ratio exceeds the cost ratio]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[Neither can achieve -10°C so the comparison is irrelevant]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar><varequal respident="response1">c</varequal></conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 9: Tricky Select All - Lab procedure nuances -->
+      <item ident="q9" title="Q9: Experimental Errors">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p><strong>Select ALL that would cause your EXPERIMENTAL freezing point to be LOWER (more negative) than the THEORETICAL value:</strong></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[Some of the salt did not fully dissolve before cooling began]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[The solution was supercooled before ice crystals formed]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[Some water evaporated while preparing the solution]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[The thermometer was reading 0.5°C too high (positive calibration error)]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[Vigorous stirring introduced heat from friction]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">b</varequal>
+                <varequal respident="response1">c</varequal>
+                <not><varequal respident="response1">a</varequal></not>
+                <not><varequal respident="response1">d</varequal></not>
+                <not><varequal respident="response1">e</varequal></not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 10: Tricky MC - Conceptual understanding -->
+      <item ident="q10" title="Q10: Molecular Explanation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p>At the molecular level, freezing point depression occurs because:</p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[Solute particles absorb heat energy that would otherwise be released during freezing]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Solute particles interfere with the ability of water molecules to form an organized crystal lattice]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[Solute particles lower the kinetic energy of water molecules]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[Solute particles form bonds with water molecules that prevent hydrogen bonding]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[Solute particles increase the density of the solution, making ice formation thermodynamically unfavorable]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar><varequal respident="response1">b</varequal></conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 11: Tricky Select All - Healthcare application -->
+      <item ident="q11" title="Q11: Medical Applications">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_answers_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p><strong>Select ALL that are TRUE about freezing point depression in medical/biological contexts:</strong></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Multiple">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[IV solutions are isotonic to prevent freezing point depression in blood cells]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[Cryoprotectants like glycerol prevent cell damage during freezing by reducing ice crystal formation]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[Blood plasma has a lower freezing point than pure water due to dissolved solutes]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[Antifreeze proteins in arctic fish work by the same mechanism as salt on roads]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[A patient with hyperglycemia (high blood sugar) would have blood with a slightly lower freezing point than normal]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <and>
+                <varequal respident="response1">b</varequal>
+                <varequal respident="response1">c</varequal>
+                <varequal respident="response1">e</varequal>
+                <not><varequal respident="response1">a</varequal></not>
+                <not><varequal respident="response1">d</varequal></not>
+              </and>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 12: Tricky MC - Reverse calculation -->
+      <item ident="q12" title="Q12: Unknown Identification">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html"><![CDATA[<p>A student dissolves 4.0 g of an unknown ionic compound in 100 g of water and measures a freezing point of -2.79°C. If the compound has a molar mass of approximately 75 g/mol, what is the most likely identity of the compound?</p><p><em>k<sub>f</sub> for water = 1.86 °C/m</em></p>]]></mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="a"><material><mattext texttype="text/html"><![CDATA[NaCl (MW = 58.5, i = 2)]]></mattext></material></response_label>
+              <response_label ident="b"><material><mattext texttype="text/html"><![CDATA[KCl (MW = 74.5, i = 2)]]></mattext></material></response_label>
+              <response_label ident="c"><material><mattext texttype="text/html"><![CDATA[CaCl₂ (MW = 111, i = 3)]]></mattext></material></response_label>
+              <response_label ident="d"><material><mattext texttype="text/html"><![CDATA[MgCl₂ (MW = 95.2, i = 3)]]></mattext></material></response_label>
+              <response_label ident="e"><material><mattext texttype="text/html"><![CDATA[C₆H₁₂O₆ glucose (MW = 180, i = 1)]]></mattext></material></response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/></outcomes>
+          <respcondition continue="No">
+            <conditionvar><varequal respident="response1">b</varequal></conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+    </section>
+  </assessment>
+</questestinterop>

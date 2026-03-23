@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3: Heat of Fusion of Water - Interactive Learning Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #7c3aed;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-bg: #1e293b;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--light-bg);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: var(--dark-bg);
+            overflow-x: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+            font-size: 1em;
+            min-width: 150px;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--success-color);
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        /* Interactive Elements */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #6d28d9;
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Results Display */
+        .result-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 1.1em;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* Animation Canvas */
+        .animation-container {
+            background: linear-gradient(to bottom, #e0f2fe 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            min-height: 400px;
+            position: relative;
+            border: 2px solid var(--border-color);
+        }
+
+        #animationCanvas {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+        }
+
+        /* Progress Tracker */
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            position: relative;
+        }
+
+        .progress-step::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: var(--border-color);
+            z-index: -1;
+        }
+
+        .progress-step:last-child::after {
+            display: none;
+        }
+
+        .progress-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--border-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .progress-step.completed .progress-circle {
+            background: var(--success-color);
+        }
+
+        .progress-step.active .progress-circle {
+            background: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Quiz Section */
+        .quiz-question {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+        }
+
+        .quiz-options {
+            margin-top: 15px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            background: #f1f5f9;
+            border-color: var(--primary-color);
+        }
+
+        .quiz-option.correct {
+            background: #d1fae5;
+            border-color: var(--success-color);
+        }
+
+        .quiz-option.incorrect {
+            background: #fee2e2;
+            border-color: var(--danger-color);
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: var(--dark-bg);
+            color: white;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .data-table input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Molecular Animation */
+        .molecule {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Graph Container */
+        .graph-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-bottom: 2px dotted var(--primary-color);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 300px;
+            background-color: #1e293b;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Responsive Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .code-block code {
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Interactive Simulation Controls */
+        .simulation-controls {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .slider-container {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: var(--border-color);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Print Styles */
+        @media print {
+            .nav-tabs, .simulation-controls, button {
+                display: none;
+            }
+            .content-section {
+                display: block !important;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            .content-section {
+                padding: 20px;
+            }
+            .nav-tabs {
+                font-size: 0.9em;
+            }
+            .progress-tracker {
+                flex-direction: column;
+            }
+            .progress-step::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚗ Lab 3: Heat of Fusion of Water</h1>
+            <p class="subtitle">"Why Does Ice Take FOREVER to Melt in Your Drink?" Edition</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Interactive Learning Guide & Virtual Lab Assistant</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('overview')">📖 Overview</button>
+            <button class="nav-tab" onclick="showSection('theory')">⚛ Theory</button>
+            <button class="nav-tab" onclick="showSection('simulation')">⚗️ Simulation</button>
+            <button class="nav-tab" onclick="showSection('procedure')">📝 Procedure</button>
+            <button class="nav-tab" onclick="showSection('calculator')">🧮 Calculator</button>
+            <button class="nav-tab" onclick="showSection('analysis')">📊 Analysis</button>
+            <button class="nav-tab" onclick="showSection('resources')">🌐 Resources</button>
+        </nav>
+
+        <!-- OVERVIEW SECTION -->
+        <section id="overview" class="content-section active">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">◇</span> The Ice in Your Drink Mystery</h2>
+                <p style="font-size: 1.2em; line-height: 1.8; margin-bottom: 20px;">
+                    You're at a restaurant. You order a glass of water with ice. The waiter brings it — the water is cold, the ice is floating.
+                    <strong>Ten minutes later, the ice is STILL there, barely melted.</strong> But when you spill that same cold water on the table,
+                    it warms up to room temperature in a minute or two.
+                </p>
+                <div style="background: #fef3c7; padding: 25px; border-radius: 12px; border-left: 4px solid var(--warning-color); margin: 20px 0;">
+                    <h4 style="color: #92400e; font-size: 1.3em; margin-bottom: 15px;">Here's the question that should bug you:</h4>
+                    <p style="font-size: 1.15em; line-height: 1.8;">
+                        Why does ice take SO MUCH energy to melt? The water around it is warm. The room is warm. Everything is pushing heat
+                        into that ice cube. Yet it stubbornly sits there, slowly shrinking.
+                    </p>
+                </div>
+                <p style="font-size: 1.15em; line-height: 1.8;">
+                    The answer is <strong style="color: var(--primary-color);">Heat of Fusion (ΔH<sub>f</sub>)</strong> — and it reveals something
+                    beautiful about how nature stores energy in the bonds between molecules.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">🎓</span> This Lab Will Help You Understand:</h3>
+                <div class="grid">
+                    <div class="alert alert-info">
+                        <span style="font-size: 1.5em;">◇</span>
+                        <div>
+                            <strong>Why ice in your drink stays frozen for so long</strong>
+                            <p>Energy sponge effect of phase changes</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <span style="font-size: 1.5em;">Δt</span>
+                        <div>
+                            <strong>Why sweating cools you down</strong>
+                            <p>Phase change = energy absorption from your body</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <span style="font-size: 1.5em;">▲</span>
+                        <div>
+                            <strong>Why icebergs take YEARS to melt</strong>
+                            <p>Even in warmer ocean water</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <span style="font-size: 1.5em;">🍦</span>
+                        <div>
+                            <strong>Why ice cream melts so fast</strong>
+                            <p>Once it starts (energy threshold)</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <span style="font-size: 1.5em;">🏥</span>
+                        <div>
+                            <strong>Why ice packs work for injuries</strong>
+                            <p>Energy absorption from tissue</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <span style="font-size: 1.5em;">🌍</span>
+                        <div>
+                            <strong>Why polar ice melt matters</strong>
+                            <p>MASSIVE implications for climate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">❓</span> What is Heat of Fusion?</h3>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    Imagine holding an ice cube at 0°C. You add energy (heat), and it becomes water... still at 0°C!
+                    Where did that energy go? It broke the hydrogen bonds in the ice crystal structure.
+                    This energy is the <span class="tooltip">Heat of Fusion<span class="tooltiptext">
+                        The amount of energy required to change 1 gram of a substance
+                        from solid to liquid at its melting point without temperature change.
+                    </span></span>.
+                </p>
+
+                <div style="background: linear-gradient(to right, #3b82f6, #8b5cf6); padding: 30px; border-radius: 12px; color: white; text-align: center;">
+                    <h4 style="font-size: 1.5em; margin-bottom: 15px;">Key Concept</h4>
+                    <p style="font-size: 1.3em; line-height: 1.8;">
+                        Heat of Fusion (ΔH<sub>f</sub>) for water = <strong>333.55 J/g</strong> or <strong>6.01 kJ/mol</strong>
+                    </p>
+                    <p style="margin-top: 15px; opacity: 0.9;">
+                        It takes 333.55 Joules to melt just 1 gram of ice at 0°C!
+                    </p>
+                </div>
+
+                <h4 style="margin: 30px 0 15px; color: var(--primary-color); font-size: 1.3em;">Let's Put That In Perspective:</h4>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>What You're Doing</th>
+                            <th>Energy Required</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Heating 1 g of water by 1°C</td>
+                            <td>4.184 J</td>
+                        </tr>
+                        <tr>
+                            <td>Heating 1 g of water from 0°C to 80°C</td>
+                            <td>334.7 J</td>
+                        </tr>
+                        <tr style="background: #fef3c7; font-weight: bold;">
+                            <td><strong>Melting 1 g of ice at 0°C</strong></td>
+                            <td><strong>333.55 J</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="alert alert-warning" style="margin-top: 20px;">
+                    <span style="font-size: 1.5em;">🤯</span>
+                    <div>
+                        <strong>Read that again!</strong> Melting a single gram of ice takes almost the SAME energy as heating that gram of water
+                        from freezing to nearly boiling! That's why ice in your drink lasts so long — it's an energy SPONGE.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">🗺️</span> Your Lab Journey</h3>
+                <div class="progress-tracker">
+                    <div class="progress-step completed">
+                        <div class="progress-circle">✓</div>
+                        <div>Overview</div>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="progress-circle">2</div>
+                        <div>Theory</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">3</div>
+                        <div>Simulation</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">4</div>
+                        <div>Lab Work</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">5</div>
+                        <div>Calculate</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="progress-circle">6</div>
+                        <div>Analyze</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <span style="font-size: 1.5em;">※</span>
+                <div>
+                    <strong>Pro Tip:</strong> This guide is fully interactive! Navigate through tabs, use calculators,
+                    run simulations, and test your knowledge. Take your time with each section!
+                </div>
+            </div>
+        </section>
+
+        <!-- THEORY SECTION -->
+        <section id="theory" class="content-section">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">⚛</span> The Science Behind Heat of Fusion</h2>
+
+                <h3 style="color: var(--primary-color); margin-top: 30px;">Understanding Phase Changes at the Molecular Level</h3>
+                <p style="font-size: 1.1em; line-height: 1.8; margin: 20px 0;">
+                    Water molecules in ice are locked in a rigid crystalline structure held by <strong>hydrogen bonds</strong>.
+                    Each molecule connects to four neighbors in a tetrahedral arrangement. This is why ice is less dense
+                    than liquid water (ice floats!).
+                </p>
+
+                <div class="animation-container">
+                    <h4 style="text-align: center; margin-bottom: 20px; color: var(--primary-color);">
+                        Molecular View: Ice → Water Transition
+                    </h4>
+                    <canvas id="moleculeCanvas"></canvas>
+                    <div class="simulation-controls">
+                        <button onclick="startMoleculeAnimation()">▶️ Start Animation</button>
+                        <button onclick="resetMoleculeAnimation()" class="btn-secondary">🔄 Reset</button>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; font-style: italic;">
+                        Watch molecules transition from ordered (ice) to disordered (liquid) structure
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">Δ</span> Energy During Phase Changes</h3>
+
+                <div class="alert alert-warning">
+                    <span style="font-size: 1.5em;">🤔</span>
+                    <div>
+                        <strong>Critical Question:</strong> Why doesn't temperature change during melting?
+                    </div>
+                </div>
+
+                <p style="font-size: 1.1em; line-height: 1.8; margin: 20px 0;">
+                    This is counterintuitive! When you add heat to ice at 0°C, you expect temperature to rise.
+                    But it doesn't—at least not until ALL the ice melts.
+                </p>
+
+                <div style="background: #f0f9ff; padding: 25px; border-radius: 12px; border-left: 4px solid var(--primary-color); margin: 20px 0;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">The Answer:</h4>
+                    <p style="font-size: 1.05em; line-height: 1.8;">
+                        Temperature measures <strong>average kinetic energy</strong>—how fast molecules move.
+                        During phase changes, added energy doesn't increase molecular motion (kinetic energy).
+                        Instead, it breaks intermolecular bonds (increases potential energy). Only after all bonds
+                        break can added energy increase temperature again.
+                    </p>
+                </div>
+
+                <h4 style="margin: 30px 0 15px; color: var(--primary-color);">Heating Curve for Water</h4>
+                <div class="graph-container">
+                    <canvas id="heatingCurveCanvas" width="800" height="400"></canvas>
+                </div>
+                <p style="text-align: center; font-style: italic; margin-top: 10px;">
+                    Notice flat regions where temperature stays constant during phase transitions
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">⚖️</span> Energy Conservation</h3>
+
+                <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 20px;">
+                    Our experiment relies on: <strong>energy cannot be created or destroyed</strong>.
+                    In our calorimeter, energy lost by warm water equals energy gained by ice.
+                </p>
+
+                <div class="code-block">
+                    <code>
+Conservation of Energy: Q<sub>lost</sub> + Q<sub>gained</sub> = 0<br><br>
+
+Q<sub>ice</sub> = &minus;Q<sub>warm water</sub><br><br>
+
+Breaking it down:<br>
+&#8226; Q<sub>warm water</sub> = m<sub>water</sub> &times; c<sub>water</sub> &times; ΔT<sub>water</sub> &nbsp;(negative, since water cools)<br>
+&#8226; Q<sub>ice</sub> = m<sub>ice</sub> &times; ΔH<sub>f</sub> &nbsp;(positive, since ice gains energy)<br><br>
+
+Therefore:<br>
+m<sub>ice</sub> &times; ΔH<sub>f</sub> = &minus;(m<sub>water</sub> &times; c<sub>water</sub> &times; ΔT<sub>water</sub>)<br><br>
+
+Solving for Heat of Fusion:<br>
+<strong>ΔH<sub>f</sub> = &minus;(m<sub>water</sub> &times; c<sub>water</sub> &times; ΔT<sub>water</sub>) / m<sub>ice</sub></strong>
+                    </code>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">📐</span> Important Equations & Constants</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Meaning</th>
+                            <th>Units</th>
+                            <th>Value/Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ΔH<sub>f</sub></strong></td>
+                            <td>Heat of Fusion</td>
+                            <td>J/g</td>
+                            <td>333.55 J/g (literature value)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>c<sub>water</sub></strong></td>
+                            <td>Specific Heat of Water</td>
+                            <td>J/(g·°C)</td>
+                            <td>4.184 J/(g·°C)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>c<sub>ice</sub></strong></td>
+                            <td>Specific Heat of Ice</td>
+                            <td>J/(g·°C)</td>
+                            <td>2.09 J/(g·°C)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>m</strong></td>
+                            <td>Mass</td>
+                            <td>g</td>
+                            <td>Measured with balance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ΔT</strong></td>
+                            <td>Temperature Change</td>
+                            <td>°C</td>
+                            <td>T<sub>final</sub> &minus; T<sub>initial</sub></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Q</strong></td>
+                            <td>Heat Energy</td>
+                            <td>J (Joules)</td>
+                            <td>Calculated value</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">🎓</span> Real-World Applications</h3>
+                <div class="grid">
+                    <div style="background: #fef3c7; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #92400e;">Δt Climate Science</h4>
+                        <p>Ice caps require enormous energy to melt, buffering Earth's climate</p>
+                    </div>
+                    <div style="background: #dbeafe; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #1e40af;">🏗️ Engineering</h4>
+                        <p>Phase-change materials store/release thermal energy in buildings</p>
+                    </div>
+                    <div style="background: #d1fae5; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #065f46;">🍕 Food Science</h4>
+                        <p>Freezing/thawing calculations for food preservation</p>
+                    </div>
+                    <div style="background: #fce7f3; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #831843;">✻ Weather</h4>
+                        <p>Snowmelt affects flooding and water resources</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULATION SECTION -->
+        <section id="simulation" class="content-section">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">⚗️</span> Virtual Calorimeter Simulation</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    Before performing the actual experiment, practice with a virtual calorimeter!
+                    Adjust parameters and see real-time results.
+                </p>
+
+                <div class="alert alert-info">
+                    <span style="font-size: 1.5em;">※</span>
+                    <div>
+                        <strong>How to use:</strong> Adjust sliders to change water mass, temperature,
+                        and ice mass. The simulation calculates expected results instantly.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">Simulation Controls</h3>
+
+                <div class="input-group">
+                    <label>Mass of Warm Water: <span id="sim-water-mass-display">150</span> g</label>
+                    <input type="range" id="sim-water-mass" min="50" max="300" value="150" step="10" oninput="updateSimulation()">
+                </div>
+
+                <div class="input-group">
+                    <label>Initial Water Temperature: <span id="sim-water-temp-display">45</span> °C</label>
+                    <input type="range" id="sim-water-temp" min="20" max="80" value="45" step="1" oninput="updateSimulation()">
+                </div>
+
+                <div class="input-group">
+                    <label>Mass of Ice: <span id="sim-ice-mass-display">25</span> g</label>
+                    <input type="range" id="sim-ice-mass" min="5" max="100" value="25" step="5" oninput="updateSimulation()">
+                </div>
+
+                <div class="alert alert-warning" id="sim-warning" style="display: none;">
+                    <span style="font-size: 1.5em;">⚠</span>
+                    <div>
+                        <strong>Warning:</strong> <span id="sim-warning-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--primary-color); margin-bottom: 20px;">Simulation Results</h3>
+
+                <div class="grid">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h4>Final Temperature</h4>
+                        <div class="result-value" id="sim-final-temp">--</div>
+                        <p>°C</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h4>Q<sub>ice</sub> (Heat Gained)</h4>
+                        <div class="result-value" id="sim-heat-lost">--</div>
+                        <p>Joules</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h4>Calculated ΔH<sub>f</sub></h4>
+                        <div class="result-value" id="sim-heat-fusion">--</div>
+                        <p>J/g</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h4>Percent Error</h4>
+                        <div class="result-value" id="sim-percent-error">--</div>
+                        <p>%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCEDURE SECTION -->
+        <section id="procedure" class="content-section">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">📝</span> Step-by-Step Laboratory Procedure</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    Follow this detailed procedure to measure the heat of fusion of water experimentally.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">🧪</span> Equipment & Materials</h3>
+                <div class="grid">
+                    <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--primary-color);">
+                        <h4 style="color: var(--primary-color); margin-bottom: 15px;">Equipment:</h4>
+                        <ul style="line-height: 2;">
+                            <li>Calorimeter (aluminum cup + stirrer)</li>
+                            <li>Digital thermometer (±0.1°C)</li>
+                            <li>Balance/scale (±0.1 g)</li>
+                            <li>Beaker for warm water</li>
+                            <li>Paper towels</li>
+                        </ul>
+                    </div>
+                    <div style="background: #fef3c7; padding: 20px; border-radius: 12px; border-left: 4px solid var(--warning-color);">
+                        <h4 style="color: #92400e; margin-bottom: 15px;">Chemicals:</h4>
+                        <ul style="line-height: 2;">
+                            <li>Crushed ice (at 0°C)</li>
+                            <li>Warm water (tap water ~35°C)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">🎯</span> The Big Picture</h3>
+                <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 15px;">
+                    Before starting, understand what you're about to do:
+                </p>
+                <ol style="font-size: 1.05em; line-height: 2; margin-left: 25px;">
+                    <li>Put warm water in a calorimeter</li>
+                    <li>Add ice</li>
+                    <li>Measure how much the water temperature drops</li>
+                    <li>Use the temperature drop to calculate how much energy the ice absorbed</li>
+                    <li>Divide by the mass of ice to get ΔH<sub>f</sub></li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">⚛</span> Detailed Procedure</h3>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #f0f9ff; border-radius: 12px; border-left: 5px solid var(--primary-color);">
+                    <h4 style="color: var(--primary-color); font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--primary-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">1</span>
+                        Measure the Empty Calorimeter
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Place the empty calorimeter (aluminum cup + stirrer) on the balance</li>
+                        <li>Record the mass to 0.01 g precision</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #fef3c7; border-radius: 12px; border-left: 5px solid var(--warning-color);">
+                    <h4 style="color: #92400e; font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--warning-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">2</span>
+                        Add Warm Water
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Fill the calorimeter about halfway with warm water (~10°C above room temperature, around 33°C to 37°C)</li>
+                        <li>Measure the mass of the calorimeter + warm water</li>
+                        <li>Calculate the mass of warm water by subtraction</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #d1fae5; border-radius: 12px; border-left: 5px solid var(--success-color);">
+                    <h4 style="color: #065f46; font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--success-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">3</span>
+                        Record Initial Temperature
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Place the thermometer in the warm water</li>
+                        <li>Stir gently and wait 30 seconds for equilibrium</li>
+                        <li>Record T<sub>i</sub> (initial temperature)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #fee2e2; border-radius: 12px; border-left: 5px solid var(--danger-color);">
+                    <h4 style="color: #991b1b; font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--danger-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">4</span>
+                        Prepare the Ice
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Get crushed ice</li>
+                        <li><strong>IMPORTANT:</strong> Gently pat the ice with a paper towel to remove surface water</li>
+                        <li>Excess liquid water on the ice will introduce error!</li>
+                        <li>Have the ice ready to add quickly</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #f0f9ff; border-radius: 12px; border-left: 5px solid var(--primary-color);">
+                    <h4 style="color: var(--primary-color); font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--primary-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">5</span>
+                        Add Ice
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Add crushed ice to the warm water, a little at a time</li>
+                        <li>Stir CONTINUOUSLY and gently</li>
+                        <li>Keep adding ice until the temperature drops about 20°C from the initial temperature</li>
+                        <li>Stop adding ice</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #fef3c7; border-radius: 12px; border-left: 5px solid var(--warning-color);">
+                    <h4 style="color: #92400e; font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--warning-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">6</span>
+                        Record Final Temperature
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Continue stirring until all ice is melted and temperature stabilizes</li>
+                        <li>Record T<sub>f</sub> (the lowest stable temperature reached)</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #d1fae5; border-radius: 12px; border-left: 5px solid var(--success-color);">
+                    <h4 style="color: #065f46; font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--success-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">7</span>
+                        Measure Final Mass
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Measure the mass of calorimeter + warm water + melted ice</li>
+                        <li>Calculate the mass of ice by subtraction</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 25px; background: #e0e7ff; border-radius: 12px; border-left: 5px solid var(--secondary-color);">
+                    <h4 style="color: #4c1d95; font-size: 1.3em; margin-bottom: 15px;">
+                        <span style="background: var(--secondary-color); color: white; padding: 5px 15px; border-radius: 50%; margin-right: 10px;">8</span>
+                        Repeat for Trial 2
+                    </h4>
+                    <ul style="font-size: 1.05em; line-height: 2; margin-left: 20px;">
+                        <li>Dump the water, dry the calorimeter</li>
+                        <li>Start fresh with new warm water and ice</li>
+                        <li>Follow the same procedure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">📊</span> Your Data Table</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Measurement</th>
+                            <th>Value</th>
+                            <th>Units</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mass of empty calorimeter</td>
+                            <td><input type="number" id="proc-empty-cal" step="0.01"></td>
+                            <td>g</td>
+                        </tr>
+                        <tr>
+                            <td>Mass of calorimeter + warm water</td>
+                            <td><input type="number" id="proc-cal-water" step="0.01"></td>
+                            <td>g</td>
+                        </tr>
+                        <tr>
+                            <td>Mass of warm water (calculated)</td>
+                            <td><span id="proc-water-mass">--</span></td>
+                            <td>g</td>
+                        </tr>
+                        <tr>
+                            <td>Initial temperature (T<sub>i</sub>)</td>
+                            <td><input type="number" id="proc-temp-initial" step="0.1"></td>
+                            <td>°C</td>
+                        </tr>
+                        <tr>
+                            <td>Final temperature (T<sub>f</sub>)</td>
+                            <td><input type="number" id="proc-temp-final" step="0.1"></td>
+                            <td>°C</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature change ΔT (calculated)</td>
+                            <td><span id="proc-delta-t">--</span></td>
+                            <td>°C</td>
+                        </tr>
+                        <tr>
+                            <td>Mass of calorimeter + all water</td>
+                            <td><input type="number" id="proc-cal-final" step="0.01"></td>
+                            <td>g</td>
+                        </tr>
+                        <tr>
+                            <td>Mass of ice (calculated)</td>
+                            <td><span id="proc-ice-mass">--</span></td>
+                            <td>g</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button onclick="calculateFromProcedure()">Calculate Values</button>
+            </div>
+        </section>
+
+        <!-- CALCULATOR SECTION -->
+        <section id="calculator" class="content-section">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">🧮</span> Heat of Fusion Calculator</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    Enter your experimental data and get instant calculations with step-by-step work!
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">📥</span> Enter Experimental Data</h3>
+
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Mass of Warm Water (g)</label>
+                        <input type="number" id="calc-water-mass" placeholder="e.g., 150.00" step="0.01" oninput="calculateHeatOfFusion()">
+                    </div>
+                    <div class="input-group">
+                        <label>Initial Temperature T<sub>i</sub> (°C)</label>
+                        <input type="number" id="calc-initial-temp" placeholder="e.g., 45.0" step="0.1" oninput="calculateHeatOfFusion()">
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Final Temperature T<sub>f</sub> (°C)</label>
+                        <input type="number" id="calc-final-temp" placeholder="e.g., 15.0" step="0.1" oninput="calculateHeatOfFusion()">
+                    </div>
+                    <div class="input-group">
+                        <label>Mass of Ice (g)</label>
+                        <input type="number" id="calc-ice-mass" placeholder="e.g., 25.00" step="0.01" oninput="calculateHeatOfFusion()">
+                    </div>
+                </div>
+
+                <button onclick="calculateHeatOfFusion()" class="btn-success" style="width: 100%; margin-top: 20px;">
+                    ⚛ Calculate Heat of Fusion
+                </button>
+            </div>
+
+            <div id="calc-results-section" style="display: none;">
+                <div class="card">
+                    <h3 class="card-title"><span class="icon">◉</span> Final Results</h3>
+                    <div class="grid">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; text-align: center;">
+                            <h4>Your ΔH<sub>f</sub></h4>
+                            <div class="result-value" id="final-heat-fusion">--</div>
+                            <p>J/g</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; border-radius: 12px; text-align: center;">
+                            <h4>Literature Value</h4>
+                            <div class="result-value">333.55</div>
+                            <p>J/g</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 30px; border-radius: 12px; text-align: center;">
+                            <h4>Percent Error</h4>
+                            <div class="result-value" id="final-percent-error">--</div>
+                            <p>%</p>
+                        </div>
+                    </div>
+
+                    <div id="results-interpretation" style="margin-top: 30px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ANALYSIS SECTION -->
+        <section id="analysis" class="content-section">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">📊</span> Error Analysis & Discussion</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    Understanding error sources improves experimental technique and result interpretation.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">⚠</span> Common Sources of Error</h3>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--danger-color); margin-bottom: 15px;">1. Wet Ice (Most Common!)</h4>
+                    <div style="background: #fee2e2; padding: 20px; border-radius: 8px; border-left: 4px solid var(--danger-color);">
+                        <p><strong>Problem:</strong> Water on ice adds to mass but doesn't melt</p>
+                        <p><strong>Effect:</strong> ΔH<sub>f</sub> is LOWER than true value</p>
+                        <p><strong>Solution:</strong> Thoroughly dry ice with paper towels</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--warning-color); margin-bottom: 15px;">2. Heat Loss to Environment</h4>
+                    <div style="background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid var(--warning-color);">
+                        <p><strong>Problem:</strong> Calorimeter isn't perfectly insulated</p>
+                        <p><strong>Effect:</strong> ΔH<sub>f</sub> is LOWER (5-15% error)</p>
+                        <p><strong>Solution:</strong> Work quickly, use insulated calorimeter</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">3. Ice Below 0°C</h4>
+                    <div style="background: #dbeafe; padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        <p><strong>Problem:</strong> Ice from freezer may be -10°C to -18°C</p>
+                        <p><strong>Effect:</strong> ΔH<sub>f</sub> appears HIGHER (extra energy needed)</p>
+                        <p><strong>Solution:</strong> Let ice warm to 0°C (surface should be wet)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESOURCES SECTION -->
+        <section id="resources" class="content-section">
+            <div class="card">
+                <h2 class="card-title"><span class="icon">🌐</span> External Resources & Fun Facts</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">
+                    Explore these resources to deepen your understanding and discover amazing facts!
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">🎓</span> Top 5 Online Interactive Resources</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Resource</th>
+                            <th>What It Does</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td>PhET: Energy Forms & Changes</td>
+                            <td>Drag ice into water and watch energy transfer in real time</td>
+                            <td><a href="https://phet.colorado.edu/en/simulations/energy-forms-and-changes" target="_blank" style="color: var(--primary-color); text-decoration: none;">Visit →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td>ChemCollective Virtual Labs</td>
+                            <td>Full virtual calorimetry lab with realistic equipment</td>
+                            <td><a href="http://chemcollective.org/activities/vlab" target="_blank" style="color: var(--primary-color); text-decoration: none;">Visit →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td>PhET: States of Matter</td>
+                            <td>See molecular-level view of phase changes and bond breaking</td>
+                            <td><a href="https://phet.colorado.edu/en/simulations/states-of-matter" target="_blank" style="color: var(--primary-color); text-decoration: none;">Visit →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>The Physics Classroom</td>
+                            <td>Interactive tutorial with practice problems and instant feedback</td>
+                            <td><a href="https://www.physicsclassroom.com/class/thermalP/Lesson-2/Calorimeters-and-Calorimetry" target="_blank" style="color: var(--primary-color); text-decoration: none;">Visit →</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>Khan Academy</td>
+                            <td>Video + practice on heat of fusion with step-by-step solutions</td>
+                            <td><a href="https://www.khanacademy.org/science/chemistry/thermodynamics-chemistry/internal-energy-sal/v/specific-heat-heat-of-fusion-and-vaporization" target="_blank" style="color: var(--primary-color); text-decoration: none;">Visit →</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">≡</span> Fun Facts While Your Ice Melts</h3>
+                <div class="grid">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 12px;">
+                        <h4 style="font-size: 1.3em; margin-bottom: 15px;">◇ Energy Comparison</h4>
+                        <p style="line-height: 1.7;">
+                            It takes as much energy to melt 1 kg of ice as it does to heat 1 kg of water from 0°C to 80°C.
+                            That's why your freezer works so hard!
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 25px; border-radius: 12px;">
+                        <h4 style="font-size: 1.3em; margin-bottom: 15px;">≋ Ocean Heat Absorption</h4>
+                        <p style="line-height: 1.7;">
+                            The ocean absorbs about 90% of excess heat from climate change — and a huge portion goes into
+                            melting polar ice rather than warming water.
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; padding: 25px; border-radius: 12px;">
+                        <h4 style="font-size: 1.3em; margin-bottom: 15px;">▲ Earth's Fresh Water</h4>
+                        <p style="line-height: 1.7;">
+                            Glaciers store about 69% of Earth's fresh water. All that heat of fusion is the only thing
+                            keeping them from becoming oceans overnight.
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px; border-radius: 12px;">
+                        <h4 style="font-size: 1.3em; margin-bottom: 15px;">🍦 Ice Cream Science</h4>
+                        <p style="line-height: 1.7;">
+                            Ice cream melts faster than ice cubes because it has a lower heat of fusion (fats and sugars
+                            lower the crystal energy).
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 25px; border-radius: 12px;">
+                        <h4 style="font-size: 1.3em; margin-bottom: 15px;">✻ Snowflake Bonds</h4>
+                        <p style="line-height: 1.7;">
+                            Every snowflake has about 10¹⁸ (a quintillion) water molecules — each one hydrogen-bonded in
+                            the crystal and requiring energy to break free.
+                        </p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #1e293b; padding: 25px; border-radius: 12px;">
+                        <h4 style="font-size: 1.3em; margin-bottom: 15px;">℞ Medical Applications</h4>
+                        <p style="line-height: 1.7;">
+                            Hospitals use the heat of fusion principle — ice packs absorb massive amounts of energy from
+                            swollen tissue without getting warm. That's targeted cooling!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">📝</span> Quick Reference Card</h3>
+                <div class="code-block" style="background: #1e293b; color: #e2e8f0; padding: 25px; font-family: 'Courier New', monospace;">
+<pre style="margin: 0; line-height: 1.6;">
+┌───────────────────────────────────────────────────────────────────┐
+│                HEAT OF FUSION QUICK REFERENCE                     │
+│───────────────────────────────────────────────────────────────────│
+│                                                                   │
+│   THE KEY EQUATIONS:                                              │
+│                                                                   │
+│   Q = m × c × ΔT        (heating/cooling, NO phase change)       │
+│   Q = m × ΔHf            (melting/freezing, AT phase change)      │
+│                                                                   │
+│   WATER'S SPECIAL NUMBERS:                                        │
+│                                                                   │
+│   c (liquid water)     = 4.184 J/(g·°C)                          │
+│   c (ice)              = 2.09  J/(g·°C)                           │
+│   ΔHf (fusion)         = 333.55 J/g = 6.01 kJ/mol                │
+│   ΔHv (vaporization)   = 2,260 J/g = 40.7 kJ/mol                 │
+│                                                                   │
+│   CALORIMETRY PRINCIPLE:                                          │
+│                                                                   │
+│   Q(lost) + Q(gained) = 0                                        │
+│   Q(ice) = -Q(warm water)                                        │
+│                                                                   │
+│   PERCENT ERROR:                                                  │
+│                                                                   │
+│   % Error = |Exp value - Theo value| / Theo value × 100          │
+│                                                                   │
+│   COMMON ERRORS IN THIS LAB:                                      │
+│   • Wet ice (excess liquid) results in ΔHf too LOW               │
+│   • Heat loss to air results in ΔHf too LOW                      │
+│   • Ice not at 0°C results in ΔHf too HIGH                       │
+│   • Poor stirring results in ΔHf varies wildly                   │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+</pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title"><span class="icon">✓</span> Lab Completion Checklist</h3>
+                <div style="background: #f8fafc; padding: 25px; border-radius: 12px; border: 2px solid var(--border-color);">
+                    <p style="font-size: 1.1em; margin-bottom: 20px;"><strong>Before leaving, confirm:</strong></p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                        <div><input type="checkbox"> Empty calorimeter mass recorded</div>
+                        <div><input type="checkbox"> Trial 1: All measurements taken</div>
+                        <div><input type="checkbox"> Trial 1: All calculations completed</div>
+                        <div><input type="checkbox"> Trial 2: All measurements taken</div>
+                        <div><input type="checkbox"> Trial 2: All calculations completed</div>
+                        <div><input type="checkbox"> Average ΔHf calculated</div>
+                        <div><input type="checkbox"> Simulation comparison completed</div>
+                        <div><input type="checkbox"> Percent error calculated</div>
+                        <div><input type="checkbox"> All post-lab questions answered</div>
+                        <div><input type="checkbox"> Reflection questions completed</div>
+                        <div><input type="checkbox"> Lab station cleaned and dried</div>
+                        <div><input type="checkbox"> Equipment returned</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Navigation
+        let quizScore = 0;
+        let quizAnswered = [false, false, false];
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+
+            if (sectionId === 'theory') {
+                drawHeatingCurve();
+            } else if (sectionId === 'simulation') {
+                updateSimulation();
+            }
+        }
+
+        // Heating Curve
+        function drawHeatingCurve() {
+            const canvas = document.getElementById('heatingCurveCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw axes
+            ctx.beginPath();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.moveTo(60, 350);
+            ctx.lineTo(60, 50);
+            ctx.moveTo(60, 350);
+            ctx.lineTo(750, 350);
+            ctx.stroke();
+
+            // Axis labels
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('Temperature (°C)', 300, 390);
+            ctx.save();
+            ctx.translate(20, 200);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Heat Added →', -50, 0);
+            ctx.restore();
+
+            // Draw curve
+            ctx.beginPath();
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 4;
+            ctx.moveTo(80, 320);
+            ctx.lineTo(180, 280);
+            ctx.lineTo(350, 280);
+            ctx.lineTo(500, 120);
+            ctx.lineTo(650, 120);
+            ctx.lineTo(720, 80);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#1e3c72';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText('Ice', 120, 310);
+            ctx.fillText('Melting', 240, 260);
+            ctx.fillText('Water', 410, 180);
+            ctx.fillText('Boiling', 560, 100);
+            ctx.fillText('Steam', 680, 70);
+
+            // Highlight melting
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.2)';
+            ctx.fillRect(180, 100, 170, 250);
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(180, 100, 170, 250);
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 13px Arial';
+            ctx.fillText('Heat of Fusion:', 190, 130);
+            ctx.fillText('Temperature constant', 190, 150);
+            ctx.fillText('while ice melts!', 190, 170);
+        }
+
+        // Molecule Animation
+        let moleculeAnimationRunning = false;
+        let molecules = [];
+
+        function startMoleculeAnimation() {
+            const canvas = document.getElementById('moleculeCanvas');
+            if (!canvas) return;
+
+            moleculeAnimationRunning = true;
+            molecules = [];
+
+            for (let i = 0; i < 30; i++) {
+                molecules.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * 400,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    phase: 'ice'
+                });
+            }
+
+            animateMolecules();
+        }
+
+        function animateMolecules() {
+            const canvas = document.getElementById('moleculeCanvas');
+            if (!canvas || !moleculeAnimationRunning) return;
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 400;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            molecules.forEach((mol, index) => {
+                if (index < molecules.length * 0.5) {
+                    mol.phase = 'water';
+                    mol.vx += (Math.random() - 0.5) * 0.5;
+                    mol.vy += (Math.random() - 0.5) * 0.5;
+                }
+
+                mol.x += mol.vx;
+                mol.y += mol.vy;
+
+                if (mol.x < 0 || mol.x > canvas.width) mol.vx *= -1;
+                if (mol.y < 0 || mol.y > canvas.height) mol.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(mol.x, mol.y, 8, 0, Math.PI * 2);
+                ctx.fillStyle = mol.phase === 'ice' ? '#60a5fa' : '#3b82f6';
+                ctx.fill();
+
+                if (mol.phase === 'ice') {
+                    molecules.forEach((other, otherIndex) => {
+                        if (otherIndex !== index && other.phase === 'ice') {
+                            const dist = Math.sqrt((mol.x - other.x) ** 2 + (mol.y - other.y) ** 2);
+                            if (dist < 60) {
+                                ctx.beginPath();
+                                ctx.moveTo(mol.x, mol.y);
+                                ctx.lineTo(other.x, other.y);
+                                ctx.strokeStyle = 'rgba(96, 165, 250, 0.3)';
+                                ctx.stroke();
+                            }
+                        }
+                    });
+                }
+            });
+
+            if (moleculeAnimationRunning) {
+                requestAnimationFrame(animateMolecules);
+            }
+        }
+
+        function resetMoleculeAnimation() {
+            moleculeAnimationRunning = false;
+            const canvas = document.getElementById('moleculeCanvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // Simulation
+        function updateSimulation() {
+            const waterMass = parseFloat(document.getElementById('sim-water-mass').value);
+            const waterTemp = parseFloat(document.getElementById('sim-water-temp').value);
+            const iceMass = parseFloat(document.getElementById('sim-ice-mass').value);
+
+            document.getElementById('sim-water-mass-display').textContent = waterMass;
+            document.getElementById('sim-water-temp-display').textContent = waterTemp;
+            document.getElementById('sim-ice-mass-display').textContent = iceMass;
+
+            const cWater = 4.184;
+            const literatureHf = 333.55;
+
+            const numerator = waterMass * cWater * waterTemp - iceMass * literatureHf;
+            const denominator = waterMass * cWater + iceMass * cWater;
+            const finalTemp = numerator / denominator;
+
+            const warning = document.getElementById('sim-warning');
+
+            if (finalTemp < 0) {
+                warning.style.display = 'flex';
+                document.getElementById('sim-warning-text').textContent = 'Too much ice! Not all will melt.';
+                document.getElementById('sim-final-temp').textContent = '< 0';
+                document.getElementById('sim-heat-lost').textContent = '--';
+                document.getElementById('sim-heat-fusion').textContent = '--';
+                document.getElementById('sim-percent-error').textContent = '--';
+            } else {
+                warning.style.display = 'none';
+
+                const qWater = waterMass * cWater * (finalTemp - waterTemp); // negative (water cools)
+                const qIce = -qWater; // positive (ice gains energy)
+                const calculatedHf = qIce / iceMass;
+                const percentError = Math.abs((calculatedHf - literatureHf) / literatureHf * 100);
+
+                document.getElementById('sim-final-temp').textContent = finalTemp.toFixed(1);
+                document.getElementById('sim-heat-lost').textContent = qIce.toFixed(0);
+                document.getElementById('sim-heat-fusion').textContent = calculatedHf.toFixed(1);
+                document.getElementById('sim-percent-error').textContent = percentError.toFixed(1);
+            }
+        }
+
+        // Calculator
+        function calculateHeatOfFusion() {
+            const waterMass = parseFloat(document.getElementById('calc-water-mass').value);
+            const initialTemp = parseFloat(document.getElementById('calc-initial-temp').value);
+            const finalTemp = parseFloat(document.getElementById('calc-final-temp').value);
+            const iceMass = parseFloat(document.getElementById('calc-ice-mass').value);
+
+            if (isNaN(waterMass) || isNaN(initialTemp) || isNaN(finalTemp) || isNaN(iceMass)) {
+                return;
+            }
+
+            const cWater = 4.184;
+            const literatureHf = 333.55;
+
+            const deltaT = finalTemp - initialTemp; // negative (water cools)
+            const qWater = waterMass * cWater * deltaT;
+            const qIce = -qWater; // positive (ice gains energy)
+            const heatFusion = qIce / iceMass;
+            const percentError = Math.abs((heatFusion - literatureHf) / literatureHf * 100);
+
+            document.getElementById('calc-results-section').style.display = 'block';
+            document.getElementById('final-heat-fusion').textContent = heatFusion.toFixed(1);
+            document.getElementById('final-percent-error').textContent = percentError.toFixed(2);
+
+            let interpretation = '';
+            if (percentError < 5) {
+                interpretation = '<div class="alert alert-success"><span>🎉</span><div><strong>Excellent!</strong> Your percent error is less than 5%</div></div>';
+            } else if (percentError < 15) {
+                interpretation = '<div class="alert alert-warning"><span>✓</span><div><strong>Good!</strong> Error 5-15% is acceptable</div></div>';
+            } else {
+                interpretation = '<div class="alert alert-danger"><span>⚠</span><div><strong>High error.</strong> Review technique</div></div>';
+            }
+
+            document.getElementById('results-interpretation').innerHTML = interpretation;
+        }
+
+        // Procedure calculations
+        function calculateFromProcedure() {
+            const emptyCal = parseFloat(document.getElementById('proc-empty-cal').value);
+            const calWater = parseFloat(document.getElementById('proc-cal-water').value);
+            const tempInitial = parseFloat(document.getElementById('proc-temp-initial').value);
+            const tempFinal = parseFloat(document.getElementById('proc-temp-final').value);
+            const calFinal = parseFloat(document.getElementById('proc-cal-final').value);
+
+            if (!isNaN(emptyCal) && !isNaN(calWater)) {
+                const waterMass = calWater - emptyCal;
+                document.getElementById('proc-water-mass').textContent = waterMass.toFixed(2);
+            }
+
+            if (!isNaN(tempInitial) && !isNaN(tempFinal)) {
+                const deltaT = tempFinal - tempInitial; // negative (water cools)
+                document.getElementById('proc-delta-t').textContent = deltaT.toFixed(1);
+            }
+
+            if (!isNaN(calWater) && !isNaN(calFinal)) {
+                const iceMass = calFinal - calWater;
+                document.getElementById('proc-ice-mass').textContent = iceMass.toFixed(2);
+            }
+        }
+
+        // Quiz
+        function checkAnswer(questionNum, choice, isCorrect) {
+            if (quizAnswered[questionNum - 1]) return;
+
+            const options = event.currentTarget.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            if (isCorrect) {
+                event.currentTarget.classList.add('correct');
+                quizScore++;
+                quizAnswered[questionNum - 1] = true;
+            } else {
+                event.currentTarget.classList.add('incorrect');
+            }
+
+            document.getElementById('score-display').textContent = `${quizScore}/3`;
+        }
+
+        function resetQuiz() {
+            quizScore = 0;
+            quizAnswered = [false, false, false];
+
+            for (let i = 1; i <= 3; i++) {
+                const options = document.querySelectorAll(`#quiz${i}-feedback`)[0].parentElement.querySelectorAll('.quiz-option');
+                options.forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto';
+                });
+            }
+
+            document.getElementById('score-display').textContent = '0/3';
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            drawHeatingCurve();
+            updateSimulation();
+        });
+    </script>
+</body>
+</html>

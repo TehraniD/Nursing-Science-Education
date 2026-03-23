@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Delusions & Hallucinations — Mental Health Nursing</title>
+<style>
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>👁️ Delusions & Hallucinations</h1>
+  <p>Mental Health Nursing • Tehrani Labs</p>
+</div>
+<nav class="nav"><a href="MH_Index.html">Home</a>
+<a href="MH_schizophrenia.html">🧠 Schizophrenia</a>
+<a href="MH_schizoaffective.html">🔄 Schizoaffective Disorder</a>
+<a href="MH_delusional.html">💭 Delusional Disorder</a>
+<a href="MH_delusions.html" class="active">👁️ Delusions & Hallucinations</a>
+<a href="MH_alcohol.html">🍷 Alcohol Use Disorder</a>
+<a href="MH_opioids.html">💊 Opioids, Substances & Assessment</a>
+<a href="MH_assessment.html">📋 Mental Status Exam</a></nav>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="stats" id="statsText">0 of 15 answered (0%)</div>
+  <div style="text-align:right;margin-bottom:15px"><button onclick="resetAll()" style="padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.8em">Reset All</button></div>
+  <div class="q-card" data-answered="false">
+  <div class="q-num">Question 1</div>
+  <div class="q-stem">A client who has been admitted to the behavioral health unit with delusions of grandeur tells the nurse, "I am the president of the United States. Everyone needs to listen to me." What is an appropriate nursing response?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'3P',true,false)">"It appears that you would like to be more powerful. What does power mean to you?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3P',false,false)">"If you are the president, where is the White House?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3P',false,false)">"No one here mentioned that you are the president because you are not."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3P',false,false)">"You continue to say that you are the president. Please stop saying that."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This response acknowledges the client's feelings and addresses their need for validation without directly reinforcing or challenging their delusion. By shifting the conversation away from the delusion and focusing on the client's emotional state, the nurse avoids confrontation and provides a therapeutic way to engage with the client.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 2</div>
+  <div class="q-stem">The nurse enters the room of a client who has been experiencing delusions and hallucinations. As the nurse starts to speak with the client, the client says, "Did they tell you that I am an important person? I am the king of the world." What response by the nurse is appropriate?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'3C1',true,false)">"It appears that you would like to feel powerful. What does being the king mean to you?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3C1',false,false)">"If you are the king, where are your royal servants?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3C1',false,false)">"No one here mentioned that you are the king because you are not."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3C1',false,false)">"You continue to say that you are the king. Please stop saying that."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This approach validates the client's feelings and redirects the conversation away from the delusion, focusing instead on the emotional aspects of the delusion. It is therapeutic because it engages the client in a way that doesn't directly confront the delusion, offering support without reinforcing it.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 3</div>
+  <div class="q-stem">The nurse is caring for a client with schizophrenia who is experiencing delusions. The client states, "The government is monitoring my every move. They want to take me away." What is the nurse's most appropriate response?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'3C2',true,false)">"That sounds very frightening. Can you tell me more about what you're experiencing?"</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3C2',false,false)">"You're just imagining things; the government isn't monitoring you."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3C2',false,false)">"It's okay, you're safe here and no one is going to take you away."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'3C2',false,false)">"Why do you think the government is interested in you?"</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This response shows empathy and acknowledges the client's feelings while also encouraging the client to talk more about their experience. Avoiding direct confrontation or challenging the delusion allows for a therapeutic, non-judgmental conversation.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 4</div>
+  <div class="q-stem">Based on the nurse's note, what is important to include in the client's plan of care?<br><br><em>Chart: Chris Platts, 32, Allergies: Peanuts. 0740: Client resting in bed, no distress, VS stable. 0930: UAP reports client saying "weird" things regarding the president. 0950: Client states, "Please make sure I have access to a telephone so that I don't miss my daily call from the president. I am going to be first lady one day after I marry the president." Nurse expresses to client, "I understand you feel that you have an intimate relationship with the president, but I see that he appears to be happily married to his wife."</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'13P',true,false)">Ongoing reinforcement of reality when delusion is expressed.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13P',false,false)">Reminders to client that the belief is delusional and silly.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13P',false,false)">Encouraging the client to focus affection on someone else.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13P',false,false)">Ensuring that the client has a working telephone in the room.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The most appropriate plan of care is ongoing reinforcement of reality when delusion is expressed. The client is exhibiting a grandiose delusion. It is essential for the nurse to gently reinforce reality without directly confronting the client's delusion or telling them it is "silly."</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 5</div>
+  <div class="q-stem">Based on the nurse's note, what is important to include in the client's plan of care?<br><br><em>Chart: Sarah Caldwell, 45. 0740: Client restless but alert, VS: 118/74. 0800: Client reported hearing voices telling her to "get out of here before they take you." 0830: Client anxious and agitated, stating, "The healthcare providers are trying to poison me. I need to leave before it's too late." Nurse speaks calmly, providing reassurance about safety.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13C1',false,false)">Providing validation of the client's fears about being poisoned.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'13C1',true,false)">Ensuring the client has a safe and quiet environment to reduce agitation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13C1',false,false)">Telling the client the voices are not real and should be ignored.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13C1',false,false)">Giving the client additional information about their medications and treatment plan.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client is experiencing auditory hallucinations and delusions of being poisoned, which may cause anxiety and distress. Creating a calming, safe environment helps manage these symptoms by reducing external stimuli and promoting relaxation.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 6</div>
+  <div class="q-stem">Based on the nurse's note, what is important to include in the client's plan of care?<br><br><em>Chart: John Davis, 28. 0730: Client calm but withdrawn, VS: 130/85. 0915: Client becomes agitated and shouts, "They're watching me! They're going to kill me!" Client states, "I see them right outside my window." Nurse reassures the client, offering a calm presence.</em></div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'13C2',true,false)">Redirecting the client to a more positive and distracting topic.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13C2',false,false)">Providing ongoing validation of the client's delusional beliefs for reassurance.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13C2',false,false)">Reassuring the client that they are safe and no one is watching them.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'13C2',false,false)">Asking the client if they want to leave the room to avoid "the watchers."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The client is experiencing persecutory delusions, believing that others are watching and intending to harm them. It is important to provide calm reassurance about their safety while avoiding directly confronting the delusion. Redirecting the client or offering an activity may also help, but safety and reassurance should be prioritized first.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 7</div>
+  <div class="q-stem">The client with a persecutory delusion says to the nurse, "The healthcare provider put something in those pills to kill me, so I am not taking them." What is an appropriate nursing response?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'14P',true,false)">"I understand that you believe that, but your pills came from a pharmacy."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14P',false,false)">"I know you believe that, but you must know how crazy that sounds."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14P',false,false)">"Healthcare providers don't try to kill people; they try to heal them so stop saying that."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14P',false,false)">"Yes, that might be a possibility, but I don't think you are right."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This response acknowledges the client's belief without directly challenging or reinforcing the delusion. It also provides a reality-based response by reassuring the client that their medication came from a legitimate source.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 8</div>
+  <div class="q-stem">A client with a persecutory delusion states to the nurse, "The people in the next room are plotting against me. They're going to hurt me if I stay here." What is the <strong>most</strong> appropriate nursing response?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'14C1',true,false)">"I understand that you believe that, but the people in the next room are not going to hurt you."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14C1',false,false)">"Those people are just other clients, and they are not plotting against you."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14C1',false,false)">"Let's focus on getting you comfortable in your room so you feel safe."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14C1',false,false)">"I can see why you might think that, but I am here to keep you safe."</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> This response acknowledges the client's feelings while reassuring them about their safety. It does not directly challenge the delusion, which could escalate the client's anxiety, but provides a comforting and supportive approach.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 9</div>
+  <div class="q-stem">A client with a delusional disorder says, "I have been chosen to save the world, and everyone needs to listen to me." What is the <strong>most</strong> appropriate response by the nurse?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14C2',false,false)">"I understand that you feel that way, but we need to focus on your well-being right now."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14C2',false,false)">"That's not true; no one has been chosen to save the world, and especially not you."</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'14C2',true,false)">"Let's talk about what might be causing you to feel this way."</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'14C2',false,false)">"Why do you think you were chosen, and who told you this?"</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> When responding to a client experiencing delusions, the nurse should use therapeutic communication that encourages exploration of feelings without directly challenging or reinforcing the delusion. Asking to talk about what is causing the client to feel this way acknowledges the client's emotions and opens a supportive dialogue.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 10</div>
+  <div class="q-stem">The assessment of a client demonstrates the presence of several psychiatric symptoms. Which symptom should be the <strong>most</strong> concerning to the nurse?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'34P',true,false)">Command auditory hallucinations</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34P',false,false)">Delusions of grandeur</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34P',false,false)">Tangential thinking</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34P',false,false)">Thought blocking</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Command auditory hallucinations are the most concerning symptom in this scenario. These hallucinations involve hearing voices that instruct the person to perform certain actions, and they can pose a significant risk to the client's safety.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 11</div>
+  <div class="q-stem">The nurse is assessing a client who is experiencing psychiatric symptoms. Which psychotic symptom should the nurse be <strong>most</strong> concerned about?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34C1',false,false)">Visual hallucinations of people who are not present.</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'34C1',true,false)">Delusions of persecution are present.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34C1',false,false)">Disorganized speech with frequent word salad.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34C1',false,false)">Affective flattening with limited emotional expression.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Delusions of persecution are the most concerning symptom. These delusions can lead to extreme anxiety, agitation, and even violent behavior if the client feels threatened and may be at risk of harm to themselves or others.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 12</div>
+  <div class="q-stem">A client with schizophrenia is demonstrating several symptoms. Which symptom is <strong>most</strong> likely to indicate that the client is at risk for harm to themselves or others?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'34C2',true,false)">Auditory hallucinations that command the client to harm others.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34C2',false,false)">Delusions of being famous and admired.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34C2',false,false)">Disorganized behavior that leads to inappropriate dressing.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'34C2',false,false)">Alogia, which involves limited speech and poverty of thought.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Auditory hallucinations that command the client to harm others are the most concerning, as they directly threaten the safety of both the client and others. Command hallucinations instructing harmful actions require immediate intervention to prevent potential harm.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 13</div>
+  <div class="q-stem">The nurse is caring for a client on an acute mental health unit. The client reports hearing voices that are stating, "kill your healthcare provider." Which action should the nurse take <strong>first</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'36P',true,false)">Initiate one-to-one observation of the client.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36P',false,false)">Encourage the client to participate in group therapy on the unit.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36P',false,false)">Focus the client on reality.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36P',false,false)">Notify the client's family.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The first action the nurse should take is to initiate one-to-one observation of the client. This is the most immediate and important response because the client is experiencing command auditory hallucinations instructing harmful behavior.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 14</div>
+  <div class="q-stem">The nurse is caring for a client with schizophrenia who is experiencing auditory hallucinations. The client reports hearing voices telling them to "hurt others." What should the nurse do <strong>first</strong>?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'36C1',true,false)">Ensure the safety of the client and others on the unit.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36C1',false,false)">Offer the client a warm drink to calm them down.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36C1',false,false)">Encourage the client to express their feelings in group therapy.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36C1',false,false)">Tell the client the voices are not real and that they should ignore them.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The first priority is to ensure the safety of the client and others on the unit. Since the client is hearing voices instructing them to hurt others, there is a risk for harm. Immediate action to protect the client and others is essential.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 15</div>
+  <div class="q-stem">The nurse is caring for a client diagnosed with schizophrenia who is experiencing auditory hallucinations. The client reports hearing voices telling them to harm themselves. What is the nurse's <strong>priority</strong> intervention?</div>
+  
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'36C2',true,false)">Ensure the client is in a safe environment and initiate close observation.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36C2',false,false)">Encourage the client to ignore the voices and focus on reality.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36C2',false,false)">Notify the healthcare provider about the client's hallucinations.</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'36C2',false,false)">Administer prescribed antipsychotic medication immediately.</button></div>
+  
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> The priority intervention is to ensure the client is in a safe environment and initiate close observation. Since the client is hearing voices instructing them to harm themselves, immediate safety is the most critical concern.</div>
+</div>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+<script>
+function selectChoice(btn,qid,isCorrect,isSATA){
+  const card=btn.closest('.q-card');
+  if(!isSATA && card.dataset.answered==='true')return;
+  if(isSATA){
+    btn.classList.toggle('selected');
+    return;
+  }
+  card.dataset.answered='true';
+  const choices=card.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    if(c===btn){c.classList.add('selected',isCorrect?'correct':'wrong');}
+    if(cor&&!isCorrect){c.classList.add('reveal-correct');}
+    c.style.pointerEvents='none';
+  });
+  card.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function submitSATA(cardEl){
+  if(cardEl.dataset.answered==='true')return;
+  cardEl.dataset.answered='true';
+  const choices=cardEl.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    const sel=c.classList.contains('selected');
+    if(sel&&cor)c.classList.add('correct');
+    else if(sel&&!cor)c.classList.add('wrong');
+    else if(!sel&&cor)c.classList.add('reveal-correct');
+    c.style.pointerEvents='none';
+  });
+  cardEl.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.q-card').length;
+  const done=document.querySelectorAll('.q-card[data-answered=true]').length;
+  const pct=Math.round((done/total)*100);
+  const fill=document.getElementById('progressFill');
+  const stats=document.getElementById('statsText');
+  if(fill)fill.style.width=pct+'%';
+  if(stats)stats.textContent=done+' of '+total+' answered ('+pct+'%)';
+  try{localStorage.setItem(window.location.pathname+'_progress',JSON.stringify({done,total}));}catch(e){}
+}
+function resetAll(){
+  document.querySelectorAll('.q-card').forEach(c=>{
+    c.dataset.answered='false';
+    c.querySelectorAll('.choice-btn').forEach(b=>{
+      b.className='choice-btn';b.style.pointerEvents='auto';
+    });
+    c.querySelector('.rationale').classList.remove('show');
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

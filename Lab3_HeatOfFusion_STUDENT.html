@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3: Heat of Fusion of Water - STUDENT</title>
+    <style>
+        body {
+            font-family: Calibri, Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 { color: #1a5276; border-bottom: 3px solid #1a5276; padding-bottom: 10px; }
+        h2 { color: #2874a6; border-bottom: 2px solid #2874a6; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #3498db; margin-top: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #333; padding: 10px; text-align: left; }
+        th { background-color: #2874a6; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .equation {
+            font-family: "Cambria Math", "Times New Roman", serif;
+            font-size: 14pt;
+            text-align: center;
+            padding: 15px;
+            background-color: #eef4f9;
+            border: 1px solid #2874a6;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .blank { 
+            display: inline-block; 
+            min-width: 120px; 
+            border-bottom: 1px solid #333; 
+            margin: 0 5px;
+        }
+        .blank-wide {
+            display: block;
+            width: 100%;
+            min-height: 80px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .info-box {
+            background-color: #d4edda;
+            border: 1px solid #28a745;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .sim-link {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        .sim-link:hover { opacity: 0.9; }
+        .reference-box {
+            background: #f8f9fa;
+            border: 2px solid #2874a6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: "Courier New", monospace;
+            font-size: 11pt;
+        }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #1a5276; }
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { padding: 5px 0; }
+        .checklist li::before { content: "☐ "; font-size: 1.2em; }
+        @media print {
+            body { font-size: 11pt; }
+            .sim-link { background: #666; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>◇ Lab 3: Heat of Fusion of Water</h1>
+<h2 style="border:none; color:#666;">"Why Does Ice Take FOREVER to Melt in Your Drink?" Edition</h2>
+
+<p><strong>Course:</strong> General Chemistry II &nbsp;|&nbsp; <strong>Duration:</strong> ~1.5 hours &nbsp;|&nbsp; <strong>Safety Level:</strong> Low risk</p>
+
+<hr>
+
+<h2>🖥️ REQUIRED: Interactive Simulation</h2>
+<p><strong>Before starting this lab, open the Interactive Heat of Fusion Simulator:</strong></p>
+<a href="Lab3_Interactive_HeatOfFusion.html" class="sim-link">⟶ Open Interactive Simulation</a>
+
+<div class="info-box">
+    <strong>You MUST use this simulation to:</strong>
+    <ul>
+        <li>Visualize energy transfer between warm water and ice</li>
+        <li>Practice calorimetry calculations before the real lab</li>
+        <li>Understand why ice absorbs so much energy without changing temperature</li>
+        <li>Predict your experimental results</li>
+    </ul>
+</div>
+
+<hr>
+
+<h2>The Real-World Hook</h2>
+
+<p>You're at a restaurant. You order a glass of water with ice. Ten minutes later, the ice is STILL there, barely melted. But when you spill cold water on the table, it warms up to room temperature in minutes.</p>
+
+<p><strong>Why does ice take SO MUCH energy to melt?</strong> The answer is <strong>Heat of Fusion (ΔH<sub>f</sub>)</strong> — and it reveals something beautiful about how nature stores energy in molecular bonds.</p>
+
+<hr>
+
+<h2>Part 1: The Science</h2>
+
+<h3>What Happens When Ice Melts?</h3>
+<p>When you add heat to ice at 0°C, the temperature <strong>doesn't go up</strong>. All that energy goes into <strong>breaking hydrogen bonds</strong> between water molecules in the crystal. This is the heat of fusion.</p>
+
+<div class="equation">
+    <strong>ΔH<sub>f</sub> (water) = 333.55 J/g = 6.01 kJ/mol</strong>
+</div>
+
+<table>
+    <tr><th>What You're Doing</th><th>Energy Required</th></tr>
+    <tr><td>Heating 1 g of water by 1°C</td><td>4.184 J</td></tr>
+    <tr><td>Heating 1 g of water from 0°C to 80°C</td><td>334.7 J</td></tr>
+    <tr><td><strong>Melting 1 g of ice at 0°C</strong></td><td><strong>333.55 J</strong></td></tr>
+</table>
+
+<p>Melting a single gram of ice takes almost the SAME energy as heating that gram of water from freezing to nearly boiling!</p>
+
+<h3>The Calorimetry Equations</h3>
+
+<div class="equation">
+    Q<sub>warm water</sub> = m<sub>warm water</sub> × c<sub>water</sub> × (T<sub>f</sub> − T<sub>i</sub>)
+    <br><br>where c<sub>water</sub> = 4.184 J/(g·°C)
+</div>
+
+<div class="equation">
+    Q<sub>ice</sub> = −Q<sub>warm water</sub> &nbsp;&nbsp;&nbsp; (Conservation of Energy)
+</div>
+
+<div class="equation">
+    ΔH<sub>f</sub> = Q<sub>ice</sub> / m<sub>ice</sub>
+</div>
+
+<hr>
+
+<h2>Part 2: The Experiment</h2>
+
+<h3>Materials</h3>
+<ul>
+    <li>Calorimeter (aluminum cup + stirrer)</li>
+    <li>Crushed ice (at 0°C — drained of excess water!)</li>
+    <li>Warm water (~10°C above room temperature)</li>
+    <li>Digital thermometer</li>
+    <li>Balance/scale</li>
+    <li>Paper towels (for drying ice)</li>
+</ul>
+
+<h3>Safety</h3>
+<div class="warning-box">
+    ⚠ Wear safety goggles &nbsp;|&nbsp; ◇ Handle ice with paper towels &nbsp;|&nbsp; ≡ Wipe up water spills immediately
+</div>
+
+<hr>
+
+<h2>🖥️ SIMULATION CHECKPOINT #1</h2>
+<p><strong>Before touching any equipment, use the simulation to predict your results!</strong></p>
+
+<table>
+    <tr><th>Simulation Prediction</th><th>Value</th></tr>
+    <tr><td>Final temperature</td><td><span class="blank"></span> °C</td></tr>
+    <tr><td>Heat lost by warm water</td><td><span class="blank"></span> J</td></tr>
+    <tr><td>Heat gained by ice</td><td><span class="blank"></span> J</td></tr>
+    <tr><td>Calculated ΔH<sub>f</sub></td><td><span class="blank"></span> J/g</td></tr>
+</table>
+
+<hr>
+
+<h2>Procedure — Step by Step</h2>
+
+<ol>
+    <li><strong>Measure the mass of the empty calorimeter</strong> (cup + stirrer) and record.</li>
+    <li><strong>Fill the calorimeter halfway with warm water</strong> (~10°C above room temperature, so around 33-37°C).</li>
+    <li><strong>Measure the mass</strong> of calorimeter + warm water and record.</li>
+    <li><strong>Record the initial temperature</strong> of warm water (T<sub>i</sub>). Stir gently, wait 30 sec.</li>
+    <li><strong>Obtain crushed ice</strong> and PAT DRY with paper towels.</li>
+    <li><strong>Add ice</strong> to the calorimeter a little at a time, stirring CONTINUOUSLY, until temperature drops about 20°C.</li>
+    <li><strong>Record the lowest temperature</strong> (T<sub>f</sub>) — wait until ALL ice is melted and temp is stable.</li>
+    <li><strong>Measure the mass</strong> of calorimeter + warm water + melted ice.</li>
+    <li><strong>Repeat</strong> the experiment for Trial 2.</li>
+</ol>
+
+<hr>
+
+<h2>Data Collection Table</h2>
+
+<table>
+    <tr>
+        <th></th>
+        <th>Trial 1</th>
+        <th>Trial 2</th>
+    </tr>
+    <tr><td>Mass of Empty Calorimeter (g)</td><td></td><td></td></tr>
+    <tr><td>Mass of Calorimeter + Warm Water (g)</td><td></td><td></td></tr>
+    <tr><td>Mass of Warm Water, m<sub>w</sub> (g)</td><td></td><td></td></tr>
+    <tr><td>Initial Temperature of Warm Water, T<sub>i</sub> (°C)</td><td></td><td></td></tr>
+    <tr><td>Lowest Temperature, T<sub>f</sub> (°C)</td><td></td><td></td></tr>
+    <tr><td>Mass of Calorimeter + Warm Water + Ice (g)</td><td></td><td></td></tr>
+    <tr><td>Mass of Ice, m<sub>ice</sub> (g)</td><td></td><td></td></tr>
+    <tr><td>Temperature Difference, T<sub>f</sub> − T<sub>i</sub> (°C)</td><td></td><td></td></tr>
+    <tr><td>Q<sub>warm water</sub> (J)</td><td></td><td></td></tr>
+    <tr><td>Q<sub>ice</sub> (J)</td><td></td><td></td></tr>
+    <tr><td>ΔH<sub>f</sub> (J/g)</td><td></td><td></td></tr>
+    <tr><td><strong>Average ΔH<sub>f</sub></strong></td><td colspan="2" style="text-align:center;"></td></tr>
+</table>
+
+<p><strong>Theoretical value of ΔH<sub>f</sub> = 333.55 J/g</strong></p>
+
+<hr>
+
+<h2>Calculations — Show ALL Work</h2>
+
+<h3>Trial 1</h3>
+
+<p><strong>Step 1:</strong> Mass of warm water</p>
+<p>m<sub>w</sub> = (Mass of cal + water) − (Mass of empty cal) = <span class="blank"></span> g</p>
+
+<p><strong>Step 2:</strong> Mass of ice</p>
+<p>m<sub>ice</sub> = (Mass of cal + water + ice) − (Mass of cal + water) = <span class="blank"></span> g</p>
+
+<p><strong>Step 3:</strong> Temperature change</p>
+<p>ΔT = T<sub>f</sub> − T<sub>i</sub> = <span class="blank"></span>°C − <span class="blank"></span>°C = <span class="blank"></span>°C</p>
+
+<p><strong>Step 4:</strong> Heat lost by warm water</p>
+<p>Q<sub>warm water</sub> = m<sub>w</sub> × c<sub>w</sub> × ΔT = <span class="blank"></span> g × 4.184 J/(g·°C) × <span class="blank"></span>°C = <span class="blank"></span> J</p>
+
+<p><strong>Step 5:</strong> Heat gained by ice</p>
+<p>Q<sub>ice</sub> = −Q<sub>warm water</sub> = <span class="blank"></span> J</p>
+
+<p><strong>Step 6:</strong> Heat of Fusion</p>
+<p>ΔH<sub>f</sub> = Q<sub>ice</sub> / m<sub>ice</sub> = <span class="blank"></span> J / <span class="blank"></span> g = <span class="blank"></span> J/g</p>
+
+<h3>Trial 2</h3>
+
+<p><strong>Step 1:</strong> m<sub>w</sub> = <span class="blank"></span> g − <span class="blank"></span> g = <span class="blank"></span> g</p>
+<p><strong>Step 2:</strong> m<sub>ice</sub> = <span class="blank"></span> g − <span class="blank"></span> g = <span class="blank"></span> g</p>
+<p><strong>Step 3:</strong> ΔT = <span class="blank"></span>°C − <span class="blank"></span>°C = <span class="blank"></span>°C</p>
+<p><strong>Step 4:</strong> Q<sub>warm</sub> = <span class="blank"></span> g × 4.184 × <span class="blank"></span>°C = <span class="blank"></span> J</p>
+<p><strong>Step 5:</strong> Q<sub>ice</sub> = <span class="blank"></span> J</p>
+<p><strong>Step 6:</strong> ΔH<sub>f</sub> = <span class="blank"></span> J / <span class="blank"></span> g = <span class="blank"></span> J/g</p>
+
+<h3>Average and Percent Error</h3>
+
+<p>Average ΔH<sub>f</sub> = (<span class="blank"></span> + <span class="blank"></span>) / 2 = <span class="blank"></span> J/g</p>
+
+<div class="equation">
+    Percent Error = 100 × |Experimental value − Theoretical value| / Theoretical value
+    <br><br>
+    = 100 × |<span class="blank" style="width:60px;"></span> − 333.55| / 333.55 = <span class="blank"></span> %
+</div>
+
+<hr>
+
+<h2>🖥️ SIMULATION CHECKPOINT #2</h2>
+
+<table>
+    <tr><th>Comparison</th><th>Simulation</th><th>Your Experiment</th></tr>
+    <tr><td>Trial 1 ΔH<sub>f</sub></td><td><span class="blank"></span> J/g</td><td><span class="blank"></span> J/g</td></tr>
+    <tr><td>Trial 2 ΔH<sub>f</sub></td><td><span class="blank"></span> J/g</td><td><span class="blank"></span> J/g</td></tr>
+    <tr><td>Average ΔH<sub>f</sub></td><td><span class="blank"></span> J/g</td><td><span class="blank"></span> J/g</td></tr>
+</table>
+
+<hr>
+
+<h2>Part 3: Post-Lab Questions</h2>
+
+<h3>Question 1: Basic Calorimetry</h3>
+<p>What quantity of heat is required to raise the temperature of 500 grams of water from 25°C to 85°C? The specific heat capacity of water is 4.18 J/(g·°C).</p>
+
+<p><strong>Given:</strong></p>
+<div class="blank-wide"></div>
+<p><strong>Solution:</strong></p>
+<div class="blank-wide" style="min-height:120px;"></div>
+
+<h3>Question 2: Unknown Metal Identification</h3>
+<p>An unknown metal sample with a mass of 20 grams at 25°C is placed in a calorimeter containing 50.0 grams of water at 90°C. The water cools down and the metal warms up until the final temperature is 80°C. Determine the specific heat capacity of the unknown metal. (c<sub>water</sub> = 4.184 J/(g·°C))</p>
+
+<p><strong>Given:</strong></p>
+<div class="blank-wide"></div>
+<p><strong>Solution:</strong></p>
+<div class="blank-wide" style="min-height:150px;"></div>
+
+<p><strong>Based on the calculated specific heat, what might this metal be?</strong></p>
+<table>
+    <tr><th>Metal</th><th>Specific Heat (J/g·°C)</th></tr>
+    <tr><td>Aluminum</td><td>0.897</td></tr>
+    <tr><td>Iron</td><td>0.449</td></tr>
+    <tr><td>Copper</td><td>0.385</td></tr>
+    <tr><td>Lead</td><td>0.129</td></tr>
+    <tr><td>Silver</td><td>0.235</td></tr>
+</table>
+<p>My metal is most likely: <span class="blank"></span></p>
+
+<h3>Question 3: Sources of Error</h3>
+<p>List THREE possible sources of error and whether each makes ΔH<sub>f</sub> too high or too low.</p>
+<table>
+    <tr><th>Source of Error</th><th>Too High or Too Low?</th><th>Explanation</th></tr>
+    <tr><td style="min-height:40px;"></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td></tr>
+</table>
+
+<h3>Question 4: Real-World Connection</h3>
+<p>Explain why, on a day when the air temperature rises from −2°C to +2°C, a frozen lake doesn't immediately become liquid. Use the concept of heat of fusion.</p>
+<div class="blank-wide" style="min-height:100px;"></div>
+
+<h3>Question 5: Climate Connection</h3>
+<p>The Arctic contains approximately 2.6 × 10<sup>19</sup> grams of ice. Calculate how much energy (in joules) would be required to melt ALL of that ice. Express in scientific notation.</p>
+<div class="blank-wide" style="min-height:100px;"></div>
+
+<hr>
+
+<h2>🖥️ SIMULATION CHECKPOINT #3 — Explore Further</h2>
+
+<p>Use the simulation's "What If?" scenarios:</p>
+<ol>
+    <li>If you doubled the mass of warm water but kept the same ice mass, what happens to T<sub>f</sub>?<br>
+    Prediction: <span class="blank"></span> &nbsp; Simulation result: <span class="blank"></span></li>
+    <li>What's the minimum mass of ice needed to cool 100 g of water from 35°C to 5°C?<br>
+    Simulation answer: <span class="blank"></span> g</li>
+</ol>
+
+<hr>
+
+<h2>🌐 Top 5 Online Interactive Resources</h2>
+<table>
+    <tr><th>#</th><th>Resource</th><th>What It Does</th></tr>
+    <tr><td>1</td><td><a href="https://phet.colorado.edu/en/simulations/energy-forms-and-changes" target="_blank">PhET: Energy Forms & Changes</a></td><td>Drag ice into water and watch energy transfer in real time</td></tr>
+    <tr><td>2</td><td><a href="http://chemcollective.org/activities/vlab" target="_blank">ChemCollective Virtual Labs</a></td><td>Full virtual calorimetry lab with realistic equipment</td></tr>
+    <tr><td>3</td><td><a href="https://phet.colorado.edu/en/simulations/states-of-matter" target="_blank">PhET: States of Matter</a></td><td>Molecular-level view of phase changes and bond breaking</td></tr>
+    <tr><td>4</td><td><a href="https://www.physicsclassroom.com/class/thermalP/Lesson-2/Calorimeters-and-Calorimetry" target="_blank">The Physics Classroom</a></td><td>Interactive tutorial with practice problems</td></tr>
+    <tr><td>5</td><td><a href="https://www.khanacademy.org/science/chemistry/thermodynamics-chemistry" target="_blank">Khan Academy: Heat & Latent Heat</a></td><td>Video + practice on heat of fusion and vaporization</td></tr>
+</table>
+
+<hr>
+
+<h2>Quick Reference Card</h2>
+<div class="reference-box">
+<pre>
+┌───────────────────────────────────────────────────────┐
+│           HEAT OF FUSION QUICK REFERENCE              │
+│───────────────────────────────────────────────────────│
+│                                                       │
+│  Q = m × c × ΔT      (heating/cooling)               │
+│  Q = m × ΔHf          (melting/freezing)              │
+│                                                       │
+│  c(water)  = 4.184 J/(g·°C)                          │
+│  ΔHf(ice)  = 333.55 J/g = 6.01 kJ/mol               │
+│                                                       │
+│  Q(ice) = −Q(warm water)                              │
+│                                                       │
+│  % Error = |Exp − Theo| / Theo × 100                 │
+│                                                       │
+└───────────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<hr>
+
+<h2>Pre-Lab Quiz</h2>
+<ol>
+    <li>Heat of fusion is the energy required to:<br>
+        a) Heat water by 1°C &nbsp; b) Melt a solid at its melting point &nbsp; c) Boil water at 100°C &nbsp; d) Cool water to 0°C</li>
+    <li>During the melting of ice at 0°C, the temperature:<br>
+        a) Increases steadily &nbsp; b) Decreases steadily &nbsp; c) Stays constant at 0°C &nbsp; d) Fluctuates randomly</li>
+    <li>If warm water loses 8,000 J, how much heat does the ice gain?<br>
+        a) 4,000 J &nbsp; b) 8,000 J &nbsp; c) 16,000 J &nbsp; d) It depends</li>
+    <li>A calorimeter works by:<br>
+        a) Creating energy &nbsp; b) Destroying energy &nbsp; c) Isolating a system to measure heat &nbsp; d) Cooling things</li>
+    <li>If ΔH<sub>f</sub> (experimental) = 345 J/g and theoretical = 333.55 J/g, the % error is:<br>
+        a) 3.4% &nbsp; b) 11.45% &nbsp; c) 96.6% &nbsp; d) 0.034%</li>
+</ol>
+
+<hr>
+
+<h2>Lab Completion Checklist</h2>
+<ul class="checklist">
+    <li>Empty calorimeter mass recorded</li>
+    <li>Simulation Checkpoint #1 completed</li>
+    <li>Trial 1: All measurements taken</li>
+    <li>Trial 1: All calculations completed</li>
+    <li>Trial 2: All measurements taken</li>
+    <li>Trial 2: All calculations completed</li>
+    <li>Average ΔH<sub>f</sub> calculated</li>
+    <li>Simulation Checkpoint #2 completed</li>
+    <li>Percent error calculated</li>
+    <li>All post-lab questions answered</li>
+    <li>Simulation Checkpoint #3 completed</li>
+    <li>Lab station cleaned and dried</li>
+</ul>
+
+<hr>
+
+<h2>Fun Facts While Your Ice Melts</h2>
+<p>◇ It takes as much energy to melt 1 kg of ice as to heat 1 kg of water from 0°C to 80°C.</p>
+<p>≋ The ocean absorbs ~90% of excess heat from climate change — much of it melting ice.</p>
+<p>▲ Glaciers store about 69% of Earth's fresh water.</p>
+<p>℞ Ice packs absorb 333 J/g from tissue without getting warm — targeted cooling!</p>
+
+<hr>
+
+<div class="footer">
+    <h2>⚗ TEHRANI ⚗</h2>
+    <p>© Tehrani 2028</p>
+    <p><em>"Ice doesn't melt because it's warm outside — it melts because 333 joules per gram convinced it to let go. Everything has a price, even solidarity among water molecules."</em></p>
+    <p style="margin-top:8px; font-size:0.85em; letter-spacing:2px;">H₂O(s) → H₂O(l) · ΔHₒ = 6.01 kJ/mol</p>
+    <br>
+    <p><a href="Lab3_Interactive_HeatOfFusion.html" class="sim-link">⟶ Open Interactive Simulation</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mental Status Exam — Mental Health Nursing</title>
+<style>
+:root{--primary:#2c3e6b;--accent:#4a90d9;--correct:#27ae60;--wrong:#c0392b;--bg:#f0f4f8;--card:#fff;--text:#2c3e50;--border:#ddd;--hover:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,var(--primary),#1a2a4a);color:#fff;padding:20px 30px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.header h1{font-size:1.4em;margin-bottom:4px}
+.header p{opacity:.85;font-size:.9em}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px 20px;background:#fff;border-bottom:1px solid var(--border)}
+.nav a{text-decoration:none;padding:8px 16px;border-radius:20px;font-size:.85em;background:var(--hover);color:var(--primary);transition:.2s;white-space:nowrap}
+.nav a:hover,.nav a.active{background:var(--accent);color:#fff}
+.container{max-width:900px;margin:20px auto;padding:0 20px}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:15px 0;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--correct));border-radius:10px;transition:width .4s}
+.stats{text-align:center;font-size:.9em;color:#666;margin-bottom:15px}
+.q-card{background:var(--card);border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-left:4px solid var(--accent)}
+.q-num{font-size:.75em;color:var(--accent);font-weight:700;text-transform:uppercase;margin-bottom:8px}
+.q-stem{font-size:1em;margin-bottom:16px;line-height:1.7}
+.q-stem em{display:block;background:#f8f9fa;padding:12px;border-radius:8px;margin-top:10px;font-size:.9em;border:1px solid #e9ecef}
+.choices{list-style:none}
+.choice-btn{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-size:.95em;transition:.2s;line-height:1.5}
+.choice-btn:hover:not(.selected){border-color:var(--accent);background:var(--hover)}
+.choice-btn.correct{border-color:var(--correct);background:#eafaf1;color:var(--correct);font-weight:600}
+.choice-btn.wrong{border-color:var(--wrong);background:#fdf0ed;color:var(--wrong);text-decoration:line-through;opacity:.7}
+.choice-btn.selected.correct::before{content:"✓ ";font-weight:700}
+.choice-btn.selected.wrong::before{content:"✗ "}
+.choice-btn.reveal-correct{border-color:var(--correct);background:#eafaf1}
+.rationale{display:none;margin-top:16px;padding:16px;background:#f0faf4;border-radius:8px;border-left:4px solid var(--correct);font-size:.9em;line-height:1.7}
+.rationale.show{display:block;animation:fadeIn .3s}
+.rationale strong{color:var(--correct)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.footer{text-align:center;padding:30px;color:#888;font-size:.8em;border-top:1px solid var(--border);margin-top:40px}
+.sata-note{font-size:.8em;color:var(--accent);font-style:italic;margin-bottom:10px}
+@media(max-width:600px){.header h1{font-size:1.1em}.q-card{padding:16px}.nav a{padding:6px 12px;font-size:.8em}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>📋 Mental Status Exam</h1>
+  <p>Mental Health Nursing • Tehrani Labs</p>
+</div>
+<nav class="nav"><a href="MH_Index.html">Home</a>
+<a href="MH_schizophrenia.html">🧠 Schizophrenia</a>
+<a href="MH_schizoaffective.html">🔄 Schizoaffective Disorder</a>
+<a href="MH_delusional.html">💭 Delusional Disorder</a>
+<a href="MH_delusions.html">👁️ Delusions & Hallucinations</a>
+<a href="MH_alcohol.html">🍷 Alcohol Use Disorder</a>
+<a href="MH_opioids.html">💊 Opioids, Substances & Assessment</a>
+<a href="MH_assessment.html" class="active">📋 Mental Status Exam</a></nav>
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="stats" id="statsText">0 of 3 answered (0%)</div>
+  <div style="text-align:right;margin-bottom:15px"><button onclick="resetAll()" style="padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.8em">Reset All</button></div>
+  <div class="q-card" data-answered="false">
+  <div class="q-num">Question 1</div>
+  <div class="q-stem">The nurse is conducting a mental status exam. The nurse should understand that which of the following is included in a mental status exam? <strong>(Select all that apply)</strong></div>
+  <p class="sata-note">Select ALL that apply, then click Submit</p>
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29P',true,true)">Thought content</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29P',true,true)">Behavior</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29P',true,true)">Eye contact</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'29P',false,true)">Vital signs</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'29P',false,true)">Nutritional intake</button></div>
+  <button onclick="submitSATA(this.closest('.q-card'))" style="margin-top:10px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9em">Submit Answer</button>
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> In a mental status exam, the nurse should assess thought content, behavior, and eye contact. Thought content evaluates the client's cognitive patterns, behavior refers to the client's physical actions, and eye contact is an important component of interaction assessment. Vital signs and nutritional intake are not part of the mental status exam.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 2</div>
+  <div class="q-stem">The nurse is conducting a mental status exam. Which of the following should the nurse specifically assess during the exam? <strong>(Select all that apply)</strong></div>
+  <p class="sata-note">Select ALL that apply, then click Submit</p>
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C1',true,true)">Orientation</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C1',true,true)">Judgment</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'29C1',false,true)">Blood pressure</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C1',true,true)">Insight</button><button class="choice-btn" data-correct="false" onclick="selectChoice(this,'29C1',false,true)">Respiratory rate</button></div>
+  <button onclick="submitSATA(this.closest('.q-card'))" style="margin-top:10px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9em">Submit Answer</button>
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> Orientation refers to the client's awareness of time, place, and person. Judgment is evaluated to determine the client's ability to make reasoned decisions. Insight refers to the client's awareness and understanding of their condition. Blood pressure and respiratory rate are vital signs that are not part of the mental status exam.</div>
+</div><div class="q-card" data-answered="false">
+  <div class="q-num">Question 3</div>
+  <div class="q-stem">The nurse is conducting a mental status exam. Which of the following should the nurse specifically assess during the exam? <strong>(Select all that apply)</strong></div>
+  <p class="sata-note">Select ALL that apply, then click Submit</p>
+  <div class="choices"><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C2',true,true)">Thought content</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C2',true,true)">Speech</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C2',true,true)">Insight and judgment</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C2',true,true)">Thought process</button><button class="choice-btn" data-correct="true" onclick="selectChoice(this,'29C2',true,true)">Physical appearance</button></div>
+  <button onclick="submitSATA(this.closest('.q-card'))" style="margin-top:10px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:.9em">Submit Answer</button>
+  <div class="rationale"><strong>Correct Answer Rationale:</strong> All of the listed answer choices are components of a mental status exam. The mental status exam comprehensively evaluates thought content, speech, insight and judgment, thought process, and physical appearance to assess the client's mental and emotional functioning.</div>
+</div>
+</div>
+<footer class="footer">© Tehrani Labs · Mental Health Nursing<br>tehranilabs.org</footer>
+<script>
+function selectChoice(btn,qid,isCorrect,isSATA){
+  const card=btn.closest('.q-card');
+  if(!isSATA && card.dataset.answered==='true')return;
+  if(isSATA){
+    btn.classList.toggle('selected');
+    return;
+  }
+  card.dataset.answered='true';
+  const choices=card.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    if(c===btn){c.classList.add('selected',isCorrect?'correct':'wrong');}
+    if(cor&&!isCorrect){c.classList.add('reveal-correct');}
+    c.style.pointerEvents='none';
+  });
+  card.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function submitSATA(cardEl){
+  if(cardEl.dataset.answered==='true')return;
+  cardEl.dataset.answered='true';
+  const choices=cardEl.querySelectorAll('.choice-btn');
+  choices.forEach(c=>{
+    const cor=c.dataset.correct==='true';
+    const sel=c.classList.contains('selected');
+    if(sel&&cor)c.classList.add('correct');
+    else if(sel&&!cor)c.classList.add('wrong');
+    else if(!sel&&cor)c.classList.add('reveal-correct');
+    c.style.pointerEvents='none';
+  });
+  cardEl.querySelector('.rationale').classList.add('show');
+  updateProgress();
+}
+function updateProgress(){
+  const total=document.querySelectorAll('.q-card').length;
+  const done=document.querySelectorAll('.q-card[data-answered=true]').length;
+  const pct=Math.round((done/total)*100);
+  const fill=document.getElementById('progressFill');
+  const stats=document.getElementById('statsText');
+  if(fill)fill.style.width=pct+'%';
+  if(stats)stats.textContent=done+' of '+total+' answered ('+pct+'%)';
+  try{localStorage.setItem(window.location.pathname+'_progress',JSON.stringify({done,total}));}catch(e){}
+}
+function resetAll(){
+  document.querySelectorAll('.q-card').forEach(c=>{
+    c.dataset.answered='false';
+    c.querySelectorAll('.choice-btn').forEach(b=>{
+      b.className='choice-btn';b.style.pointerEvents='auto';
+    });
+    c.querySelector('.rationale').classList.remove('show');
+  });
+  updateProgress();
+}
+</script>
+</body>
+</html>

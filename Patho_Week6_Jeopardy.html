@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCR-240 Week 6 Jeopardy!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #ffd700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            letter-spacing: 5px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .team {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 3px solid #ffd700;
+        }
+
+        .team.active {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0,255,0,0.5);
+        }
+
+        .team h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .team .score {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .board {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #000;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        .category-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .category {
+            background: #0066cc;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            color: #fff;
+            text-transform: uppercase;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .questions-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .question-box {
+            background: #0066cc;
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #ffd700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .question-box:hover:not(.answered) {
+            background: #0080ff;
+            transform: scale(1.05);
+        }
+
+        .question-box.answered {
+            background: #001a33;
+            cursor: not-allowed;
+            color: #333;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 5% auto;
+            padding: 40px;
+            border: 5px solid #ffd700;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+
+        .daily-double {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question-header h2 {
+            font-size: 2.5em;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 3em;
+            color: #00ff00;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .timer.warning {
+            color: #ff0000;
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .question-text {
+            background: rgba(0,0,0,0.3);
+            padding: 30px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            border-left: 5px solid #ffd700;
+        }
+
+        .answer-text {
+            background: rgba(0,255,0,0.2);
+            padding: 30px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            border-left: 5px solid #00ff00;
+            display: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn-show {
+            background: #ffd700;
+            color: #000;
+        }
+
+        .btn-correct {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .btn-wrong {
+            background: #ff0000;
+            color: #fff;
+        }
+
+        .btn-close {
+            background: #666;
+            color: #fff;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
+        .team-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .team-btn {
+            padding: 15px;
+            background: #667eea;
+            color: #fff;
+            border: 2px solid #ffd700;
+        }
+
+        .reset-btn {
+            background: #e74c3c;
+            color: #fff;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .dd-badge {
+            display: inline-block;
+            background: #ff0000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 JEOPARDY! 🎯</h1>
+        <p>HCR-240 Week 6 - Pathophysiology Challenge</p>
+    </div>
+
+    <div class="scoreboard">
+        <div class="team" id="team1">
+            <h3>Team 1</h3>
+            <div class="score">$0</div>
+        </div>
+        <div class="team" id="team2">
+            <h3>Team 2</h3>
+            <div class="score">$0</div>
+        </div>
+        <div class="team" id="team3">
+            <h3>Team 3</h3>
+            <div class="score">$0</div>
+        </div>
+        <div class="team" id="team4">
+            <h3>Team 4</h3>
+            <div class="score">$0</div>
+        </div>
+    </div>
+
+    <div class="board">
+        <div class="category-row">
+            <div class="category">Endocrine<br>Emergencies</div>
+            <div class="category">Diabetes<br>Dilemmas</div>
+            <div class="category">Neuro<br>Nightmares</div>
+            <div class="category">Renal<br>Riddles</div>
+            <div class="category">Clinical<br>Clues</div>
+        </div>
+
+        <div class="questions-row">
+            <div class="question-box" data-category="0" data-value="200" onclick="openQuestion(0, 0)">$200</div>
+            <div class="question-box" data-category="1" data-value="200" onclick="openQuestion(1, 0)">$200</div>
+            <div class="question-box" data-category="2" data-value="200" onclick="openQuestion(2, 0)">$200</div>
+            <div class="question-box" data-category="3" data-value="200" onclick="openQuestion(3, 0)">$200</div>
+            <div class="question-box" data-category="4" data-value="200" onclick="openQuestion(4, 0)">$200</div>
+        </div>
+
+        <div class="questions-row">
+            <div class="question-box" data-category="0" data-value="400" onclick="openQuestion(0, 1)">$400</div>
+            <div class="question-box" data-category="1" data-value="400" onclick="openQuestion(1, 1)">$400</div>
+            <div class="question-box" data-category="2" data-value="400" onclick="openQuestion(2, 1)">$400</div>
+            <div class="question-box" data-category="3" data-value="400" onclick="openQuestion(3, 1)">$400</div>
+            <div class="question-box" data-category="4" data-value="400" onclick="openQuestion(4, 1)">$400</div>
+        </div>
+
+        <div class="questions-row">
+            <div class="question-box" data-category="0" data-value="600" onclick="openQuestion(0, 2)">$600</div>
+            <div class="question-box" data-category="1" data-value="600" onclick="openQuestion(1, 2)">$600</div>
+            <div class="question-box" data-category="2" data-value="600" onclick="openQuestion(2, 2)">$600</div>
+            <div class="question-box" data-category="3" data-value="600" onclick="openQuestion(3, 2)">$600</div>
+            <div class="question-box" data-category="4" data-value="600" onclick="openQuestion(4, 2)">$600</div>
+        </div>
+
+        <div class="questions-row">
+            <div class="question-box" data-category="0" data-value="800" onclick="openQuestion(0, 3)">$800</div>
+            <div class="question-box" data-category="1" data-value="800" onclick="openQuestion(1, 3)">$800</div>
+            <div class="question-box" data-category="2" data-value="800" onclick="openQuestion(2, 3)">$800</div>
+            <div class="question-box" data-category="3" data-value="800" onclick="openQuestion(3, 3)">$800</div>
+            <div class="question-box" data-category="4" data-value="800" onclick="openQuestion(4, 3)">$800</div>
+        </div>
+
+        <div class="questions-row">
+            <div class="question-box" data-category="0" data-value="1000" onclick="openQuestion(0, 4)">$1000</div>
+            <div class="question-box" data-category="1" data-value="1000" onclick="openQuestion(1, 4)">$1000</div>
+            <div class="question-box" data-category="2" data-value="1000" onclick="openQuestion(2, 4)">$1000</div>
+            <div class="question-box" data-category="3" data-value="1000" onclick="openQuestion(3, 4)">$1000</div>
+            <div class="question-box" data-category="4" data-value="1000" onclick="openQuestion(4, 4)">$1000</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="reset-btn" onclick="resetGame()">🔄 Reset Game</button>
+    </div>
+
+    <div id="questionModal" class="modal">
+        <div class="modal-content" id="modalContent">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="dailyDoubleBadge"></div>
+            <div class="question-header">
+                <h2 id="questionValue"></h2>
+                <div class="timer" id="timer">30</div>
+            </div>
+            <div class="question-text" id="questionText"></div>
+            <div class="answer-text" id="answerText"></div>
+            <div class="button-group">
+                <button class="btn-show" onclick="showAnswer()">📖 Show Answer</button>
+            </div>
+            <div class="team-buttons" id="teamButtons" style="display:none;">
+                <button class="team-btn" onclick="awardPoints(1)">Team 1 ✓</button>
+                <button class="team-btn" onclick="awardPoints(2)">Team 2 ✓</button>
+                <button class="team-btn" onclick="awardPoints(3)">Team 3 ✓</button>
+                <button class="team-btn" onclick="awardPoints(4)">Team 4 ✓</button>
+            </div>
+            <div class="team-buttons" id="wrongButtons" style="display:none; margin-top: 10px;">
+                <button class="team-btn" style="background: #ff0000;" onclick="deductPoints(1)">Team 1 ✗</button>
+                <button class="team-btn" style="background: #ff0000;" onclick="deductPoints(2)">Team 2 ✗</button>
+                <button class="team-btn" style="background: #ff0000;" onclick="deductPoints(3)">Team 3 ✗</button>
+                <button class="team-btn" style="background: #ff0000;" onclick="deductPoints(4)">Team 4 ✗</button>
+            </div>
+            <div class="button-group" style="margin-top: 20px;">
+                <button class="btn-close" onclick="closeModal()">Close Question</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Category 0: Endocrine Emergencies
+            [
+                {
+                    question: "A 45-year-old woman comes to the clinic complaining of 'I can't stop drinking water, and I feel like the Sahara Desert!' She reports urinating every 30 minutes. Her skin looks dry and flaky. What's your diagnosis?",
+                    answer: "What is Diabetes Insipidus? (Remember: 'Always Drinking, Always Dry' - caused by ADH deficiency or resistance)",
+                    dailyDouble: false
+                },
+                {
+                    question: "Your patient presents with a moon face, buffalo hump, and says 'I look like I'm storing nuts for winter!' She's also anxious and has high blood sugar. What condition screams 'TOO MANY STEROIDS!'?",
+                    answer: "What is Cushing Syndrome? (Motto: 'Excess is the Norm' - caused by excessive cortisol from pituitary adenomas, adrenal tumors, or ectopic ACTH)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A lung cancer patient is admitted with severe headache, confusion, and nausea. Labs show hyponatremia. The nurse jokes, 'He's drowning from the inside!' What's happening?",
+                    answer: "What is SIADH (Syndrome of Inappropriate Antidiuretic Hormone)? (Remember: 'Swollen with Water, Salt Washed Away' - excessive ADH despite low plasma osmolarity)",
+                    dailyDouble: true
+                },
+                {
+                    question: "You're managing a patient with weight gain, hirsutism, and skin changes. Treatment involves addressing the source of excess cortisol. What three main causes should you investigate?",
+                    answer: "What are pituitary adenomas (Cushing's disease), adrenal tumors, or ectopic ACTH production? (All lead to excessive cortisol in Cushing Syndrome)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A patient with SIADH asks about treatment. You explain three key interventions that help manage the 'salt washed away' situation. What are they?",
+                    answer: "What are fluid restriction, salt supplementation, and careful diuretic use? (These help manage hyponatremia in SIADH)",
+                    dailyDouble: false
+                }
+            ],
+            // Category 1: Diabetes Dilemmas
+            [
+                {
+                    question: "A 10-year-old suddenly develops the '3 Ps' - polydipsia, polyuria, and polyphagia. Mom says, 'He eats everything but keeps losing weight!' Blood sugar is 350 mg/dL. What type of diabetes is this 'Sudden Storm'?",
+                    answer: "What is Type 1 Diabetes Mellitus? (Autoimmune disorder attacking pancreatic beta cells, sudden onset, no insulin production)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A 55-year-old obese patient has slow-healing wounds and 'Creeping Concerns' about frequent infections. HbA1c is 7.8%. What's the diagnosis and first-line medication?",
+                    answer: "What is Type 2 Diabetes Mellitus treated initially with metformin? (Arises from insulin resistance, gradual onset, lifestyle interventions crucial)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A pregnant woman in her 28th week fails her glucose tolerance test. What are FOUR potential consequences for her baby?",
+                    answer: "What are hypoglycemia in the newborn, large-for-gestational-age infants, fetal defects, and premature delivery? (Complications of Gestational Diabetes Mellitus)",
+                    dailyDouble: false
+                },
+                {
+                    question: "You're teaching about the classic triad of diabetes symptoms. A student asks what 'polyphagia' means. Complete the triad with the other two 'poly' symptoms.",
+                    answer: "What are polydipsia (excessive thirst) and polyuria (frequent urination)? (The three Ps of diabetes - polydipsia, polyuria, polyphagia/increased appetite)",
+                    dailyDouble: false
+                },
+                {
+                    question: "DAILY DOUBLE! You're comparing Type 1 and Type 2 diabetes. Name THREE key differences in pathology, onset, and treatment between these conditions.",
+                    answer: "What are: Type 1 - autoimmune/no insulin/sudden onset/insulin required vs Type 2 - insulin resistance/gradual onset/lifestyle + oral meds initially? (Any 3 accurate differences accepted)",
+                    dailyDouble: true
+                }
+            ],
+            // Category 2: Neuro Nightmares
+            [
+                {
+                    question: "Your head injury patient suddenly shows bradycardia (HR 45), hypertension (BP 180/95), and irregular breathing. The attending says, 'That's Cushing's Triad!' What does this indicate?",
+                    answer: "What is increased intracranial pressure (ICP)? (Cushing's Triad = Bradycardia + Hypertension + Bradypnea/irregular respirations)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A patient has left-sided paralysis, slurred speech, facial droop, and loss of gag reflex. CT shows a hematoma. Is this ischemic or hemorrhagic stroke, and what's the key finding?",
+                    answer: "What is hemorrhagic stroke? (Key finding: presence of hematoma on CT scan from ruptured blood vessel)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A patient experiences temporary weakness and speech difficulty lasting 15 minutes. Imaging shows NO infarction. She calls it her 'mini-stroke.' What's the medical term and why is it reversible?",
+                    answer: "What is TIA (Transient Ischemic Attack)? (Temporary, focal cerebral ischemia with reversible deficits, resolves within 24 hours, no acute infarction on imaging)",
+                    dailyDouble: false
+                },
+                {
+                    question: "During a stroke, there's an area around the core ischemic zone where 'brain cells are still alive but at risk.' What's this critical zone called?",
+                    answer: "What is the ischemic penumbra? (Cells at risk of dying if blood flow not restored quickly - perimeter around core ischemic area)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A 35-year-old woman has vision problems, muscle weakness, and fatigue. MRI shows demyelination. Her T cells are attacking the myelin sheath in her CNS. What autoimmune disease is this?",
+                    answer: "What is Multiple Sclerosis (MS)? (Autoimmune disease where T cells attack myelin sheath in central nervous system - brain and spinal cord)",
+                    dailyDouble: true
+                }
+            ],
+            // Category 3: Renal Riddles
+            [
+                {
+                    question: "A college student on a high-protein diet and poor water intake develops severe flank pain. 'It feels like I'm passing a boulder!' What's the diagnosis and main cause?",
+                    answer: "What are renal calculi (kidney stones) caused by dehydration and high protein intake? (Concentrated urine increases risk of mineral crystallization)",
+                    dailyDouble: false
+                },
+                {
+                    question: "Your patient has flank pain, fever, and chills. Urinalysis shows pyuria and bacteriuria. What infection has ascended from the bladder to the kidneys?",
+                    answer: "What is pyelonephritis (kidney infection)? (Bacterial ascension infects renal parenchyma - shows elevated WBC count and bacteria in urine)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A child develops periorbital puffiness, facial edema, and cola-colored urine two weeks after strep throat. Blood pressure is elevated. What's the most common type of acute glomerulonephritis?",
+                    answer: "What is Post-Streptococcal Glomerulonephritis (PSGN)? (Immune response to strep infection causes glomerular inflammation and damage)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A patient has decreased kidney function due to heart failure and low blood volume. Is this pre-renal, intrarenal, or post-renal dysfunction? Name both causes.",
+                    answer: "What is pre-renal dysfunction caused by hypovolemia (low blood volume) and heart failure? (Decreased blood flow to kidneys reduces renal perfusion)",
+                    dailyDouble: true
+                },
+                {
+                    question: "A kidney stone is blocking the ureter, causing urine backup and dilation of the renal pelvis. What's this swelling condition called, and what's the underlying problem type?",
+                    answer: "What is hydronephrosis caused by obstructive uropathy? (Obstruction in urinary tract causes backup and dilation of renal pelvis)",
+                    dailyDouble: false
+                }
+            ],
+            // Category 4: Clinical Clues
+            [
+                {
+                    question: "A patient complains of involuntary urine leakage when coughing, squatting, or lifting weights. What type of incontinence is related to weakened pelvic floor muscles?",
+                    answer: "What is stress incontinence? (Occurs during activities increasing intra-abdominal pressure due to weakened pelvic floor/urethral sphincter)",
+                    dailyDouble: false
+                },
+                {
+                    question: "Your Parkinson's patient asks why they have tremors and difficulty moving. You explain about a critical brain region that's lost dopamine-producing neurons. What is it?",
+                    answer: "What is the substantia nigra? (Region responsible for producing dopamine, which regulates movement, coordination, and balance)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A patient describes excruciating one-sided headache with bloodshot eyes, tearing, pupil constriction, and nasal discharge. What's this headache disorder group called?",
+                    answer: "What is Trigeminal Autonomic Cephalgia (TAC)? (Characterized by unilateral pain, restlessness, and autonomic symptoms)",
+                    dailyDouble: false
+                },
+                {
+                    question: "A nephrotic syndrome patient shows three classic symptoms. Name all three that result from glomerular damage and protein loss.",
+                    answer: "What are hypoalbuminemia, proteinuria, and edema? (Glomerular damage causes albumin to leak, decreasing colloid oncotic pressure)",
+                    dailyDouble: false
+                },
+                {
+                    question: "DAILY DOUBLE! Recite the normal ranges for ALL FOUR vital signs: temperature, pulse, respirations, and blood pressure.",
+                    answer: "What are: Temperature 97-99°F, Pulse 60-100 beats/min, Respirations 12-20 breaths/min, Blood Pressure 120/80 mmHg?",
+                    dailyDouble: true
+                }
+            ]
+        ];
+
+        let scores = [0, 0, 0, 0];
+        let currentQuestion = null;
+        let timerInterval = null;
+        let timeLeft = 30;
+
+        function openQuestion(category, questionIndex) {
+            const box = event.target;
+            if (box.classList.contains('answered')) return;
+
+            currentQuestion = {
+                category: category,
+                index: questionIndex,
+                value: parseInt(box.dataset.value),
+                box: box
+            };
+
+            const q = questions[category][questionIndex];
+            
+            document.getElementById('questionValue').textContent = '$' + currentQuestion.value;
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('answerText').textContent = q.answer;
+            document.getElementById('answerText').style.display = 'none';
+            document.getElementById('teamButtons').style.display = 'none';
+            document.getElementById('wrongButtons').style.display = 'none';
+
+            const modalContent = document.getElementById('modalContent');
+            const ddBadge = document.getElementById('dailyDoubleBadge');
+            
+            if (q.dailyDouble) {
+                modalContent.classList.add('daily-double');
+                ddBadge.innerHTML = '<div class="dd-badge">⚡ DAILY DOUBLE! ⚡</div>';
+                currentQuestion.value *= 2; // Double the points!
+                document.getElementById('questionValue').textContent = '$' + currentQuestion.value + ' (DAILY DOUBLE!)';
+            } else {
+                modalContent.classList.remove('daily-double');
+                ddBadge.innerHTML = '';
+            }
+
+            document.getElementById('questionModal').style.display = 'block';
+            
+            startTimer();
+        }
+
+        function startTimer() {
+            timeLeft = 30;
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = timeLeft;
+            timerEl.classList.remove('warning');
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                
+                if (timeLeft <= 10) {
+                    timerEl.classList.add('warning');
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerEl.textContent = "TIME'S UP!";
+                }
+            }, 1000);
+        }
+
+        function showAnswer() {
+            clearInterval(timerInterval);
+            document.getElementById('answerText').style.display = 'block';
+            document.getElementById('teamButtons').style.display = 'grid';
+            document.getElementById('wrongButtons').style.display = 'grid';
+        }
+
+        function awardPoints(teamNum) {
+            scores[teamNum - 1] += currentQuestion.value;
+            updateScoreboard();
+            currentQuestion.box.classList.add('answered');
+            closeModal();
+        }
+
+        function deductPoints(teamNum) {
+            scores[teamNum - 1] -= currentQuestion.value;
+            updateScoreboard();
+        }
+
+        function updateScoreboard() {
+            for (let i = 1; i <= 4; i++) {
+                const scoreEl = document.querySelector(`#team${i} .score`);
+                scoreEl.textContent = '$' + scores[i - 1];
+                
+                // Highlight the team with highest score
+                document.getElementById(`team${i}`).classList.remove('active');
+            }
+            
+            const maxScore = Math.max(...scores);
+            const leadingTeams = scores.map((score, index) => score === maxScore ? index + 1 : null).filter(x => x);
+            leadingTeams.forEach(teamNum => {
+                document.getElementById(`team${teamNum}`).classList.add('active');
+            });
+        }
+
+        function closeModal() {
+            clearInterval(timerInterval);
+            document.getElementById('questionModal').style.display = 'none';
+        }
+
+        function resetGame() {
+            if (confirm('Are you sure you want to reset the game? All scores will be lost!')) {
+                scores = [0, 0, 0, 0];
+                updateScoreboard();
+                
+                const boxes = document.querySelectorAll('.question-box');
+                boxes.forEach(box => box.classList.remove('answered'));
+                
+                closeModal();
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('questionModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize scoreboard
+        updateScoreboard();
+    </script>
+</body>
+</html>

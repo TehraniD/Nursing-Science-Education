@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Equilibrium Constant — Interactive Study Guide</title>
+<style>
+  :root {
+    --pri: #1a5276;
+    --acc: #f39c12;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --green: #27ae60;
+    --red: #e74c3c;
+    --blue: #3498db;
+    --muted: #95a5a6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  
+  /* ── Header ── */
+  .hero {
+    background: linear-gradient(135deg, #1a5276 0%, #2980b9 50%, #1abc9c 100%);
+    color: #fff; text-align: center; padding: 2.5rem 1rem 2rem;
+  }
+  .hero h1 { font-size: 1.8rem; margin-bottom: .3rem; }
+  .hero p { opacity: .9; font-size: 1rem; }
+  .hero .badge-row { margin-top: .8rem; display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
+  .hero .badge { background: rgba(255,255,255,.18); padding: .25rem .8rem; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+
+  /* ── Navigation Tabs ── */
+  .tab-bar {
+    display: flex; overflow-x: auto; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .tab-btn {
+    flex: 1; min-width: 110px; padding: .7rem .4rem; border: none; background: #fff;
+    font-size: .78rem; font-weight: 600; color: var(--muted); cursor: pointer;
+    border-bottom: 3px solid transparent; transition: all .2s;
+  }
+  .tab-btn:hover { color: var(--pri); }
+  .tab-btn.active { color: var(--pri); border-bottom-color: var(--acc); }
+
+  .tab-panel { display: none; max-width: 800px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .tab-panel.active { display: block; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card); border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    padding: 1.4rem; margin-bottom: 1.5rem;
+  }
+  .card h2 { color: var(--pri); font-size: 1.1rem; margin-bottom: .6rem; }
+  .card h3 { color: var(--pri); font-size: .95rem; margin: 1rem 0 .4rem; }
+
+  .concept-box {
+    background: #eaf7ff; border-left: 4px solid var(--blue); padding: .8rem 1rem;
+    border-radius: 6px; margin: .8rem 0;
+  }
+  .equation-box {
+    background: #fef9e7; border: 2px solid var(--acc); border-radius: 10px;
+    text-align: center; padding: 1rem; margin: 1rem 0; font-size: 1.1rem; font-weight: 600;
+  }
+  .equation-box .small { font-size: .8rem; font-weight: 400; color: var(--muted); margin-top: .3rem; }
+
+  /* ── Quiz Styles ── */
+  .quiz-q { margin-bottom: 1.2rem; }
+  .quiz-q p { font-weight: 600; margin-bottom: .5rem; }
+  .quiz-options label {
+    display: block; padding: .5rem .8rem; margin: .3rem 0;
+    border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: .2s;
+  }
+  .quiz-options label:hover { border-color: var(--blue); background: #f0f8ff; }
+  .quiz-options input[type="radio"] { margin-right: .5rem; }
+  .quiz-options label.correct { border-color: var(--green); background: #eafaf1; }
+  .quiz-options label.wrong { border-color: var(--red); background: #fdf2f2; }
+  .quiz-feedback {
+    display: none; margin-top: .5rem; padding: .5rem .8rem;
+    border-radius: 6px; font-size: .88rem;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: #eafaf1; color: var(--green); }
+  .quiz-feedback.wrong-fb { background: #fdf2f2; color: var(--red); }
+
+  .btn {
+    display: inline-block; padding: .55rem 1.2rem; border: none; border-radius: 8px;
+    font-size: .85rem; font-weight: 600; cursor: pointer; transition: .2s;
+  }
+  .btn-primary { background: var(--pri); color: #fff; }
+  .btn-primary:hover { background: #154360; }
+  .btn-secondary { background: var(--acc); color: #fff; }
+  .btn-secondary:hover { background: #e67e22; }
+
+  /* ── ICE Table ── */
+  .ice-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .88rem; }
+  .ice-table th { background: var(--pri); color: #fff; padding: .5rem; text-align: center; }
+  .ice-table td { padding: .5rem; text-align: center; border: 1px solid #ddd; }
+  .ice-table .row-label { background: #ecf0f1; font-weight: 700; text-align: left; }
+  .ice-table input {
+    width: 90%; border: 2px solid #ddd; border-radius: 6px; padding: .35rem;
+    text-align: center; font-size: .85rem;
+  }
+  .ice-table input:focus { border-color: var(--blue); outline: none; }
+  .ice-table input.correct-input { border-color: var(--green); background: #eafaf1; }
+  .ice-table input.wrong-input { border-color: var(--red); background: #fdf2f2; }
+
+  /* ── Beer's Law Visualization ── */
+  .beers-law-demo {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+    justify-content: center; margin: 1rem 0;
+  }
+  .cuvette-container { text-align: center; }
+  .cuvette {
+    width: 60px; height: 100px; border: 3px solid #555; border-radius: 4px;
+    margin: 0 auto; position: relative; overflow: hidden;
+  }
+  .cuvette-fill {
+    position: absolute; bottom: 0; width: 100%; height: 80%;
+    transition: background-color .4s;
+  }
+  .cuvette-label { font-size: .75rem; margin-top: .3rem; font-weight: 600; color: var(--muted); }
+  .slider-group { text-align: center; }
+  .slider-group label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: .3rem; }
+  .slider-group input[type="range"] { width: 200px; }
+  .reading-display {
+    background: #222; color: #0f0; font-family: 'Courier New', monospace;
+    padding: .8rem 1.2rem; border-radius: 8px; text-align: center;
+    font-size: 1.3rem; min-width: 150px;
+  }
+
+  /* ── Step-by-step ── */
+  .step { display: none; }
+  .step.active { display: block; }
+  .step-indicator {
+    display: flex; gap: .5rem; justify-content: center; margin: 1rem 0;
+  }
+  .step-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: #ddd;
+  }
+  .step-dot.active { background: var(--acc); }
+  .step-dot.done { background: var(--green); }
+  .step-nav { display: flex; justify-content: space-between; margin-top: 1rem; }
+
+  /* ── Score ── */
+  .score-display {
+    text-align: center; padding: 1rem; background: linear-gradient(135deg, #27ae60, #2ecc71);
+    border-radius: 12px; color: #fff; font-size: 1.3rem; font-weight: 700;
+  }
+
+  /* ── Flashcard ── */
+  .flashcard {
+    perspective: 800px; cursor: pointer; margin: 1rem auto; max-width: 400px;
+  }
+  .flashcard-inner {
+    position: relative; width: 100%; min-height: 160px;
+    transition: transform .5s; transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute; width: 100%; min-height: 160px; backface-visibility: hidden;
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem; text-align: center;
+  }
+  .flashcard-front { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; font-size: 1rem; font-weight: 600; }
+  .flashcard-back { background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; transform: rotateY(180deg); font-size: .9rem; }
+  .flashcard-hint { text-align: center; color: var(--muted); font-size: .78rem; margin-top: .3rem; }
+
+  /* Progress bar */
+  .progress-bar { width: 100%; height: 6px; background: #e0e0e0; border-radius: 3px; margin: .5rem 0; }
+  .progress-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width .3s; }
+
+  .footer {
+    text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: .8rem;
+    border-top: 1px solid #e0e0e0; margin-top: 2rem;
+  }
+  .footer a { color: var(--pri); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.3rem; }
+    .tab-btn { font-size: .7rem; min-width: 80px; padding: .6rem .3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Equilibrium Constant of a Reaction</h1>
+  <p>Interactive Study Guide — Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺</p>
+  <div class="badge-row">
+    <span class="badge">CHM 152 · Lab 5</span>
+    <span class="badge">6 Learning Modules</span>
+    <span class="badge">Interactive</span>
+  </div>
+</div>
+
+<!-- ── Tab Navigation ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('concepts')">💡 Concepts</button>
+  <button class="tab-btn" onclick="showTab('beers')">📊 Beer's Law</button>
+  <button class="tab-btn" onclick="showTab('ice')">🧊 ICE Tables</button>
+  <button class="tab-btn" onclick="showTab('walkthrough')">🔬 Walkthrough</button>
+  <button class="tab-btn" onclick="showTab('flashcards')">🃏 Flashcards</button>
+  <button class="tab-btn" onclick="showTab('quiz')">✅ Quiz</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 1: KEY CONCEPTS                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-concepts" class="tab-panel active">
+
+  <div class="card">
+    <h2>What Is Chemical Equilibrium?</h2>
+    <p>In a reversible reaction, <strong>equilibrium</strong> is reached when the rate of the forward reaction equals the rate of the reverse reaction. At this point, concentrations stop changing — but both reactions are still occurring.</p>
+    <div class="equation-box">
+      Fe³⁺(aq) + SCN⁻(aq) ⇌ FeSCN²⁺(aq)
+      <div class="small">iron(III) + thiocyanate ⇌ iron(III) thiocyanate (blood-red)</div>
+    </div>
+    <div class="concept-box">
+      <strong>Key insight:</strong> Equilibrium does NOT mean the concentrations are equal! It means they are <em>constant</em>. The ratio of products to reactants is described by K<sub>C</sub>.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>The Equilibrium Constant (K<sub>C</sub>)</h2>
+    <p>For the reaction above:</p>
+    <div class="equation-box">
+      K<sub>C</sub> = [FeSCN²⁺] / ([Fe³⁺] × [SCN⁻])
+      <div class="small">All concentrations measured at equilibrium</div>
+    </div>
+    <ul style="margin-top:.8rem;">
+      <li><strong>K<sub>C</sub> &gt; 1:</strong> Products are favored at equilibrium</li>
+      <li><strong>K<sub>C</sub> &lt; 1:</strong> Reactants are favored at equilibrium</li>
+      <li><strong>K<sub>C</sub> ≈ 1:</strong> Roughly equal amounts of products and reactants</li>
+    </ul>
+    <div class="concept-box">
+      For this reaction, K<sub>C</sub> ≈ 100–150 at room temperature. Since K<sub>C</sub> &gt; 1, products are favored — that's why the solution turns red!
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Le Chatelier's Principle & Temperature</h2>
+    <p>When a system at equilibrium is disturbed, it shifts to partially counteract the disturbance.</p>
+
+    <h3>For an Endothermic Reaction (absorbs heat):</h3>
+    <div class="equation-box" style="font-size:.95rem;">
+      Reactants + Heat → Products
+    </div>
+    <p>↑ Temperature → shifts <strong>right</strong> → K<sub>C</sub> <strong>increases</strong></p>
+
+    <h3>For an Exothermic Reaction (releases heat):</h3>
+    <div class="equation-box" style="font-size:.95rem;">
+      Reactants → Products + Heat
+    </div>
+    <p>↑ Temperature → shifts <strong>left</strong> → K<sub>C</sub> <strong>decreases</strong></p>
+
+    <div class="concept-box">
+      <strong>Remember:</strong> Only temperature changes K<sub>C</sub>. Adding more reactant or product shifts the equilibrium but does NOT change K<sub>C</sub>.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 2: BEER'S LAW VISUALIZATION           -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-beers" class="tab-panel">
+
+  <div class="card">
+    <h2>Beer's Law (A = εlc)</h2>
+    <p>Beer's Law states that absorbance is <strong>directly proportional</strong> to concentration (when path length and molar absorptivity are constant).</p>
+    <div class="equation-box">
+      A = ε × l × c
+      <div class="small">A = absorbance &nbsp;|&nbsp; ε = molar absorptivity &nbsp;|&nbsp; l = path length &nbsp;|&nbsp; c = concentration</div>
+    </div>
+    <p>In this lab, we measure absorbance at <strong>447 nm</strong> because FeSCN²⁺ absorbs light most strongly at this wavelength.</p>
+  </div>
+
+  <div class="card">
+    <h2>Interactive: See Beer's Law in Action</h2>
+    <p>Adjust the concentration slider to see how the solution color and absorbance change.</p>
+
+    <div class="beers-law-demo">
+      <div class="slider-group">
+        <label for="concSlider">[FeSCN²⁺] Concentration</label>
+        <input type="range" id="concSlider" min="0" max="100" value="30" oninput="updateBeersLaw()">
+        <div id="concLabel" style="font-size:.85rem; color:var(--muted);">6.0 × 10⁻⁵ M</div>
+      </div>
+
+      <div class="cuvette-container">
+        <div class="cuvette">
+          <div class="cuvette-fill" id="cuvetteFill" style="background-color: rgba(180,40,20,0.3);"></div>
+        </div>
+        <div class="cuvette-label">Cuvette at 447 nm</div>
+      </div>
+
+      <div>
+        <div class="reading-display">
+          A = <span id="absReading">0.135</span>
+        </div>
+        <div style="font-size:.75rem; color:var(--muted); text-align:center; margin-top:.3rem;">Spec 20 Reading</div>
+      </div>
+    </div>
+
+    <div class="concept-box">
+      <strong>Notice:</strong> As concentration increases, the solution appears darker red and absorbance increases proportionally. This is exactly Beer's Law!
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Why Do We Make a Standard Curve?</h2>
+    <ol>
+      <li><strong>Prepare known solutions</strong> — We use excess Fe³⁺ to ensure all SCN⁻ → FeSCN²⁺, so we know the exact [FeSCN²⁺].</li>
+      <li><strong>Measure absorbance</strong> — Use the Spec 20 at 447 nm for each standard.</li>
+      <li><strong>Plot the data</strong> — [FeSCN²⁺] on the x-axis, Absorbance on the y-axis.</li>
+      <li><strong>Draw line of best fit</strong> — The slope = ε × l (molar absorptivity × path length).</li>
+      <li><strong>Use it!</strong> — For unknown solutions, measure absorbance → read concentration from the graph.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 3: ICE TABLE PRACTICE                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-ice" class="tab-panel">
+
+  <div class="card">
+    <h2>What Is an ICE Table?</h2>
+    <p>ICE stands for <strong>I</strong>nitial, <strong>C</strong>hange, <strong>E</strong>quilibrium — a systematic way to track concentrations through a reaction.</p>
+
+    <table class="ice-table" style="margin:1rem 0;">
+      <tr><th></th><th>Fe³⁺</th><th>SCN⁻</th><th>FeSCN²⁺</th></tr>
+      <tr><td class="row-label">I (Initial)</td><td>[Fe³⁺]₀</td><td>[SCN⁻]₀</td><td>0</td></tr>
+      <tr><td class="row-label">C (Change)</td><td>− x</td><td>− x</td><td>+ x</td></tr>
+      <tr><td class="row-label">E (Equilibrium)</td><td>[Fe³⁺]₀ − x</td><td>[SCN⁻]₀ − x</td><td>x</td></tr>
+    </table>
+
+    <div class="concept-box">
+      In this lab, <strong>x = [FeSCN²⁺]<sub>eq</sub></strong>, which you determine from your standard curve. Once you know x, you can calculate all equilibrium concentrations!
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Practice: Fill in the ICE Table</h2>
+    <p>Given: [Fe³⁺]₀ = 1.00 × 10⁻³ M, [SCN⁻]₀ = 2.00 × 10⁻⁴ M, [FeSCN²⁺]<sub>eq</sub> = 3.50 × 10⁻⁵ M</p>
+    <p style="font-size:.85rem; color:var(--muted);">Enter values in scientific notation (e.g., 9.65e-4)</p>
+
+    <table class="ice-table">
+      <tr><th></th><th>Fe³⁺ (M)</th><th>SCN⁻ (M)</th><th>FeSCN²⁺ (M)</th></tr>
+      <tr>
+        <td class="row-label">Initial</td>
+        <td><input type="text" id="ice-i-fe" placeholder="?" data-answer="1.00e-3"></td>
+        <td><input type="text" id="ice-i-scn" placeholder="?" data-answer="2.00e-4"></td>
+        <td><input type="text" id="ice-i-fescn" placeholder="?" data-answer="0"></td>
+      </tr>
+      <tr>
+        <td class="row-label">Change</td>
+        <td><input type="text" id="ice-c-fe" placeholder="?" data-answer="-3.50e-5"></td>
+        <td><input type="text" id="ice-c-scn" placeholder="?" data-answer="-3.50e-5"></td>
+        <td><input type="text" id="ice-c-fescn" placeholder="?" data-answer="3.50e-5"></td>
+      </tr>
+      <tr>
+        <td class="row-label">Equilibrium</td>
+        <td><input type="text" id="ice-e-fe" placeholder="?" data-answer="9.65e-4"></td>
+        <td><input type="text" id="ice-e-scn" placeholder="?" data-answer="1.65e-4"></td>
+        <td><input type="text" id="ice-e-fescn" placeholder="?" data-answer="3.50e-5"></td>
+      </tr>
+    </table>
+
+    <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="checkICE()">Check Answers</button>
+      <button class="btn btn-secondary" onclick="showICEAnswers()">Show Answers</button>
+    </div>
+
+    <div id="ice-feedback" class="quiz-feedback" style="margin-top:.8rem;"></div>
+
+    <div class="card" style="margin-top:1rem; background:#fef9e7;">
+      <h3>Now calculate K<sub>C</sub>:</h3>
+      <p>Using your equilibrium values above:</p>
+      <div class="equation-box" style="font-size:.95rem;">
+        K<sub>C</sub> = [FeSCN²⁺]<sub>eq</sub> / ([Fe³⁺]<sub>eq</sub> × [SCN⁻]<sub>eq</sub>) = &nbsp;
+        <input type="text" id="ice-kc" placeholder="?" data-answer="220" style="width:80px; border:2px solid #ddd; border-radius:6px; padding:.3rem; text-align:center;">
+      </div>
+      <button class="btn btn-primary" onclick="checkKc()" style="margin-top:.5rem;">Check K<sub>C</sub></button>
+      <div id="kc-feedback" class="quiz-feedback" style="margin-top:.5rem;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 4: STEP-BY-STEP WALKTHROUGH           -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-walkthrough" class="tab-panel">
+
+  <div class="card">
+    <h2>Lab Procedure Walkthrough</h2>
+    <p>Step through the lab procedure with explanations at each stage.</p>
+
+    <div class="step-indicator" id="stepIndicator"></div>
+    <div class="progress-bar"><div class="progress-fill" id="stepProgress" style="width:14%;"></div></div>
+
+    <div id="step-1" class="step active">
+      <h3>Step 1: Prepare Standard Solutions</h3>
+      <p>You'll prepare 5 standard solutions in 50 mL volumetric flasks. Each contains:</p>
+      <ul>
+        <li><strong>5.00 mL</strong> of 0.2 M Fe(NO₃)₃ — a huge excess of Fe³⁺</li>
+        <li>A measured volume of 2.00 × 10⁻³ M KSCN (varies: 2.00, 3.00, 4.00, 5.00 mL)</li>
+        <li>0.10 M HNO₃ — filled to the 50.0 mL mark</li>
+      </ul>
+      <div class="concept-box">
+        <strong>Why excess Fe³⁺?</strong> When Fe³⁺ is in huge excess, the equilibrium shifts far to the right. Nearly ALL the SCN⁻ converts to FeSCN²⁺. This lets us assume [FeSCN²⁺] ≈ [SCN⁻]<sub>initial after dilution</sub>.
+      </div>
+    </div>
+
+    <div id="step-2" class="step">
+      <h3>Step 2: Calculate Standard Concentrations</h3>
+      <p>Use the dilution formula to find [FeSCN²⁺] in each standard:</p>
+      <div class="equation-box" style="font-size:.95rem;">
+        [FeSCN²⁺] = [KSCN]<sub>stock</sub> × (V<sub>KSCN</sub> / V<sub>total</sub>)
+      </div>
+      <p><strong>Example — Standard C3:</strong></p>
+      <p>[FeSCN²⁺] = 2.00 × 10⁻³ M × (3.00 mL / 50.0 mL) = <strong>1.20 × 10⁻⁴ M</strong></p>
+    </div>
+
+    <div id="step-3" class="step">
+      <h3>Step 3: Measure Absorbance (Standard Curve)</h3>
+      <p>Using the Spec 20 spectrophotometer at <strong>447 nm</strong>:</p>
+      <ol>
+        <li>Set wavelength to 447 nm</li>
+        <li>Zero with C1 (the blank — no SCN⁻ added)</li>
+        <li>Measure absorbance of C2 through C5</li>
+        <li>Record all values</li>
+      </ol>
+      <div class="concept-box">
+        <strong>Tip:</strong> Always wipe cuvettes with Kimwipes! Fingerprints scatter light and give false readings.
+      </div>
+    </div>
+
+    <div id="step-4" class="step">
+      <h3>Step 4: Plot the Standard Curve</h3>
+      <p>Plot your data with:</p>
+      <ul>
+        <li><strong>X-axis:</strong> [FeSCN²⁺] in M</li>
+        <li><strong>Y-axis:</strong> Absorbance</li>
+      </ul>
+      <p>Draw the line of best fit. Determine:</p>
+      <ul>
+        <li><strong>Slope</strong> — this equals ε × l (molar absorptivity × path length)</li>
+        <li><strong>Y-intercept</strong> — should be close to zero for a good curve</li>
+        <li><strong>R²</strong> — should be ≥ 0.99</li>
+      </ul>
+      <p>The equation of your line: <strong>A = slope × [FeSCN²⁺]</strong></p>
+    </div>
+
+    <div id="step-5" class="step">
+      <h3>Step 5: Prepare Equilibrium Solutions</h3>
+      <p>Now you use <strong>dilute</strong> Fe(NO₃)₃ (2.00 × 10⁻³ M) in 10 mL volumetric flasks.</p>
+      <p>Each test tube has different volumes of Fe³⁺ and SCN⁻ — but same total volume (10 mL).</p>
+      <div class="concept-box">
+        <strong>Critical difference:</strong> Unlike the standards, neither reactant is in excess. The reaction reaches TRUE equilibrium — not all SCN⁻ converts to product.
+      </div>
+    </div>
+
+    <div id="step-6" class="step">
+      <h3>Step 6: Measure and Calculate</h3>
+      <ol>
+        <li>Measure absorbance of each equilibrium solution</li>
+        <li>Use your standard curve to find [FeSCN²⁺]<sub>eq</sub></li>
+        <li>Calculate initial concentrations using dilution (C₁V₁ = C₂V₂)</li>
+        <li>Find equilibrium concentrations: [X]<sub>eq</sub> = [X]<sub>init</sub> − [FeSCN²⁺]<sub>eq</sub></li>
+        <li>Calculate K<sub>C</sub> for each run</li>
+      </ol>
+    </div>
+
+    <div id="step-7" class="step">
+      <h3>Step 7: Analyze Results</h3>
+      <ul>
+        <li>All 5 K<sub>C</sub> values should be <strong>similar</strong> (within ±20–30%)</li>
+        <li>Calculate the <strong>average K<sub>C</sub></strong></li>
+        <li>Calculate the <strong>standard deviation</strong></li>
+        <li>Compare to literature value (~100–150 at room temperature)</li>
+      </ul>
+      <div class="concept-box">
+        <strong>If your values are wildly different</strong>, check for: wrong Fe(NO₃)₃ solution, pipetting errors, or misreading the graph.
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-primary" id="prevBtn" onclick="changeStep(-1)" disabled>← Previous</button>
+      <span id="stepLabel" style="font-weight:600; color:var(--muted);">Step 1 of 7</span>
+      <button class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 5: FLASHCARDS                          -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-flashcards" class="tab-panel">
+
+  <div class="card">
+    <h2>Key Term Flashcards</h2>
+    <p>Click each card to flip it. Review until you can answer without peeking!</p>
+  </div>
+
+  <div id="flashcard-area">
+    <!-- Cards inserted by JS -->
+  </div>
+  <div style="text-align:center; margin-top:1rem;">
+    <button class="btn btn-primary" id="fcPrev" onclick="changeFlashcard(-1)">← Prev</button>
+    <span id="fcLabel" style="margin:0 1rem; font-weight:600; color:var(--muted);">1 / 8</span>
+    <button class="btn btn-primary" id="fcNext" onclick="changeFlashcard(1)">Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  TAB 6: QUIZ                                -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="tab-quiz" class="tab-panel">
+
+  <div class="card">
+    <h2>Knowledge Check — 10 Questions</h2>
+    <div class="progress-bar"><div class="progress-fill" id="quizProgress" style="width:0%;"></div></div>
+    <p id="quizScoreLabel" style="text-align:center; font-size:.85rem; color:var(--muted); margin-top:.3rem;">Score: 0 / 10</p>
+  </div>
+
+  <div class="card">
+
+    <!-- Q1 -->
+    <div class="quiz-q" id="q1">
+      <p>1. What does it mean when a system is at chemical equilibrium?</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q1" value="a" onclick="gradeQ('q1','c')"> All reactions have stopped</label>
+        <label><input type="radio" name="q1" value="b" onclick="gradeQ('q1','c')"> Reactant and product concentrations are equal</label>
+        <label><input type="radio" name="q1" value="c" onclick="gradeQ('q1','c')"> Forward and reverse reaction rates are equal</label>
+        <label><input type="radio" name="q1" value="d" onclick="gradeQ('q1','c')"> Only products are present</label>
+      </div>
+      <div class="quiz-feedback" id="q1-fb"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-q" id="q2">
+      <p>2. In this lab, why do we use a large excess of Fe³⁺ for the standard solutions?</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q2" value="a" onclick="gradeQ('q2','b')"> To make the solution more colorful</label>
+        <label><input type="radio" name="q2" value="b" onclick="gradeQ('q2','b')"> To ensure all SCN⁻ converts to FeSCN²⁺</label>
+        <label><input type="radio" name="q2" value="c" onclick="gradeQ('q2','b')"> To increase the temperature</label>
+        <label><input type="radio" name="q2" value="d" onclick="gradeQ('q2','b')"> To prevent the solution from being toxic</label>
+      </div>
+      <div class="quiz-feedback" id="q2-fb"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-q" id="q3">
+      <p>3. What wavelength does the Spec 20 use in this experiment?</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q3" value="a" onclick="gradeQ('q3','c')"> 550 nm</label>
+        <label><input type="radio" name="q3" value="b" onclick="gradeQ('q3','c')"> 400 nm</label>
+        <label><input type="radio" name="q3" value="c" onclick="gradeQ('q3','c')"> 447 nm</label>
+        <label><input type="radio" name="q3" value="d" onclick="gradeQ('q3','c')"> 700 nm</label>
+      </div>
+      <div class="quiz-feedback" id="q3-fb"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-q" id="q4">
+      <p>4. Beer's Law states that absorbance is directly proportional to:</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q4" value="a" onclick="gradeQ('q4','a')"> Concentration</label>
+        <label><input type="radio" name="q4" value="b" onclick="gradeQ('q4','a')"> Temperature</label>
+        <label><input type="radio" name="q4" value="c" onclick="gradeQ('q4','a')"> Pressure</label>
+        <label><input type="radio" name="q4" value="d" onclick="gradeQ('q4','a')"> Volume</label>
+      </div>
+      <div class="quiz-feedback" id="q4-fb"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-q" id="q5">
+      <p>5. If [Fe³⁺]₀ = 1.00 × 10⁻³ M and [FeSCN²⁺]<sub>eq</sub> = 5.0 × 10⁻⁵ M, what is [Fe³⁺]<sub>eq</sub>?</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q5" value="a" onclick="gradeQ('q5','b')"> 1.05 × 10⁻³ M</label>
+        <label><input type="radio" name="q5" value="b" onclick="gradeQ('q5','b')"> 9.50 × 10⁻⁴ M</label>
+        <label><input type="radio" name="q5" value="c" onclick="gradeQ('q5','b')"> 5.00 × 10⁻⁵ M</label>
+        <label><input type="radio" name="q5" value="d" onclick="gradeQ('q5','b')"> 1.00 × 10⁻³ M</label>
+      </div>
+      <div class="quiz-feedback" id="q5-fb"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-q" id="q6">
+      <p>6. For the reaction Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺, the K<sub>C</sub> expression is:</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q6" value="a" onclick="gradeQ('q6','a')"> [FeSCN²⁺] / ([Fe³⁺][SCN⁻])</label>
+        <label><input type="radio" name="q6" value="b" onclick="gradeQ('q6','a')"> ([Fe³⁺][SCN⁻]) / [FeSCN²⁺]</label>
+        <label><input type="radio" name="q6" value="c" onclick="gradeQ('q6','a')"> [FeSCN²⁺] × [Fe³⁺] × [SCN⁻]</label>
+        <label><input type="radio" name="q6" value="d" onclick="gradeQ('q6','a')"> [Fe³⁺] / [SCN⁻]</label>
+      </div>
+      <div class="quiz-feedback" id="q6-fb"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-q" id="q7">
+      <p>7. If an endothermic reaction is heated, K<sub>C</sub> will:</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q7" value="a" onclick="gradeQ('q7','a')"> Increase</label>
+        <label><input type="radio" name="q7" value="b" onclick="gradeQ('q7','a')"> Decrease</label>
+        <label><input type="radio" name="q7" value="c" onclick="gradeQ('q7','a')"> Stay the same</label>
+        <label><input type="radio" name="q7" value="d" onclick="gradeQ('q7','a')"> Become zero</label>
+      </div>
+      <div class="quiz-feedback" id="q7-fb"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-q" id="q8">
+      <p>8. Adding more Fe³⁺ to an equilibrium mixture will:</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q8" value="a" onclick="gradeQ('q8','b')"> Decrease K<sub>C</sub></label>
+        <label><input type="radio" name="q8" value="b" onclick="gradeQ('q8','b')"> Shift equilibrium to the right (more FeSCN²⁺) but K<sub>C</sub> stays the same</label>
+        <label><input type="radio" name="q8" value="c" onclick="gradeQ('q8','b')"> Shift equilibrium to the left</label>
+        <label><input type="radio" name="q8" value="d" onclick="gradeQ('q8','b')"> Have no effect</label>
+      </div>
+      <div class="quiz-feedback" id="q8-fb"></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-q" id="q9">
+      <p>9. When 3.00 mL of 2.00 × 10⁻³ M KSCN is diluted to 50.0 mL, the final [SCN⁻] is:</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q9" value="a" onclick="gradeQ('q9','c')"> 2.00 × 10⁻³ M</label>
+        <label><input type="radio" name="q9" value="b" onclick="gradeQ('q9','c')"> 6.00 × 10⁻³ M</label>
+        <label><input type="radio" name="q9" value="c" onclick="gradeQ('q9','c')"> 1.20 × 10⁻⁴ M</label>
+        <label><input type="radio" name="q9" value="d" onclick="gradeQ('q9','c')"> 3.00 × 10⁻⁴ M</label>
+      </div>
+      <div class="quiz-feedback" id="q9-fb"></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-q" id="q10">
+      <p>10. A student's K<sub>C</sub> value is only 15 instead of the expected ~100. The most likely error is:</p>
+      <div class="quiz-options">
+        <label><input type="radio" name="q10" value="a" onclick="gradeQ('q10','c')"> The spectrophotometer was not calibrated</label>
+        <label><input type="radio" name="q10" value="b" onclick="gradeQ('q10','c')"> The cuvette was dirty</label>
+        <label><input type="radio" name="q10" value="c" onclick="gradeQ('q10','c')"> They used the concentrated Fe(NO₃)₃ (0.2 M) instead of the dilute (2.00 × 10⁻³ M)</label>
+        <label><input type="radio" name="q10" value="d" onclick="gradeQ('q10','c')"> The HNO₃ was too concentrated</label>
+      </div>
+      <div class="quiz-feedback" id="q10-fb"></div>
+    </div>
+
+  </div>
+
+  <div id="quizResult" class="card" style="display:none;">
+    <div class="score-display" id="finalScore"></div>
+  </div>
+</div>
+
+<div class="footer">
+  © Tehrani Labs · CHM 152 · Arizona College of Nursing<br>
+  <a href="https://tehranilabs.org">tehranilabs.org</a>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  JAVASCRIPT                                 -->
+<!-- ═══════════════════════════════════════════ -->
+<script>
+
+/* ── Tabs ── */
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* ── Beer's Law Demo ── */
+function updateBeersLaw() {
+  const v = parseInt(document.getElementById('concSlider').value);
+  const conc = (v / 100) * 2e-4;
+  const abs = conc * 2250;
+  const alpha = Math.min(v / 100 * 0.9 + 0.05, 0.95);
+  document.getElementById('cuvetteFill').style.backgroundColor = 'rgba(180,40,20,' + alpha.toFixed(2) + ')';
+  document.getElementById('absReading').textContent = abs.toFixed(3);
+  const concStr = conc < 1e-5 ? '0 M' : (conc * 1e4).toFixed(1) + ' × 10⁻⁴ M';
+  document.getElementById('concLabel').textContent = concStr;
+}
+
+/* ── ICE Table Check ── */
+function checkICE() {
+  const inputs = document.querySelectorAll('.ice-table input[data-answer]');
+  let allCorrect = true;
+  inputs.forEach(inp => {
+    const userVal = parseFloat(inp.value);
+    const ans = parseFloat(inp.dataset.answer);
+    if (isNaN(userVal)) { inp.className = 'wrong-input'; allCorrect = false; return; }
+    const tol = Math.abs(ans) < 1e-10 ? 1e-6 : Math.abs(ans) * 0.05;
+    if (Math.abs(userVal - ans) <= tol) { inp.className = 'correct-input'; }
+    else { inp.className = 'wrong-input'; allCorrect = false; }
+  });
+  const fb = document.getElementById('ice-feedback');
+  fb.className = 'quiz-feedback show ' + (allCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.textContent = allCorrect ? '✅ All correct! Great work!' : '❌ Some values are incorrect. Check your calculations and try again.';
+}
+
+function showICEAnswers() {
+  document.querySelectorAll('.ice-table input[data-answer]').forEach(inp => {
+    inp.value = inp.dataset.answer;
+    inp.className = 'correct-input';
+  });
+  const fb = document.getElementById('ice-feedback');
+  fb.className = 'quiz-feedback show correct-fb';
+  fb.textContent = 'Answers shown above. Study the pattern: Equilibrium = Initial − Change.';
+}
+
+function checkKc() {
+  const inp = document.getElementById('ice-kc');
+  const userVal = parseFloat(inp.value);
+  const ans = 3.50e-5 / (9.65e-4 * 1.65e-4);
+  const fb = document.getElementById('kc-feedback');
+  if (isNaN(userVal)) {
+    inp.className = 'wrong-input';
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.textContent = '❌ Enter a number.';
+    return;
+  }
+  if (Math.abs(userVal - ans) / ans < 0.05) {
+    inp.className = 'correct-input';
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = '✅ Correct! Kc = ' + ans.toFixed(0) + '. Products are strongly favored.';
+  } else {
+    inp.className = 'wrong-input';
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.textContent = '❌ Not quite. Kc = [FeSCN²⁺]eq / ([Fe³⁺]eq × [SCN⁻]eq). Try again!';
+  }
+}
+
+/* ── Walkthrough Steps ── */
+let currentStep = 1;
+const totalSteps = 7;
+
+function initSteps() {
+  const ind = document.getElementById('stepIndicator');
+  ind.innerHTML = '';
+  for (let i = 1; i <= totalSteps; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === 1 ? ' active' : '');
+    dot.id = 'dot-' + i;
+    ind.appendChild(dot);
+  }
+}
+
+function changeStep(dir) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('dot-' + currentStep).className = 'step-dot done';
+  currentStep += dir;
+  if (currentStep < 1) currentStep = 1;
+  if (currentStep > totalSteps) currentStep = totalSteps;
+  document.getElementById('step-' + currentStep).classList.add('active');
+  document.getElementById('dot-' + currentStep).className = 'step-dot active';
+  document.getElementById('stepLabel').textContent = 'Step ' + currentStep + ' of ' + totalSteps;
+  document.getElementById('prevBtn').disabled = currentStep === 1;
+  document.getElementById('nextBtn').disabled = currentStep === totalSteps;
+  document.getElementById('stepProgress').style.width = (currentStep / totalSteps * 100) + '%';
+}
+
+/* ── Flashcards ── */
+const flashcardData = [
+  { q: 'What is chemical equilibrium?', a: 'The state where the forward and reverse reaction rates are equal, so concentrations remain constant.' },
+  { q: 'What is Kc?', a: 'The equilibrium constant — the ratio of product concentrations to reactant concentrations, each raised to their stoichiometric coefficients.' },
+  { q: "What is Beer's Law?", a: 'A = εlc — Absorbance is proportional to concentration (at constant path length and molar absorptivity).' },
+  { q: 'Why use excess Fe³⁺ in standards?', a: 'To push equilibrium far right so all SCN⁻ converts to FeSCN²⁺, giving known product concentrations.' },
+  { q: 'What does ICE stand for?', a: 'Initial, Change, Equilibrium — a table used to track concentration changes during a reaction.' },
+  { q: "What is Le Chatelier's Principle?", a: 'When a system at equilibrium is disturbed, it shifts to partially counteract the change.' },
+  { q: 'Does adding a reactant change Kc?', a: 'No! Adding reactant shifts equilibrium but does NOT change Kc. Only temperature changes Kc.' },
+  { q: 'What wavelength do we use?', a: '447 nm — the wavelength where FeSCN²⁺ (blood-red) absorbs light most strongly.' },
+];
+let fcIndex = 0;
+
+function initFlashcards() {
+  renderFlashcard();
+}
+
+function renderFlashcard() {
+  const area = document.getElementById('flashcard-area');
+  const d = flashcardData[fcIndex];
+  area.innerHTML = '<div class="flashcard" onclick="this.classList.toggle(\'flipped\')">'
+    + '<div class="flashcard-inner">'
+    + '<div class="flashcard-front">' + d.q + '</div>'
+    + '<div class="flashcard-back">' + d.a + '</div>'
+    + '</div></div>'
+    + '<div class="flashcard-hint">Click to flip</div>';
+  document.getElementById('fcLabel').textContent = (fcIndex + 1) + ' / ' + flashcardData.length;
+}
+
+function changeFlashcard(dir) {
+  fcIndex += dir;
+  if (fcIndex < 0) fcIndex = flashcardData.length - 1;
+  if (fcIndex >= flashcardData.length) fcIndex = 0;
+  renderFlashcard();
+}
+
+/* ── Quiz ── */
+const quizAnswers = {
+  q1: { correct: 'c', explain: 'At equilibrium, forward rate = reverse rate. Reactions continue but concentrations stay constant.' },
+  q2: { correct: 'b', explain: 'Excess Fe³⁺ shifts equilibrium far right, converting all SCN⁻ to FeSCN²⁺ so we know the exact concentration.' },
+  q3: { correct: 'c', explain: 'FeSCN²⁺ absorbs most strongly at 447 nm (blue-violet region).' },
+  q4: { correct: 'a', explain: "Beer's Law: A = εlc. Absorbance is directly proportional to concentration." },
+  q5: { correct: 'b', explain: '[Fe³⁺]eq = [Fe³⁺]₀ − [FeSCN²⁺]eq = 1.00×10⁻³ − 5.0×10⁻⁵ = 9.50×10⁻⁴ M.' },
+  q6: { correct: 'a', explain: 'Products over reactants: Kc = [FeSCN²⁺] / ([Fe³⁺][SCN⁻]).' },
+  q7: { correct: 'a', explain: 'Endothermic: heat is like a reactant. Adding heat → more products → larger Kc.' },
+  q8: { correct: 'b', explain: 'Adding reactant shifts equilibrium right (Le Chatelier), but Kc depends only on temperature.' },
+  q9: { correct: 'c', explain: 'C₁V₁ = C₂V₂ → (2.00×10⁻³)(3.00) = C₂(50.0) → C₂ = 1.20×10⁻⁴ M.' },
+  q10: { correct: 'c', explain: 'Using concentrated Fe³⁺ gives a huge denominator, making Kc artificially small.' },
+};
+let quizScore = 0;
+let answeredQs = new Set();
+
+function gradeQ(qid, correct) {
+  if (answeredQs.has(qid)) return;
+  answeredQs.add(qid);
+
+  const selected = document.querySelector('input[name="' + qid + '"]:checked');
+  if (!selected) return;
+  const val = selected.value;
+  const labels = document.querySelectorAll('#' + qid + ' .quiz-options label');
+  const info = quizAnswers[qid];
+
+  labels.forEach(l => {
+    const inp = l.querySelector('input');
+    if (inp.value === info.correct) l.classList.add('correct');
+    else if (inp.value === val && val !== info.correct) l.classList.add('wrong');
+    inp.disabled = true;
+  });
+
+  const fb = document.getElementById(qid + '-fb');
+  if (val === info.correct) {
+    quizScore++;
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.textContent = '✅ ' + info.explain;
+  } else {
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.textContent = '❌ ' + info.explain;
+  }
+
+  document.getElementById('quizScoreLabel').textContent = 'Score: ' + quizScore + ' / 10';
+  document.getElementById('quizProgress').style.width = (answeredQs.size / 10 * 100) + '%';
+
+  if (answeredQs.size === 10) {
+    const result = document.getElementById('quizResult');
+    result.style.display = 'block';
+    const pct = quizScore * 10;
+    let msg = '';
+    if (pct >= 90) msg = '🌟 Excellent! You really know this material!';
+    else if (pct >= 70) msg = '👍 Good job! Review the ones you missed.';
+    else msg = '📚 Keep studying — review the Concepts and Flashcards tabs.';
+    document.getElementById('finalScore').innerHTML = quizScore + ' / 10 (' + pct + '%)<br><span style="font-size:.9rem;font-weight:400;">' + msg + '</span>';
+    result.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+  initSteps();
+  initFlashcards();
+  updateBeersLaw();
+});
+
+</script>
+</body>
+</html>

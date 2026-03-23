@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 5: Equilibrium Constant of a Reaction — Student Template</title>
+<style>
+  :root {
+    --primary: #1a5276;
+    --accent: #2ecc71;
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #7f8c8d;
+    --border: #dce1e6;
+    --highlight: #fef9e7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  .header {
+    background: linear-gradient(135deg, var(--primary), #1a6e96);
+    color: #fff; text-align: center; padding: 2rem 1rem;
+  }
+  .header h1 { font-size: 1.5rem; }
+  .header p { opacity: .85; margin-top: .3rem; }
+  .header .badge { display: inline-block; margin-top: .5rem; background: rgba(255,255,255,.15); padding: .25rem .85rem; border-radius: 20px; font-size: .8rem; }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .section { background: var(--card); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .section h2 { color: var(--primary); font-size: 1.15rem; margin-bottom: .8rem; border-bottom: 2px solid var(--accent); padding-bottom: .4rem; }
+  .section h3 { color: var(--primary); font-size: 1rem; margin: 1rem 0 .5rem; }
+
+  .eq-box {
+    background: var(--highlight); border-left: 4px solid #f39c12; padding: 1rem 1.2rem;
+    border-radius: 6px; margin: 1rem 0; font-size: 1.05rem; text-align: center;
+  }
+  .eq-box .eq { font-family: 'Times New Roman', serif; font-size: 1.15rem; }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+  th { background: var(--primary); color: #fff; padding: .6rem .5rem; text-align: center; font-weight: 600; }
+  td { padding: .5rem; text-align: center; border: 1px solid var(--border); }
+  tr:nth-child(even) { background: #f8f9fa; }
+
+  .input-cell {
+    background: #fff; border: 2px dashed var(--border); min-height: 2rem;
+    min-width: 80px; padding: .3rem; font-family: inherit;
+    color: var(--text); text-align: center;
+  }
+  .input-cell:focus { border-color: var(--accent); outline: none; background: #f0fff4; }
+
+  .procedure-list { padding-left: 1.2rem; }
+  .procedure-list li { margin-bottom: .6rem; }
+
+  .safety-box {
+    background: #fdf2f2; border-left: 4px solid #e74c3c; padding: 1rem 1.2rem;
+    border-radius: 6px; margin: 1rem 0;
+  }
+  .safety-box h3 { color: #e74c3c; margin-top: 0; }
+
+  .tip-box {
+    background: #eaf7ff; border-left: 4px solid #3498db; padding: 1rem 1.2rem;
+    border-radius: 6px; margin: 1rem 0;
+  }
+
+  .graph-area {
+    border: 2px dashed var(--border); border-radius: 8px; height: 300px;
+    display: flex; align-items: center; justify-content: center;
+    background: #fafbfc; margin: 1rem 0; color: var(--muted);
+    font-style: italic;
+  }
+
+  .post-lab ol { padding-left: 1.2rem; }
+  .post-lab li { margin-bottom: 1rem; }
+  .answer-line {
+    display: block; width: 100%; border: none; border-bottom: 2px solid var(--border);
+    padding: .5rem 0; margin-top: .3rem; font-family: inherit;
+    font-size: .95rem; background: transparent; color: var(--text);
+  }
+  .answer-line:focus { border-bottom-color: var(--accent); outline: none; }
+
+  .footer {
+    text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: .8rem;
+    border-top: 1px solid var(--border); margin-top: 2rem;
+  }
+  .footer a { color: var(--primary); text-decoration: none; }
+
+  .print-btn {
+    display: inline-block; background: var(--primary); color: #fff; border: none;
+    padding: .6rem 1.5rem; border-radius: 8px; font-size: .95rem; cursor: pointer;
+    margin-top: 1rem;
+  }
+  .print-btn:hover { background: #154360; }
+
+  @media print {
+    .print-btn { display: none; }
+    .header { padding: 1rem; }
+    .section { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .input-cell, .answer-line { border-bottom: 1px solid #333; }
+  }
+  @media (max-width: 600px) {
+    table { font-size: .78rem; }
+    th, td { padding: .4rem .3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Lab 5: Equilibrium Constant of a Reaction</h1>
+  <p>CHM 152 — General Chemistry II</p>
+  <span class="badge">Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺</span>
+</div>
+
+<div class="container">
+
+  <!-- ── Student Info ── -->
+  <div class="section">
+    <h2>Student Information</h2>
+    <table>
+      <tr><td style="text-align:left; font-weight:600; width:30%;">Name</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">Lab Partner(s)</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">Date</td><td><input class="input-cell" style="width:100%" type="date"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">Section</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+    </table>
+  </div>
+
+  <!-- ── Introduction ── -->
+  <div class="section">
+    <h2>Introduction</h2>
+    <p>In any chemical reaction, the reactants react until some products are formed. Then the products react with each other to reform the reactants. Eventually the rate of product formation equals the rate of reactant reformation, and the system is in a state of <strong>dynamic equilibrium</strong>.</p>
+
+    <p style="margin-top:.8rem;">This experiment studies the reaction:</p>
+
+    <div class="eq-box">
+      <span class="eq">Fe³⁺(aq) + SCN⁻(aq) ⇌ FeSCN²⁺(aq)</span>
+      <br><small>Equation 1</small>
+    </div>
+
+    <p>At equilibrium, all concentrations remain constant and are determined by the <strong>equilibrium constant expression</strong>:</p>
+
+    <div class="eq-box">
+      <span class="eq">K<sub>C</sub> = [FeSCN²⁺] / ([Fe³⁺][SCN⁻])</span>
+      <br><small>Equation 2</small>
+    </div>
+
+    <p style="margin-top:.8rem;"><strong>FeSCN²⁺</strong> is a highly colored (blood-red) compound that absorbs visible light. We will determine its concentration at equilibrium by comparing the absorbance of each run with a set of <strong>standard solutions</strong> of known concentration, measured at <strong>447 nm</strong> using a Spec 20 spectrophotometer.</p>
+  </div>
+
+  <!-- ── Safety ── -->
+  <div class="section">
+    <div class="safety-box">
+      <h3>⚠️ Safety Precautions</h3>
+      <ul>
+        <li>Wear <strong>safety goggles</strong> and <strong>gloves</strong> at all times.</li>
+        <li><strong>HNO₃</strong> (nitric acid) is corrosive — avoid skin contact.</li>
+        <li><strong>Fe(NO₃)₃</strong> will stain skin and clothing.</li>
+        <li>If any solution contacts skin, wash immediately with water.</li>
+        <li>Dispose of all solutions in the designated waste container.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── Part A: Standard Curve ── -->
+  <div class="section">
+    <h2>Part A: Preparation of Standard Solutions</h2>
+    <p>Each group prepares <strong>one</strong> standard solution in a <strong>50.0 mL</strong> volumetric flask, diluted to the line with 0.10 M HNO₃.</p>
+
+    <div class="tip-box">
+      <strong>💡 Principle:</strong> Adding a large excess of Fe³⁺ shifts the equilibrium far toward products, converting almost all SCN⁻ into FeSCN²⁺. This allows us to know the exact [FeSCN²⁺].
+    </div>
+
+    <table>
+      <tr>
+        <th>Standard #</th>
+        <th>0.2 M Fe(NO₃)₃<br><small>in 0.1M HNO₃ (mL)</small></th>
+        <th>2.00 × 10⁻³ M KSCN<br><small>in 0.1M HNO₃ (mL)</small></th>
+        <th>[FeSCN²⁺] Standard<br><small>(M)</small></th>
+      </tr>
+      <tr><td>C1 (Blank)</td><td>10.0</td><td>0.00</td><td>0.00</td></tr>
+      <tr><td>C2</td><td>10.0</td><td>2.00</td><td>8.00 × 10⁻⁵</td></tr>
+      <tr><td>C3</td><td>10.0</td><td>3.00</td><td>1.20 × 10⁻⁴</td></tr>
+      <tr><td>C4</td><td>10.0</td><td>4.00</td><td>1.60 × 10⁻⁴</td></tr>
+      <tr><td>C5</td><td>10.0</td><td>5.00</td><td>2.00 × 10⁻⁴</td></tr>
+    </table>
+
+    <h3>Standard Curve Absorbance Data (at 447 nm)</h3>
+    <table>
+      <tr><th>Standard</th><th>[FeSCN²⁺] (M)</th><th>Absorbance</th></tr>
+      <tr><td>C1 (Blank)</td><td>0.00</td><td>0.000</td></tr>
+      <tr><td>C2</td><td>8.00 × 10⁻⁵</td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>C3</td><td>1.20 × 10⁻⁴</td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>C4</td><td>1.60 × 10⁻⁴</td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>C5</td><td>2.00 × 10⁻⁴</td><td><input class="input-cell" type="text"></td></tr>
+    </table>
+
+    <h3>Standard Curve Graph</h3>
+    <div class="graph-area">📈 Plot [FeSCN²⁺] (x-axis) vs. Absorbance (y-axis) — attach graph or plot below</div>
+
+    <h3>Line of Best Fit</h3>
+    <table>
+      <tr><td style="text-align:left; font-weight:600;">Slope (m)</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">Y-intercept (b)</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">R² value</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+    </table>
+  </div>
+
+  <!-- ── Part B: Equilibrium Measurements ── -->
+  <div class="section">
+    <h2>Part B: Equilibrium Constant Determination</h2>
+    <p>Prepare five solutions in <strong>10.0 mL</strong> volumetric flasks using:</p>
+    <ul style="margin: .5rem 0 .5rem 1.2rem;">
+      <li><strong>2.00 × 10⁻³ M Fe(NO₃)₃</strong> in 1.0 M HNO₃</li>
+      <li><strong>2.00 × 10⁻³ M KSCN</strong></li>
+    </ul>
+
+    <table>
+      <tr>
+        <th>Test Tube</th>
+        <th>Vol. Fe(NO₃)₃ (mL)</th>
+        <th>Vol. KSCN (mL)</th>
+        <th>Vol. H₂O (mL)<br><small>to the line</small></th>
+      </tr>
+      <tr><td>1</td><td>5.0</td><td>1.0</td><td>4.0</td></tr>
+      <tr><td>2</td><td>5.0</td><td>2.0</td><td>3.0</td></tr>
+      <tr><td>3</td><td>5.0</td><td>3.0</td><td>2.0</td></tr>
+      <tr><td>4</td><td>5.0</td><td>4.0</td><td>1.0</td></tr>
+      <tr><td>5</td><td>5.0</td><td>5.0</td><td>0.0</td></tr>
+    </table>
+
+    <h3>Absorbance Measurements (447 nm)</h3>
+    <table>
+      <tr><th>Test Tube</th><th>Absorbance</th><th>[FeSCN²⁺]<sub>eq</sub> (M)<br><small>from standard curve</small></th></tr>
+      <tr><td>1</td><td><input class="input-cell" type="text"></td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>2</td><td><input class="input-cell" type="text"></td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>3</td><td><input class="input-cell" type="text"></td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>4</td><td><input class="input-cell" type="text"></td><td><input class="input-cell" type="text"></td></tr>
+      <tr><td>5</td><td><input class="input-cell" type="text"></td><td><input class="input-cell" type="text"></td></tr>
+    </table>
+  </div>
+
+  <!-- ── Part C: Calculations ── -->
+  <div class="section">
+    <h2>Part C: Calculation of K<sub>C</sub></h2>
+
+    <div class="tip-box">
+      <strong>💡 Calculation Steps:</strong>
+      <ol style="margin-top:.4rem; padding-left:1.2rem;">
+        <li><strong>[Fe³⁺]<sub>init</sub></strong> = (2.00 × 10⁻³ M) × (V<sub>Fe</sub> / V<sub>total</sub>)</li>
+        <li><strong>[SCN⁻]<sub>init</sub></strong> = (2.00 × 10⁻³ M) × (V<sub>SCN</sub> / V<sub>total</sub>)</li>
+        <li><strong>[Fe³⁺]<sub>eq</sub></strong> = [Fe³⁺]<sub>init</sub> − [FeSCN²⁺]<sub>eq</sub></li>
+        <li><strong>[SCN⁻]<sub>eq</sub></strong> = [SCN⁻]<sub>init</sub> − [FeSCN²⁺]<sub>eq</sub></li>
+        <li><strong>K<sub>C</sub></strong> = [FeSCN²⁺]<sub>eq</sub> / ([Fe³⁺]<sub>eq</sub> × [SCN⁻]<sub>eq</sub>)</li>
+      </ol>
+    </div>
+
+    <table>
+      <tr>
+        <th>Run #</th>
+        <th>[Fe³⁺]<sub>init</sub><br>(M)</th>
+        <th>[SCN⁻]<sub>init</sub><br>(M)</th>
+        <th>[FeSCN²⁺]<sub>eq</sub><br>(M)</th>
+        <th>[Fe³⁺]<sub>eq</sub><br>(M)</th>
+        <th>[SCN⁻]<sub>eq</sub><br>(M)</th>
+        <th>K<sub>C</sub></th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+        <td><input class="input-cell" type="text"></td>
+      </tr>
+    </table>
+
+    <h3>Average K<sub>C</sub></h3>
+    <table>
+      <tr><td style="text-align:left; font-weight:600;">Average K<sub>C</sub></td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">Standard Deviation</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+      <tr><td style="text-align:left; font-weight:600;">% Relative Std. Dev.</td><td><input class="input-cell" style="width:100%" type="text"></td></tr>
+    </table>
+  </div>
+
+  <!-- ── Post-Lab Questions ── -->
+  <div class="section post-lab">
+    <h2>Post-Lab Questions</h2>
+    <ol>
+      <li>
+        For an <strong>endothermic</strong> reaction, if temperature increases, what happens to K<sub>C</sub>?
+        <input class="answer-line" type="text" placeholder="Your answer...">
+      </li>
+      <li>
+        For an <strong>exothermic</strong> reaction, if temperature increases, what happens to K<sub>C</sub>?
+        <input class="answer-line" type="text" placeholder="Your answer...">
+      </li>
+      <li>
+        For an <strong>endothermic</strong> reaction, if temperature increases, which direction does the reaction shift — toward <em>products</em> or <em>reactants</em>?
+        <input class="answer-line" type="text" placeholder="Your answer...">
+      </li>
+      <li>
+        For an <strong>exothermic</strong> reaction, if temperature increases, which direction does the reaction shift — toward <em>products</em> or <em>reactants</em>?
+        <input class="answer-line" type="text" placeholder="Your answer...">
+      </li>
+    </ol>
+  </div>
+
+  <div style="text-align:center;">
+    <button class="print-btn" onclick="window.print()">🖨️ Print This Lab Report</button>
+  </div>
+
+</div>
+
+<div class="footer">
+  © Tehrani Labs · CHM 152 · Arizona College of Nursing<br>
+  <a href="https://tehranilabs.org">tehranilabs.org</a>
+</div>
+
+</body>
+</html>

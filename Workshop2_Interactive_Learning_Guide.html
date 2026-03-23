@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 2: Chemical Kinetics - Interactive Learning Guide</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #2980b9;
+            --accent: #e74c3c;
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --text: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light-blue: #ebf5fb;
+            --border: #d5dbdb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+        }
+
+        .header h1 { font-size: 2rem; margin-bottom: 0.3rem; letter-spacing: 1px; }
+        .header h2 { font-size: 1.1rem; font-weight: 300; opacity: 0.9; }
+        .header .brand { font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem; letter-spacing: 3px; }
+
+        .tab-bar {
+            display: flex;
+            flex-wrap: wrap;
+            background: var(--primary);
+            justify-content: center;
+            gap: 2px;
+            padding: 4px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            border: none;
+            padding: 0.7rem 1.2rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px 6px 0 0;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+        .tab-btn.active { background: var(--bg); color: var(--primary); font-weight: 700; }
+
+        .tab-content { display: none; padding: 2rem 1rem; max-width: 900px; margin: 0 auto; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            border-left: 4px solid var(--secondary);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .card.accent { border-left-color: var(--accent); }
+        .card.success { border-left-color: var(--success); }
+        .card.warning { border-left-color: var(--warning); }
+
+        .equation-box {
+            background: var(--light-blue);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 1.15rem;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+        }
+
+        .key-term {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .highlight {
+            background: #fef9e7;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--warning);
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.6rem 0.8rem;
+            text-align: center;
+        }
+
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: var(--light-blue); }
+
+        .interactive-box {
+            background: #fdf2e9;
+            border: 2px solid var(--warning);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.2rem 0;
+        }
+
+        .interactive-box h4 {
+            color: var(--warning);
+            margin-bottom: 0.8rem;
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 0.5rem 0.8rem;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            margin: 0.3rem 0;
+            width: 120px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        button.check-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0.5rem 0.3rem;
+            transition: background 0.3s;
+        }
+
+        button.check-btn:hover { background: var(--primary); }
+        button.show-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0.5rem 0.3rem;
+        }
+
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.correct { display: block; background: #d5f5e3; color: #1e8449; }
+        .feedback.incorrect { display: block; background: #fadbd8; color: #c0392b; }
+
+        .solution-box {
+            background: #d5f5e3;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.8rem;
+            display: none;
+        }
+
+        .step-list { padding-left: 1.5rem; }
+        .step-list li { margin-bottom: 0.5rem; }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .nav-btn:hover { background: var(--primary); }
+        .nav-btn:disabled { opacity: 0.4; cursor: default; }
+
+        .progress-bar {
+            background: var(--border);
+            border-radius: 10px;
+            height: 8px;
+            margin: 0.5rem 0 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success), var(--secondary));
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .summary-card {
+            background: var(--light-blue);
+            border-radius: 10px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+
+        .summary-card h4 { color: var(--primary); margin-bottom: 0.5rem; }
+
+        .example-toggle {
+            color: var(--secondary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .example-content {
+            display: none;
+            margin-top: 0.5rem;
+        }
+
+        .chart-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        canvas { max-width: 100%; }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: var(--primary);
+            color: rgba(255,255,255,0.85);
+            margin-top: 2rem;
+        }
+
+        footer .brand { letter-spacing: 4px; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        footer .copy { font-size: 0.85rem; margin-bottom: 0.3rem; }
+        footer .quote { font-style: italic; font-size: 0.8rem; opacity: 0.7; margin-bottom: 0.3rem; }
+        footer .equation { font-family: 'Cambria Math', serif; font-size: 0.75rem; opacity: 0.5; letter-spacing: 2px; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.4rem; }
+            .tab-btn { padding: 0.5rem 0.7rem; font-size: 0.75rem; }
+            .card { padding: 1.2rem; }
+            input[type="text"], input[type="number"] { width: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Workshop 2: Chemical Kinetics</h1>
+    <h2>CHM152 ~ General Chemistry II</h2>
+    <div class="brand">&#9883; TEHRANI &#9883;</div>
+</div>
+
+<div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('intro')">&#9883; Introduction</button>
+    <button class="tab-btn" onclick="showTab('rates')">&#9883; Rate Expressions</button>
+    <button class="tab-btn" onclick="showTab('initial')">&#9883; Initial Rates</button>
+    <button class="tab-btn" onclick="showTab('integrated')">&#9883; Integrated Laws</button>
+    <button class="tab-btn" onclick="showTab('arrhenius')">&#9883; Arrhenius</button>
+    <button class="tab-btn" onclick="showTab('calculator')">&#9883; Calculator</button>
+    <button class="tab-btn" onclick="showTab('quiz')">&#9883; Self-Check</button>
+</div>
+
+<!-- ==================== TAB 1: INTRODUCTION ==================== -->
+<div id="intro" class="tab-content active">
+    <div class="card">
+        <h3>&#9883; What is Chemical Kinetics?</h3>
+        <p><span class="key-term">Kinetics</span> is the study of the <strong>rate</strong> of chemical reactions &mdash; how fast reactants are consumed and products are formed.</p>
+        <p style="margin-top:0.8rem;">This matters in the real world:</p>
+        <ul class="step-list" style="margin-top:0.5rem;">
+            <li>How long pollutants persist in the atmosphere</li>
+            <li>How quickly a drug is delivered and metabolized</li>
+            <li>How fast food spoils (and how preservatives slow it down)</li>
+            <li>How catalytic converters clean exhaust gases</li>
+        </ul>
+    </div>
+
+    <div class="card accent">
+        <h3>&#9883; The Big Idea</h3>
+        <p>For the reaction: <strong>C&#8322;H&#8324; + HCl &#8594; C&#8322;H&#8325;Cl</strong></p>
+        <p style="margin-top:0.5rem;">The <span class="key-term">rate</span> is defined as the change in concentration over change in time, with units of <strong>M&middot;s&#8315;&#185;</strong> (molarity per second).</p>
+        <div class="equation-box">
+            Rate = &minus;&#916;[reactant] / &#916;t = +&#916;[product] / &#916;t
+        </div>
+        <div class="highlight">
+            &#9675; <strong>Key insight:</strong> The rate is the <em>negative</em> of the change in reactant concentration (because reactants decrease) and the <em>positive</em> of the change in product concentration (because products increase).
+        </div>
+    </div>
+
+    <div class="card success">
+        <h3>&#9883; What You Will Learn</h3>
+        <ol class="step-list">
+            <li>Write rate expressions with stoichiometric coefficients</li>
+            <li>Use the <strong>method of initial rates</strong> to find rate laws</li>
+            <li>Determine reaction <strong>order</strong> (0th, 1st, 2nd)</li>
+            <li>Apply <strong>integrated rate laws</strong> with graphical analysis</li>
+            <li>Use the <strong>Arrhenius equation</strong> for temperature dependence</li>
+        </ol>
+    </div>
+
+    <div class="card warning">
+        <h3>&#9883; Important Vocabulary</h3>
+        <table>
+            <tr><th>Term</th><th>Definition</th></tr>
+            <tr><td><strong>Rate</strong></td><td>Change in concentration per unit time (M&middot;s&#8315;&#185;)</td></tr>
+            <tr><td><strong>Rate Law</strong></td><td>Mathematical relationship: rate = k[A]<sup>a</sup>[B]<sup>b</sup></td></tr>
+            <tr><td><strong>Rate Constant (k)</strong></td><td>Proportionality constant specific to each reaction &amp; temperature</td></tr>
+            <tr><td><strong>Order</strong></td><td>Exponent on concentration in the rate law (determined experimentally)</td></tr>
+            <tr><td><strong>Activation Energy (E<sub>a</sub>)</strong></td><td>Minimum energy required for a reaction to occur</td></tr>
+            <tr><td><strong>Arrhenius Factor (A)</strong></td><td>Pre-exponential factor relating to collision frequency/orientation</td></tr>
+        </table>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" disabled>&#8592; Previous</button>
+        <button class="nav-btn" onclick="showTab('rates')">Rate Expressions &#8594;</button>
+    </div>
+</div>
+
+<!-- ==================== TAB 2: RATE EXPRESSIONS ==================== -->
+<div id="rates" class="tab-content">
+    <div class="card">
+        <h3>&#9883; Rate Expressions &amp; Stoichiometry</h3>
+        <p>When a reaction has <strong>different stoichiometric coefficients</strong>, the rate of change of each species must be divided by its coefficient to give the same overall rate.</p>
+    </div>
+
+    <div class="card accent">
+        <h3>&#9883; The Rule</h3>
+        <p>For a general reaction: <strong>aA + bB &#8594; cC + dD</strong></p>
+        <div class="equation-box">
+            Rate = &minus;(1/a)&middot;&#916;[A]/&#916;t = &minus;(1/b)&middot;&#916;[B]/&#916;t = +(1/c)&middot;&#916;[C]/&#916;t = +(1/d)&middot;&#916;[D]/&#916;t
+        </div>
+    </div>
+
+    <div class="card success">
+        <h3>&#9883; Worked Example</h3>
+        <p><strong>3H&#8322; + N&#8322; &#8594; 2NH&#8323;</strong></p>
+        <div class="equation-box">
+            Rate = &minus;(1/3)&middot;&#916;[H&#8322;]/&#916;t = &minus;&#916;[N&#8322;]/&#916;t = +(1/2)&middot;&#916;[NH&#8323;]/&#916;t
+        </div>
+        <p style="margin-top:0.5rem;">Notice: H&#8322; disappears <strong>3 times faster</strong> than N&#8322;, so we divide its rate by 3 to get a single unified rate.</p>
+    </div>
+
+    <div class="card">
+        <h3>&#9883; Another Example</h3>
+        <p><strong>CH&#8324;(g) + 2O&#8322;(g) &#8594; CO&#8322;(g) + 2H&#8322;O(g)</strong></p>
+        <div class="equation-box">
+            Rate = &minus;&#916;[CH&#8324;]/&#916;t = &minus;(1/2)&middot;&#916;[O&#8322;]/&#916;t = +&#916;[CO&#8322;]/&#916;t = +(1/2)&middot;&#916;[H&#8322;O]/&#916;t
+        </div>
+    </div>
+
+    <div class="interactive-box">
+        <h4>&#9883; Try It: Write the Rate Expression</h4>
+        <p><strong>C&#8323;H&#8328;(g) + 5O&#8322;(g) &#8594; 3CO&#8322;(g) + 4H&#8322;O(g)</strong></p>
+        <p style="margin-top:0.5rem;">What coefficient goes in front of &#916;[O&#8322;]/&#916;t?</p>
+        <p style="margin-top:0.3rem;">
+            Rate = &minus;&#916;[C&#8323;H&#8328;]/&#916;t = &minus;(1/<input type="text" id="stoich1" style="width:40px;" placeholder="?">)&middot;&#916;[O&#8322;]/&#916;t = +(1/<input type="text" id="stoich2" style="width:40px;" placeholder="?">)&middot;&#916;[CO&#8322;]/&#916;t = +(1/<input type="text" id="stoich3" style="width:40px;" placeholder="?">)&middot;&#916;[H&#8322;O]/&#916;t
+        </p>
+        <button class="check-btn" onclick="checkStoich()">Check</button>
+        <button class="show-btn" onclick="showStoichAnswer()">Show Answer</button>
+        <div id="stoichFeedback" class="feedback"></div>
+        <div id="stoichSolution" class="solution-box">
+            <strong>Answer:</strong> 1/5 for O&#8322;, 1/3 for CO&#8322;, 1/4 for H&#8322;O. The coefficients in the balanced equation become the denominators.
+        </div>
+    </div>
+
+    <div class="interactive-box">
+        <h4>&#9883; Try It: Another One</h4>
+        <p><strong>2Fe(s) + 6HCl(aq) &#8594; 2FeCl&#8323;(aq) + 3H&#8322;(g)</strong></p>
+        <p style="margin-top:0.3rem;">
+            Rate = &minus;(1/<input type="text" id="fe1" style="width:40px;" placeholder="?">)&middot;&#916;[Fe]/&#916;t = &minus;(1/<input type="text" id="fe2" style="width:40px;" placeholder="?">)&middot;&#916;[HCl]/&#916;t = +(1/<input type="text" id="fe3" style="width:40px;" placeholder="?">)&middot;&#916;[FeCl&#8323;]/&#916;t = +(1/<input type="text" id="fe4" style="width:40px;" placeholder="?">)&middot;&#916;[H&#8322;]/&#916;t
+        </p>
+        <button class="check-btn" onclick="checkFe()">Check</button>
+        <button class="show-btn" onclick="showFeAnswer()">Show Answer</button>
+        <div id="feFeedback" class="feedback"></div>
+        <div id="feSolution" class="solution-box">
+            <strong>Answer:</strong> 1/2 for Fe, 1/6 for HCl, 1/2 for FeCl&#8323;, 1/3 for H&#8322;.
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="showTab('intro')">&#8592; Introduction</button>
+        <button class="nav-btn" onclick="showTab('initial')">Initial Rates &#8594;</button>
+    </div>
+</div>
+
+<!-- ==================== TAB 3: METHOD OF INITIAL RATES ==================== -->
+<div id="initial" class="tab-content">
+    <div class="card">
+        <h3>&#9883; The Method of Initial Rates</h3>
+        <p>This is the most common experimental method to determine the <span class="key-term">rate law</span>: rate = k[A]<sup>a</sup>[B]<sup>b</sup></p>
+        <p style="margin-top:0.5rem;">The exponents <strong>a</strong> and <strong>b</strong> are the <span class="key-term">orders</span> of the reaction with respect to each reactant. They must be determined <strong>experimentally</strong> &mdash; they are <em>not</em> the stoichiometric coefficients!</p>
+    </div>
+
+    <div class="card accent">
+        <h3>&#9883; The Strategy (3 Steps)</h3>
+        <ol class="step-list">
+            <li><strong>Hold one reactant constant</strong> &mdash; compare two experiments where only one concentration changes</li>
+            <li><strong>Find the ratio</strong> &mdash; divide the rates and concentrations:
+                <div class="equation-box" style="margin:0.5rem 0;">
+                    Rate&#8322; / Rate&#8321; = ([A]&#8322; / [A]&#8321;)<sup>a</sup>
+                </div>
+            </li>
+            <li><strong>Solve for the exponent</strong> &mdash; if the ratio equals 2<sup>a</sup>, 3<sup>a</sup>, etc., find a</li>
+        </ol>
+    </div>
+
+    <div class="card success">
+        <h3>&#9883; Worked Example 1</h3>
+        <p><strong>C&#8324;H&#8329;Br + OH&#8315; &#8594; C&#8324;H&#8329;OH + Br&#8315;</strong></p>
+        <table>
+            <tr><th>Exp</th><th>[C&#8324;H&#8329;Br] M</th><th>[OH&#8315;] M</th><th>Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>0.10</td><td>0.10</td><td>0.0010</td></tr>
+            <tr><td>2</td><td>0.20</td><td>0.10</td><td>0.0020</td></tr>
+            <tr><td>3</td><td>0.30</td><td>0.10</td><td>0.0030</td></tr>
+            <tr><td>4</td><td>0.10</td><td>0.20</td><td>0.0010</td></tr>
+            <tr><td>5</td><td>0.10</td><td>0.30</td><td>0.0010</td></tr>
+        </table>
+
+        <p><strong>Finding the order with respect to C&#8324;H&#8329;Br:</strong></p>
+        <p>Compare Exp 1 &amp; 2 (OH&#8315; is constant at 0.10 M):</p>
+        <div class="equation-box">
+            Rate&#8322;/Rate&#8321; = 0.0020/0.0010 = 2 &nbsp;&nbsp;&nbsp; [A]&#8322;/[A]&#8321; = 0.20/0.10 = 2<br>
+            2 = 2<sup>a</sup> &#8594; a = 1
+        </div>
+
+        <p><strong>Finding the order with respect to OH&#8315;:</strong></p>
+        <p>Compare Exp 1 &amp; 4 (C&#8324;H&#8329;Br is constant at 0.10 M):</p>
+        <div class="equation-box">
+            Rate&#8324;/Rate&#8321; = 0.0010/0.0010 = 1 &nbsp;&nbsp;&nbsp; [OH&#8315;]&#8324;/[OH&#8315;]&#8321; = 0.20/0.10 = 2<br>
+            1 = 2<sup>b</sup> &#8594; b = 0
+        </div>
+
+        <div class="highlight">
+            &#9675; <strong>Rate law:</strong> Rate = k[C&#8324;H&#8329;Br]&#185;[OH&#8315;]&#8304; = k[C&#8324;H&#8329;Br]<br>
+            <strong>1st order</strong> in C&#8324;H&#8329;Br, <strong>zero order</strong> in OH&#8315;, <strong>1st order overall</strong><br>
+            k = 0.0010 / 0.10 = <strong>0.010 s&#8315;&#185;</strong>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>&#9883; Worked Example 2</h3>
+        <p><strong>2NO(g) + Br&#8322;(g) &#8594; 2NOBr(g)</strong></p>
+        <table>
+            <tr><th>Exp</th><th>[NO] M</th><th>[Br&#8322;] M</th><th>Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>0.10</td><td>0.10</td><td>12</td></tr>
+            <tr><td>2</td><td>0.10</td><td>0.20</td><td>24</td></tr>
+            <tr><td>3</td><td>0.10</td><td>0.30</td><td>36</td></tr>
+            <tr><td>4</td><td>0.20</td><td>0.10</td><td>48</td></tr>
+            <tr><td>5</td><td>0.30</td><td>0.10</td><td>108</td></tr>
+        </table>
+
+        <p><strong>Order in NO:</strong> Compare Exp 1 &amp; 4 (Br&#8322; constant):</p>
+        <div class="equation-box">
+            48/12 = 4 &nbsp;&nbsp; and &nbsp;&nbsp; (0.20/0.10)<sup>a</sup> = 2<sup>a</sup> = 4 &#8594; a = 2
+        </div>
+
+        <p><strong>Order in Br&#8322;:</strong> Compare Exp 1 &amp; 2 (NO constant):</p>
+        <div class="equation-box">
+            24/12 = 2 &nbsp;&nbsp; and &nbsp;&nbsp; (0.20/0.10)<sup>b</sup> = 2<sup>b</sup> = 2 &#8594; b = 1
+        </div>
+
+        <div class="highlight">
+            &#9675; <strong>Rate law:</strong> Rate = k[NO]&#178;[Br&#8322;]<br>
+            <strong>2nd order</strong> in NO, <strong>1st order</strong> in Br&#8322;, <strong>3rd order overall</strong><br>
+            k = 12 / (0.10&#178; &times; 0.10) = <strong>1.2 &times; 10&#8308; M&#8315;&#178;s&#8315;&#185;</strong>
+        </div>
+    </div>
+
+    <div class="card warning">
+        <h3>&#9883; Quick Reference: Determining the Exponent</h3>
+        <table>
+            <tr><th>Conc. Ratio</th><th>Rate Ratio</th><th>Order</th></tr>
+            <tr><td>doubles (&#215;2)</td><td>stays same (&#215;1)</td><td>0</td></tr>
+            <tr><td>doubles (&#215;2)</td><td>doubles (&#215;2)</td><td>1</td></tr>
+            <tr><td>doubles (&#215;2)</td><td>quadruples (&#215;4)</td><td>2</td></tr>
+            <tr><td>doubles (&#215;2)</td><td>octuples (&#215;8)</td><td>3</td></tr>
+            <tr><td>triples (&#215;3)</td><td>stays same (&#215;1)</td><td>0</td></tr>
+            <tr><td>triples (&#215;3)</td><td>triples (&#215;3)</td><td>1</td></tr>
+            <tr><td>triples (&#215;3)</td><td>&#215;9</td><td>2</td></tr>
+        </table>
+    </div>
+
+    <div class="interactive-box">
+        <h4>&#9883; Practice: Find the Rate Law</h4>
+        <p><strong>NO&#8322;(g) + O&#8323;(g) &#8594; NO&#8323;(g) + O&#8322;(g)</strong></p>
+        <table>
+            <tr><th>Exp</th><th>[NO&#8322;] M</th><th>[O&#8323;] M</th><th>Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>5.0 &times; 10&#8315;&#8309;</td><td>1.0 &times; 10&#8315;&#8309;</td><td>0.022</td></tr>
+            <tr><td>2</td><td>5.0 &times; 10&#8315;&#8309;</td><td>2.0 &times; 10&#8315;&#8309;</td><td>0.044</td></tr>
+            <tr><td>3</td><td>2.5 &times; 10&#8315;&#8309;</td><td>2.0 &times; 10&#8315;&#8309;</td><td>0.022</td></tr>
+        </table>
+        <p style="margin-top:0.5rem;">
+            Order in NO&#8322;: <input type="text" id="ir_a" style="width:50px;" placeholder="?">
+            &nbsp; Order in O&#8323;: <input type="text" id="ir_b" style="width:50px;" placeholder="?">
+        </p>
+        <button class="check-btn" onclick="checkInitialRate()">Check</button>
+        <button class="show-btn" onclick="showInitialRateAnswer()">Show Answer</button>
+        <div id="irFeedback" class="feedback"></div>
+        <div id="irSolution" class="solution-box">
+            <strong>Solution:</strong><br>
+            Order in O&#8323;: Compare Exp 1 &amp; 2 (NO&#8322; constant): 0.044/0.022 = 2, conc doubles &#8594; b = 1<br>
+            Order in NO&#8322;: Compare Exp 2 &amp; 3 (O&#8323; constant): 0.022/0.044 = 0.5, conc halves (0.5<sup>a</sup> = 0.5) &#8594; a = 1<br>
+            <strong>Rate = k[NO&#8322;][O&#8323;], both first order, second order overall</strong><br>
+            k = 0.022 / (5.0&times;10&#8315;&#8309; &times; 1.0&times;10&#8315;&#8309;) = <strong>4.4 &times; 10&#8311; M&#8315;&#185;s&#8315;&#185;</strong>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="showTab('rates')">&#8592; Rate Expressions</button>
+        <button class="nav-btn" onclick="showTab('integrated')">Integrated Laws &#8594;</button>
+    </div>
+</div>
+
+<!-- ==================== TAB 4: INTEGRATED RATE LAWS ==================== -->
+<div id="integrated" class="tab-content">
+    <div class="card">
+        <h3>&#9883; Integrated Rate Laws</h3>
+        <p>Another way to determine reaction order: use <strong>concentration vs. time data</strong> and see which plot gives a straight line.</p>
+    </div>
+
+    <div class="card accent">
+        <h3>&#9883; The Three Integrated Rate Laws</h3>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h4>Zero Order</h4>
+                <div class="equation-box" style="font-size:1rem;">[A]<sub>t</sub> = &minus;kt + [A]<sub>0</sub></div>
+                <p><strong>Plot:</strong> [A] vs. t</p>
+                <p>Slope = &minus;k</p>
+                <p>Linear &#8594; zero order</p>
+            </div>
+            <div class="summary-card">
+                <h4>First Order</h4>
+                <div class="equation-box" style="font-size:1rem;">ln[A]<sub>t</sub> = &minus;kt + ln[A]<sub>0</sub></div>
+                <p><strong>Plot:</strong> ln[A] vs. t</p>
+                <p>Slope = &minus;k</p>
+                <p>Linear &#8594; first order</p>
+            </div>
+            <div class="summary-card">
+                <h4>Second Order</h4>
+                <div class="equation-box" style="font-size:1rem;">1/[A]<sub>t</sub> = kt + 1/[A]<sub>0</sub></div>
+                <p><strong>Plot:</strong> 1/[A] vs. t</p>
+                <p>Slope = k</p>
+                <p>Linear &#8594; second order</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card success">
+        <h3>&#9883; Worked Example: 2H&#8322;O&#8322; &#8594; 2H&#8322;O + O&#8322;</h3>
+        <table>
+            <tr><th>Time (s)</th><th>[H&#8322;O&#8322;] M</th><th>ln[H&#8322;O&#8322;]</th><th>1/[H&#8322;O&#8322;]</th></tr>
+            <tr><td>0</td><td>1.000</td><td>0.000</td><td>1.00</td></tr>
+            <tr><td>120</td><td>0.910</td><td>&minus;0.094</td><td>1.10</td></tr>
+            <tr><td>300</td><td>0.780</td><td>&minus;0.248</td><td>1.28</td></tr>
+            <tr><td>600</td><td>0.590</td><td>&minus;0.528</td><td>1.69</td></tr>
+            <tr><td>1200</td><td>0.370</td><td>&minus;0.994</td><td>2.70</td></tr>
+            <tr><td>1800</td><td>0.220</td><td>&minus;1.514</td><td>4.55</td></tr>
+            <tr><td>2400</td><td>0.130</td><td>&minus;2.040</td><td>7.69</td></tr>
+            <tr><td>3000</td><td>0.083</td><td>&minus;2.489</td><td>12.05</td></tr>
+            <tr><td>3600</td><td>0.050</td><td>&minus;2.996</td><td>20.00</td></tr>
+        </table>
+
+        <div class="highlight">
+            &#9675; The plot of <strong>ln[H&#8322;O&#8322;] vs. time</strong> gives a straight line with R&#178; = 0.9997.<br>
+            &#8594; The reaction is <strong>first order</strong>.<br>
+            &#8594; k = 0.000834 s&#8315;&#185; (from the slope).
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>&#9883; How to Decide: The Graphical Method</h3>
+        <ol class="step-list">
+            <li>Make <strong>three plots</strong> from your data: [A] vs t, ln[A] vs t, and 1/[A] vs t</li>
+            <li>The plot that gives a <strong>straight line</strong> tells you the order</li>
+            <li>The <strong>slope</strong> of that line gives you k (note: slope = &minus;k for zero and first order, slope = +k for second order)</li>
+        </ol>
+    </div>
+
+    <div class="interactive-box">
+        <h4>&#9883; Interactive: Which Plot is Linear?</h4>
+        <p>Given this data for the reaction A &#8594; B:</p>
+        <table>
+            <tr><th>Time</th><th>[A]</th><th>ln[A]</th><th>1/[A]</th></tr>
+            <tr><td>0</td><td>0.200</td><td>&minus;1.609</td><td>5.00</td></tr>
+            <tr><td>40</td><td>0.153</td><td>&minus;1.877</td><td>6.54</td></tr>
+            <tr><td>80</td><td>0.124</td><td>&minus;2.088</td><td>8.06</td></tr>
+            <tr><td>120</td><td>0.104</td><td>&minus;2.263</td><td>9.62</td></tr>
+            <tr><td>160</td><td>0.090</td><td>&minus;2.408</td><td>11.11</td></tr>
+            <tr><td>200</td><td>0.079</td><td>&minus;2.538</td><td>12.66</td></tr>
+        </table>
+        <p style="margin-top:0.5rem;">Look at the columns. Which changes by roughly equal increments?</p>
+        <p>
+            <select id="orderSelect">
+                <option value="">-- Select order --</option>
+                <option value="0">Zero order ([A] vs t is linear)</option>
+                <option value="1">First order (ln[A] vs t is linear)</option>
+                <option value="2">Second order (1/[A] vs t is linear)</option>
+            </select>
+        </p>
+        <button class="check-btn" onclick="checkOrder()">Check</button>
+        <button class="show-btn" onclick="showOrderAnswer()">Show Answer</button>
+        <div id="orderFeedback" class="feedback"></div>
+        <div id="orderSolution" class="solution-box">
+            <strong>Answer: Second Order.</strong> The 1/[A] column increases by roughly 1.5&ndash;1.6 each time interval &mdash; that's approximately constant. The reaction is second order.<br>
+            k = slope &asymp; (12.66 &minus; 5.00) / (200 &minus; 0) = <strong>0.0383 M&#8315;&#185;s&#8315;&#185;</strong>
+        </div>
+    </div>
+
+    <div class="card warning">
+        <h3>&#9883; Units of k Depend on Order</h3>
+        <table>
+            <tr><th>Order</th><th>Units of k</th></tr>
+            <tr><td>Zero</td><td>M&middot;s&#8315;&#185;</td></tr>
+            <tr><td>First</td><td>s&#8315;&#185;</td></tr>
+            <tr><td>Second</td><td>M&#8315;&#185;&middot;s&#8315;&#185;</td></tr>
+        </table>
+        <div class="highlight">
+            &#9675; <strong>Tip:</strong> The units of k always work out so that the rate law gives M&middot;s&#8315;&#185;.
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="showTab('initial')">&#8592; Initial Rates</button>
+        <button class="nav-btn" onclick="showTab('arrhenius')">Arrhenius &#8594;</button>
+    </div>
+</div>
+
+<!-- ==================== TAB 5: ARRHENIUS EQUATION ==================== -->
+<div id="arrhenius" class="tab-content">
+    <div class="card">
+        <h3>&#9883; Temperature Dependence of Reaction Rates</h3>
+        <p>Increasing temperature typically <strong>increases the rate</strong> because molecules have more energy and collide more frequently with enough energy to react.</p>
+    </div>
+
+    <div class="card accent">
+        <h3>&#9883; The Arrhenius Equation</h3>
+        <div class="equation-box">
+            k = A&middot;e<sup>&minus;E<sub>a</sub>/RT</sup>
+        </div>
+        <p style="margin-top:0.5rem;">Where:</p>
+        <ul class="step-list">
+            <li><strong>k</strong> = rate constant</li>
+            <li><strong>A</strong> = Arrhenius factor (pre-exponential factor) &mdash; related to collision frequency and orientation</li>
+            <li><strong>E<sub>a</sub></strong> = activation energy (J/mol)</li>
+            <li><strong>R</strong> = 8.314 J/(mol&middot;K)</li>
+            <li><strong>T</strong> = temperature in <strong>Kelvin</strong> (always!)</li>
+        </ul>
+    </div>
+
+    <div class="card success">
+        <h3>&#9883; The Linearized Form</h3>
+        <p>Taking the natural log of both sides:</p>
+        <div class="equation-box">
+            ln k = ln A &minus; E<sub>a</sub>/(RT) = &minus;(E<sub>a</sub>/R)&middot;(1/T) + ln A
+        </div>
+        <p style="margin-top:0.5rem;">This is in the form <strong>y = mx + b</strong>:</p>
+        <ul class="step-list">
+            <li>Plot <strong>ln k</strong> (y-axis) vs. <strong>1/T</strong> (x-axis)</li>
+            <li>Slope = <strong>&minus;E<sub>a</sub>/R</strong></li>
+            <li>y-intercept = <strong>ln A</strong></li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>&#9883; Worked Example</h3>
+        <p><strong>H&#8322;(g) + I&#8322;(g) &#8594; 2HI(g)</strong></p>
+        <table>
+            <tr><th>T (&deg;C)</th><th>T (K)</th><th>k (M&#8315;&#185;s&#8315;&#185;)</th><th>1/T (K&#8315;&#185;)</th><th>ln k</th></tr>
+            <tr><td>283</td><td>556</td><td>1.20&times;10&#8315;&#8308;</td><td>0.001799</td><td>&minus;9.028</td></tr>
+            <tr><td>302</td><td>575</td><td>3.50&times;10&#8315;&#8308;</td><td>0.001739</td><td>&minus;7.958</td></tr>
+            <tr><td>355</td><td>628</td><td>6.80&times;10&#8315;&#179;</td><td>0.001592</td><td>&minus;4.991</td></tr>
+            <tr><td>393</td><td>666</td><td>3.80&times;10&#8315;&#178;</td><td>0.001502</td><td>&minus;3.270</td></tr>
+            <tr><td>430</td><td>703</td><td>1.70&times;10&#8315;&#185;</td><td>0.001422</td><td>&minus;1.772</td></tr>
+        </table>
+
+        <div class="highlight">
+            &#9675; From the plot of ln k vs. 1/T:<br>
+            Slope = &minus;19,432 K = &minus;E<sub>a</sub>/R<br>
+            <strong>E<sub>a</sub></strong> = 19,432 K &times; 8.314 J/(mol&middot;K) = <strong>162 kJ/mol</strong><br>
+            <strong>A</strong> = e<sup>25.9</sup> = <strong>1.8 &times; 10&#185;&#185; M&#8315;&#185;s&#8315;&#185;</strong>
+        </div>
+    </div>
+
+    <div class="card warning">
+        <h3>&#9883; Two-Point Arrhenius Form</h3>
+        <p>If you only have <strong>two temperatures</strong>, use:</p>
+        <div class="equation-box">
+            ln(k&#8322;/k&#8321;) = &minus;(E<sub>a</sub>/R)&middot;(1/T&#8322; &minus; 1/T&#8321;)
+        </div>
+        <p style="margin-top:0.5rem;">This lets you find E<sub>a</sub> from just two data points, or predict k at a new temperature if you know E<sub>a</sub>.</p>
+    </div>
+
+    <div class="interactive-box">
+        <h4>&#9883; Quick Check</h4>
+        <p>If the slope of an Arrhenius plot (ln k vs 1/T) is &minus;12,500 K, what is E<sub>a</sub>?</p>
+        <p>E<sub>a</sub> = <input type="text" id="eaInput" style="width:120px;" placeholder="value"> kJ/mol</p>
+        <button class="check-btn" onclick="checkEa()">Check</button>
+        <button class="show-btn" onclick="showEaAnswer()">Show Answer</button>
+        <div id="eaFeedback" class="feedback"></div>
+        <div id="eaSolution" class="solution-box">
+            <strong>Answer:</strong> E<sub>a</sub> = 12,500 K &times; 8.314 J/(mol&middot;K) = 103,925 J/mol = <strong>104 kJ/mol</strong>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="showTab('integrated')">&#8592; Integrated Laws</button>
+        <button class="nav-btn" onclick="showTab('calculator')">Calculator &#8594;</button>
+    </div>
+</div>
+
+<!-- ==================== TAB 6: CALCULATOR ==================== -->
+<div id="calculator" class="tab-content">
+    <div class="card">
+        <h3>&#9883; Kinetics Calculator</h3>
+        <p>Use these tools to check your work on practice problems.</p>
+    </div>
+
+    <div class="card accent">
+        <h3>&#9883; Rate Law Calculator (Method of Initial Rates)</h3>
+        <p>Enter two experiments to find the order:</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin:0.5rem 0;">
+            <div>
+                <label>Rate&#8321;: <input type="number" id="calc_rate1" step="any" placeholder="rate 1"></label><br>
+                <label>[A]&#8321;: <input type="number" id="calc_conc1" step="any" placeholder="conc 1"></label>
+            </div>
+            <div>
+                <label>Rate&#8322;: <input type="number" id="calc_rate2" step="any" placeholder="rate 2"></label><br>
+                <label>[A]&#8322;: <input type="number" id="calc_conc2" step="any" placeholder="conc 2"></label>
+            </div>
+        </div>
+        <button class="check-btn" onclick="calcOrder()">Calculate Order</button>
+        <div id="calcOrderResult" style="margin-top:0.5rem; font-weight:600;"></div>
+    </div>
+
+    <div class="card success">
+        <h3>&#9883; Arrhenius E<sub>a</sub> Calculator</h3>
+        <p>Enter slope from ln k vs. 1/T plot:</p>
+        <label>Slope (K): <input type="number" id="calc_slope" step="any" placeholder="e.g. -19432"></label>
+        <button class="check-btn" onclick="calcEa()">Calculate E<sub>a</sub></button>
+        <div id="calcEaResult" style="margin-top:0.5rem; font-weight:600;"></div>
+    </div>
+
+    <div class="card">
+        <h3>&#9883; Two-Point Arrhenius Calculator</h3>
+        <p>Find E<sub>a</sub> from two (T, k) pairs:</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin:0.5rem 0;">
+            <div>
+                <label>T&#8321; (K): <input type="number" id="calc_T1" step="any" placeholder="T1 in K"></label><br>
+                <label>k&#8321;: <input type="number" id="calc_k1" step="any" placeholder="k1"></label>
+            </div>
+            <div>
+                <label>T&#8322; (K): <input type="number" id="calc_T2" step="any" placeholder="T2 in K"></label><br>
+                <label>k&#8322;: <input type="number" id="calc_k2" step="any" placeholder="k2"></label>
+            </div>
+        </div>
+        <button class="check-btn" onclick="calcTwoPoint()">Calculate E<sub>a</sub></button>
+        <div id="calcTwoPointResult" style="margin-top:0.5rem; font-weight:600;"></div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="showTab('arrhenius')">&#8592; Arrhenius</button>
+        <button class="nav-btn" onclick="showTab('quiz')">Self-Check &#8594;</button>
+    </div>
+</div>
+
+<!-- ==================== TAB 7: SELF-CHECK QUIZ ==================== -->
+<div id="quiz" class="tab-content">
+    <div class="card">
+        <h3>&#9883; Self-Check Quiz</h3>
+        <p>Test your understanding before tackling the worksheet. No grade &mdash; just practice!</p>
+        <div class="progress-bar"><div class="progress-fill" id="quizProgress" style="width:0%"></div></div>
+        <p id="quizScore" style="font-weight:600;"></p>
+    </div>
+
+    <!-- Q1 -->
+    <div class="card" id="q1card">
+        <h3>Question 1</h3>
+        <p>The rate of a reaction has units of:</p>
+        <div style="margin:0.5rem 0;">
+            <label><input type="radio" name="q1" value="a"> s&#8315;&#185;</label><br>
+            <label><input type="radio" name="q1" value="b"> mol/L</label><br>
+            <label><input type="radio" name="q1" value="c"> M&middot;s&#8315;&#185;</label><br>
+            <label><input type="radio" name="q1" value="d"> L/(mol&middot;s)</label>
+        </div>
+        <button class="check-btn" onclick="checkQuiz(1,'c')">Check</button>
+        <div id="q1fb" class="feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="card" id="q2card">
+        <h3>Question 2</h3>
+        <p>For 2A + 3B &#8594; C, how is the rate expressed for reactant B?</p>
+        <div style="margin:0.5rem 0;">
+            <label><input type="radio" name="q2" value="a"> &minus;(1/3)&#916;[B]/&#916;t</label><br>
+            <label><input type="radio" name="q2" value="b"> &minus;3&middot;&#916;[B]/&#916;t</label><br>
+            <label><input type="radio" name="q2" value="c"> +&#916;[B]/&#916;t</label><br>
+            <label><input type="radio" name="q2" value="d"> &minus;&#916;[B]/&#916;t</label>
+        </div>
+        <button class="check-btn" onclick="checkQuiz(2,'a')">Check</button>
+        <div id="q2fb" class="feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="card" id="q3card">
+        <h3>Question 3</h3>
+        <p>In the rate law rate = k[A]&#178;[B], if [A] is doubled while [B] stays the same, the rate:</p>
+        <div style="margin:0.5rem 0;">
+            <label><input type="radio" name="q3" value="a"> stays the same</label><br>
+            <label><input type="radio" name="q3" value="b"> triples</label><br>
+            <label><input type="radio" name="q3" value="c"> doubles</label><br>
+            <label><input type="radio" name="q3" value="d"> quadruples</label>
+        </div>
+        <button class="check-btn" onclick="checkQuiz(3,'d')">Check</button>
+        <div id="q3fb" class="feedback"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="card" id="q4card">
+        <h3>Question 4</h3>
+        <p>If a plot of ln[A] vs. time gives a straight line, the reaction is:</p>
+        <div style="margin:0.5rem 0;">
+            <label><input type="radio" name="q4" value="a"> second order</label><br>
+            <label><input type="radio" name="q4" value="b"> first order</label><br>
+            <label><input type="radio" name="q4" value="c"> zero order</label><br>
+            <label><input type="radio" name="q4" value="d"> third order</label>
+        </div>
+        <button class="check-btn" onclick="checkQuiz(4,'b')">Check</button>
+        <div id="q4fb" class="feedback"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="card" id="q5card">
+        <h3>Question 5</h3>
+        <p>In an Arrhenius plot of ln k vs. 1/T, the slope equals:</p>
+        <div style="margin:0.5rem 0;">
+            <label><input type="radio" name="q5" value="a"> ln A</label><br>
+            <label><input type="radio" name="q5" value="b"> k</label><br>
+            <label><input type="radio" name="q5" value="c"> &minus;E<sub>a</sub>/R</label><br>
+            <label><input type="radio" name="q5" value="d"> E<sub>a</sub></label>
+        </div>
+        <button class="check-btn" onclick="checkQuiz(5,'c')">Check</button>
+        <div id="q5fb" class="feedback"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="card" id="q6card">
+        <h3>Question 6</h3>
+        <p>A first-order reaction has a rate constant with units of:</p>
+        <div style="margin:0.5rem 0;">
+            <label><input type="radio" name="q6" value="a"> s&#8315;&#185;</label><br>
+            <label><input type="radio" name="q6" value="b"> M&#8315;&#178;&middot;s&#8315;&#185;</label><br>
+            <label><input type="radio" name="q6" value="c"> M&middot;s&#8315;&#185;</label><br>
+            <label><input type="radio" name="q6" value="d"> M&#8315;&#185;&middot;s&#8315;&#185;</label>
+        </div>
+        <button class="check-btn" onclick="checkQuiz(6,'a')">Check</button>
+        <div id="q6fb" class="feedback"></div>
+    </div>
+
+    <div id="quizFinal" style="display:none;" class="card success">
+        <h3>&#9883; Results</h3>
+        <p id="quizFinalText"></p>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="showTab('calculator')">&#8592; Calculator</button>
+        <button class="nav-btn" disabled>End &#9883;</button>
+    </div>
+</div>
+
+<footer>
+    <div class="brand">&#9883; TEHRANI &#9883;</div>
+    <div class="copy">&copy; Tehrani 2028</div>
+    <div class="quote">"The rate at which you understand kinetics is, ironically, not first order."</div>
+    <div class="equation">&#916;G = &#916;H &minus; T&#916;S &nbsp; &#8741; &nbsp; PV = nRT &nbsp; &#8741; &nbsp; k = Ae<sup>&minus;E<sub>a</sub>/RT</sup></div>
+</footer>
+
+<script>
+// ========== TAB NAVIGATION ==========
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const tabs = ['intro','rates','initial','integrated','arrhenius','calculator','quiz'];
+    const idx = tabs.indexOf(id);
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ========== STOICHIOMETRY CHECK ==========
+function checkStoich() {
+    const a = document.getElementById('stoich1').value.trim();
+    const b = document.getElementById('stoich2').value.trim();
+    const c = document.getElementById('stoich3').value.trim();
+    const fb = document.getElementById('stoichFeedback');
+    if (a === '5' && b === '3' && c === '4') {
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ Correct! The stoichiometric coefficients become the denominators.';
+    } else {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Not quite. Remember: the coefficient in the balanced equation goes in the denominator.';
+    }
+}
+
+function showStoichAnswer() {
+    document.getElementById('stoichSolution').style.display = 'block';
+}
+
+function checkFe() {
+    const a = document.getElementById('fe1').value.trim();
+    const b = document.getElementById('fe2').value.trim();
+    const c = document.getElementById('fe3').value.trim();
+    const d = document.getElementById('fe4').value.trim();
+    const fb = document.getElementById('feFeedback');
+    if (a === '2' && b === '6' && c === '2' && d === '3') {
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ Correct!';
+    } else {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Check the coefficients in the balanced equation: 2Fe + 6HCl → 2FeCl₃ + 3H₂';
+    }
+}
+
+function showFeAnswer() {
+    document.getElementById('feSolution').style.display = 'block';
+}
+
+// ========== INITIAL RATE CHECK ==========
+function checkInitialRate() {
+    const a = document.getElementById('ir_a').value.trim();
+    const b = document.getElementById('ir_b').value.trim();
+    const fb = document.getElementById('irFeedback');
+    if (a === '1' && b === '1') {
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ Correct! Both are first order, second order overall.';
+    } else {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Try comparing experiments where one concentration stays the same.';
+    }
+}
+
+function showInitialRateAnswer() {
+    document.getElementById('irSolution').style.display = 'block';
+}
+
+// ========== ORDER CHECK ==========
+function checkOrder() {
+    const val = document.getElementById('orderSelect').value;
+    const fb = document.getElementById('orderFeedback');
+    if (val === '2') {
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ Correct! 1/[A] increases by ~1.5-1.6 each 40s interval — second order.';
+    } else if (val === '') {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Please select an option.';
+    } else {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Look at which column changes by roughly equal amounts each time step.';
+    }
+}
+
+function showOrderAnswer() {
+    document.getElementById('orderSolution').style.display = 'block';
+}
+
+// ========== ARRHENIUS CHECK ==========
+function checkEa() {
+    const val = parseFloat(document.getElementById('eaInput').value);
+    const fb = document.getElementById('eaFeedback');
+    if (val >= 103 && val <= 105) {
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ Correct! Ea ≈ 104 kJ/mol.';
+    } else if (isNaN(val)) {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Enter a numeric value.';
+    } else {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Remember: Ea = |slope| × R = 12,500 × 8.314 J/mol, then convert to kJ.';
+    }
+}
+
+function showEaAnswer() {
+    document.getElementById('eaSolution').style.display = 'block';
+}
+
+// ========== CALCULATORS ==========
+function calcOrder() {
+    const r1 = parseFloat(document.getElementById('calc_rate1').value);
+    const r2 = parseFloat(document.getElementById('calc_rate2').value);
+    const c1 = parseFloat(document.getElementById('calc_conc1').value);
+    const c2 = parseFloat(document.getElementById('calc_conc2').value);
+    const res = document.getElementById('calcOrderResult');
+    if (isNaN(r1) || isNaN(r2) || isNaN(c1) || isNaN(c2) || c1 === 0 || c2 === 0 || r1 === 0) {
+        res.textContent = 'Please enter valid non-zero values.';
+        return;
+    }
+    const rateRatio = r2 / r1;
+    const concRatio = c2 / c1;
+    const order = Math.log(rateRatio) / Math.log(concRatio);
+    res.innerHTML = `Rate ratio = ${rateRatio.toFixed(4)}<br>Conc ratio = ${concRatio.toFixed(4)}<br>Order = ln(${rateRatio.toFixed(3)})/ln(${concRatio.toFixed(3)}) = <strong>${order.toFixed(2)}</strong> ≈ <strong>${Math.round(order)}</strong>`;
+}
+
+function calcEa() {
+    const slope = parseFloat(document.getElementById('calc_slope').value);
+    const res = document.getElementById('calcEaResult');
+    if (isNaN(slope)) { res.textContent = 'Enter a numeric slope value.'; return; }
+    const ea = Math.abs(slope) * 8.314;
+    res.innerHTML = `E<sub>a</sub> = |${slope}| × 8.314 = ${ea.toFixed(0)} J/mol = <strong>${(ea/1000).toFixed(1)} kJ/mol</strong>`;
+}
+
+function calcTwoPoint() {
+    const T1 = parseFloat(document.getElementById('calc_T1').value);
+    const T2 = parseFloat(document.getElementById('calc_T2').value);
+    const k1 = parseFloat(document.getElementById('calc_k1').value);
+    const k2 = parseFloat(document.getElementById('calc_k2').value);
+    const res = document.getElementById('calcTwoPointResult');
+    if (isNaN(T1) || isNaN(T2) || isNaN(k1) || isNaN(k2) || k1 <= 0 || k2 <= 0 || T1 === 0 || T2 === 0) {
+        res.textContent = 'Enter valid positive values (T in K, k > 0).';
+        return;
+    }
+    const lnRatio = Math.log(k2/k1);
+    const invTdiff = (1/T2) - (1/T1);
+    const ea = -lnRatio / invTdiff * 8.314;
+    res.innerHTML = `ln(k₂/k₁) = ${lnRatio.toFixed(4)}<br>1/T₂ − 1/T₁ = ${invTdiff.toExponential(4)}<br>E<sub>a</sub> = ${ea.toFixed(0)} J/mol = <strong>${(ea/1000).toFixed(1)} kJ/mol</strong>`;
+}
+
+// ========== QUIZ ==========
+let quizAnswered = 0;
+let quizCorrect = 0;
+const totalQ = 6;
+
+function checkQuiz(num, correct) {
+    const selected = document.querySelector(`input[name="q${num}"]:checked`);
+    const fb = document.getElementById(`q${num}fb`);
+    if (!selected) {
+        fb.className = 'feedback incorrect';
+        fb.textContent = '✗ Please select an answer.';
+        return;
+    }
+    if (fb.classList.contains('correct') || fb.classList.contains('incorrect')) return; // already answered
+
+    quizAnswered++;
+    if (selected.value === correct) {
+        fb.className = 'feedback correct';
+        fb.textContent = '✓ Correct!';
+        quizCorrect++;
+    } else {
+        fb.className = 'feedback incorrect';
+        const explanations = {
+            1: 'The rate is change in concentration per time: M·s⁻¹ (or mol/(L·s)).',
+            2: 'Divide by the stoichiometric coefficient: −(1/3)Δ[B]/Δt.',
+            3: 'Doubling [A] when the order is 2 gives 2² = 4× the rate.',
+            4: 'ln[A] vs t being linear means first order.',
+            5: 'The Arrhenius plot slope = −Ea/R.',
+            6: 'For first order: rate = k[A], so k = rate/[A] = (M·s⁻¹)/M = s⁻¹.'
+        };
+        fb.textContent = '✗ ' + explanations[num];
+    }
+
+    // Disable radios
+    document.querySelectorAll(`input[name="q${num}"]`).forEach(r => r.disabled = true);
+
+    // Update progress
+    const pct = (quizAnswered / totalQ * 100).toFixed(0);
+    document.getElementById('quizProgress').style.width = pct + '%';
+    document.getElementById('quizScore').textContent = `${quizCorrect}/${quizAnswered} correct`;
+
+    if (quizAnswered === totalQ) {
+        const final = document.getElementById('quizFinal');
+        final.style.display = 'block';
+        const pctCorrect = (quizCorrect / totalQ * 100).toFixed(0);
+        let msg = `You got ${quizCorrect} out of ${totalQ} (${pctCorrect}%). `;
+        if (pctCorrect >= 80) msg += 'Excellent — you are ready for the worksheet!';
+        else if (pctCorrect >= 50) msg += 'Good start — review the tabs above for topics you missed, then try the worksheet.';
+        else msg += 'Take some time reviewing each tab before attempting the worksheet.';
+        document.getElementById('quizFinalText').textContent = msg;
+    }
+}
+</script>
+
+</body>
+</html>

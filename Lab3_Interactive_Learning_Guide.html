@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 3: Stoichiometry - Interactive Learning Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #f5576c;
+            border-bottom: 3px solid #f5576c;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #f5576c;
+        }
+
+        .section h2 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .section h3 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .success-box {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .chemical-equation {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .step-card {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+
+        .calculator {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(86, 171, 47, 0.4);
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #5a6268;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .collapsible {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 10px;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .collapsible:hover {
+            opacity: 0.9;
+        }
+
+        .collapsible:after {
+            content: '\002B';
+            color: white;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .collapsible.active:after {
+            content: "\2212";
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: white;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .collapsible-content-inner {
+            padding: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .safety-icon {
+            font-size: 2em;
+            margin-right: 10px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .sub {
+            font-size: 0.8em;
+            vertical-align: sub;
+        }
+
+        .formula-box {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lab 3: Stoichiometry</h1>
+            <p>Determining Mole Ratios in Chemical Reactions</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="openTab(event, 'overview')">Overview</button>
+            <button class="nav-tab" onclick="openTab(event, 'concepts')">Key Concepts</button>
+            <button class="nav-tab" onclick="openTab(event, 'procedure')">Procedure</button>
+            <button class="nav-tab" onclick="openTab(event, 'calculations')">Calculations</button>
+            <button class="nav-tab" onclick="openTab(event, 'practice')">Practice</button>
+            <button class="nav-tab" onclick="openTab(event, 'quiz')">Quiz</button>
+        </div>
+
+        <div class="content">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="section">
+                    <h2>◉ Learning Objectives</h2>
+                    <ul>
+                        <li>Understand the concept of stoichiometry and mole ratios</li>
+                        <li>Determine the experimental mole ratio of reactants to products</li>
+                        <li>Calculate theoretical and percent yields</li>
+                        <li>Apply the law of conservation of mass to chemical reactions</li>
+                        <li>Analyze sources of experimental error</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h2>⚗ The Reaction</h2>
+                    <p>In this lab, you'll investigate the reaction between sodium carbonate and hydrochloric acid:</p>
+
+                    <div class="chemical-equation">
+                        <strong>Overall Reaction:</strong><br>
+                        Na<span class="sub">2</span>CO<span class="sub">3</span> (s) + 2HCl (aq) → 2NaCl (aq) + CO<span class="sub">2</span> (g) + H<span class="sub">2</span>O (l)
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Why This Reaction?</strong><br>
+                        This reaction is ideal for studying stoichiometry because:
+                        <ul>
+                            <li>It produces a visible gas (CO<span class="sub">2</span>) - you can see the reaction happening!</li>
+                            <li>The product (NaCl) can be easily isolated and weighed</li>
+                            <li>It demonstrates the 2:1 mole ratio between products and reactants</li>
+                            <li>It's safe to perform in a school laboratory</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>⚠ Safety First</h2>
+                    <div class="warning-box">
+                        <span class="safety-icon">⚠</span>
+                        <strong>Important Safety Notes:</strong>
+                        <ul>
+                            <li>Wear safety goggles at all times</li>
+                            <li>HCl is corrosive - avoid skin contact</li>
+                            <li>Work in a well-ventilated area (CO<span class="sub">2</span> gas is produced)</li>
+                            <li>Hot beakers can cause burns - use tongs or heat-resistant gloves</li>
+                            <li>Never point the beaker toward yourself or others during the reaction</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>☰ Materials Needed</h2>
+                    <div class="grid-2">
+                        <div>
+                            <h3>Equipment:</h3>
+                            <ul>
+                                <li>150 mL beaker</li>
+                                <li>Electronic balance (0.01 g precision)</li>
+                                <li>Hot plate</li>
+                                <li>Disposable pipet</li>
+                                <li>Stirring rod</li>
+                                <li>Tongs or heat-resistant gloves</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>Chemicals:</h3>
+                            <ul>
+                                <li>Sodium carbonate (Na<span class="sub">2</span>CO<span class="sub">3</span>)</li>
+                                <li>10% Hydrochloric acid (HCl) solution</li>
+                            </ul>
+                            <br>
+                            <h3>Data:</h3>
+                            <ul>
+                                <li>Molar mass Na<span class="sub">2</span>CO<span class="sub">3</span>: 105.99 g/mol</li>
+                                <li>Molar mass NaCl: 58.44 g/mol</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Concepts Tab -->
+            <div id="concepts" class="tab-content">
+                <div class="section">
+                    <h2>§ Stoichiometry Fundamentals</h2>
+
+                    <button class="collapsible">What is Stoichiometry?</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>Stoichiometry</strong> is the study of quantitative relationships in chemical reactions. The word comes from Greek: <em>stoicheion</em> (element) + <em>metron</em> (measure).</p>
+
+                            <p>Think of it like a recipe: If a cookie recipe calls for 2 cups flour and 1 cup sugar, the ratio is always 2:1. Similarly, in our reaction:</p>
+
+                            <div class="chemical-equation">
+                                Na<span class="sub">2</span>CO<span class="sub">3</span> + 2HCl → 2NaCl + CO<span class="sub">2</span> + H<span class="sub">2</span>O
+                            </div>
+
+                            <p>The ratio is always 1 mole Na<span class="sub">2</span>CO<span class="sub">3</span> produces 2 moles NaCl.</p>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">The Mole Concept</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p>A <strong>mole</strong> is a counting unit, just like a dozen means 12. One mole = 6.022 × 10<sup>23</sup> particles (Avogadro's number).</p>
+
+                            <div class="info-box">
+                                <strong>Key Relationship:</strong>
+                                <div class="formula-box">
+                                    moles = mass (g) ÷ molar mass (g/mol)
+                                </div>
+                            </div>
+
+                            <p><strong>Example:</strong> If you have 10.60 g of Na<span class="sub">2</span>CO<span class="sub">3</span>:</p>
+                            <p>moles = 10.60 g ÷ 105.99 g/mol = 0.100 mol</p>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Mole Ratios from Balanced Equations</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p>The coefficients in a balanced equation tell you the mole ratio:</p>
+
+                            <div class="chemical-equation">
+                                <span class="highlight">1</span> Na<span class="sub">2</span>CO<span class="sub">3</span> + 2HCl → <span class="highlight">2</span> NaCl + CO<span class="sub">2</span> + H<span class="sub">2</span>O
+                            </div>
+
+                            <p>This means:</p>
+                            <ul>
+                                <li>1 mole Na<span class="sub">2</span>CO<span class="sub">3</span> produces 2 moles NaCl</li>
+                                <li>The mole ratio is 2:1 (NaCl:Na<span class="sub">2</span>CO<span class="sub">3</span>)</li>
+                                <li>If you start with 0.1 mol Na<span class="sub">2</span>CO<span class="sub">3</span>, you should get 0.2 mol NaCl</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Theoretical Yield vs. Actual Yield</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>Theoretical Yield:</strong> The maximum amount of product you can make based on the balanced equation (assuming perfect conditions).</p>
+
+                            <p><strong>Actual Yield:</strong> The amount of product you actually obtain in the lab.</p>
+
+                            <div class="formula-box">
+                                Percent Yield = (Actual Yield ÷ Theoretical Yield) × 100%
+                            </div>
+
+                            <div class="info-box">
+                                <strong>Why isn't percent yield always 100%?</strong>
+                                <ul>
+                                    <li>Some product may stick to glassware</li>
+                                    <li>Incomplete reactions</li>
+                                    <li>Side reactions</li>
+                                    <li>Measurement errors</li>
+                                    <li>Product lost during transfers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Law of Conservation of Mass</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p>Matter cannot be created or destroyed in a chemical reaction - it can only change forms.</p>
+
+                            <div class="success-box">
+                                <strong>In Our Reaction:</strong><br>
+                                The mass of Na<span class="sub">2</span>CO<span class="sub">3</span> + HCl = mass of NaCl + CO<span class="sub">2</span> + H<span class="sub">2</span>O
+                            </div>
+
+                            <p><strong>Why do we lose mass in this experiment?</strong></p>
+                            <p>CO<span class="sub">2</span> gas escapes into the air! We don't weigh it, but it's still there. The mass isn't lost - it just left the beaker.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🧮 Step-by-Step Calculation Guide</h2>
+
+                    <div class="step-card">
+                        <span class="step-number">1</span>
+                        <strong>Calculate moles of Na<span class="sub">2</span>CO<span class="sub">3</span> used</strong>
+                        <div class="formula-box">
+                            moles Na<span class="sub">2</span>CO<span class="sub">3</span> = mass ÷ 105.99 g/mol
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">2</span>
+                        <strong>Use mole ratio to find theoretical moles of NaCl</strong>
+                        <div class="formula-box">
+                            moles NaCl = moles Na<span class="sub">2</span>CO<span class="sub">3</span> × (2 mol NaCl / 1 mol Na<span class="sub">2</span>CO<span class="sub">3</span>)
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">3</span>
+                        <strong>Calculate theoretical mass of NaCl</strong>
+                        <div class="formula-box">
+                            theoretical mass NaCl = moles NaCl × 58.44 g/mol
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">4</span>
+                        <strong>Calculate percent yield</strong>
+                        <div class="formula-box">
+                            percent yield = (actual mass ÷ theoretical mass) × 100%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Procedure Tab -->
+            <div id="procedure" class="tab-content">
+                <div class="section">
+                    <h2>⚛ Experimental Procedure</h2>
+
+                    <div class="step-card">
+                        <span class="step-number">1</span>
+                        <h3>Initial Setup and Weighing</h3>
+                        <ul>
+                            <li>Clean and dry a 150 mL beaker</li>
+                            <li>Weigh the empty beaker to 0.01 g precision</li>
+                            <li>Record the mass in your data table</li>
+                        </ul>
+                        <div class="info-box">
+                            <strong>Pro Tip:</strong> Make sure the beaker is completely dry. Even a small amount of water will affect your mass measurements!
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">2</span>
+                        <h3>Adding the Reactant</h3>
+                        <ul>
+                            <li>Add between 0.50 and 0.80 g of Na<span class="sub">2</span>CO<span class="sub">3</span> to the beaker</li>
+                            <li>Weigh the beaker with Na<span class="sub">2</span>CO<span class="sub">3</span> to 0.01 g precision</li>
+                            <li>Calculate the exact mass of Na<span class="sub">2</span>CO<span class="sub">3</span> by subtraction</li>
+                        </ul>
+                        <div class="warning-box">
+                            <strong>Important:</strong> Don't add too much Na<span class="sub">2</span>CO<span class="sub">3</span>! Stay within the 0.50-0.80 g range for best results.
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">3</span>
+                        <h3>The Chemical Reaction</h3>
+                        <ul>
+                            <li>Using a disposable pipet, slowly add 10% HCl solution dropwise</li>
+                            <li>Add acid drop by drop at first - the reaction will fizz!</li>
+                            <li>Gently swirl the beaker between additions</li>
+                            <li>Continue adding HCl until:</li>
+                            <ul>
+                                <li>All fizzing has completely stopped</li>
+                                <li>All solid Na<span class="sub">2</span>CO<span class="sub">3</span> has dissolved</li>
+                                <li>The solution is clear</li>
+                            </ul>
+                        </ul>
+
+                        <button class="collapsible">What You'll Observe During the Reaction</button>
+                        <div class="collapsible-content">
+                            <div class="collapsible-content-inner">
+                                <ul>
+                                    <li><strong>Fizzing/Bubbling:</strong> CO<span class="sub">2</span> gas is being produced</li>
+                                    <li><strong>White solid dissolving:</strong> Na<span class="sub">2</span>CO<span class="sub">3</span> is reacting</li>
+                                    <li><strong>Solution becoming clear:</strong> NaCl is dissolving in water</li>
+                                    <li><strong>Temperature increase:</strong> The reaction is exothermic (releases heat)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Safety Note:</strong> The reaction can be vigorous! Add HCl slowly, especially at first. Don't lean over the beaker.
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">4</span>
+                        <h3>Evaporation Process</h3>
+                        <ul>
+                            <li>Place the beaker on a hot plate set to low-medium heat</li>
+                            <li>Heat gently to evaporate the water and excess HCl</li>
+                            <li>Avoid vigorous boiling - this can cause spattering and product loss</li>
+                            <li>Continue heating until all liquid has evaporated</li>
+                            <li>White crystals of NaCl should remain</li>
+                        </ul>
+
+                        <button class="collapsible">Common Evaporation Problems & Solutions</button>
+                        <div class="collapsible-content">
+                            <div class="collapsible-content-inner">
+                                <table class="data-table">
+                                    <tr>
+                                        <th>Problem</th>
+                                        <th>Solution</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Solution boils too vigorously</td>
+                                        <td>Reduce heat immediately. Slow, gentle heating is key.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Product turning brown</td>
+                                        <td>Heat is too high. Lower temperature to prevent decomposition.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Product splattering out</td>
+                                        <td>Reduce heat. Use a larger beaker if needed.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Taking too long to evaporate</td>
+                                        <td>Be patient! Gentle heating prevents product loss.</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Critical:</strong> Heat slowly! Bumping and spattering will cause product loss and low percent yield.
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <span class="step-number">5</span>
+                        <h3>Final Weighing</h3>
+                        <ul>
+                            <li>Remove the beaker from heat</li>
+                            <li>Allow it to cool to room temperature (about 5 minutes)</li>
+                            <li>Weigh the beaker with the NaCl product to 0.01 g precision</li>
+                            <li>Calculate the mass of NaCl produced by subtraction</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <strong>Why cool to room temperature?</strong><br>
+                            Hot air inside the beaker is less dense than cool air. Weighing a hot beaker gives an artificially low mass reading!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>✓ Experimental Checklist</h2>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Safety goggles on
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Beaker is clean and dry
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Balance is zeroed and accurate to 0.01 g
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Empty beaker mass recorded
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Na<span class="sub">2</span>CO<span class="sub">3</span> mass between 0.50-0.80 g
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ HCl added slowly and carefully
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Fizzing has completely stopped
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ All Na<span class="sub">2</span>CO<span class="sub">3</span> dissolved
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Solution is clear
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Heated gently (no violent boiling)
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ All liquid evaporated
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Beaker cooled to room temperature
+                    </div>
+                    <div class="quiz-option" onclick="this.classList.toggle('correct')">
+                        ☐ Final mass recorded
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculations Tab -->
+            <div id="calculations" class="tab-content">
+                <div class="section">
+                    <h2>🧮 Interactive Stoichiometry Calculator</h2>
+
+                    <div class="calculator">
+                        <h3>Enter Your Experimental Data</h3>
+
+                        <div class="input-group">
+                            <label>Mass of empty beaker (g):</label>
+                            <input type="number" id="emptyBeaker" step="0.01" placeholder="e.g., 85.42">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Mass of beaker + Na₂CO₃ (g):</label>
+                            <input type="number" id="beakerNa2CO3" step="0.01" placeholder="e.g., 86.07">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Mass of beaker + NaCl (g):</label>
+                            <input type="number" id="beakerNaCl" step="0.01" placeholder="e.g., 86.14">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="calculateStoichiometry()">Calculate Results</button>
+                        <button class="btn btn-reset" onclick="resetCalculator()">Reset</button>
+
+                        <div id="calculationResults" class="result-box"></div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📊 Sample Calculation Walkthrough</h2>
+
+                    <button class="collapsible">Example Problem: Complete Calculation</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <h3>Given Data:</h3>
+                            <ul>
+                                <li>Mass of empty beaker: 85.42 g</li>
+                                <li>Mass of beaker + Na<span class="sub">2</span>CO<span class="sub">3</span>: 86.07 g</li>
+                                <li>Mass of beaker + NaCl: 86.14 g</li>
+                            </ul>
+
+                            <h3>Step 1: Calculate mass of Na<span class="sub">2</span>CO<span class="sub">3</span></h3>
+                            <div class="formula-box">
+                                Mass Na<span class="sub">2</span>CO<span class="sub">3</span> = 86.07 g - 85.42 g = 0.65 g
+                            </div>
+
+                            <h3>Step 2: Calculate moles of Na<span class="sub">2</span>CO<span class="sub">3</span></h3>
+                            <div class="formula-box">
+                                moles = 0.65 g ÷ 105.99 g/mol = 0.00613 mol
+                            </div>
+
+                            <h3>Step 3: Use mole ratio to find theoretical moles of NaCl</h3>
+                            <p>From balanced equation: 1 mol Na<span class="sub">2</span>CO<span class="sub">3</span> → 2 mol NaCl</p>
+                            <div class="formula-box">
+                                moles NaCl = 0.00613 mol × 2 = 0.01226 mol
+                            </div>
+
+                            <h3>Step 4: Calculate theoretical mass of NaCl</h3>
+                            <div class="formula-box">
+                                mass = 0.01226 mol × 58.44 g/mol = 0.72 g
+                            </div>
+
+                            <h3>Step 5: Calculate actual mass of NaCl produced</h3>
+                            <div class="formula-box">
+                                Actual mass = 86.14 g - 85.42 g = 0.72 g
+                            </div>
+
+                            <h3>Step 6: Calculate percent yield</h3>
+                            <div class="formula-box">
+                                Percent yield = (0.72 g ÷ 0.72 g) × 100% = 100%
+                            </div>
+
+                            <div class="success-box">
+                                <strong>Result:</strong> This student achieved a perfect 100% yield! In reality, you'll usually get 90-98%.
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Common Calculation Mistakes</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <table class="data-table">
+                                <tr>
+                                    <th>Mistake</th>
+                                    <th>Why It's Wrong</th>
+                                    <th>How to Fix It</th>
+                                </tr>
+                                <tr>
+                                    <td>Forgetting to use the mole ratio</td>
+                                    <td>The balanced equation shows 1:2 ratio, not 1:1</td>
+                                    <td>Always multiply by the coefficient ratio from the equation</td>
+                                </tr>
+                                <tr>
+                                    <td>Using wrong molar masses</td>
+                                    <td>Na<span class="sub">2</span>CO<span class="sub">3</span> and NaCl have different molar masses</td>
+                                    <td>Use 105.99 g/mol for Na<span class="sub">2</span>CO<span class="sub">3</span> and 58.44 g/mol for NaCl</td>
+                                </tr>
+                                <tr>
+                                    <td>Rounding too early</td>
+                                    <td>Accumulates error throughout calculation</td>
+                                    <td>Keep at least 4 significant figures until the final answer</td>
+                                </tr>
+                                <tr>
+                                    <td>Forgetting to subtract beaker mass</td>
+                                    <td>Need mass of substance, not beaker + substance</td>
+                                    <td>Always subtract the empty beaker mass</td>
+                                </tr>
+                                <tr>
+                                    <td>Mixing up actual and theoretical yield</td>
+                                    <td>Percent yield uses actual ÷ theoretical, not the reverse</td>
+                                    <td>Actual (what you measured) goes in numerator</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📈 Understanding Your Percent Yield</h2>
+
+                    <div class="info-box">
+                        <h3>What Does Your Percent Yield Mean?</h3>
+                        <ul>
+                            <li><strong>90-100%:</strong> Excellent work! Very careful technique.</li>
+                            <li><strong>80-90%:</strong> Good results. Minor losses occurred.</li>
+                            <li><strong>70-80%:</strong> Acceptable, but significant product loss.</li>
+                            <li><strong>Below 70%:</strong> Major errors occurred. Review procedure.</li>
+                            <li><strong>Above 100%:</strong> Error in measurement or incomplete evaporation!</li>
+                        </ul>
+                    </div>
+
+                    <button class="collapsible">Why Would Percent Yield Be LOW?</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <ul>
+                                <li><strong>Product lost during evaporation:</strong> Spattering or bumping</li>
+                                <li><strong>Product left in solution:</strong> Didn't evaporate completely</li>
+                                <li><strong>Product stuck to glassware:</strong> Didn't transfer everything</li>
+                                <li><strong>Incomplete reaction:</strong> Didn't add enough HCl</li>
+                                <li><strong>Spills during transfer:</strong> Lost material</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Why Would Percent Yield Be HIGH (>100%)?</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <ul>
+                                <li><strong>Incomplete evaporation:</strong> Water or HCl still present</li>
+                                <li><strong>Hygroscopic product:</strong> NaCl absorbed moisture from air</li>
+                                <li><strong>Contamination:</strong> Foreign material in product</li>
+                                <li><strong>Measurement error:</strong> Balance not calibrated correctly</li>
+                                <li><strong>Didn't cool completely:</strong> Weighed while still warm</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practice Tab -->
+            <div id="practice" class="tab-content">
+                <div class="section">
+                    <h2>📝 Practice Problems</h2>
+
+                    <button class="collapsible">Problem 1: Basic Stoichiometry</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>Question:</strong> Jebb added 0.45 g of Na<span class="sub">2</span>CO<span class="sub">3</span> to a beaker and reacted it with excess HCl. After heating to dryness, he obtained 0.48 g of NaCl.</p>
+
+                            <h3>Calculate:</h3>
+                            <p>a) Moles of Na<span class="sub">2</span>CO<span class="sub">3</span> used</p>
+                            <p>b) Theoretical moles of NaCl that should be produced</p>
+                            <p>c) Theoretical mass of NaCl</p>
+                            <p>d) Percent yield</p>
+
+                            <button class="btn btn-success" onclick="toggleSolution('sol1')">Show Solution</button>
+
+                            <div id="sol1" style="display:none; margin-top:20px;">
+                                <h3>Solution:</h3>
+
+                                <h4>a) Moles of Na<span class="sub">2</span>CO<span class="sub">3</span>:</h4>
+                                <div class="formula-box">
+                                    moles = 0.45 g ÷ 105.99 g/mol = 0.00424 mol
+                                </div>
+
+                                <h4>b) Theoretical moles of NaCl:</h4>
+                                <div class="formula-box">
+                                    moles NaCl = 0.00424 mol × 2 = 0.00849 mol
+                                </div>
+
+                                <h4>c) Theoretical mass of NaCl:</h4>
+                                <div class="formula-box">
+                                    mass = 0.00849 mol × 58.44 g/mol = 0.50 g
+                                </div>
+
+                                <h4>d) Percent yield:</h4>
+                                <div class="formula-box">
+                                    % yield = (0.48 g ÷ 0.50 g) × 100% = 96%
+                                </div>
+
+                                <div class="success-box">
+                                    <strong>Answer:</strong> Jebb achieved a 96% yield - excellent work!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Problem 2: Equation Balancing</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>Balance the following equations:</strong></p>
+
+                            <h3>a) ___ KI + ___ Pb(NO<span class="sub">3</span>)<span class="sub">2</span> → ___ KNO<span class="sub">3</span> + ___ PbI<span class="sub">2</span></h3>
+
+                            <button class="btn btn-success" onclick="toggleSolution('sol2a')">Show Solution</button>
+                            <div id="sol2a" style="display:none; margin-top:10px;">
+                                <div class="success-box">
+                                    <strong>Answer:</strong> 2 KI + Pb(NO<span class="sub">3</span>)<span class="sub">2</span> → 2 KNO<span class="sub">3</span> + PbI<span class="sub">2</span>
+                                </div>
+                            </div>
+
+                            <h3>b) ___ H<span class="sub">2</span>SO<span class="sub">4</span> + ___ NaOH → ___ Na<span class="sub">2</span>SO<span class="sub">4</span> + ___ H<span class="sub">2</span>O</h3>
+
+                            <button class="btn btn-success" onclick="toggleSolution('sol2b')">Show Solution</button>
+                            <div id="sol2b" style="display:none; margin-top:10px;">
+                                <div class="success-box">
+                                    <strong>Answer:</strong> H<span class="sub">2</span>SO<span class="sub">4</span> + 2 NaOH → Na<span class="sub">2</span>SO<span class="sub">4</span> + 2 H<span class="sub">2</span>O
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Problem 3: Real Lab Data Analysis</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>A student collected the following data:</strong></p>
+                            <ul>
+                                <li>Mass of empty beaker: 92.18 g</li>
+                                <li>Mass of beaker + Na<span class="sub">2</span>CO<span class="sub">3</span>: 92.83 g</li>
+                                <li>Mass of beaker + NaCl: 92.92 g</li>
+                            </ul>
+
+                            <h3>Calculate:</h3>
+                            <p>a) Mass of Na<span class="sub">2</span>CO<span class="sub">3</span> used</p>
+                            <p>b) Experimental mole ratio (NaCl : Na<span class="sub">2</span>CO<span class="sub">3</span>)</p>
+                            <p>c) Percent yield</p>
+                            <p>d) Percent error in the mole ratio</p>
+
+                            <button class="btn btn-success" onclick="toggleSolution('sol3')">Show Solution</button>
+
+                            <div id="sol3" style="display:none; margin-top:20px;">
+                                <h3>Solution:</h3>
+
+                                <h4>a) Mass of Na<span class="sub">2</span>CO<span class="sub">3</span>:</h4>
+                                <div class="formula-box">
+                                    92.83 g - 92.18 g = 0.65 g
+                                </div>
+
+                                <h4>b) Calculations for mole ratio:</h4>
+                                <p>Moles Na<span class="sub">2</span>CO<span class="sub">3</span>: 0.65 g ÷ 105.99 g/mol = 0.00613 mol</p>
+                                <p>Mass NaCl: 92.92 g - 92.18 g = 0.74 g</p>
+                                <p>Moles NaCl: 0.74 g ÷ 58.44 g/mol = 0.01266 mol</p>
+                                <div class="formula-box">
+                                    Mole ratio = 0.01266 ÷ 0.00613 = 2.06 : 1
+                                </div>
+
+                                <h4>c) Percent yield:</h4>
+                                <p>Theoretical mass NaCl: 0.00613 mol × 2 × 58.44 g/mol = 0.72 g</p>
+                                <div class="formula-box">
+                                    % yield = (0.74 g ÷ 0.72 g) × 100% = 103%
+                                </div>
+
+                                <h4>d) Percent error in mole ratio:</h4>
+                                <div class="formula-box">
+                                    % error = |2.06 - 2.00| ÷ 2.00 × 100% = 3.0%
+                                </div>
+
+                                <div class="warning-box">
+                                    <strong>Analysis:</strong> The >100% yield suggests incomplete evaporation or moisture absorption. The mole ratio is very close to the theoretical 2:1 ratio (only 3% error).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Problem 4: Challenge Problem</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>Challenge:</strong> A student wants to produce exactly 1.00 g of NaCl. How many grams of Na<span class="sub">2</span>CO<span class="sub">3</span> should they start with, assuming:</p>
+                            <p>a) A perfect 100% yield</p>
+                            <p>b) A realistic 92% yield</p>
+
+                            <button class="btn btn-success" onclick="toggleSolution('sol4')">Show Solution</button>
+
+                            <div id="sol4" style="display:none; margin-top:20px;">
+                                <h3>Solution:</h3>
+
+                                <h4>a) For 100% yield:</h4>
+                                <p>Work backwards from desired product:</p>
+                                <p>Moles NaCl needed: 1.00 g ÷ 58.44 g/mol = 0.01711 mol</p>
+                                <p>Using 2:1 ratio, moles Na<span class="sub">2</span>CO<span class="sub">3</span>: 0.01711 ÷ 2 = 0.008555 mol</p>
+                                <div class="formula-box">
+                                    Mass Na<span class="sub">2</span>CO<span class="sub">3</span> = 0.008555 mol × 105.99 g/mol = 0.91 g
+                                </div>
+
+                                <h4>b) For 92% yield:</h4>
+                                <p>If only 92% is recovered, need to make more than 1.00 g:</p>
+                                <div class="formula-box">
+                                    Theoretical needed = 1.00 g ÷ 0.92 = 1.09 g NaCl
+                                </div>
+                                <p>Moles NaCl: 1.09 g ÷ 58.44 g/mol = 0.01865 mol</p>
+                                <p>Moles Na<span class="sub">2</span>CO<span class="sub">3</span>: 0.01865 ÷ 2 = 0.009325 mol</p>
+                                <div class="formula-box">
+                                    Mass Na<span class="sub">2</span>CO<span class="sub">3</span> = 0.009325 mol × 105.99 g/mol = 0.99 g
+                                </div>
+
+                                <div class="success-box">
+                                    <strong>Answers:</strong><br>
+                                    a) Need 0.91 g Na<span class="sub">2</span>CO<span class="sub">3</span> for perfect yield<br>
+                                    b) Need 0.99 g Na<span class="sub">2</span>CO<span class="sub">3</span> for realistic 92% yield
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🎮 Interactive Practice Calculator</h2>
+                    <p>Try different values to see how they affect the results!</p>
+
+                    <div class="calculator">
+                        <h3>Mass to Moles Converter</h3>
+
+                        <div class="input-group">
+                            <label>Select Substance:</label>
+                            <select id="substance" style="width:100%; padding:12px; border:2px solid #dee2e6; border-radius:8px; font-size:1em;">
+                                <option value="105.99">Na₂CO₃ (105.99 g/mol)</option>
+                                <option value="58.44">NaCl (58.44 g/mol)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Mass (g):</label>
+                            <input type="number" id="practiceMass" step="0.01" placeholder="e.g., 0.65">
+                        </div>
+
+                        <button class="btn btn-primary" onclick="convertMassToMoles()">Convert to Moles</button>
+
+                        <div id="conversionResult" class="result-box"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Tab -->
+            <div id="quiz" class="tab-content">
+                <div class="section">
+                    <h2>◉ Knowledge Check Quiz</h2>
+                    <p>Test your understanding of stoichiometry concepts!</p>
+
+                    <div class="quiz-question">
+                        <h3>Question 1: What is the theoretical mole ratio of NaCl to Na₂CO₃ in this reaction?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) 1:1</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) 2:1</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) 1:2</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) 3:1</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 2: Why does the reaction fizz?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) HCl is evaporating</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) CO₂ gas is being produced</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) The solution is boiling</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) NaCl is crystallizing</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 3: If you start with 0.10 mol Na₂CO₃, how many moles of NaCl should you theoretically produce?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) 0.05 mol</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">B) 0.10 mol</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">C) 0.20 mol</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) 0.30 mol</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 4: What does a percent yield of 95% indicate?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) You made a calculation error</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) You recovered 95% of the theoretical product - excellent work!</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) You added too much HCl</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) The reaction didn't complete</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 5: Why must you cool the beaker before weighing the final product?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) To prevent the balance from melting</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) Hot air is less dense, giving an inaccurate low mass reading</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) The product will evaporate if it's hot</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) It doesn't matter - temperature doesn't affect mass</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 6: What would cause a percent yield greater than 100%?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) Perfect technique</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">B) Using too much Na₂CO₃</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">C) Incomplete evaporation leaving water in the product</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) The reaction produced more than expected</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 7: What is the purpose of adding HCl slowly at first?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) To save HCl</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) To prevent vigorous fizzing and potential overflow</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) To make the reaction go faster</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) To keep the solution cold</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 8: How do you know the reaction is complete?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) The solution turns blue</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">B) It gets very hot</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">C) All fizzing stops and the solution is clear</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) A precipitate forms</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 9: What could cause a low percent yield (below 85%)?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) Using too pure chemicals</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) Product spattering out during vigorous heating</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) Adding HCl too slowly</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) Letting the beaker cool too long</div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3>Question 10: According to the law of conservation of mass, what happened to the "missing" mass?</h3>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">A) It was destroyed in the reaction</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, true)">B) CO₂ gas escaped into the air</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">C) It turned into energy</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, false)">D) The balance was inaccurate</div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="calculateQuizScore()">Calculate My Score</button>
+                    <div id="quizScore" class="result-box"></div>
+                </div>
+
+                <div class="section">
+                    <h2>🤔 Critical Thinking Questions</h2>
+
+                    <button class="collapsible">Question 1: Experimental Design</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>Why do we use excess HCl in this experiment rather than measuring an exact stoichiometric amount?</strong></p>
+
+                            <button class="btn btn-success" onclick="toggleSolution('think1')">Show Answer</button>
+                            <div id="think1" style="display:none; margin-top:15px;">
+                                <div class="info-box">
+                                    <p><strong>Answer:</strong> Using excess HCl ensures all Na₂CO₃ reacts completely. If we used exact stoichiometric amounts:</p>
+                                    <ul>
+                                        <li>We'd need to measure both chemicals precisely</li>
+                                        <li>Any measurement error would leave unreacted Na₂CO₃</li>
+                                        <li>Incomplete mixing could prevent complete reaction</li>
+                                    </ul>
+                                    <p>The excess HCl evaporates during heating, so it doesn't affect our product mass. This makes Na₂CO₃ the limiting reactant, which simplifies our calculations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Question 2: Error Analysis</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>A student obtained a percent yield of 105%. List three possible explanations and describe how to test each hypothesis.</strong></p>
+
+                            <button class="btn btn-success" onclick="toggleSolution('think2')">Show Answer</button>
+                            <div id="think2" style="display:none; margin-top:15px;">
+                                <div class="info-box">
+                                    <p><strong>Possible Explanations:</strong></p>
+                                    <ol>
+                                        <li><strong>Incomplete evaporation:</strong> Water or HCl remains in product
+                                            <ul><li>Test: Heat longer until mass stops decreasing</li></ul>
+                                        </li>
+                                        <li><strong>Hygroscopic absorption:</strong> NaCl absorbed moisture from air
+                                            <ul><li>Test: Weigh immediately after cooling; store in desiccator</li></ul>
+                                        </li>
+                                        <li><strong>Measurement error:</strong> Balance not calibrated correctly
+                                            <ul><li>Test: Re-weigh on different balance; check calibration</li></ul>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="collapsible">Question 3: Applying Concepts</button>
+                    <div class="collapsible-content">
+                        <div class="collapsible-content-inner">
+                            <p><strong>How would this experiment change if we wanted to determine the mole ratio of CO₂ to Na₂CO₃ instead of NaCl to Na₂CO₃?</strong></p>
+
+                            <button class="btn btn-success" onclick="toggleSolution('think3')">Show Answer</button>
+                            <div id="think3" style="display:none; margin-top:15px;">
+                                <div class="info-box">
+                                    <p><strong>Answer:</strong> We'd need to capture and measure the CO₂ gas:</p>
+                                    <ul>
+                                        <li>Use a closed system with a gas collection apparatus</li>
+                                        <li>Collect CO₂ over water or in a gas syringe</li>
+                                        <li>Measure volume of gas produced</li>
+                                        <li>Use ideal gas law (PV = nRT) to calculate moles</li>
+                                        <li>Account for temperature and pressure</li>
+                                    </ul>
+                                    <p>This would be more complex! That's why we measure NaCl instead - it's easier to isolate and weigh a solid product.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching function
+        function openTab(evt, tabName) {
+            var i, tabcontent, navtabs;
+
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+
+            navtabs = document.getElementsByClassName("nav-tab");
+            for (i = 0; i < navtabs.length; i++) {
+                navtabs[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Collapsible sections
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+
+        // Stoichiometry calculator
+        function calculateStoichiometry() {
+            var emptyBeaker = parseFloat(document.getElementById("emptyBeaker").value);
+            var beakerNa2CO3 = parseFloat(document.getElementById("beakerNa2CO3").value);
+            var beakerNaCl = parseFloat(document.getElementById("beakerNaCl").value);
+
+            if (isNaN(emptyBeaker) || isNaN(beakerNa2CO3) || isNaN(beakerNaCl)) {
+                alert("Please enter all values!");
+                return;
+            }
+
+            // Calculate masses
+            var massNa2CO3 = beakerNa2CO3 - emptyBeaker;
+            var massNaCl = beakerNaCl - emptyBeaker;
+
+            // Calculate moles
+            var molesNa2CO3 = massNa2CO3 / 105.99;
+            var molesNaCl = massNaCl / 58.44;
+
+            // Calculate theoretical values
+            var theoreticalMolesNaCl = molesNa2CO3 * 2;
+            var theoreticalMassNaCl = theoreticalMolesNaCl * 58.44;
+
+            // Calculate percent yield
+            var percentYield = (massNaCl / theoreticalMassNaCl) * 100;
+
+            // Calculate experimental mole ratio
+            var moleRatio = molesNaCl / molesNa2CO3;
+
+            // Display results
+            var results = document.getElementById("calculationResults");
+            results.innerHTML = `
+                <h3>📊 Your Results:</h3>
+                <p><strong>Mass of Na₂CO₃ used:</strong> ${massNa2CO3.toFixed(2)} g</p>
+                <p><strong>Moles of Na₂CO₃:</strong> ${molesNa2CO3.toFixed(5)} mol</p>
+                <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
+                <p><strong>Theoretical moles of NaCl:</strong> ${theoreticalMolesNaCl.toFixed(5)} mol</p>
+                <p><strong>Theoretical mass of NaCl:</strong> ${theoreticalMassNaCl.toFixed(2)} g</p>
+                <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
+                <p><strong>Actual mass of NaCl produced:</strong> ${massNaCl.toFixed(2)} g</p>
+                <p><strong>Actual moles of NaCl:</strong> ${molesNaCl.toFixed(5)} mol</p>
+                <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
+                <p><strong>Experimental mole ratio (NaCl:Na₂CO₃):</strong> ${moleRatio.toFixed(2)}:1</p>
+                <p><strong>Theoretical mole ratio:</strong> 2.00:1</p>
+                <hr style="margin: 15px 0; border: 1px solid rgba(255,255,255,0.3);">
+                <p><strong>Percent Yield:</strong> ${percentYield.toFixed(1)}%</p>
+                <p><strong>Evaluation:</strong> ${getYieldEvaluation(percentYield)}</p>
+            `;
+            results.classList.add("show");
+        }
+
+        function getYieldEvaluation(yield) {
+            if (yield > 100) return "⚠ Above 100% - Check for incomplete evaporation or measurement errors!";
+            if (yield >= 90) return "★ Excellent work! Very careful technique.";
+            if (yield >= 80) return "✓ Good results with minor product loss.";
+            if (yield >= 70) return "⚠ Acceptable but significant product loss occurred.";
+            return "✗ Major errors - review your procedure carefully.";
+        }
+
+        function resetCalculator() {
+            document.getElementById("emptyBeaker").value = "";
+            document.getElementById("beakerNa2CO3").value = "";
+            document.getElementById("beakerNaCl").value = "";
+            document.getElementById("calculationResults").classList.remove("show");
+        }
+
+        // Practice converter
+        function convertMassToMoles() {
+            var mass = parseFloat(document.getElementById("practiceMass").value);
+            var molarMass = parseFloat(document.getElementById("substance").value);
+
+            if (isNaN(mass)) {
+                alert("Please enter a mass value!");
+                return;
+            }
+
+            var moles = mass / molarMass;
+            var substance = document.getElementById("substance").options[document.getElementById("substance").selectedIndex].text;
+
+            var result = document.getElementById("conversionResult");
+            result.innerHTML = `
+                <h3>Conversion Result:</h3>
+                <p><strong>${mass} g of ${substance} = ${moles.toFixed(6)} mol</strong></p>
+                <p>This is equivalent to ${(moles * 6.022e23).toExponential(3)} particles!</p>
+            `;
+            result.classList.add("show");
+        }
+
+        // Quiz functions
+        function checkAnswer(element, isCorrect) {
+            // Remove any existing classes from siblings
+            var siblings = element.parentElement.children;
+            for (var i = 0; i < siblings.length; i++) {
+                if (siblings[i].classList.contains('quiz-option')) {
+                    siblings[i].classList.remove('correct', 'incorrect');
+                }
+            }
+
+            // Add appropriate class
+            if (isCorrect) {
+                element.classList.add('correct');
+                element.innerHTML = element.innerHTML + " ✓";
+            } else {
+                element.classList.add('incorrect');
+                element.innerHTML = element.innerHTML + " ✗";
+            }
+        }
+
+        function calculateQuizScore() {
+            var correct = document.querySelectorAll('.quiz-option.correct').length;
+            var total = document.querySelectorAll('.quiz-question').length;
+            var percentage = (correct / total) * 100;
+
+            var scoreDiv = document.getElementById("quizScore");
+            scoreDiv.innerHTML = `
+                <h3>Your Quiz Score:</h3>
+                <p style="font-size: 2em;">${correct} / ${total}</p>
+                <p>${percentage.toFixed(0)}%</p>
+                <p>${getQuizFeedback(percentage)}</p>
+            `;
+            scoreDiv.classList.add("show");
+        }
+
+        function getQuizFeedback(percentage) {
+            if (percentage === 100) return "★ Perfect score! You've mastered stoichiometry!";
+            if (percentage >= 80) return "★ Great job! You understand the concepts well.";
+            if (percentage >= 60) return "✓ Good effort! Review the sections where you struggled.";
+            return "§ Keep studying! Review the key concepts and try again.";
+        }
+
+        // Toggle solution visibility
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    </script>
+<div style="text-align:center; padding:30px 20px; background:linear-gradient(135deg, #1a1a2e, #16213e); color:white; margin-top:30px;">
+<h3>⚗ TEHRANI ⚗</h3>
+<p>© Tehrani 2028</p>
+<p style="font-style:italic; max-width:600px; margin:15px auto;">"Stoichiometry is just the universe's way of saying you can't create something from nothing — unless you round aggressively enough, in which case you can create anything."</p>
+<p style="font-size:0.85em; letter-spacing:2px; margin-top:8px; opacity:0.7;">mol · g/mol · % yield · General Chemistry II</p>
+</div>
+</body>
+</html>

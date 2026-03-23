@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 5: Equilibrium Constant — Teaching Guide</title>
+<style>
+  :root {
+    --primary: #1a5276;
+    --accent: #f39c12;
+    --bg: #faf8f0;
+    --card: #ffffff;
+    --text: #2c3e50;
+    --muted: #7f8c8d;
+    --border: #e8e0c8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  .header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #fff; text-align: center; padding: 2rem 1rem;
+  }
+  .header h1 { font-size: 1.5rem; }
+  .header p { opacity: .85; margin-top: .3rem; }
+  .header .badge { display: inline-block; margin-top: .5rem; background: rgba(243,156,18,.3); padding: .25rem .85rem; border-radius: 20px; font-size: .85rem; font-weight: 600; color: #f9e79f; }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+
+  .section { background: var(--card); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.06); padding: 1.5rem; margin-bottom: 1.5rem; }
+  .section h2 { color: var(--primary); font-size: 1.15rem; margin-bottom: .8rem; border-bottom: 2px solid var(--accent); padding-bottom: .4rem; }
+  .section h3 { color: var(--primary); font-size: 1rem; margin: 1rem 0 .5rem; }
+
+  .timeline {
+    position: relative; padding-left: 2rem; margin: 1rem 0;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: .6rem; top: 0; bottom: 0;
+    width: 3px; background: var(--accent); border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative; margin-bottom: 1.2rem; padding: .8rem 1rem;
+    background: #fef9e7; border-radius: 8px; border-left: 3px solid var(--accent);
+  }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -1.65rem; top: 1rem;
+    width: 12px; height: 12px; background: var(--accent); border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  .timeline-item .time { font-weight: 700; color: var(--accent); font-size: .85rem; }
+  .timeline-item .activity { margin-top: .2rem; }
+
+  .tip-box {
+    background: #eaf7ff; border-left: 4px solid #3498db; padding: .8rem 1rem;
+    border-radius: 6px; margin: .8rem 0;
+  }
+  .warn-box {
+    background: #fdf2f2; border-left: 4px solid #e74c3c; padding: .8rem 1rem;
+    border-radius: 6px; margin: .8rem 0;
+  }
+  .success-box {
+    background: #eafaf1; border-left: 4px solid #27ae60; padding: .8rem 1rem;
+    border-radius: 6px; margin: .8rem 0;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .9rem; }
+  th { background: #34495e; color: #fff; padding: .6rem .5rem; text-align: left; }
+  td { padding: .5rem; border: 1px solid var(--border); }
+  tr:nth-child(even) { background: #faf8f0; }
+
+  ul, ol { padding-left: 1.3rem; }
+  li { margin-bottom: .4rem; }
+
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li::before { content: '☐ '; font-size: 1.1rem; }
+
+  .footer {
+    text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: .8rem;
+    border-top: 1px solid var(--border); margin-top: 2rem;
+  }
+  .footer a { color: var(--primary); text-decoration: none; }
+
+  @media print { .section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Lab 5: Equilibrium Constant — Teaching Guide</h1>
+  <p>CHM 152 — Instructor Resource</p>
+  <span class="badge">📋 TEACHING GUIDE</span>
+</div>
+
+<div class="container">
+
+  <!-- ── Overview ── -->
+  <div class="section">
+    <h2>Lab Overview</h2>
+    <table>
+      <tr><td style="font-weight:700; width:35%;">Reaction</td><td>Fe³⁺(aq) + SCN⁻(aq) ⇌ FeSCN²⁺(aq)</td></tr>
+      <tr><td style="font-weight:700;">Key Concepts</td><td>Dynamic equilibrium, equilibrium constant (K<sub>C</sub>), Beer's Law, spectrophotometry, Le Chatelier's principle</td></tr>
+      <tr><td style="font-weight:700;">Duration</td><td>2.5–3 hours</td></tr>
+      <tr><td style="font-weight:700;">Difficulty</td><td>Moderate — calculations are the biggest challenge</td></tr>
+      <tr><td style="font-weight:700;">Equipment</td><td>Spec 20 spectrophotometer, 50 mL & 10 mL volumetric flasks, graduated pipets, cuvettes</td></tr>
+      <tr><td style="font-weight:700;">Expected K<sub>C</sub></td><td>~100–150 at room temperature</td></tr>
+    </table>
+  </div>
+
+  <!-- ── Pre-Lab Preparation ── -->
+  <div class="section">
+    <h2>Pre-Lab Preparation (Day Before)</h2>
+
+    <h3>Solutions to Prepare</h3>
+    <table>
+      <tr><th>Solution</th><th>Concentration</th><th>Volume Needed</th><th>Notes</th></tr>
+      <tr><td>Fe(NO₃)₃ in 0.1 M HNO₃</td><td>0.2 M</td><td>~200 mL per section</td><td>For standards — large excess to push equilibrium</td></tr>
+      <tr><td>Fe(NO₃)₃ in 1.0 M HNO₃</td><td>2.00 × 10⁻³ M</td><td>~150 mL per section</td><td>For equilibrium runs — dilute solution</td></tr>
+      <tr><td>KSCN in 0.1 M HNO₃</td><td>2.00 × 10⁻³ M</td><td>~200 mL per section</td><td>Used in both standards and equilibrium runs</td></tr>
+      <tr><td>HNO₃</td><td>0.10 M</td><td>~500 mL per section</td><td>For dilution to volume</td></tr>
+    </table>
+
+    <div class="warn-box">
+      <strong>⚠️ Critical:</strong> The 0.2 M Fe(NO₃)₃ and the 2.00 × 10⁻³ M Fe(NO₃)₃ are <strong>different concentrations</strong>. Label bottles clearly to prevent confusion. Students commonly grab the wrong one.
+    </div>
+
+    <h3>Equipment Checklist</h3>
+    <ul class="checklist">
+      <li>Spec 20 spectrophotometers turned on 15+ min before lab (warm-up)</li>
+      <li>Cuvettes — enough matched pairs for each group</li>
+      <li>50.0 mL volumetric flasks (1 per group for standards)</li>
+      <li>10.0 mL volumetric flasks (5 per group for equilibrium runs)</li>
+      <li>5 mL graduated pipets or 10 mL graduated cylinders</li>
+      <li>Waste containers labeled for iron/thiocyanate waste</li>
+      <li>Kimwipes for cuvettes</li>
+    </ul>
+  </div>
+
+  <!-- ── Lab Day Timeline ── -->
+  <div class="section">
+    <h2>Lab Day Timeline</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="time">0:00 – 0:15 (15 min)</div>
+        <div class="activity">
+          <strong>Pre-Lab Discussion</strong><br>
+          • Review equilibrium concept — forward/reverse rates equal<br>
+          • Show the K<sub>C</sub> expression and explain what it means<br>
+          • Demonstrate the deep red color of FeSCN²⁺ — mix a drop of each stock solution<br>
+          • Explain why excess Fe³⁺ is used in standards (shifts equilibrium to products)
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="time">0:15 – 0:25 (10 min)</div>
+        <div class="activity">
+          <strong>Assign Standard Solutions</strong><br>
+          • Each group makes ONE standard (C2–C5) in a 50 mL flask<br>
+          • Group 1 → C2, Group 2 → C3, etc.<br>
+          • Instructor or TA prepares C1 (blank)
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="time">0:25 – 0:55 (30 min)</div>
+        <div class="activity">
+          <strong>Standard Solution Prep & Measurement</strong><br>
+          • Students prepare their assigned standard<br>
+          • Set Spec 20 to 447 nm<br>
+          • Zero with blank (C1)<br>
+          • Each group measures their standard and shares data with the class<br>
+          • Write all absorbance values on the board
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="time">0:55 – 1:10 (15 min)</div>
+        <div class="activity">
+          <strong>Plot Standard Curve</strong><br>
+          • Students plot [FeSCN²⁺] vs. Absorbance<br>
+          • Verify linearity (Beer's Law)<br>
+          • Determine slope and intercept<br>
+          • <em>Walk around and check graphs before they proceed</em>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="time">1:10 – 1:50 (40 min)</div>
+        <div class="activity">
+          <strong>Equilibrium Runs</strong><br>
+          • Students prepare 5 test tubes in 10 mL volumetric flasks<br>
+          • <strong>Important:</strong> They now use the DILUTE Fe(NO₃)₃ (2.00 × 10⁻³ M)<br>
+          • Measure absorbance of all 5 solutions<br>
+          • Determine [FeSCN²⁺]<sub>eq</sub> from standard curve
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="time">1:50 – 2:30 (40 min)</div>
+        <div class="activity">
+          <strong>Calculations</strong><br>
+          • Calculate initial concentrations<br>
+          • Subtract [FeSCN²⁺]<sub>eq</sub> to get equilibrium concentrations<br>
+          • Calculate K<sub>C</sub> for each run<br>
+          • Find average and standard deviation
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="time">2:30 – 2:50 (20 min)</div>
+        <div class="activity">
+          <strong>Post-Lab Discussion & Cleanup</strong><br>
+          • Discuss Le Chatelier's principle (post-lab questions)<br>
+          • Compare group K<sub>C</sub> values on the board<br>
+          • Proper waste disposal<br>
+          • Clean cuvettes and glassware
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Key Teaching Points ── -->
+  <div class="section">
+    <h2>Key Teaching Points</h2>
+
+    <h3>1. Why Excess Fe³⁺ in Standards?</h3>
+    <div class="tip-box">
+      Students often ask why the standard uses 0.2 M Fe(NO₃)₃ while the equilibrium runs use 2.00 × 10⁻³ M. Explain: The <strong>100× excess</strong> of Fe³⁺ pushes the equilibrium so far right that essentially ALL the SCN⁻ converts to FeSCN²⁺. This means [FeSCN²⁺] ≈ [SCN⁻]<sub>initial</sub>, giving us known concentrations for the standard curve.
+    </div>
+
+    <h3>2. The Dilution Factor</h3>
+    <div class="tip-box">
+      The most common calculation error: students forget to account for dilution. When 2.00 mL of 2.00 × 10⁻³ M KSCN is diluted to 50 mL, the final [SCN⁻] = 2.00 × 10⁻³ × (2.00/50.0) = 8.00 × 10⁻⁵ M. Walk through this calculation explicitly.
+    </div>
+
+    <h3>3. Why K<sub>C</sub> Values Vary Between Runs</h3>
+    <div class="tip-box">
+      K<sub>C</sub> should theoretically be identical for all 5 runs. Variations come from: pipetting errors, temperature fluctuations, and spectrophotometer precision. A spread of ±20-30% is normal for undergraduate labs. Use this as a teaching moment about experimental uncertainty.
+    </div>
+
+    <h3>4. Connection to Le Chatelier's Principle</h3>
+    <div class="tip-box">
+      The post-lab questions connect equilibrium constants to temperature effects. Use the analogy:
+      <ul style="margin-top:.4rem;">
+        <li><strong>Endothermic:</strong> Reactants + Heat → Products. Heat is like a "reactant" — adding it makes more products, increasing K<sub>C</sub>.</li>
+        <li><strong>Exothermic:</strong> Reactants → Products + Heat. Heat is like a "product" — adding it pushes reaction backward, decreasing K<sub>C</sub>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── Troubleshooting ── -->
+  <div class="section">
+    <h2>Troubleshooting Guide</h2>
+    <table>
+      <tr><th style="width:35%;">Problem</th><th>Likely Cause</th><th>Solution</th></tr>
+      <tr>
+        <td>Standard curve is not linear</td>
+        <td>C5 concentration is listed as 8.00 × 10⁻⁴ in original PDF — this appears to be a typo; it should be 2.00 × 10⁻⁴</td>
+        <td>Use corrected value: [FeSCN²⁺] = 2.00 × 10⁻³ × (5.00/50.0) = 2.00 × 10⁻⁴ M</td>
+      </tr>
+      <tr>
+        <td>Absorbance readings > 1.5</td>
+        <td>Solutions too concentrated; Beer's Law breaks down at high absorbance</td>
+        <td>Dilute solutions; ensure Spec 20 is properly calibrated</td>
+      </tr>
+      <tr>
+        <td>All K<sub>C</sub> values are very small (< 10)</td>
+        <td>Student used the wrong Fe(NO₃)₃ solution (0.2 M instead of 2.00 × 10⁻³ M) for equilibrium runs</td>
+        <td>Have student redo with correct dilute solution</td>
+      </tr>
+      <tr>
+        <td>K<sub>C</sub> varies wildly between runs</td>
+        <td>Pipetting errors or not diluting to proper volume</td>
+        <td>Check their technique; ensure volumetric flasks filled to the line</td>
+      </tr>
+      <tr>
+        <td>Negative [Fe³⁺]<sub>eq</sub> or [SCN⁻]<sub>eq</sub></td>
+        <td>[FeSCN²⁺]<sub>eq</sub> read from graph is larger than initial concentration</td>
+        <td>Student read the standard curve incorrectly; help recalculate</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── Grading Rubric ── -->
+  <div class="section">
+    <h2>Suggested Grading Rubric</h2>
+    <table>
+      <tr><th>Component</th><th>Points</th><th>Criteria</th></tr>
+      <tr><td>Standard curve data</td><td>10</td><td>All absorbances recorded; graph plotted with line of best fit and R²</td></tr>
+      <tr><td>Equilibrium absorbance data</td><td>10</td><td>All 5 runs measured and [FeSCN²⁺]<sub>eq</sub> determined from curve</td></tr>
+      <tr><td>Initial concentrations</td><td>10</td><td>Correct dilution calculation; [Fe³⁺]<sub>init</sub> = 1.00 × 10⁻³ M</td></tr>
+      <tr><td>Equilibrium concentrations</td><td>15</td><td>Correct subtraction of [FeSCN²⁺]<sub>eq</sub> from initial values</td></tr>
+      <tr><td>K<sub>C</sub> calculations</td><td>20</td><td>K<sub>C</sub> calculated correctly for each run; average and std. dev.</td></tr>
+      <tr><td>Post-lab questions</td><td>20</td><td>All 4 answered correctly with explanations</td></tr>
+      <tr><td>Lab technique & neatness</td><td>15</td><td>Clean data, proper sig figs, organized presentation</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>100</strong></td><td></td></tr>
+    </table>
+  </div>
+
+  <!-- ── Discussion Questions ── -->
+  <div class="section">
+    <h2>Extended Discussion Questions (Optional)</h2>
+    <ol>
+      <li>If you added more Fe(NO₃)₃ to one of your equilibrium test tubes, what would you observe visually? How would this affect K<sub>C</sub>?</li>
+      <li>Why do we use HNO₃ in all our solutions instead of water?</li>
+      <li>If this lab were performed at 50°C instead of room temperature, would you expect K<sub>C</sub> to change? Why or why not?</li>
+      <li>Explain why Beer's Law is essential to this experiment. What would happen if the relationship between absorbance and concentration were not linear?</li>
+      <li>A student's K<sub>C</sub> values were: 45, 180, 95, 110, 102. Which value is likely an outlier? What experimental error could cause this?</li>
+    </ol>
+  </div>
+
+</div>
+
+<div class="footer">
+  © Tehrani Labs · CHM 152 · Arizona College of Nursing<br>
+  <a href="https://tehranilabs.org">tehranilabs.org</a> · INSTRUCTOR USE ONLY
+</div>
+
+</body>
+</html>

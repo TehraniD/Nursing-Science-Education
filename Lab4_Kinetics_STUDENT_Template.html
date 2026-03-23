@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 4 — Rate of Reaction Lab Template</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Times New Roman', serif; background: white; color: black; font-size: 11pt; line-height: 1.5; }
+  @media print {
+    body { font-size: 10pt; }
+    .no-print { display: none !important; }
+    .section { page-break-inside: avoid; }
+    .page-break { page-break-before: always; }
+  }
+  .no-print { font-family: Arial, sans-serif; }
+  .print-bar { background: #1a1a2e; color: white; padding: 12px 24px; text-align: center; font-family: Arial, sans-serif; font-size: 0.9rem; }
+  .print-bar button { background: #e94560; color: white; border: none; padding: 8px 22px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.9rem; margin-left: 16px; }
+  .print-bar button:hover { background: #c73652; }
+  .page { max-width: 800px; margin: 0 auto; padding: 36px 48px; }
+  .lab-header { text-align: center; border-bottom: 3px double black; padding-bottom: 16px; margin-bottom: 24px; }
+  .lab-header h1 { font-size: 16pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+  .lab-header h2 { font-size: 13pt; font-weight: normal; margin-top: 4px; }
+  .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .info-field { border-bottom: 1px solid black; padding: 4px 0; }
+  .info-field .field-label { font-size: 9pt; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
+  .info-field .field-line { height: 22px; }
+  h3 { font-size: 12pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid black; padding-bottom: 4px; margin: 22px 0 12px; }
+  h4 { font-size: 11pt; font-weight: bold; margin: 14px 0 8px; }
+  p { margin-bottom: 8px; font-size: 10.5pt; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 10pt; }
+  th { border: 1px solid black; padding: 6px 8px; background: #f0f0f0; text-align: center; font-weight: bold; font-size: 9.5pt; }
+  td { border: 1px solid black; padding: 6px 8px; text-align: center; }
+  td.write-in { background: #fafafa; }
+  .write-box { min-height: 28px; border-bottom: 1px solid #aaa; margin: 4px 0; }
+  .write-area { min-height: 60px; border: 1px solid #aaa; margin: 6px 0; padding: 6px; background: #fafafa; }
+  .write-area-lg { min-height: 90px; border: 1px solid #aaa; margin: 6px 0; padding: 6px; background: #fafafa; }
+  .calc-box { border: 1px solid #666; padding: 14px; margin: 10px 0; background: #fafafa; min-height: 100px; }
+  .formula-ref { background: #f0f4f8; border-left: 4px solid #333; padding: 8px 14px; margin: 8px 0; font-size: 9.5pt; font-family: 'Courier New', monospace; }
+  .note { font-size: 9pt; color: #444; font-style: italic; margin: 4px 0 10px; }
+  .section { margin-bottom: 28px; }
+  .blank { display: inline-block; min-width: 120px; border-bottom: 1px solid black; vertical-align: bottom; text-align: center; }
+  .blank-sm { display: inline-block; min-width: 60px; border-bottom: 1px solid black; vertical-align: bottom; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .kinetics-table { font-size: 9.5pt; }
+  .kinetics-table th { font-size: 9pt; }
+  .data-header { background: #e8e8e8 !important; font-weight: bold; }
+  .run-label { background: #dde8f0; font-weight: bold; text-align: left; padding-left: 10px !important; }
+</style>
+</head>
+<body>
+
+<div class="print-bar no-print">
+  <span>Lab 4 Student Template — CHM152</span>
+  <button onclick="window.print()">🖨 Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="lab-header">
+    <h1>Laboratory 4</h1>
+    <h2>Determination of the Rate of a Chemical Reaction</h2>
+    <h2>Acid-Catalyzed Bromination of Acetone</h2>
+  </div>
+
+  <div class="info-row">
+    <div class="info-field">
+      <div class="field-label">Student Name</div>
+      <div class="field-line"></div>
+    </div>
+    <div class="info-field">
+      <div class="field-label">Date</div>
+      <div class="field-line"></div>
+    </div>
+    <div class="info-field">
+      <div class="field-label">Lab Partner(s)</div>
+      <div class="field-line"></div>
+    </div>
+    <div class="info-field">
+      <div class="field-label">Lab Section / Instructor</div>
+      <div class="field-line"></div>
+    </div>
+  </div>
+
+  <!-- OBJECTIVE -->
+  <div class="section">
+    <h3>Objective</h3>
+    <p>Determine the rate law for the acid-catalyzed bromination of acetone:</p>
+    <div class="formula-ref">CH₃COCH₃ + Br₂ → CH₃COCH₂Br + HBr &nbsp;&nbsp;(requires H⁺ catalyst)</div>
+    <p>Rate law: <strong>rate = k [acetone]ⁿ [H⁺]ᵐ [Br₂]ᵖ</strong> — find the values of n, m, p, and k.</p>
+  </div>
+
+  <!-- PART A: STANDARD CURVE -->
+  <div class="section">
+    <h3>Part A — Standard Curve (Beer's Law)</h3>
+    <p class="note">Set spectrophotometer to 395 nm. Zero with distilled water. Measure absorbance of each bromine standard.</p>
+
+    <table>
+      <tr>
+        <th>Standard</th>
+        <th>[Br₂] (M)</th>
+        <th>Absorbance</th>
+        <th>Notes</th>
+      </tr>
+      <tr><td>Blank</td><td>0</td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td>1</td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td>2</td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td>3</td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td>4</td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+    </table>
+
+    <p style="margin-top:12px;"><strong>From Excel (Week 2), Beer's Law equation:</strong></p>
+    <p>Absorbance = <span class="blank"></span> × [Br₂] + <span class="blank"></span> &nbsp;&nbsp;&nbsp; R² = <span class="blank-sm"></span></p>
+    <p><strong>Therefore:</strong> [Br₂] = (Absorbance − <span class="blank-sm"></span>) ÷ <span class="blank-sm"></span></p>
+  </div>
+
+  <!-- PART B: REACTION MIXTURE TABLE -->
+  <div class="section">
+    <h3>Part B — Reaction Mixtures</h3>
+    <p class="note">Prepare one run at a time. Do NOT prepare until ready to take readings. Add Br₂ first, HCl second, acetone last.</p>
+
+    <table>
+      <tr>
+        <th>Run</th>
+        <th>mL Br₂ (1×10⁻³ M)</th>
+        <th>mL HCl (2M)</th>
+        <th>mL Acetone (8M)</th>
+        <th>DI Water</th>
+        <th>Total Volume</th>
+      </tr>
+      <tr><td><strong>1</strong></td><td>2.0</td><td>1.0</td><td>1.0</td><td>to 10 mL line</td><td>10.0 mL</td></tr>
+      <tr><td><strong>2</strong></td><td>2.0</td><td>2.0</td><td>1.0</td><td>to 10 mL line</td><td>10.0 mL</td></tr>
+      <tr><td><strong>3</strong></td><td>2.0</td><td>1.0</td><td>2.0</td><td>to 10 mL line</td><td>10.0 mL</td></tr>
+    </table>
+
+    <h4>Initial Concentrations (Calculate Using C₁V₁ = C₂V₂)</h4>
+    <p class="note">Show work in the calculation boxes, then fill the table. Formula: C₂ = C₁V₁ / V₂ where V₂ = 10.0 mL</p>
+
+    <div class="calc-box">
+      <p><strong>Sample Calculation (Run 1 Acetone):</strong></p>
+      <p>[Acetone] = (8 M × 1.0 mL) / 10.0 mL = <span class="blank-sm"></span> M</p>
+      <p>[HCl] = (2 M × 1.0 mL) / 10.0 mL = <span class="blank-sm"></span> M</p>
+      <p>[Br₂] = (1×10⁻³ M × 2.0 mL) / 10.0 mL = <span class="blank-sm"></span> M</p>
+    </div>
+
+    <table>
+      <tr>
+        <th>Run</th>
+        <th>[Br₂]₀ (M)</th>
+        <th>[Acetone]₀ (M)</th>
+        <th>[H⁺]₀ (M)</th>
+      </tr>
+      <tr><td><strong>1</strong></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td><strong>2</strong></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td><strong>3</strong></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+    </table>
+  </div>
+
+  <!-- KINETICS DATA TABLES -->
+  <div class="section page-break">
+    <h3>Part B — Kinetics Data: Run 1 (Baseline)</h3>
+    <p class="note">Record absorbance every 15 seconds. Continue until absorbance ≈ 0 or 5 minutes.</p>
+
+    <table class="kinetics-table">
+      <tr>
+        <th>Time (s)</th><th>Absorbance</th>
+        <th>Time (s)</th><th>Absorbance</th>
+        <th>Time (s)</th><th>Absorbance</th>
+      </tr>
+      <tr><td>0</td><td class="write-in"></td><td>105</td><td class="write-in"></td><td>210</td><td class="write-in"></td></tr>
+      <tr><td>15</td><td class="write-in"></td><td>120</td><td class="write-in"></td><td>225</td><td class="write-in"></td></tr>
+      <tr><td>30</td><td class="write-in"></td><td>135</td><td class="write-in"></td><td>240</td><td class="write-in"></td></tr>
+      <tr><td>45</td><td class="write-in"></td><td>150</td><td class="write-in"></td><td>255</td><td class="write-in"></td></tr>
+      <tr><td>60</td><td class="write-in"></td><td>165</td><td class="write-in"></td><td>270</td><td class="write-in"></td></tr>
+      <tr><td>75</td><td class="write-in"></td><td>180</td><td class="write-in"></td><td>285</td><td class="write-in"></td></tr>
+      <tr><td>90</td><td class="write-in"></td><td>195</td><td class="write-in"></td><td>300</td><td class="write-in"></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>Part B — Kinetics Data: Run 2 (Double [H⁺])</h3>
+    <table class="kinetics-table">
+      <tr>
+        <th>Time (s)</th><th>Absorbance</th>
+        <th>Time (s)</th><th>Absorbance</th>
+        <th>Time (s)</th><th>Absorbance</th>
+      </tr>
+      <tr><td>0</td><td class="write-in"></td><td>105</td><td class="write-in"></td><td>210</td><td class="write-in"></td></tr>
+      <tr><td>15</td><td class="write-in"></td><td>120</td><td class="write-in"></td><td>225</td><td class="write-in"></td></tr>
+      <tr><td>30</td><td class="write-in"></td><td>135</td><td class="write-in"></td><td>240</td><td class="write-in"></td></tr>
+      <tr><td>45</td><td class="write-in"></td><td>150</td><td class="write-in"></td><td>255</td><td class="write-in"></td></tr>
+      <tr><td>60</td><td class="write-in"></td><td>165</td><td class="write-in"></td><td>270</td><td class="write-in"></td></tr>
+      <tr><td>75</td><td class="write-in"></td><td>180</td><td class="write-in"></td><td>285</td><td class="write-in"></td></tr>
+      <tr><td>90</td><td class="write-in"></td><td>195</td><td class="write-in"></td><td>300</td><td class="write-in"></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h3>Part B — Kinetics Data: Run 3 (Double [Acetone])</h3>
+    <table class="kinetics-table">
+      <tr>
+        <th>Time (s)</th><th>Absorbance</th>
+        <th>Time (s)</th><th>Absorbance</th>
+        <th>Time (s)</th><th>Absorbance</th>
+      </tr>
+      <tr><td>0</td><td class="write-in"></td><td>105</td><td class="write-in"></td><td>210</td><td class="write-in"></td></tr>
+      <tr><td>15</td><td class="write-in"></td><td>120</td><td class="write-in"></td><td>225</td><td class="write-in"></td></tr>
+      <tr><td>30</td><td class="write-in"></td><td>135</td><td class="write-in"></td><td>240</td><td class="write-in"></td></tr>
+      <tr><td>45</td><td class="write-in"></td><td>150</td><td class="write-in"></td><td>255</td><td class="write-in"></td></tr>
+      <tr><td>60</td><td class="write-in"></td><td>165</td><td class="write-in"></td><td>270</td><td class="write-in"></td></tr>
+      <tr><td>75</td><td class="write-in"></td><td>180</td><td class="write-in"></td><td>285</td><td class="write-in"></td></tr>
+      <tr><td>90</td><td class="write-in"></td><td>195</td><td class="write-in"></td><td>300</td><td class="write-in"></td></tr>
+    </table>
+  </div>
+
+  <!-- WEEK 2 ANALYSIS -->
+  <div class="section page-break">
+    <h3>Week 2 — Data Analysis</h3>
+
+    <h4>Step 1: Determine Reaction Order with Respect to Br₂ (Using Run 1)</h4>
+    <p>Plot all three graphs in Excel and add linear trendlines. Record R² values:</p>
+
+    <table>
+      <tr>
+        <th>Graph</th>
+        <th>Y-axis</th>
+        <th>X-axis</th>
+        <th>R² Value</th>
+        <th>Straight Line?</th>
+        <th>Slope</th>
+      </tr>
+      <tr>
+        <td>Zero order test</td>
+        <td>[Br₂]</td>
+        <td>Time (s)</td>
+        <td class="write-in"></td>
+        <td class="write-in"></td>
+        <td class="write-in"></td>
+      </tr>
+      <tr>
+        <td>First order test</td>
+        <td>ln[Br₂]</td>
+        <td>Time (s)</td>
+        <td class="write-in"></td>
+        <td class="write-in"></td>
+        <td class="write-in"></td>
+      </tr>
+      <tr>
+        <td>Second order test</td>
+        <td>1/[Br₂]</td>
+        <td>Time (s)</td>
+        <td class="write-in"></td>
+        <td class="write-in"></td>
+        <td class="write-in"></td>
+      </tr>
+    </table>
+
+    <p style="margin-top:12px;"><strong>Based on R² comparison, the reaction order with respect to Br₂ is: p = </strong><span class="blank-sm"></span></p>
+    <p><strong>Justification:</strong></p>
+    <div class="write-area"></div>
+
+    <h4>Step 2: k' Values from Each Run</h4>
+    <p class="note">Plot the appropriate graph (based on p found above) for all three runs. Record the slope of each trendline.</p>
+
+    <table>
+      <tr>
+        <th>Run</th>
+        <th>Slope of Best-Fit Line</th>
+        <th>k' (= |slope|)</th>
+        <th>[Acetone]₀ (M)</th>
+        <th>[H⁺]₀ (M)</th>
+      </tr>
+      <tr><td><strong>1</strong></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td><strong>2</strong></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+      <tr><td><strong>3</strong></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td><td class="write-in"></td></tr>
+    </table>
+
+    <h4>Step 3: Determine Order with Respect to H⁺ (Compare Runs 1 and 2)</h4>
+    <p class="note">Runs 1 and 2 have the same [acetone] but different [H⁺]. Doubling [H⁺] lets you find m.</p>
+    <div class="formula-ref">k'₂ / k'₁ = ([H⁺]₂ / [H⁺]₁)ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; ratio = 2ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; solve for m</div>
+    <div class="calc-box">
+      <p>k'₂ / k'₁ = <span class="blank-sm"></span> / <span class="blank-sm"></span> = <span class="blank-sm"></span></p>
+      <p>[H⁺]₂ / [H⁺]₁ = <span class="blank-sm"></span> / <span class="blank-sm"></span> = <span class="blank-sm"></span></p>
+      <p>This ratio (<span class="blank-sm"></span>) = 2ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; m = <span class="blank-sm"></span></p>
+      <p><strong>Order with respect to H⁺: m = </strong><span class="blank-sm"></span></p>
+    </div>
+
+    <h4>Step 4: Determine Order with Respect to Acetone (Compare Runs 1 and 3)</h4>
+    <p class="note">Runs 1 and 3 have the same [H⁺] but different [acetone]. Doubling [acetone] lets you find n.</p>
+    <div class="formula-ref">k'₃ / k'₁ = ([acetone]₃ / [acetone]₁)ⁿ &nbsp;&nbsp;→&nbsp;&nbsp; ratio = 2ⁿ &nbsp;&nbsp;→&nbsp;&nbsp; solve for n</div>
+    <div class="calc-box">
+      <p>k'₃ / k'₁ = <span class="blank-sm"></span> / <span class="blank-sm"></span> = <span class="blank-sm"></span></p>
+      <p>[acetone]₃ / [acetone]₁ = <span class="blank-sm"></span> / <span class="blank-sm"></span> = <span class="blank-sm"></span></p>
+      <p>This ratio (<span class="blank-sm"></span>) = 2ⁿ &nbsp;&nbsp;→&nbsp;&nbsp; n = <span class="blank-sm"></span></p>
+      <p><strong>Order with respect to acetone: n = </strong><span class="blank-sm"></span></p>
+    </div>
+
+    <h4>Step 5: Calculate the Rate Constant k</h4>
+    <div class="formula-ref">k' = k [acetone]ⁿ [H⁺]ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; k = k' / ([acetone]ⁿ × [H⁺]ᵐ)</div>
+    <div class="calc-box">
+      <p><strong>From Run 1:</strong></p>
+      <p>k = k'₁ / ([acetone]₁ⁿ × [H⁺]₁ᵐ) = <span class="blank-sm"></span> / (<span class="blank-sm"></span> × <span class="blank-sm"></span>) = <span class="blank-sm"></span></p>
+      <br>
+      <p><strong>From Run 2:</strong></p>
+      <p>k = <span class="blank-sm"></span> / (<span class="blank-sm"></span> × <span class="blank-sm"></span>) = <span class="blank-sm"></span></p>
+      <br>
+      <p><strong>From Run 3:</strong></p>
+      <p>k = <span class="blank-sm"></span> / (<span class="blank-sm"></span> × <span class="blank-sm"></span>) = <span class="blank-sm"></span></p>
+      <br>
+      <p><strong>Average k = </strong><span class="blank"></span> &nbsp;&nbsp; Units: <span class="blank-sm"></span></p>
+    </div>
+
+    <h4>Summary Table</h4>
+    <table>
+      <tr>
+        <th>Parameter</th>
+        <th>Symbol</th>
+        <th>Value</th>
+      </tr>
+      <tr><td>Order w.r.t. Br₂</td><td>p</td><td class="write-in"></td></tr>
+      <tr><td>Order w.r.t. acetone</td><td>n</td><td class="write-in"></td></tr>
+      <tr><td>Order w.r.t. H⁺</td><td>m</td><td class="write-in"></td></tr>
+      <tr><td>Overall reaction order</td><td>n+m+p</td><td class="write-in"></td></tr>
+      <tr><td>Rate constant</td><td>k</td><td class="write-in"></td></tr>
+    </table>
+
+    <p style="margin-top:14px;"><strong>Final Rate Law:</strong></p>
+    <div class="formula-ref" style="font-size:11pt;">rate = <span class="blank-sm"></span> × [acetone]<span style="font-size:8pt; vertical-align:super;"><span class="blank-sm" style="min-width:25px;"></span></span> [H⁺]<span style="font-size:8pt; vertical-align:super;"><span class="blank-sm" style="min-width:25px;"></span></span> [Br₂]<span style="font-size:8pt; vertical-align:super;"><span class="blank-sm" style="min-width:25px;"></span></span></div>
+  </div>
+
+  <!-- DISCUSSION QUESTIONS -->
+  <div class="section page-break">
+    <h3>Discussion Questions</h3>
+
+    <h4>Q1. Explain why increasing [Br₂] does not increase the rate of this reaction.</h4>
+    <div class="write-area-lg"></div>
+
+    <h4>Q2. What is the role of H⁺ in this reaction? Why does it appear in the rate law if it is a catalyst?</h4>
+    <div class="write-area-lg"></div>
+
+    <h4>Q3. The reaction is conducted with a large excess of acetone and HCl relative to Br₂. Why is this necessary for the experimental design to work?</h4>
+    <div class="write-area-lg"></div>
+
+    <h4>Q4. How did you use R² values to determine the reaction order with respect to Br₂? Which graph gave the best fit and what does that indicate?</h4>
+    <div class="write-area-lg"></div>
+
+    <h4>Q5. Propose a two-step mechanism for this reaction that is consistent with your experimental rate law.</h4>
+    <p class="note">Your mechanism should identify which step is rate-determining and show why Br₂ is zero order.</p>
+    <div class="write-area-lg" style="min-height:110px;"></div>
+
+    <h4>Q6. How would you expect the rate constant k to change if you repeated this experiment at a temperature 10°C higher? Explain using the Arrhenius equation concept.</h4>
+    <div class="write-area-lg"></div>
+  </div>
+
+  <!-- ERROR ANALYSIS -->
+  <div class="section">
+    <h3>Error Analysis</h3>
+
+    <h4>Were your k values consistent across the three runs? Calculate the standard deviation or percent variation.</h4>
+    <div class="calc-box" style="min-height:80px;">
+      <p>% variation = (|k_max − k_min| / k_avg) × 100 = <span class="blank"></span> %</p>
+    </div>
+
+    <h4>List two sources of experimental error and explain how each would affect your results.</h4>
+    <p><strong>Error 1:</strong></p>
+    <div class="write-area"></div>
+    <p><strong>Effect on results:</strong></p>
+    <div class="write-area"></div>
+
+    <p style="margin-top:12px;"><strong>Error 2:</strong></p>
+    <div class="write-area"></div>
+    <p><strong>Effect on results:</strong></p>
+    <div class="write-area"></div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="section">
+    <h3>Lab Report Checklist</h3>
+    <p class="note">Attach printouts of all Excel work to this template.</p>
+    <table>
+      <tr><th style="width:50px;">✓</th><th style="text-align:left;">Item Required for Full Credit</th></tr>
+      <tr><td class="write-in"></td><td>Standard curve plot (absorbance vs [Br₂]) with trendline equation and R²</td></tr>
+      <tr><td class="write-in"></td><td>[Br₂] vs time plot for Run 1 with trendline and R²</td></tr>
+      <tr><td class="write-in"></td><td>ln[Br₂] vs time plot for Run 1 with trendline and R²</td></tr>
+      <tr><td class="write-in"></td><td>1/[Br₂] vs time plot for Run 1 with trendline and R²</td></tr>
+      <tr><td class="write-in"></td><td>Best-fit plot for Run 2 with slope (k'₂)</td></tr>
+      <tr><td class="write-in"></td><td>Best-fit plot for Run 3 with slope (k'₃)</td></tr>
+      <tr><td class="write-in"></td><td>Initial concentration calculations (with work shown)</td></tr>
+      <tr><td class="write-in"></td><td>k' table with all three runs</td></tr>
+      <tr><td class="write-in"></td><td>Ratio calculations for n and m (with work shown)</td></tr>
+      <tr><td class="write-in"></td><td>k calculation from all three runs and average</td></tr>
+      <tr><td class="write-in"></td><td>Final rate law written with numeric values</td></tr>
+      <tr><td class="write-in"></td><td>All six discussion questions answered</td></tr>
+      <tr><td class="write-in"></td><td>Error analysis section completed</td></tr>
+    </table>
+  </div>
+
+  <div style="text-align:center; padding:16px 0; border-top: 1px solid black; color:#444; font-size:9.5pt;">
+    CHM152 · Laboratory 4 · Determination of the Rate of a Reaction
+  </div>
+
+</div>
+</body>
+</html>

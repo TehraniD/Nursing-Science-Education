@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Lab 2: Freezing Point Depression - Version 2 (KEY)</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Lab 2: Freezing Point Depression - Version 2
+(KEY)</h1>
+</header>
+<h1 id="lab-2-freezing-point-depression-instructor-key">Lab 2: Freezing
+Point Depression — INSTRUCTOR KEY</h1>
+<h2 id="the-pharmacy-formulation-lab-edition">“The Pharmacy Formulation
+Lab” Edition</h2>
+<p><strong>CONFIDENTIAL — FOR INSTRUCTOR USE ONLY</strong></p>
+<hr />
+<h2 id="pre-lab-quiz-answer-key">Pre-Lab Quiz Answer Key</h2>
+<ol type="1">
+<li><strong>MgCl₂ van’t Hoff factor:</strong> <strong>c) 3</strong>
+(Mg²⁺ + 2Cl⁻ = 3 ions)</li>
+<li><strong>Molality of 0.5 mol NaCl in 0.5 kg water:</strong>
+<strong>c) 1.0 m</strong> (0.5 mol ÷ 0.5 kg = 1.0 m)</li>
+<li><strong>Glucose vs NaCl at 1.0 m:</strong> <strong>b)
+smaller</strong> (glucose i=1, NaCl i=2)</li>
+<li><strong>Units of kf:</strong> <strong>b) °C/m</strong></li>
+<li><strong>Does NOT use freezing point depression:</strong> <strong>c)
+Distillation</strong> (distillation uses boiling point)</li>
+</ol>
+<hr />
+<h2 id="pre-lab-calculation-answers">Pre-Lab Calculation Answers</h2>
+<h3 id="low-dose-solution-0.25-m-nacl">Low Dose Solution (0.25 m
+NaCl):</h3>
+<p><strong>Step 1:</strong> Calculate moles of NaCl <span
+class="math display">\[\text{moles} = \frac{1.46 \text{ g}}{58.44 \text{
+g/mol}} = \textbf{0.0250 mol}\]</span></p>
+<p><strong>Step 2:</strong> Calculate molality <span
+class="math display">\[m = \frac{0.0250 \text{ mol}}{0.100 \text{ kg}} =
+\textbf{0.25 m}\]</span></p>
+<p><strong>Step 3:</strong> Predict freezing point depression <span
+class="math display">\[\Delta T = 2 \times 1.86 \times 0.25 =
+\textbf{0.93°C}\]</span></p>
+<p><strong>Step 4:</strong> Predict actual freezing point <span
+class="math display">\[T_{freezing} = 0°C - 0.93°C =
+\textbf{-0.93°C}\]</span></p>
+<hr />
+<h3 id="complete-solutions-table">Complete Solutions Table</h3>
+<table>
+<thead>
+<tr>
+<th>Solution</th>
+<th>NaCl Mass</th>
+<th>Molality</th>
+<th>i</th>
+<th>ΔT (°C)</th>
+<th>Predicted FP (°C)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control</td>
+<td>0 g</td>
+<td>0 m</td>
+<td>—</td>
+<td>0</td>
+<td>0°C</td>
+</tr>
+<tr>
+<td>Low Dose</td>
+<td>1.46 g</td>
+<td>0.25 m</td>
+<td>2</td>
+<td>0.93</td>
+<td>-0.93°C</td>
+</tr>
+<tr>
+<td>Standard</td>
+<td>2.92 g</td>
+<td>0.50 m</td>
+<td>2</td>
+<td>1.86</td>
+<td>-1.86°C</td>
+</tr>
+<tr>
+<td>High Dose</td>
+<td>5.85 g</td>
+<td>1.00 m</td>
+<td>2</td>
+<td>3.72</td>
+<td>-3.72°C</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detailed Calculations:</strong></p>
+<p><strong>Standard Dose (0.50 m):</strong> - Moles = 2.92 g ÷ 58.44
+g/mol = 0.0500 mol - Molality = 0.0500 mol ÷ 0.100 kg = 0.50 m - ΔT = 2
+× 1.86 × 0.50 = 1.86°C - FP = 0°C - 1.86°C =
+<strong>-1.86°C</strong></p>
+<p><strong>High Dose (1.00 m):</strong> - Moles = 5.85 g ÷ 58.44 g/mol =
+0.100 mol - Molality = 0.100 mol ÷ 0.100 kg = 1.00 m - ΔT = 2 × 1.86 ×
+1.00 = 3.72°C - FP = 0°C - 3.72°C = <strong>-3.72°C</strong></p>
+<hr />
+<h2 id="expected-experimental-results">Expected Experimental
+Results</h2>
+<h3 id="acceptable-ranges-accounting-for-typical-lab-error">Acceptable
+Ranges (accounting for typical lab error):</h3>
+<table>
+<thead>
+<tr>
+<th>Solution</th>
+<th>Theoretical FP</th>
+<th>Acceptable Range</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control</td>
+<td>0°C</td>
+<td>-0.2°C to +0.2°C</td>
+<td>Calibration check</td>
+</tr>
+<tr>
+<td>Low Dose</td>
+<td>-0.93°C</td>
+<td>-0.7°C to -1.2°C</td>
+<td></td>
+</tr>
+<tr>
+<td>Standard</td>
+<td>-1.86°C</td>
+<td>-1.5°C to -2.2°C</td>
+<td></td>
+</tr>
+<tr>
+<td>High Dose</td>
+<td>-3.72°C</td>
+<td>-3.2°C to -4.2°C</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-issues-students-encounter">Common Issues Students
+Encounter:</h3>
+<ol type="1">
+<li><p><strong>Supercooling:</strong> Temperature drops below freezing
+point, then jumps back up when ice forms. Solution: Look for the plateau
+AFTER the temperature “spike”</p></li>
+<li><p><strong>No clear plateau:</strong> Stirring too vigorous, or bath
+not cold enough. Solution: Ensure bath is -10°C or colder, stir
+GENTLY</p></li>
+<li><p><strong>Readings drift:</strong> Thermometer not centered in
+solution, touching walls. Solution: Re-position thermometer</p></li>
+<li><p><strong>Higher than expected FP:</strong> Salt not fully
+dissolved, or water evaporated. Solution: Ensure complete dissolution
+before cooling</p></li>
+</ol>
+<hr />
+<h2 id="pharmaceutical-application-questions-answer-key">Pharmaceutical
+Application Questions — ANSWER KEY</h2>
+<h3 id="question-1-the-cold-chain-problem-vaccine-storage">Question 1:
+The Cold Chain Problem (Vaccine Storage)</h3>
+<p><strong>Model Answer:</strong></p>
+<p>For designing a vaccine diluent intended for ultra-cold storage
+(-70°C), you would prefer a <strong>LOWER</strong> solute concentration
+(or a carefully selected concentration that doesn’t significantly
+depress the freezing point).</p>
+<p><strong>Reasoning:</strong> 1. At -70°C, even solutions with high
+freezing point depression will freeze 2. The goal isn’t to prevent
+freezing entirely—it’s to <strong>control how the solution
+freezes</strong> 3. HIGH solute concentrations create problems: - As ice
+forms, the remaining liquid becomes more concentrated (freeze
+concentration) - This can damage biological components through osmotic
+stress - Uneven freezing can create damaging ice crystal patterns</p>
+<ol start="4" type="1">
+<li>Optimal diluents use:
+<ul>
+<li>Cryoprotectants like trehalose or sucrose that protect proteins</li>
+<li>Controlled concentrations that freeze uniformly</li>
+<li>Buffer systems that maintain pH during freeze/thaw</li>
+</ul></li>
+</ol>
+<p><strong>Clinical note:</strong> The Pfizer COVID-19 vaccine used
+sucrose as a cryoprotectant in its formulation, not to prevent freezing
+but to protect the mRNA during the freeze-thaw process.</p>
+<hr />
+<h3 id="question-2-isotonic-eye-drops">Question 2: Isotonic Eye
+Drops</h3>
+<p><strong>a) Classification:</strong> The eye drop with FP = -0.35°C is
+<strong>HYPOTONIC</strong> compared to tears (FP = -0.52°C).</p>
+<p><strong>Explanation:</strong> A less negative freezing point means
+fewer dissolved particles, therefore lower osmotic pressure
+(hypotonic).</p>
+<p><strong>b) Stinging potential:</strong> Yes, this eye drop would
+likely cause <strong>stinging and discomfort</strong>.</p>
+<p><strong>Mechanism:</strong> Water will flow FROM the hypotonic eye
+drop INTO the cells of the cornea and conjunctiva (osmosis flows from
+low to high solute concentration). This causes the cells to swell,
+triggering pain receptors.</p>
+<p><strong>Clinical relevance:</strong> Pharmaceutical companies use
+freezing point depression as a quality control measure to ensure eye
+drops are isotonic before release.</p>
+<hr />
+<h3 id="question-3-pediatric-liquid-medication-for-alaska">Question 3:
+Pediatric Liquid Medication for Alaska</h3>
+<p><strong>a) Survival during transport:</strong> <strong>NO</strong>,
+the medication will NOT survive transport. With a freezing point of -2°C
+and transport temperatures potentially reaching -30°C, the medication
+will freeze solid.</p>
+<p><strong>b) Solutions using ΔT = ikm:</strong></p>
+<p>To lower the freezing point further, you could:</p>
+<ol type="1">
+<li><p><strong>Increase m (molality):</strong> Add more dissolved
+solute. However, this changes the formulation’s osmolarity and may
+affect taste, stability, or efficacy.</p></li>
+<li><p><strong>Use a solute with higher i value:</strong> Instead of
+glucose (i=1), use a carefully selected ionic compound. However, this
+significantly changes the formulation.</p></li>
+<li><p><strong>Use a different solvent system:</strong> Add co-solvents
+like propylene glycol or glycerin that have much lower freezing points.
+This is the most common pharmaceutical approach.</p></li>
+</ol>
+<p><strong>Practical solution:</strong> Most pharmaceutical companies
+solve this by: - Adding 5-20% propylene glycol (FP = -59°C) or glycerin
+(FP = -18°C) - Using insulated packaging with phase-change materials -
+Specifying shipping temperature requirements (controlled cold chain)</p>
+<hr />
+<h3 id="question-4-the-diabetes-connection">Question 4: The Diabetes
+Connection</h3>
+<p><strong>Model Answer:</strong></p>
+<p>More glucose molecules = lower freezing point because freezing point
+depression is a <strong>colligative property</strong> — it depends on
+the NUMBER of dissolved particles, not their identity.</p>
+<p><strong>Step-by-step explanation:</strong></p>
+<ol type="1">
+<li><p>In diabetic blood, glucose concentration is elevated (normal:
+70-100 mg/dL; diabetic: may exceed 200 mg/dL)</p></li>
+<li><p>Each glucose molecule in solution interferes with water molecules
+trying to form ice crystals</p></li>
+<li><p>More glucose = more “roadblocks” = more energy must be removed
+(lower temperature) for water to organize into ice</p></li>
+<li><p>Using the equation: ΔT = i × kf × m</p>
+<ul>
+<li>i = 1 for glucose (doesn’t dissociate)</li>
+<li>Higher glucose concentration means higher molality (m)</li>
+<li>Higher m means higher ΔT</li>
+<li>Higher ΔT means lower (more negative) freezing point</li>
+</ul></li>
+</ol>
+<p><strong>Clinical application:</strong> Osmometry (measuring freezing
+point depression) can be used as a diagnostic tool. Blood osmolality
+correlates with freezing point and can indicate: - Diabetes mellitus
+(high glucose) - Dehydration - Electrolyte imbalances - Toxic alcohol
+ingestion</p>
+<hr />
+<h3 id="question-5-sports-drink-formulation">Question 5: Sports Drink
+Formulation</h3>
+<p><strong>Model Answer:</strong></p>
+<p>To create a sports drink that won’t freeze at -5°C, tastes
+acceptable, and replaces electrolytes:</p>
+<p><strong>Strategy 1: Use a mixture of solutes</strong> - Electrolytes
+(Na⁺, K⁺, Cl⁻) with i = 2 contribute more to freezing point depression
+per mole - Sugars (glucose, sucrose) with i = 1 add sweetness and energy
+without as much “saltiness” - The combination provides freezing
+protection with better taste</p>
+<p><strong>Calculation for -5°C freezing point:</strong> Required ΔT =
+5°C</p>
+<p>If using only NaCl: m = ΔT/(i × kf) = 5/(2 × 1.86) = 1.34 m</p>
+<p>That’s about 78 g NaCl per kg water — VERY salty!</p>
+<p><strong>Better approach using mixture:</strong> - 0.3 m NaCl: ΔT = 2
+× 1.86 × 0.3 = 1.12°C - 0.3 m KCl: ΔT = 2 × 1.86 × 0.3 = 1.12°C - 1.5 m
+sucrose: ΔT = 1 × 1.86 × 1.5 = 2.79°C - <strong>Total ΔT ≈
+5.03°C</strong> ✓</p>
+<p>This combination: - Provides electrolyte replacement (Na⁺, K⁺, Cl⁻) -
+Freezes below -5°C - Has sweetness from sucrose to mask saltiness -
+Provides energy from sugar</p>
+<p><strong>Real-world note:</strong> Commercial sports drinks like
+Gatorade already use this principle, though they typically aren’t
+designed for extreme cold storage.</p>
+<hr />
+<h2 id="critical-analysis-section-answer-key">Critical Analysis Section
+— ANSWER KEY</h2>
+<h3 id="error-analysis">Error Analysis</h3>
+<p><strong>Sources of Error (with effects):</strong></p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 44%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr>
+<th>Error Source</th>
+<th>Effect on Observed FP</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supercooling occurred</td>
+<td>Initially TOO LOW, then corrects</td>
+<td>Temperature drops past true FP before ice nucleates</td>
+</tr>
+<tr>
+<td>Salt not fully dissolved</td>
+<td>TOO HIGH (less negative)</td>
+<td>Fewer particles in solution than calculated</td>
+</tr>
+<tr>
+<td>Water evaporated</td>
+<td>TOO LOW (more negative)</td>
+<td>Same solute, less solvent = higher concentration</td>
+</tr>
+<tr>
+<td>Thermometer calibration off</td>
+<td>Could be either direction</td>
+<td>Systematic error shifts all readings</td>
+</tr>
+<tr>
+<td>Ice bath not cold enough</td>
+<td>May not observe true FP</td>
+<td>Solution doesn’t cool enough to freeze</td>
+</tr>
+<tr>
+<td>Reading taken before plateau</td>
+<td>TOO HIGH</td>
+<td>Cooling still occurring, not yet at equilibrium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supercooling-discussion">Supercooling Discussion</h3>
+<p><strong>What students should observe:</strong> Supercooling often
+appears as a temperature dip below the true freezing point, followed by
+a sudden rise as ice formation releases latent heat (heat of
+fusion).</p>
+<p><strong>Graph pattern:</strong></p>
+<pre><code>Temp
+  |
+  |  \
+  |   \
+  |    \_____  ← True freezing point (plateau)
+  |     ↑
+  |    / ← Supercooling dip
+  |   /
+  |_______________Time</code></pre>
+<p><strong>How it affects data:</strong> If students read the lowest
+temperature (supercooling dip), their observed FP will be TOO LOW (more
+negative than true value). They should look for the plateau that
+follows.</p>
+<hr />
+<h3 id="big-picture-questions">Big Picture Questions</h3>
+<p><strong>Q3: Why is repeated freeze-thaw worse than constant cold
+storage?</strong></p>
+<p><strong>Model Answer:</strong> 1. <strong>Ice crystal
+damage:</strong> Each freezing cycle forms ice crystals that can
+mechanically damage emulsions, suspensions, proteins, and cell
+membranes</p>
+<ol start="2" type="1">
+<li><p><strong>Concentration effects:</strong> As ice forms, solutes
+concentrate in remaining liquid (cryoconcentration). This creates
+localized regions of high/low concentration that stress active
+ingredients</p></li>
+<li><p><strong>Physical separation:</strong> Emulsions can “break” when
+oil/water phases separate during freezing. They may not properly remix
+upon thawing</p></li>
+<li><p><strong>pH shifts:</strong> Freeze-concentration can cause local
+pH extremes that denature proteins or degrade drugs</p></li>
+<li><p><strong>Container stress:</strong> Expansion/contraction cycles
+stress container seals, potentially compromising sterility</p></li>
+</ol>
+<p><strong>Clinical example:</strong> Insulin loses potency after
+freeze-thaw cycles because the protein structure is damaged. Diabetic
+patients are warned never to let insulin freeze.</p>
+<hr />
+<p><strong>Q4: Why can’t we just add tons of salt to IV
+fluids?</strong></p>
+<p><strong>Model Answer:</strong></p>
+<p>Adding excessive solute to prevent freezing would make the solution
+<strong>hypertonic</strong>, causing severe patient harm:</p>
+<ol type="1">
+<li><p><strong>Cellular dehydration:</strong> Hypertonic solutions draw
+water OUT of cells by osmosis, causing cells to shrink
+(crenation)</p></li>
+<li><p><strong>Electrolyte imbalance:</strong> Excessive sodium
+(hypernatremia) causes:</p>
+<ul>
+<li>Neurological symptoms (confusion, seizures)</li>
+<li>Cardiac arrhythmias</li>
+<li>Potential brain hemorrhage (as brain cells shrink)</li>
+</ul></li>
+<li><p><strong>Hemolysis risk:</strong> Red blood cells are particularly
+sensitive; severe tonicity changes cause them to burst or
+shrink</p></li>
+</ol>
+<p><strong>The balance:</strong> IV fluids must be ISOTONIC with blood
+plasma (freezing point ≈ -0.56°C). This is non-negotiable for patient
+safety. Preventing freezing must use other methods (controlled storage,
+insulated shipping).</p>
+<hr />
+<p><strong>Q5: Organ Preservation Applications</strong></p>
+<p><strong>Model Answer:</strong></p>
+<p>Understanding freezing point depression could advance organ
+preservation by:</p>
+<ol type="1">
+<li><p><strong>Designing vitrification solutions:</strong> Instead of
+freezing (which forms damaging crystals), organs could be cooled to a
+glass-like state (vitrification). This requires precise solute
+concentrations.</p></li>
+<li><p><strong>Supercooling technology:</strong> Keeping organs below
+0°C but unfrozen extends preservation time. Understanding colligative
+properties helps optimize solutions that resist ice nucleation.</p></li>
+<li><p><strong>Cryoprotectant optimization:</strong> Balancing effective
+freezing point depression with acceptable toxicity levels requires
+understanding how different compounds contribute to total
+osmolarity.</p></li>
+<li><p><strong>Thawing protocols:</strong> Controlled warming rates
+combined with appropriate solutions prevent damage during the return to
+physiological temperatures.</p></li>
+</ol>
+<p><strong>Current research:</strong> Scientists are working on methods
+to preserve organs at -4°C to -6°C in supercooled state, potentially
+extending liver preservation from 12 hours to 27+ hours.</p>
+<hr />
+<h2 id="grading-rubric">Grading Rubric</h2>
+<h3 id="total-points-100">Total Points: 100</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 29%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th>Section</th>
+<th>Points</th>
+<th>Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pre-Lab</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Quiz (5 questions)</td>
+<td>5</td>
+<td>1 point each</td>
+</tr>
+<tr>
+<td>Calculations</td>
+<td>10</td>
+<td>Complete and correct</td>
+</tr>
+<tr>
+<td><strong>Experimental</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Calibration</td>
+<td>5</td>
+<td>Properly executed and recorded</td>
+</tr>
+<tr>
+<td>Data collection (4 solutions)</td>
+<td>20</td>
+<td>5 pts each: complete, reasonable values</td>
+</tr>
+<tr>
+<td>Graph</td>
+<td>10</td>
+<td>All curves, labeled axes, plateaus marked</td>
+</tr>
+<tr>
+<td>Results table with % error</td>
+<td>10</td>
+<td>Calculations correct, reasonable errors</td>
+</tr>
+<tr>
+<td><strong>Applications</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Q1: Vaccine storage</td>
+<td>8</td>
+<td>Understanding of freeze concentration, cryoprotection</td>
+</tr>
+<tr>
+<td>Q2: Eye drops</td>
+<td>8</td>
+<td>Correct classification + mechanism</td>
+</tr>
+<tr>
+<td>Q3: Alaska medication</td>
+<td>8</td>
+<td>Identifies problem + provides solution</td>
+</tr>
+<tr>
+<td>Q4: Diabetes</td>
+<td>6</td>
+<td>Clear connection to particle count</td>
+</tr>
+<tr>
+<td>Q5: Sports drink</td>
+<td>6</td>
+<td>Shows understanding of mixture strategy</td>
+</tr>
+<tr>
+<td><strong>Critical Analysis</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Error identification</td>
+<td>4</td>
+<td>Two valid sources with effects</td>
+</tr>
+<tr>
+<td>Supercooling discussion</td>
+<td>2</td>
+<td>Recognizes and explains</td>
+</tr>
+<tr>
+<td>Big picture questions</td>
+<td>8</td>
+<td>Thoughtful responses showing transfer</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="lab-preparation-notes">Lab Preparation Notes</h2>
+<h3 id="materials-per-group-3-4-students">Materials Per Group (3-4
+students):</h3>
+<ul>
+<li>Digital thermometer with 0.1°C resolution</li>
+<li>Ice (2-3 kg crushed)</li>
+<li>Rock salt (200 g)</li>
+<li>Distilled water (500 mL)</li>
+<li>Pre-weighed NaCl packets: 1.46g, 2.92g, 5.85g</li>
+<li>250 mL beakers (2)</li>
+<li>100 mL beakers (4)</li>
+<li>Stirring rods</li>
+<li>Timers</li>
+</ul>
+<h3 id="pre-lab-setup-30-min-before">Pre-Lab Setup (30 min before):</h3>
+<ol type="1">
+<li>Have ice available in insulated containers</li>
+<li>Pre-weigh salt packets if time is limited</li>
+<li>Prepare one demonstration cooling curve showing supercooling</li>
+<li>Print quick reference cards</li>
+</ol>
+<h3 id="timing-guide">Timing Guide:</h3>
+<ul>
+<li>Intro and calibration: 15 min</li>
+<li>Solution prep: 10 min</li>
+<li>Cooling curves (all 4): 60 min (can run 2 simultaneously)</li>
+<li>Analysis and questions: 30 min</li>
+<li><strong>Total: ~115 minutes</strong></li>
+</ul>
+<h3 id="instructor-tips">Instructor Tips:</h3>
+<ol type="1">
+<li><strong>Demonstrate plateau identification</strong> before students
+start</li>
+<li><strong>Have extra ice ready</strong> — students underestimate how
+much they need</li>
+<li><strong>Watch for supercooling</strong> — help students identify the
+true plateau</li>
+<li><strong>Circulate during cooling</strong> — this is where most
+confusion happens</li>
+</ol>
+<hr />
+<h2 id="common-student-misconceptions">Common Student
+Misconceptions</h2>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 23%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr>
+<th>Misconception</th>
+<th>Reality</th>
+<th>How to Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>“More salt = colder ice”</td>
+<td>Salt lowers melting/freezing point, doesn’t make ice “colder”</td>
+<td>Explain energy absorption during phase change</td>
+</tr>
+<tr>
+<td>“Molarity and molality are the same”</td>
+<td>Molarity = mol/L solution; Molality = mol/kg solvent</td>
+<td>Emphasize temperature independence of molality</td>
+</tr>
+<tr>
+<td>“All electrolytes have i=2”</td>
+<td>Different electrolytes have different i values</td>
+<td>Practice with CaCl₂, AlCl₃ examples</td>
+</tr>
+<tr>
+<td>“The lowest temperature is the freezing point”</td>
+<td>Supercooling can go lower</td>
+<td>Show example graph with supercooling dip</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="extension-ideas">Extension Ideas</h2>
+<ol type="1">
+<li><p><strong>Molecular vs Ionic Comparison:</strong> Have groups
+compare glucose vs NaCl at same molality</p></li>
+<li><p><strong>Real IV Fluid Analysis:</strong> Test actual 0.9% saline,
+compare to theoretical</p></li>
+<li><p><strong>Unknown Identification:</strong> Give students an unknown
+(salt or sugar) to identify based on FP depression</p></li>
+<li><p><strong>Technology Integration:</strong> Use digital probes with
+computer graphing for real-time cooling curves</p></li>
+</ol>
+<hr />
+<div style="text-align:center; padding:20px 0; border-top:2px solid #2c3e50;">
+<h3>⚗ TEHRANI ⚗</h3>
+<p>© Tehrani 2028</p>
+<p><em>"Colligative properties don't care what you dissolved — only how many particles showed up. It's the chemistry equivalent of a headcount at a fire drill."</em></p>
+<p style="font-size:0.85em; letter-spacing:2px; margin-top:8px;">i · Kf · m · ΔTₓ · General Chemistry II</p>
+</div>
+</body>
+</html>

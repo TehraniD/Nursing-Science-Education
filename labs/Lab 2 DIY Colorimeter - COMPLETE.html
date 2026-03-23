@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 2: DIY Spectroscopy - Complete Lab Manual</title>
+    <style>
+        @page {
+            margin: 1in;
+            size: letter;
+        }
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+        h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 5pt;
+            border-bottom: 2px solid black;
+            padding-bottom: 10pt;
+        }
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-top: 20pt;
+            margin-bottom: 10pt;
+            color: #1a1a1a;
+        }
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 15pt;
+            margin-bottom: 8pt;
+        }
+        .subtitle {
+            font-size: 14pt;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 20pt;
+        }
+        .header-info {
+            margin: 20pt 0;
+            line-height: 2;
+        }
+        .header-info p {
+            margin: 5pt 0;
+        }
+        .blank-line {
+            display: inline-block;
+            border-bottom: 1px solid black;
+            min-width: 200px;
+        }
+        .blank-short {
+            display: inline-block;
+            border-bottom: 1px solid black;
+            min-width: 100px;
+        }
+        .blank-medium {
+            display: inline-block;
+            border-bottom: 1px solid black;
+            min-width: 150px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15pt 0;
+            font-size: 11pt;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8pt;
+            text-align: center;
+        }
+        th {
+            background-color: #e6e6e6;
+            font-weight: bold;
+        }
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 10pt;
+            border: 1px solid #ccc;
+            margin: 15pt 0;
+        }
+        .clinical-connection {
+            background-color: #fff3cd;
+            padding: 10pt;
+            border: 1px solid #ffc107;
+            margin: 15pt 0;
+        }
+        .points {
+            font-weight: bold;
+            color: #333;
+        }
+        .calculation-box {
+            border: 1px solid #999;
+            padding: 15pt;
+            margin: 10pt 0;
+            min-height: 80pt;
+            background-color: #fafafa;
+        }
+        .word-bank {
+            background-color: #fff3cd;
+            padding: 10pt;
+            border: 1px solid #ffc107;
+            margin: 10pt 0;
+            font-style: italic;
+        }
+        .fill-blank {
+            border-bottom: 1px solid black;
+            min-width: 120px;
+            display: inline-block;
+        }
+        .checkbox {
+            font-family: "Segoe UI Symbol", Arial;
+            font-size: 14pt;
+        }
+        .diagram {
+            font-family: "Courier New", monospace;
+            font-size: 10pt;
+            background-color: #f8f8f8;
+            padding: 15pt;
+            border: 1px solid #ddd;
+            white-space: pre;
+            line-height: 1.2;
+        }
+        .rubric-table th {
+            background-color: #d4edda;
+        }
+        ol, ul {
+            margin-left: 20pt;
+        }
+        li {
+            margin-bottom: 5pt;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        .answer-line {
+            border-bottom: 1px solid black;
+            display: block;
+            margin: 10pt 0;
+            min-height: 20pt;
+        }
+        .long-answer {
+            border: 1px solid #ccc;
+            min-height: 60pt;
+            margin: 10pt 0;
+            padding: 5pt;
+        }
+        .interactive-box {
+            background-color: #e8f4f8;
+            padding: 15pt;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            margin: 15pt 0;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12pt;
+            margin: 5pt;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .result-box {
+            background-color: #d4edda;
+            padding: 15pt;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            margin: 10pt 0;
+            display: none;
+        }
+        .error-good {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .error-ok {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .error-poor {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"] {
+            padding: 5pt;
+            font-size: 11pt;
+            width: 80px;
+            text-align: center;
+        }
+        .formula {
+            text-align: center;
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 15pt 0;
+        }
+        @media print {
+            .interactive-box, .btn, .result-box, .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>LAB 2: DIY SPECTROSCOPY</h1>
+<p class="subtitle">Quantitative Analysis Using Smartphone Colorimetry</p>
+
+<div class="header-info">
+    <p><strong>Name:</strong> <span class="blank-line"></span> <strong>Date:</strong> <span class="blank-short"></span></p>
+    <p><strong>Lab Section:</strong> <span class="blank-short"></span> <strong>Lab Partner(s):</strong> <span class="blank-line"></span></p>
+</div>
+
+<hr>
+
+<div class="clinical-connection">
+    <strong>Clinical Connection:</strong> This lab mimics the technology used in <strong>Pulse Oximeters</strong>. These devices measure oxygen saturation by detecting how much red and infrared light is absorbed by hemoglobin in the blood. Understanding Beer's Law is fundamental to clinical diagnostic instruments!
+</div>
+
+<!-- PRELAB SECTION -->
+<h2>PRELAB ASSIGNMENT <span class="points">(20 points - Due at start of lab)</span></h2>
+
+<div class="instructions">
+    <strong>Instructions:</strong> Complete this prelab assignment <strong>before</strong> coming to lab. You must show your work for all calculations.
+</div>
+
+<h2>Part 1: Conceptual Understanding <span class="points">(8 points)</span></h2>
+
+<h3>1.1 Light and Color Theory <span class="points">(2 points)</span></h3>
+
+<p>When white light passes through a colored solution, certain wavelengths are <strong>absorbed</strong> while others are <strong>transmitted</strong>. The color we perceive is the transmitted light.</p>
+
+<p><strong>Fill in the blanks:</strong></p>
+
+<p>a) A solution that appears <strong>purple/violet</strong> (like grape juice) absorbs light primarily in the <span class="fill-blank"></span> region of the visible spectrum.</p>
+
+<p>b) According to the color wheel, the complementary color of purple is <span class="fill-blank"></span>.</p>
+
+<p>c) Therefore, to measure grape juice absorbance most effectively, we should use the <span class="fill-blank"></span> channel on our RGB colorimeter app.</p>
+
+<p>d) The visible light spectrum ranges from approximately <span class="blank-short"></span> nm to <span class="blank-short"></span> nm.</p>
+
+<h3>1.2 Beer-Lambert Law <span class="points">(3 points)</span></h3>
+
+<p>The Beer-Lambert Law (often called Beer's Law) describes the relationship between absorbance and concentration:</p>
+
+<p class="formula">A = &epsilon; &middot; l &middot; c</p>
+
+<p><strong>Match each variable to its definition and units:</strong></p>
+
+<table>
+    <tr>
+        <th>Variable</th>
+        <th>Definition</th>
+        <th>Units</th>
+    </tr>
+    <tr>
+        <td><strong>A</strong></td>
+        <td style="min-width: 200px;"></td>
+        <td style="min-width: 120px;"></td>
+    </tr>
+    <tr>
+        <td><strong>&epsilon;</strong></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><strong>l</strong></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><strong>c</strong></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
+<div class="word-bank">
+    <strong>Word Bank:</strong> absorbance, molar absorptivity, path length, concentration, unitless, L&middot;mol<sup>-1</sup>&middot;cm<sup>-1</sup>, cm, mol/L (M)
+</div>
+
+<h3>1.3 Transmittance and Absorbance Relationships <span class="points">(3 points)</span></h3>
+
+<p><strong>Define the following terms and write their mathematical expressions:</strong></p>
+
+<p>a) <strong>Transmittance (T):</strong></p>
+<p>Definition: <span class="blank-line" style="min-width: 400px;"></span></p>
+<p>Mathematical expression: T = <span class="blank-medium"></span></p>
+
+<p>b) <strong>Percent Transmittance (%T):</strong></p>
+<p>Mathematical expression: %T = <span class="blank-medium"></span></p>
+
+<p>c) <strong>Absorbance (A):</strong></p>
+<p>Definition: <span class="blank-line" style="min-width: 400px;"></span></p>
+<p>Mathematical expression: A = <span class="blank-medium"></span></p>
+
+<p>d) <strong>Relationship Question:</strong> If a solution has 50% transmittance, what is its absorbance? Show your calculation.</p>
+
+<div class="calculation-box">
+    <p><strong>Calculation:</strong></p>
+    <br><br><br>
+    <p><strong>Answer: A = </strong><span class="blank-short"></span></p>
+</div>
+
+<div class="page-break"></div>
+
+<h2>Part 2: Dilution Calculations <span class="points">(6 points)</span></h2>
+
+<p>In this lab, you will prepare serial dilutions of grape juice stock solution. The stock solution is considered 100% concentration.</p>
+
+<h3>2.1 Dilution Formula Review <span class="points">(1 point)</span></h3>
+
+<p>Write the dilution equation: <span class="blank-medium"></span> = <span class="blank-medium"></span></p>
+
+<h3>2.2 Dilution Preparation Table <span class="points">(3 points)</span></h3>
+
+<p>Complete the following table for preparing 10.0 mL of each standard solution:</p>
+
+<table>
+    <tr>
+        <th>Standard</th>
+        <th>Target Conc. (%)</th>
+        <th>Volume of Stock (mL)</th>
+        <th>Volume of Water (mL)</th>
+        <th>Total Volume (mL)</th>
+    </tr>
+    <tr>
+        <td>Blank</td>
+        <td>0%</td>
+        <td></td>
+        <td></td>
+        <td>10.0</td>
+    </tr>
+    <tr>
+        <td>Std 1</td>
+        <td>20%</td>
+        <td></td>
+        <td></td>
+        <td>10.0</td>
+    </tr>
+    <tr>
+        <td>Std 2</td>
+        <td>40%</td>
+        <td></td>
+        <td></td>
+        <td>10.0</td>
+    </tr>
+    <tr>
+        <td>Std 3</td>
+        <td>60%</td>
+        <td></td>
+        <td></td>
+        <td>10.0</td>
+    </tr>
+    <tr>
+        <td>Std 4</td>
+        <td>80%</td>
+        <td></td>
+        <td></td>
+        <td>10.0</td>
+    </tr>
+    <tr>
+        <td>Std 5</td>
+        <td>100%</td>
+        <td></td>
+        <td></td>
+        <td>10.0</td>
+    </tr>
+</table>
+
+<h3>2.3 Dilution Calculation Practice <span class="points">(2 points)</span></h3>
+
+<p><strong>Show your work</strong> for preparing the 40% standard solution:</p>
+<p>If you want to prepare 10.0 mL of a 40% solution from a 100% stock solution, how many mL of stock do you need?</p>
+
+<div class="calculation-box">
+    <p><strong>Given:</strong></p>
+    <br>
+    <p><strong>Calculation:</strong></p>
+    <br><br><br>
+    <p><strong>Answer:</strong> <span class="blank-short"></span> mL of stock solution</p>
+</div>
+
+<h2>Part 3: Graphing and Data Analysis Preview <span class="points">(4 points)</span></h2>
+
+<h3>3.1 Calibration Curve Expectations <span class="points">(2 points)</span></h3>
+
+<p>a) In a Beer's Law plot, what variable is plotted on the x-axis? <span class="blank-medium"></span></p>
+
+<p>b) What variable is plotted on the y-axis? <span class="blank-medium"></span></p>
+
+<p>c) What should the y-intercept be for an ideal calibration curve? <span class="blank-medium"></span></p>
+
+<p>d) If Beer's Law is obeyed, the calibration curve should be <span class="blank-medium"></span> (shape).</p>
+
+<h3>3.2 Using the Calibration Curve <span class="points">(2 points)</span></h3>
+
+<p>Examine the sample calibration curve below:</p>
+
+<div class="diagram">
+Absorbance (A)
+     |
+0.60 |                              *
+     |                         *
+0.45 |                    *
+     |               *
+0.30 |          *
+     |     *
+0.15 |*
+     |
+0.00 |______|______|______|______|______|______
+     0      20     40     60     80    100
+                 Concentration (%)
+</div>
+
+<p>a) Using the graph above, if an unknown sample has an absorbance of 0.38, estimate its concentration:</p>
+<p>Unknown concentration &asymp; <span class="blank-short"></span> %</p>
+
+<p>b) The slope of this line represents <span class="blank-line"></span>.</p>
+
+<div class="page-break"></div>
+
+<h2>Part 4: Experimental Setup Understanding <span class="points">(2 points)</span></h2>
+
+<h3>4.1 Sample Box Design</h3>
+
+<p>Label the diagram below with the following components:</p>
+<ul>
+    <li>Phone camera position</li>
+    <li>Viewing hole</li>
+    <li>Cuvette/sample position</li>
+    <li>Construction paper (light source background)</li>
+    <li>Light path direction</li>
+</ul>
+
+<div class="diagram">
+        +-------------------------------------------+
+        |                                           |
+        |    +---------+         +---------+       |
+        |    |         |         |         |       |
+        |    |   (A)   |   (B)   |   (C)   |       |  (D)
+        |    |         |         |         |       |
+        |    +---------+         +---------+       |
+        |                                           |
+        +-------------------------------------------+
+                  FRONT                      BACK (open)
+</div>
+
+<table>
+    <tr>
+        <td style="width: 50%;"><strong>(A)</strong> <span class="blank-medium"></span></td>
+        <td style="width: 50%;"><strong>(B)</strong> <span class="blank-medium"></span></td>
+    </tr>
+    <tr>
+        <td><strong>(C)</strong> <span class="blank-medium"></span></td>
+        <td><strong>(D)</strong> <span class="blank-medium"></span></td>
+    </tr>
+</table>
+
+<p>Light travels from <span class="blank-short"></span> to <span class="blank-short"></span> (use letters)</p>
+
+<h3>4.2 Why Green Paper? <span class="points">(1 point)</span></h3>
+
+<p>Explain why green construction paper is recommended as the background for measuring grape juice samples:</p>
+
+<div class="long-answer"></div>
+
+<h2>Part 5: Safety and Procedure Acknowledgment</h2>
+
+<h3>Safety Considerations</h3>
+
+<p>Check each box to confirm you understand:</p>
+
+<p><span class="checkbox">&#9744;</span> I will not consume any laboratory solutions, even if they appear to be food-grade.</p>
+<p><span class="checkbox">&#9744;</span> I will clean up any spills immediately to prevent slipping hazards.</p>
+<p><span class="checkbox">&#9744;</span> I will dispose of solutions as directed by the instructor.</p>
+<p><span class="checkbox">&#9744;</span> I will handle glassware carefully to prevent breakage.</p>
+<p><span class="checkbox">&#9744;</span> I will wash my hands before leaving the laboratory.</p>
+
+<div class="page-break"></div>
+
+<!-- LAB PROCEDURE SECTION -->
+<h1 style="border-top: 2px solid black; padding-top: 20pt;">LABORATORY PROCEDURE</h1>
+
+<h2>Learning Objectives</h2>
+<ul>
+    <li><strong>Construct</strong> a "Sample Box" colorimeter to isolate light and control the optical path.</li>
+    <li><strong>Apply Beer-Lambert's Law</strong> to quantify the concentration of an analyte.</li>
+    <li><strong>Perform</strong> serial dilutions to generate a calibration curve.</li>
+    <li><strong>Determine</strong> the concentration of an unknown sample using your calibration curve.</li>
+</ul>
+
+<h2>Theoretical Background</h2>
+
+<p>In absorption spectroscopy, we measure the fraction of light that passes through a sample. The <strong>Absorbance (A)</strong> is calculated using the intensity of light through the blank (I<sub>0</sub>) and the sample (I):</p>
+
+<p class="formula">A = -log(I / I<sub>0</sub>)</p>
+
+<p>According to <strong>Beer's Law</strong> (A = &epsilon;lc), Absorbance is directly proportional to concentration. If you plot <em>Absorbance vs. Concentration</em>, you will get a straight line that can be used to determine unknown concentrations.</p>
+
+<h2>Experimental Procedure</h2>
+
+<h3>Part A: Construction of the "Sample Box"</h3>
+
+<ol>
+    <li><strong>Prepare the Box:</strong> Obtain a small cardboard box from your instructor.</li>
+    <li><strong>Cut the Window:</strong> On the front face, cut a small rectangular hole (approximately 2 cm wide) near the bottom. This is your viewing window.</li>
+    <li><strong>Open the Back:</strong> Completely remove the back panel of the box to allow light to enter.</li>
+    <li><strong>The Background:</strong> Place a sheet of <strong>Green Construction Paper</strong> behind the box. This provides the complementary light source for purple grape juice samples.</li>
+    <li><strong>Alignment:</strong> Position the box so that when you look through the front window, you see the green paper in the background.</li>
+</ol>
+
+<h3>Part B: Serial Dilutions</h3>
+
+<p>Prepare the following standard solutions using your 100% grape juice stock and distilled water:</p>
+
+<ol>
+    <li>Label 6 clean cups: Blank, Std 1 (20%), Std 2 (40%), Std 3 (60%), Std 4 (80%), Std 5 (100%)</li>
+    <li>Using the volumes you calculated in the prelab, prepare each standard solution</li>
+    <li>Mix each solution thoroughly by swirling</li>
+    <li>Also obtain your <strong>Unknown sample</strong> from your instructor</li>
+</ol>
+
+<h3>Part C: Data Collection</h3>
+
+<ol>
+    <li><strong>Insert Blank:</strong> Place the cup with pure water (Blank) inside the box.</li>
+    <li><strong>Lock Exposure:</strong> Point your camera at the window. Tap and hold the screen until "AE/AF LOCK" appears. <strong>Do not touch the screen again during the entire experiment.</strong></li>
+    <li><strong>Record I<sub>0</sub>:</strong> Using the Color Grab app (or similar), record the <strong>Green (G)</strong> value. This is your baseline (I<sub>0</sub>).</li>
+    <li><strong>Measure Standards:</strong> Replace the blank with each standard solution (going from lowest to highest concentration) and record the G value (I) for each.</li>
+    <li><strong>Measure Unknown:</strong> Finally, measure the G value for your unknown sample.</li>
+</ol>
+
+<div class="page-break"></div>
+
+<h2>Data Collection and Analysis</h2>
+
+<h3>Raw Data Table</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Sample</th>
+            <th>Concentration (%)</th>
+            <th>Intensity (I)<br><small>Green channel value</small></th>
+            <th>Absorbance (A)<br><small>A = -log(I/I<sub>0</sub>)</small></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Blank (I<sub>0</sub>)</td>
+            <td>0%</td>
+            <td></td>
+            <td>0.000</td>
+        </tr>
+        <tr>
+            <td>Std 1</td>
+            <td>20%</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Std 2</td>
+            <td>40%</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Std 3</td>
+            <td>60%</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Std 4</td>
+            <td>80%</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Std 5</td>
+            <td>100%</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr style="background-color: #fff3cd;">
+            <td><strong>Unknown</strong></td>
+            <td><strong>???</strong></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Sample Calculation</h3>
+<p>Show your calculation for the absorbance of Std 3 (60%):</p>
+
+<div class="calculation-box">
+    <p><strong>Given:</strong> I<sub>0</sub> = _______ , I = _______</p>
+    <br>
+    <p><strong>Calculation:</strong> A = -log(I / I<sub>0</sub>) = </p>
+    <br><br>
+    <p><strong>Answer: A = </strong><span class="blank-short"></span></p>
+</div>
+
+<div class="page-break"></div>
+
+<h2>Calibration Curve</h2>
+
+<p><strong>Instructions:</strong> Plot your data on the graph below. Place Concentration (%) on the x-axis and Absorbance (A) on the y-axis. Draw the best-fit line through your data points.</p>
+
+<div style="border: 1px solid black; padding: 10pt; margin: 15pt 0;">
+    <div class="diagram" style="font-size: 9pt;">
+Absorbance (A)
+     |
+     |
+0.70 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.60 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.50 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.40 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.30 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.20 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.10 |. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+     |
+     |
+0.00 |______|______|______|______|______|______|______|______|______|______|___
+     0      10     20     30     40     50     60     70     80     90    100
+                                Concentration (%)
+    </div>
+</div>
+
+<h3>Linear Regression Analysis</h3>
+
+<p>Using your calculator or graphing software, determine the equation of your best-fit line:</p>
+
+<p><strong>Slope (m) = </strong><span class="blank-medium"></span></p>
+<p><strong>Y-intercept (b) = </strong><span class="blank-medium"></span></p>
+<p><strong>R&sup2; value = </strong><span class="blank-medium"></span></p>
+
+<p><strong>Line equation:</strong> A = <span class="blank-short"></span> &times; C + <span class="blank-short"></span></p>
+
+<div class="page-break"></div>
+
+<h2>Unknown Analysis</h2>
+
+<h3>Determining Your Unknown Concentration</h3>
+
+<p>Using your calibration curve (either graphically or using your line equation), determine the concentration of your unknown sample.</p>
+
+<p><strong>Unknown Absorbance (A<sub>unknown</sub>) = </strong><span class="blank-medium"></span></p>
+
+<div class="calculation-box">
+    <p><strong>Method 1 - Graphical:</strong> Draw a horizontal line from your unknown's absorbance to the best-fit line, then draw a vertical line down to the x-axis to read the concentration.</p>
+    <br>
+    <p><strong>Method 2 - Calculation:</strong> Rearrange your line equation to solve for C:</p>
+    <p>If A = m&times;C + b, then C = (A - b) / m</p>
+    <br><br>
+    <p><strong>Show your calculation:</strong></p>
+    <br><br><br>
+</div>
+
+<p style="font-size: 14pt;"><strong>Your Determined Unknown Concentration = </strong><span class="blank-medium"></span> %</p>
+
+<hr>
+
+<h3>How Close Were You?</h3>
+
+<div class="instructions" style="background-color: #d4edda; border-color: #28a745;">
+    <p style="font-size: 14pt; text-align: center;"><strong>THE ACTUAL UNKNOWN CONCENTRATION IS: 50%</strong></p>
+</div>
+
+<h3>Percent Error Calculation</h3>
+
+<p>Calculate how close your experimental value was to the actual value:</p>
+
+<p class="formula">% Error = |Experimental Value - Actual Value| / Actual Value &times; 100%</p>
+
+<div class="calculation-box">
+    <p><strong>Given:</strong></p>
+    <p>Experimental Value = _______ %</p>
+    <p>Actual Value = 50%</p>
+    <br>
+    <p><strong>Calculation:</strong></p>
+    <p>% Error = |_______ - 50| / 50 &times; 100%</p>
+    <br><br>
+    <p><strong>% Error = </strong><span class="blank-medium"></span></p>
+</div>
+
+<h3>Error Analysis Interpretation</h3>
+
+<table>
+    <tr>
+        <th>% Error Range</th>
+        <th>Interpretation</th>
+    </tr>
+    <tr>
+        <td style="background-color: #d4edda;">0 - 5%</td>
+        <td>Excellent! Your technique and calibration were very accurate.</td>
+    </tr>
+    <tr>
+        <td style="background-color: #fff3cd;">5 - 10%</td>
+        <td>Good. Minor sources of error present but acceptable.</td>
+    </tr>
+    <tr>
+        <td style="background-color: #f8d7da;">10 - 20%</td>
+        <td>Fair. Significant sources of error should be identified.</td>
+    </tr>
+    <tr>
+        <td style="background-color: #f5c6cb;">&gt; 20%</td>
+        <td>Poor. Major experimental issues need to be addressed.</td>
+    </tr>
+</table>
+
+<!-- Interactive Calculator Section (Web Only) -->
+<div class="interactive-box no-print">
+    <h3>Interactive Absorbance Calculator</h3>
+    <p>Use this calculator to check your absorbance calculations:</p>
+
+    <p>
+        <label>Blank Intensity (I<sub>0</sub>): <input type="number" id="calc_i0" placeholder="e.g., 180"></label>
+        <label style="margin-left: 20px;">Sample Intensity (I): <input type="number" id="calc_i" placeholder="e.g., 95"></label>
+        <button class="btn" onclick="calculateAbsorbance()">Calculate A</button>
+    </p>
+    <p id="absorbance_result" style="font-size: 14pt; font-weight: bold; color: #007bff;"></p>
+</div>
+
+<div class="interactive-box no-print">
+    <h3>Unknown Concentration Checker</h3>
+    <p>Enter your calculated unknown concentration to see how close you were:</p>
+
+    <p>
+        <label>Your Unknown Concentration (%): <input type="number" id="student_unknown" placeholder="e.g., 48.5" step="0.1"></label>
+        <button class="btn btn-success" onclick="checkUnknown()">Check My Answer!</button>
+    </p>
+
+    <div id="unknown_result" class="result-box"></div>
+</div>
+
+<div class="page-break"></div>
+
+<h2>Post-Lab Questions <span class="points">(10 points)</span></h2>
+
+<p><strong>1.</strong> What would happen to your absorbance readings if you accidentally used a green background with a green solution? Explain. <span class="points">(2 pts)</span></p>
+<div class="long-answer"></div>
+
+<p><strong>2.</strong> If your calibration curve does not pass through the origin (0,0), what does this indicate about your experiment? <span class="points">(2 pts)</span></p>
+<div class="long-answer"></div>
+
+<p><strong>3.</strong> A student forgot to lock the camera exposure between samples. How would this affect their results? <span class="points">(2 pts)</span></p>
+<div class="long-answer"></div>
+
+<p><strong>4.</strong> Why is it important to measure samples from lowest to highest concentration rather than in random order? <span class="points">(2 pts)</span></p>
+<div class="long-answer"></div>
+
+<p><strong>5.</strong> How could you improve the precision of this experiment if you were to repeat it? List at least two specific improvements. <span class="points">(2 pts)</span></p>
+<div class="long-answer"></div>
+
+<div class="page-break"></div>
+
+<h2>Grading Rubric</h2>
+
+<table class="rubric-table">
+    <tr>
+        <th>Section</th>
+        <th>Points Possible</th>
+        <th>Points Earned</th>
+    </tr>
+    <tr>
+        <td>Prelab Assignment</td>
+        <td style="text-align: center;">20</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Data Collection (complete table with all values)</td>
+        <td style="text-align: center;">15</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Calibration Curve (properly labeled, best-fit line)</td>
+        <td style="text-align: center;">15</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Unknown Analysis (correct method, calculations shown)</td>
+        <td style="text-align: center;">15</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Percent Error Calculation</td>
+        <td style="text-align: center;">10</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Post-Lab Questions</td>
+        <td style="text-align: center;">10</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Lab Technique &amp; Cleanup</td>
+        <td style="text-align: center;">15</td>
+        <td></td>
+    </tr>
+    <tr style="font-weight: bold; background-color: #d4edda;">
+        <td>TOTAL</td>
+        <td style="text-align: center;">100</td>
+        <td></td>
+    </tr>
+</table>
+
+<hr>
+
+<p><strong>Instructor Comments:</strong></p>
+<div class="long-answer" style="min-height: 100pt;"></div>
+
+<p><strong>Instructor Signature:</strong> <span class="blank-line"></span> <strong>Date:</strong> <span class="blank-short"></span></p>
+
+<script>
+    function calculateAbsorbance() {
+        const i0 = parseFloat(document.getElementById('calc_i0').value);
+        const i = parseFloat(document.getElementById('calc_i').value);
+
+        if (i0 && i && i0 > 0 && i > 0) {
+            const absorbance = -Math.log10(i / i0);
+            document.getElementById('absorbance_result').innerText =
+                "Absorbance (A) = " + absorbance.toFixed(4);
+        } else {
+            document.getElementById('absorbance_result').innerText =
+                "Please enter valid positive values for both I0 and I.";
+        }
+    }
+
+    function checkUnknown() {
+        const studentValue = parseFloat(document.getElementById('student_unknown').value);
+        const actualValue = 50;
+        const resultDiv = document.getElementById('unknown_result');
+
+        if (isNaN(studentValue)) {
+            resultDiv.style.display = 'block';
+            resultDiv.style.backgroundColor = '#f8d7da';
+            resultDiv.style.borderColor = '#dc3545';
+            resultDiv.innerHTML = '<p>Please enter a valid number.</p>';
+            return;
+        }
+
+        const percentError = Math.abs((studentValue - actualValue) / actualValue * 100);
+
+        let interpretation, colorClass, bgColor, borderColor;
+
+        if (percentError <= 5) {
+            interpretation = "EXCELLENT! Your technique was very accurate.";
+            bgColor = '#d4edda';
+            borderColor = '#28a745';
+            colorClass = 'error-good';
+        } else if (percentError <= 10) {
+            interpretation = "GOOD! Minor sources of error, but acceptable results.";
+            bgColor = '#fff3cd';
+            borderColor = '#ffc107';
+            colorClass = 'error-ok';
+        } else if (percentError <= 20) {
+            interpretation = "FAIR. Consider what sources of error affected your results.";
+            bgColor = '#f8d7da';
+            borderColor = '#dc3545';
+            colorClass = 'error-poor';
+        } else {
+            interpretation = "NEEDS IMPROVEMENT. Review your technique and calculations.";
+            bgColor = '#f5c6cb';
+            borderColor = '#dc3545';
+            colorClass = 'error-poor';
+        }
+
+        resultDiv.style.display = 'block';
+        resultDiv.style.backgroundColor = bgColor;
+        resultDiv.style.borderColor = borderColor;
+        resultDiv.innerHTML = `
+            <p style="font-size: 16pt; text-align: center;"><strong>ACTUAL UNKNOWN = 50%</strong></p>
+            <p><strong>Your Value:</strong> ${studentValue.toFixed(1)}%</p>
+            <p><strong>Actual Value:</strong> ${actualValue}%</p>
+            <p><strong>Difference:</strong> ${Math.abs(studentValue - actualValue).toFixed(1)}%</p>
+            <p><strong>Percent Error:</strong> <span class="${colorClass}">${percentError.toFixed(2)}%</span></p>
+            <hr>
+            <p><strong>${interpretation}</strong></p>
+        `;
+    }
+</script>
+
+</body>
+</html>

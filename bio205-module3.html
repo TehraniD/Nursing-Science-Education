@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIO 205 Module 3 — Microbial Growth | Interactive Study Guide</title>
+<style>
+:root{
+  --pri:#0c2340;--pri-l:#1a5276;--acc:#e8a317;--acc2:#2ecc71;--acc2d:#27ae60;
+  --bg:#f4f6f8;--card:#fff;--txt:#2c3e50;--mut:#7f8c8d;--bdr:#dce1e6;
+  --hl:#fef9e7;--step:#eaf2f8;--ok:#27ae60;--no:#e74c3c;--warn:#e67e22;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6}
+
+/* header */
+.hdr{background:linear-gradient(135deg,var(--pri),var(--pri-l));color:#fff;text-align:center;padding:2rem 1rem 1.2rem;position:relative}
+.hdr h1{font-size:1.5rem;letter-spacing:.5px}
+.hdr .sub{font-size:.92rem;opacity:.8;margin-top:.3rem}
+.hdr .badge{display:inline-block;margin-top:.55rem;background:rgba(255,255,255,.14);padding:.22rem .8rem;border-radius:20px;font-size:.78rem}
+.prog-wrap{background:rgba(255,255,255,.14);height:6px;border-radius:3px;margin:1rem auto 0;max-width:520px;overflow:hidden}
+.prog-fill{height:100%;background:var(--acc);border-radius:3px;transition:width .4s}
+.prog-lbl{font-size:.73rem;opacity:.65;margin-top:.25rem}
+
+.container{max-width:760px;margin:0 auto;padding:1.5rem 1rem 3rem}
+
+/* tabs */
+.tab-bar{display:flex;gap:4px;margin-bottom:1.2rem;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:140px;padding:.6rem .5rem;border:none;border-radius:10px 10px 0 0;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;background:#dce1e6;color:var(--txt)}
+.tab-btn.active{background:var(--pri);color:#fff}
+.tab-btn .ct{display:inline-block;background:rgba(0,0,0,.12);padding:0 6px;border-radius:10px;font-size:.72rem;margin-left:4px}
+.tab-btn.active .ct{background:rgba(255,255,255,.25)}
+
+/* section panels */
+.sec-panel{display:none}
+.sec-panel.active{display:block}
+
+/* card base */
+.card{background:var(--card);border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:1.2rem;overflow:hidden;animation:fu .3s ease}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.card-head{padding:1rem 1.25rem;display:flex;align-items:center;gap:.7rem}
+.card-head.blue{background:var(--pri);color:#fff}
+.card-head.gold{background:var(--acc);color:var(--pri)}
+.card-head.green{background:var(--acc2);color:#fff}
+.card-icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.95rem;flex-shrink:0}
+.card-topic{font-size:.72rem;opacity:.7;text-transform:uppercase;letter-spacing:.6px}
+.card-title{font-size:1rem;font-weight:700}
+
+.card-body{padding:1.25rem}
+
+/* teach block */
+.teach{margin-bottom:1rem}
+.teach h4{font-size:.95rem;color:var(--pri);margin-bottom:.5rem;border-bottom:2px solid var(--acc);display:inline-block;padding-bottom:2px}
+.teach p,.teach li{font-size:.9rem;margin-bottom:.4rem}
+.teach ul{padding-left:1.2rem}
+.teach ul li::marker{color:var(--acc)}
+
+.key-table{width:100%;border-collapse:collapse;margin:.75rem 0;font-size:.85rem}
+.key-table th{background:var(--pri);color:#fff;padding:.5rem .65rem;text-align:left;font-size:.78rem;text-transform:uppercase;letter-spacing:.4px}
+.key-table td{padding:.45rem .65rem;border-bottom:1px solid var(--bdr)}
+.key-table tr:nth-child(even) td{background:#f9fbfd}
+.key-table .hl-row td{background:#fef9e7;font-weight:600}
+
+.callout{border-radius:8px;padding:.85rem 1.1rem;margin:.75rem 0;font-size:.88rem}
+.callout.warn{background:#fdf2e9;border-left:4px solid var(--warn)}
+.callout.warn strong{color:var(--warn)}
+.callout.info{background:#eaf2f8;border-left:4px solid var(--pri-l)}
+.callout.info strong{color:var(--pri-l)}
+.callout.clinic{background:#e8f8f5;border-left:4px solid var(--acc2)}
+.callout.clinic strong{color:var(--acc2d)}
+
+/* quiz */
+.quiz{background:#f8f9fa;border-radius:10px;padding:1rem 1.15rem;margin-top:.75rem}
+.quiz-q{font-size:.92rem;font-weight:600;margin-bottom:.6rem;color:var(--pri)}
+.quiz-opts{list-style:none;padding:0}
+.quiz-opts li{padding:.5rem .75rem;margin-bottom:4px;border-radius:8px;cursor:pointer;font-size:.88rem;border:2px solid transparent;transition:all .15s}
+.quiz-opts li:hover{background:#e8edf2}
+.quiz-opts li.selected{border-color:var(--pri-l);background:#eaf2f8}
+.quiz-opts li.correct{border-color:var(--ok);background:#d5f5e3}
+.quiz-opts li.wrong{border-color:var(--no);background:#fadbd8}
+.quiz-opts li.reveal{border-color:var(--ok);background:#d5f5e3}
+.quiz-fb{margin-top:.5rem;font-size:.87rem;font-weight:600;min-height:1.4em}
+.quiz-fb.ok{color:var(--ok)}
+.quiz-fb.no{color:var(--no)}
+.quiz-explain{display:none;margin-top:.5rem;padding:.7rem;background:#fff;border-radius:8px;font-size:.85rem;border:1px solid var(--bdr)}
+.quiz-explain.show{display:block}
+
+.btn{padding:.5rem 1.1rem;border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-pri{background:var(--pri);color:#fff}.btn-pri:hover{background:#154360}
+.btn-acc{background:var(--acc2);color:#fff}.btn-acc:hover{background:var(--acc2d)}
+.btn-out{background:transparent;color:var(--pri);border:2px solid var(--pri)}.btn-out:hover{background:var(--pri);color:#fff}
+.btn-row{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+
+/* score bar */
+.score-bar{background:var(--card);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.score-bar .label{font-size:.82rem;color:var(--mut)}
+.score-bar .val{font-size:1.3rem;font-weight:700;color:var(--pri)}
+
+/* TOC */
+.toc{display:none}.toc.active{display:block}
+.toc-head{background:var(--pri);color:#fff;padding:1.25rem 1.5rem;text-align:center;border-radius:14px 14px 0 0}
+.toc-head h2{font-size:1.1rem}
+.toc-body{background:var(--card);border-radius:0 0 14px 14px;padding:1rem 1.5rem;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.toc-section{margin-bottom:1rem}
+.toc-section h3{font-size:.88rem;color:var(--pri);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.toc-section h3 .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.toc-items{list-style:none;padding:0}
+.toc-items li{padding:.45rem .6rem;border-bottom:1px solid var(--bdr);font-size:.85rem;cursor:pointer;border-radius:6px;transition:background .15s;display:flex;align-items:center;gap:.5rem}
+.toc-items li:hover{background:var(--step)}
+.toc-items li .num{width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;flex-shrink:0}
+.toc-start{display:block;margin:1rem 0 .5rem;width:100%;padding:.7rem;background:var(--acc);color:var(--pri);border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+.toc-start:hover{background:#d4940f}
+
+/* done */
+.done{display:none;text-align:center;padding:3rem 2rem;background:var(--card);border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.done.active{display:block}
+.done .big{font-size:2.5rem;margin-bottom:.5rem}
+.done h2{color:var(--pri);margin-bottom:.5rem}
+
+/* footer */
+.ftr{text-align:center;padding:1.5rem;font-size:.78rem;color:var(--mut)}
+.ftr a{color:var(--pri);text-decoration:none}
+
+@media(max-width:500px){
+  .hdr h1{font-size:1.2rem}
+  .tab-btn{font-size:.74rem;padding:.5rem .3rem;min-width:100px}
+  .card-body{padding:1rem}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <h1>BIO 205 &mdash; Module 3</h1>
+  <p class="sub">Microbial Growth &bull; Chapter 9 Interactive Study Guide</p>
+  <span class="badge">3 Key Sections &bull; Interactive Review</span>
+  <div class="prog-wrap"><div class="prog-fill" id="progBar" style="width:0%"></div></div>
+  <div class="prog-lbl" id="progLbl">Start</div>
+</header>
+
+<div class="container">
+
+<!-- ══════ TABLE OF CONTENTS ══════ -->
+<div class="toc active" id="tocPanel">
+  <div class="toc-head"><h2>Module 3 Study Map</h2></div>
+  <div class="toc-body">
+    <div class="toc-section">
+      <h3><span class="dot" style="background:var(--acc)"></span> Section A &mdash; Aseptic Technique</h3>
+      <ul class="toc-items">
+        <li onclick="goSection('A')"><span class="num">1</span> What is Aseptic Technique &amp; Why It Matters</li>
+        <li onclick="goSection('A')"><span class="num">2</span> Proper Inoculation Procedure</li>
+        <li onclick="goSection('A')"><span class="num">3</span> Lab Safety &amp; Disposal</li>
+      </ul>
+    </div>
+    <div class="toc-section">
+      <h3><span class="dot" style="background:var(--pri-l)"></span> Section B &mdash; Media</h3>
+      <ul class="toc-items">
+        <li onclick="goSection('B')"><span class="num">4</span> General Purpose vs. Enriched Media</li>
+        <li onclick="goSection('B')"><span class="num">5</span> Selective vs. Differential Media</li>
+        <li onclick="goSection('B')"><span class="num">6</span> Solid vs. Liquid Media</li>
+      </ul>
+    </div>
+    <div class="toc-section">
+      <h3><span class="dot" style="background:var(--acc2)"></span> Section C &mdash; Bacterial Growth Conditions</h3>
+      <ul class="toc-items">
+        <li onclick="goSection('C')"><span class="num">7</span> Binary Fission &amp; Generation Time</li>
+        <li onclick="goSection('C')"><span class="num">8</span> The Bacterial Growth Curve (4 Phases)</li>
+        <li onclick="goSection('C')"><span class="num">9</span> Temperature Classifications</li>
+        <li onclick="goSection('C')"><span class="num">10</span> pH, Osmotic Pressure &amp; Oxygen Requirements</li>
+        <li onclick="goSection('C')"><span class="num">11</span> Biofilms &amp; Clinical Relevance</li>
+      </ul>
+    </div>
+    <button class="toc-start" onclick="goSection('A')">Begin Studying</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ -->
+<!-- SECTION A: ASEPTIC TECHNIQUE      -->
+<!-- ══════════════════════════════════ -->
+<div class="sec-panel" id="secA">
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="goSection('A')">A: Aseptic<span class="ct">3</span></button>
+  <button class="tab-btn" onclick="goSection('B')">B: Media<span class="ct">3</span></button>
+  <button class="tab-btn" onclick="goSection('C')">C: Growth<span class="ct">11</span></button>
+</div>
+
+<!-- A1: What is Aseptic Technique -->
+<div class="card">
+  <div class="card-head gold"><div class="card-icon">A1</div><div><div class="card-topic">Aseptic Technique</div><div class="card-title">What Is Aseptic Technique &amp; Why It Matters</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Key Concept</h4>
+      <p><strong>Aseptic technique</strong> refers to procedures that prevent the introduction of unwanted microorganisms into a sterile environment or culture. It protects both the sample and the handler.</p>
+      <ul>
+        <li>Prevents contamination of cultures with environmental microbes</li>
+        <li>Protects the lab worker from exposure to pathogens</li>
+        <li>Essential in clinical settings for wound care, IV insertion, catheter care</li>
+      </ul>
+    </div>
+    <div class="callout clinic">
+      <strong>Clinical Pearl:</strong> In nursing, aseptic technique is used when setting up sterile fields, inserting catheters, and changing wound dressings. A break in technique can lead to healthcare-acquired infections (HAIs).
+    </div>
+    <div class="quiz" id="qa1">
+      <div class="quiz-q">Which of these is the PRIMARY purpose of aseptic technique in the microbiology lab?</div>
+      <ul class="quiz-opts" data-correct="1">
+        <li data-i="0" onclick="pick(this)">To speed up bacterial growth in cultures</li>
+        <li data-i="1" onclick="pick(this)">To prevent contamination of cultures and protect the worker</li>
+        <li data-i="2" onclick="pick(this)">To kill all bacteria in the lab</li>
+        <li data-i="3" onclick="pick(this)">To identify unknown organisms</li>
+      </ul>
+      <div class="quiz-fb" id="qa1fb"></div>
+      <div class="quiz-explain" id="qa1ex">Aseptic technique is all about <strong>prevention</strong> &mdash; keeping unwanted microbes out of your sterile work and keeping you safe from pathogens. It does not kill organisms (that's sterilization) or identify them (that's differential testing).</div>
+    </div>
+  </div>
+</div>
+
+<!-- A2: Proper Inoculation -->
+<div class="card">
+  <div class="card-head gold"><div class="card-icon">A2</div><div><div class="card-topic">Aseptic Technique</div><div class="card-title">Proper Inoculation Procedure</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Inoculating a Culture &mdash; Step by Step</h4>
+      <table class="key-table">
+        <tr><th>#</th><th>Step</th><th>Why?</th></tr>
+        <tr><td>1</td><td>Flame the inoculating loop until glowing red</td><td>Sterilizes the loop (incineration)</td></tr>
+        <tr><td>2</td><td>Allow the loop to cool briefly (do NOT set on bench)</td><td>Hot loop kills cells; bench contaminates loop</td></tr>
+        <tr><td>3</td><td>Hold tube/plate lid in your hand (never set lid on table)</td><td>Prevents airborne contamination of lid</td></tr>
+        <tr><td>4</td><td>Gently streak the surface &mdash; do NOT stab the agar</td><td>Stabbing tears agar and embeds organisms</td></tr>
+        <tr><td>5</td><td>Re-flame the loop when done</td><td>Sterilizes before setting down</td></tr>
+        <tr><td>6</td><td>Incubate plates <strong>upside down</strong> (agar on top)</td><td>Prevents condensation from dripping onto colonies</td></tr>
+      </table>
+    </div>
+    <div class="callout warn">
+      <strong>Watch Out:</strong> "Set the loop on the lab bench after flaming" and "Incubate the agar plate lid side up" are both <strong>improper</strong> techniques &mdash; know why each one is wrong.
+    </div>
+    <div class="quiz" id="qa2">
+      <div class="quiz-q">Which of these should be AVOIDED when inoculating a bacterial sample?</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">Flame loop until it glows bright red</li>
+        <li data-i="1" onclick="pick(this)">Store the agar plate bottom side up</li>
+        <li data-i="2" onclick="pick(this)">Set the lid on the table so you do not drop it</li>
+        <li data-i="3" onclick="pick(this)">All of the above</li>
+      </ul>
+      <div class="quiz-fb" id="qa2fb"></div>
+      <div class="quiz-explain" id="qa2ex">Setting the lid on the table exposes the inner sterile surface to environmental contaminants. You should always <strong>hold the lid in your hand</strong> during inoculation. Flaming the loop and storing plates inverted are both correct practices.</div>
+    </div>
+  </div>
+</div>
+
+<!-- A3: Disposal -->
+<div class="card">
+  <div class="card-head gold"><div class="card-icon">A3</div><div><div class="card-topic">Aseptic Technique</div><div class="card-title">Lab Safety &amp; Disposal</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Proper Disposal of Lab Materials</h4>
+      <table class="key-table">
+        <tr><th>Item</th><th>Dispose In</th></tr>
+        <tr class="hl-row"><td>Used stock cultures / agar plates</td><td>Biohazard container</td></tr>
+        <tr><td>Broken glass</td><td>Broken glass container</td></tr>
+        <tr><td>Needles / scalpels</td><td>Sharps container</td></tr>
+        <tr><td>General lab waste (paper, gloves)</td><td>Regular waste</td></tr>
+      </table>
+    </div>
+    <div class="callout clinic">
+      <strong>Clinical Connection:</strong> In the hospital, the same principles apply &mdash; sharps go in puncture-resistant containers, biohazardous waste (blood-soaked items) in red bags, and regular waste in standard bins.
+    </div>
+    <div class="quiz" id="qa3">
+      <div class="quiz-q">What is the correct container for disposal of stock cultures when finished with lab?</div>
+      <ul class="quiz-opts" data-correct="0">
+        <li data-i="0" onclick="pick(this)">Bio-hazard disposal</li>
+        <li data-i="1" onclick="pick(this)">Broken glass disposal</li>
+        <li data-i="2" onclick="pick(this)">Sharps disposal</li>
+        <li data-i="3" onclick="pick(this)">Incubator</li>
+      </ul>
+      <div class="quiz-fb" id="qa3fb"></div>
+      <div class="quiz-explain" id="qa3ex">Used cultures contain live microorganisms and must be disposed of as <strong>biohazardous waste</strong> for proper autoclaving and destruction. They are not simply thrown away or returned to the incubator.</div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-row" style="justify-content:space-between">
+  <button class="btn btn-out" onclick="goTOC()">Contents</button>
+  <button class="btn btn-pri" onclick="goSection('B')">Next: Media &rarr;</button>
+</div>
+</div><!-- /secA -->
+
+
+<!-- ══════════════════════════════════ -->
+<!-- SECTION B: MEDIA                   -->
+<!-- ══════════════════════════════════ -->
+<div class="sec-panel" id="secB">
+
+<div class="tab-bar">
+  <button class="tab-btn" onclick="goSection('A')">A: Aseptic<span class="ct">3</span></button>
+  <button class="tab-btn active" onclick="goSection('B')">B: Media<span class="ct">3</span></button>
+  <button class="tab-btn" onclick="goSection('C')">C: Growth<span class="ct">11</span></button>
+</div>
+
+<!-- B1: General Purpose / Enriched -->
+<div class="card">
+  <div class="card-head blue"><div class="card-icon">B1</div><div><div class="card-topic">Culture Media</div><div class="card-title">General Purpose vs. Enriched Media</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Types of Media by Function</h4>
+      <table class="key-table">
+        <tr><th>Type</th><th>Purpose</th><th>Examples</th></tr>
+        <tr class="hl-row"><td>General Purpose</td><td>Supports growth of a wide variety of organisms</td><td>Nutrient agar, Tryptic Soy Agar (TSA)</td></tr>
+        <tr><td>Enriched</td><td>Contains extra nutrients for fastidious (picky) organisms</td><td>Blood agar, Chocolate agar</td></tr>
+      </table>
+    </div>
+    <div class="callout info">
+      <strong>Think of it this way:</strong> General purpose media is like a basic cafeteria &mdash; most organisms can eat there. Enriched media is like a specialty restaurant with extra ingredients for organisms that need more to grow.
+    </div>
+    <div class="quiz" id="qb1">
+      <div class="quiz-q">Nutrient agar or tryptic soy agar would be examples of _____ media.</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">Selective</li>
+        <li data-i="1" onclick="pick(this)">Differential</li>
+        <li data-i="2" onclick="pick(this)">General purpose</li>
+        <li data-i="3" onclick="pick(this)">Enriched</li>
+      </ul>
+      <div class="quiz-fb" id="qb1fb"></div>
+      <div class="quiz-explain" id="qb1ex">Nutrient agar and TSA are the classic <strong>general purpose</strong> media &mdash; they provide basic nutrients that support a wide range of non-fastidious organisms without any selective or differential agents added.</div>
+    </div>
+  </div>
+</div>
+
+<!-- B2: Selective vs Differential -->
+<div class="card">
+  <div class="card-head blue"><div class="card-icon">B2</div><div><div class="card-topic">Culture Media</div><div class="card-title">Selective vs. Differential Media</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Key Distinction</h4>
+      <table class="key-table">
+        <tr><th>Type</th><th>What It Does</th><th>Example</th></tr>
+        <tr class="hl-row"><td>Selective</td><td><strong>Inhibits</strong> growth of certain organisms; allows others</td><td>EMB agar (inhibits gram-positive), MacConkey agar</td></tr>
+        <tr><td>Differential</td><td><strong>Distinguishes</strong> between organisms by visible differences (color changes)</td><td>Blood agar (hemolysis patterns), MacConkey (lactose fermenters turn pink)</td></tr>
+      </table>
+      <p style="margin-top:.5rem;font-size:.88rem"><strong>Note:</strong> Some media can be BOTH selective AND differential (e.g., MacConkey agar).</p>
+    </div>
+    <div class="callout warn">
+      <strong>Key Point:</strong> "Using an EMB plate to inhibit growth of gram-positive bacteria and only allowing growth of gram-negative is an example of _____ media." Answer = <strong>Selective</strong> (it's selecting which organisms can grow).
+    </div>
+    <div class="quiz" id="qb2">
+      <div class="quiz-q">An EMB plate that inhibits gram-positive bacteria and only allows gram-negative growth is an example of what type of media?</div>
+      <ul class="quiz-opts" data-correct="1">
+        <li data-i="0" onclick="pick(this)">Enriched</li>
+        <li data-i="1" onclick="pick(this)">Selective</li>
+        <li data-i="2" onclick="pick(this)">Differential</li>
+        <li data-i="3" onclick="pick(this)">General or all-purpose</li>
+      </ul>
+      <div class="quiz-fb" id="qb2fb"></div>
+      <div class="quiz-explain" id="qb2ex"><strong>Selective</strong> media contains ingredients that inhibit certain organisms (here, gram-positive) while allowing others (gram-negative) to grow. The key word is <em>inhibit</em> = selective.</div>
+    </div>
+  </div>
+</div>
+
+<!-- B3: Solid vs Liquid -->
+<div class="card">
+  <div class="card-head blue"><div class="card-icon">B3</div><div><div class="card-topic">Culture Media</div><div class="card-title">Solid vs. Liquid Media &amp; Growth Surfaces</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Physical Forms of Media</h4>
+      <table class="key-table">
+        <tr><th>Form</th><th>Examples</th><th>Use</th></tr>
+        <tr><td>Liquid (Broth)</td><td>Nutrient broth, TSB</td><td>Growing large quantities; dilutions</td></tr>
+        <tr class="hl-row"><td>Solid</td><td>Agar plate, Test tube slant</td><td>Isolating colonies; observing morphology</td></tr>
+        <tr><td>Semi-solid</td><td>Motility media</td><td>Testing if organisms can move</td></tr>
+      </table>
+      <p style="margin-top:.5rem;font-size:.88rem"><strong>Agar</strong> is a solidifying agent from seaweed. Most bacteria cannot digest it, making it an ideal solidifier.</p>
+    </div>
+    <div class="quiz" id="qb3">
+      <div class="quiz-q">The growth of bacteria on a solid medium occurs by using which of these?</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">Agar plate only</li>
+        <li data-i="1" onclick="pick(this)">Liquid broth</li>
+        <li data-i="2" onclick="pick(this)">Both agar plate and a test tube slant</li>
+        <li data-i="3" onclick="pick(this)">Agar plate, test tube slant, and liquid broth</li>
+      </ul>
+      <div class="quiz-fb" id="qb3fb"></div>
+      <div class="quiz-explain" id="qb3ex">Both agar plates and test tube slants contain <strong>solid</strong> media (agar). Liquid broth is not a solid medium. Bacteria grow on the surface of solid media, forming visible colonies.</div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-row" style="justify-content:space-between">
+  <button class="btn btn-out" onclick="goSection('A')">&larr; Aseptic</button>
+  <button class="btn btn-pri" onclick="goSection('C')">Next: Growth Conditions &rarr;</button>
+</div>
+</div><!-- /secB -->
+
+
+<!-- ══════════════════════════════════ -->
+<!-- SECTION C: BACTERIAL GROWTH        -->
+<!-- ══════════════════════════════════ -->
+<div class="sec-panel" id="secC">
+
+<div class="tab-bar">
+  <button class="tab-btn" onclick="goSection('A')">A: Aseptic<span class="ct">3</span></button>
+  <button class="tab-btn" onclick="goSection('B')">B: Media<span class="ct">3</span></button>
+  <button class="tab-btn active" onclick="goSection('C')">C: Growth<span class="ct">11</span></button>
+</div>
+
+<!-- C1: Binary Fission & Generation Time -->
+<div class="card">
+  <div class="card-head green"><div class="card-icon">C1</div><div><div class="card-topic">How Microbes Grow</div><div class="card-title">Binary Fission &amp; Generation Time</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Binary Fission</h4>
+      <ul>
+        <li>The primary way bacteria reproduce &mdash; <strong>asexual reproduction</strong></li>
+        <li>One parent cell divides into <strong>two identical daughter cells</strong></li>
+        <li>Process: DNA replicates &rarr; cell elongates &rarr; septum forms (FtsZ ring) &rarr; cells separate</li>
+        <li>Each daughter receives a <strong>complete copy</strong> of the genome</li>
+      </ul>
+      <h4 style="margin-top:1rem">Generation (Doubling) Time</h4>
+      <ul>
+        <li>The time for one parent cell to divide into two daughter cells</li>
+        <li><em>E. coli</em>: ~20 minutes | <em>M. tuberculosis</em>: 15&ndash;20 hours | <em>M. leprae</em>: 14 days</li>
+        <li>Population formula: <strong>N<sub>n</sub> = N<sub>0</sub> &times; 2<sup>n</sup></strong></li>
+      </ul>
+    </div>
+    <div class="quiz" id="qc1">
+      <div class="quiz-q">The time interval from parent cell to two new daughter cells is called the:</div>
+      <ul class="quiz-opts" data-correct="1">
+        <li data-i="0" onclick="pick(this)">Binary Fission</li>
+        <li data-i="1" onclick="pick(this)">Doubling or Generation Time</li>
+        <li data-i="2" onclick="pick(this)">Sexual Reproduction</li>
+        <li data-i="3" onclick="pick(this)">Meiosis</li>
+      </ul>
+      <div class="quiz-fb" id="qc1fb"></div>
+      <div class="quiz-explain" id="qc1ex">Binary fission is the <em>process</em>; the <strong>generation/doubling time</strong> is the <em>time interval</em> it takes for one division to occur. Don't confuse the event with the measurement of time.</div>
+    </div>
+
+    <div class="quiz" id="qc1b" style="margin-top:.75rem">
+      <div class="quiz-q">Which of the following is true of cells that undergo binary fission?</div>
+      <ul class="quiz-opts" data-correct="0">
+        <li data-i="0" onclick="pick(this)">Two daughter cells are created</li>
+        <li data-i="1" onclick="pick(this)">Only one cell typically lives</li>
+        <li data-i="2" onclick="pick(this)">Not all genetic material is replicated</li>
+        <li data-i="3" onclick="pick(this)">This process includes both prokaryotes and eukaryotes</li>
+      </ul>
+      <div class="quiz-fb" id="qc1bfb"></div>
+      <div class="quiz-explain" id="qc1bex">Binary fission produces <strong>two identical daughter cells</strong>, each with a complete copy of the DNA. It is specific to <strong>prokaryotes</strong> (bacteria), not eukaryotes (which use mitosis/meiosis).</div>
+    </div>
+  </div>
+</div>
+
+<!-- C2: Growth Curve -->
+<div class="card">
+  <div class="card-head green"><div class="card-icon">C2</div><div><div class="card-topic">Growth Dynamics</div><div class="card-title">The Bacterial Growth Curve &mdash; 4 Phases</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>The Four Phases</h4>
+      <table class="key-table">
+        <tr><th>Phase</th><th>What Happens</th><th>Key Detail</th></tr>
+        <tr><td><strong>1. Lag Phase</strong></td><td>Cells adjust, metabolize, but do NOT divide</td><td>No increase in cell number; making enzymes/proteins</td></tr>
+        <tr><td><strong>2. Log (Exponential) Phase</strong></td><td>Rapid, exponential growth</td><td>Cells most active and vulnerable to antibiotics</td></tr>
+        <tr class="hl-row"><td><strong>3. Stationary Phase</strong></td><td>Growth rate = death rate</td><td>Nutrients depleting, waste accumulating; population plateaus</td></tr>
+        <tr><td><strong>4. Death (Decline) Phase</strong></td><td>Death rate exceeds growth</td><td>Exponential decrease in living cells</td></tr>
+      </table>
+    </div>
+    <div class="callout clinic">
+      <strong>Clinical Connection:</strong> Understanding these phases helps predict infection progression. The <strong>log phase</strong> is when antibiotics are most effective because cells are actively dividing and building cell walls.
+    </div>
+    <div class="quiz" id="qc2">
+      <div class="quiz-q">The phase where newly inoculated cells are adjusting, metabolizing but NOT growing is the:</div>
+      <ul class="quiz-opts" data-correct="0">
+        <li data-i="0" onclick="pick(this)">Lag Phase</li>
+        <li data-i="1" onclick="pick(this)">Log / Exponential Phase</li>
+        <li data-i="2" onclick="pick(this)">Stationary Phase</li>
+        <li data-i="3" onclick="pick(this)">Death Phase</li>
+      </ul>
+      <div class="quiz-fb" id="qc2fb"></div>
+      <div class="quiz-explain" id="qc2ex">During the <strong>lag phase</strong>, cells are adapting to their new environment &mdash; synthesizing enzymes, taking in nutrients &mdash; but the population count stays flat. Think: "lagging behind."</div>
+    </div>
+
+    <div class="quiz" id="qc2b" style="margin-top:.75rem">
+      <div class="quiz-q">The phase where the rate of multiplication equals the rate of cell death is the:</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">Lag Phase</li>
+        <li data-i="1" onclick="pick(this)">Log / Exponential Phase</li>
+        <li data-i="2" onclick="pick(this)">Stationary Phase</li>
+        <li data-i="3" onclick="pick(this)">Death Phase</li>
+      </ul>
+      <div class="quiz-fb" id="qc2bfb"></div>
+      <div class="quiz-explain" id="qc2bex">In the <strong>stationary phase</strong>, the birth rate equals the death rate, so the total population remains constant &mdash; it "stations" (stays in place). Nutrients are running low and waste is building up.</div>
+    </div>
+  </div>
+</div>
+
+<!-- C3: Temperature -->
+<div class="card">
+  <div class="card-head green"><div class="card-icon">C3</div><div><div class="card-topic">Environmental Factors</div><div class="card-title">Temperature Classifications</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>Temperature Groups</h4>
+      <table class="key-table">
+        <tr><th>Classification</th><th>Optimal Range</th><th>Where Found</th></tr>
+        <tr><td><strong>Psychrophile</strong></td><td>-10&deg;C to 20&deg;C</td><td>Arctic, deep ocean</td></tr>
+        <tr class="hl-row"><td><strong>Mesophile</strong></td><td>20&deg;C to 45&deg;C</td><td>Human body (37&deg;C) &mdash; most human pathogens</td></tr>
+        <tr><td><strong>Thermophile</strong></td><td>45&deg;C to 80&deg;C</td><td>Hot springs, compost heaps</td></tr>
+        <tr><td><strong>Extreme Thermophile</strong></td><td>&gt;80&deg;C</td><td>Hydrothermal vents</td></tr>
+      </table>
+      <p style="margin-top:.5rem;font-size:.88rem">Every organism has a <strong>minimum</strong>, <strong>optimal</strong>, and <strong>maximum</strong> growth temperature. The <strong>optimal</strong> temperature is where growth is fastest.</p>
+    </div>
+    <div class="quiz" id="qc3">
+      <div class="quiz-q">An organism found in extremely cold environments would be called a:</div>
+      <ul class="quiz-opts" data-correct="1">
+        <li data-i="0" onclick="pick(this)">Mesophile</li>
+        <li data-i="1" onclick="pick(this)">Psychrophile</li>
+        <li data-i="2" onclick="pick(this)">Thermophile</li>
+        <li data-i="3" onclick="pick(this)">Extreme thermophile</li>
+      </ul>
+      <div class="quiz-fb" id="qc3fb"></div>
+      <div class="quiz-explain" id="qc3ex">"Psychro" = cold, "phile" = loving. <strong>Psychrophiles</strong> thrive in cold environments. Most human pathogens are mesophiles because they prefer body temperature (~37&deg;C).</div>
+    </div>
+
+    <div class="quiz" id="qc3b" style="margin-top:.75rem">
+      <div class="quiz-q">A microorganism would grow best at a certain temperature. This is called the _____ temperature.</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">minimum</li>
+        <li data-i="1" onclick="pick(this)">maximum</li>
+        <li data-i="2" onclick="pick(this)">optimal</li>
+        <li data-i="3" onclick="pick(this)">sub-optimal</li>
+      </ul>
+      <div class="quiz-fb" id="qc3bfb"></div>
+      <div class="quiz-explain" id="qc3bex">The <strong>optimal</strong> temperature is the temperature at which a microorganism grows at the fastest rate. Below or above this, growth slows until the minimum or maximum is reached.</div>
+    </div>
+  </div>
+</div>
+
+<!-- C4: pH, Osmotic Pressure, Oxygen -->
+<div class="card">
+  <div class="card-head green"><div class="card-icon">C4</div><div><div class="card-topic">Environmental Factors</div><div class="card-title">pH, Osmotic Pressure &amp; Oxygen Requirements</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>pH</h4>
+      <ul>
+        <li>Most bacteria that infect humans grow between <strong>pH 6.5 and 7.5</strong> (near neutral)</li>
+        <li>Acidophiles prefer acidic environments; alkaliphiles prefer basic</li>
+      </ul>
+
+      <h4 style="margin-top:1rem">Osmotic Pressure &amp; Halophiles</h4>
+      <ul>
+        <li><strong>Halophiles</strong> thrive in high salt concentrations</li>
+        <li><strong>Barophiles</strong> require high atmospheric pressure for growth</li>
+      </ul>
+
+      <h4 style="margin-top:1rem">Oxygen Requirements</h4>
+      <table class="key-table">
+        <tr><th>Type</th><th>O&#8322; Requirement</th></tr>
+        <tr><td><strong>Obligate Aerobe</strong></td><td>Requires O&#8322; &mdash; must have it</td></tr>
+        <tr class="hl-row"><td><strong>Obligate Anaerobe</strong></td><td>Cannot tolerate O&#8322; &mdash; killed by it</td></tr>
+        <tr><td><strong>Facultative Anaerobe</strong></td><td>Can grow with or without O&#8322; (flexible)</td></tr>
+        <tr><td><strong>Aerotolerant Anaerobe</strong></td><td>Doesn't use O&#8322; but isn't harmed by it</td></tr>
+        <tr><td><strong>Microaerophile</strong></td><td>Needs low levels of O&#8322;</td></tr>
+      </table>
+      <p style="margin-top:.5rem;font-size:.88rem"><strong>Terminology:</strong> Organisms without oxygen = <strong>anaerobic</strong>; with oxygen = <strong>aerobic</strong></p>
+    </div>
+
+    <div class="quiz" id="qc4">
+      <div class="quiz-q">An organism that cannot tolerate an oxygen environment is a(n):</div>
+      <ul class="quiz-opts" data-correct="1">
+        <li data-i="0" onclick="pick(this)">Obligate aerobe</li>
+        <li data-i="1" onclick="pick(this)">Obligate anaerobe</li>
+        <li data-i="2" onclick="pick(this)">Facultative anaerobe</li>
+        <li data-i="3" onclick="pick(this)">Aerotolerant anaerobe</li>
+      </ul>
+      <div class="quiz-fb" id="qc4fb"></div>
+      <div class="quiz-explain" id="qc4ex">"Obligate" = required/mandatory. An <strong>obligate anaerobe</strong> is obligated to live <em>without</em> oxygen &mdash; O&#8322; is toxic to it. Example: <em>Clostridium botulinum</em> (causes botulism in anaerobic conditions like canned food).</div>
+    </div>
+
+    <div class="quiz" id="qc4b" style="margin-top:.75rem">
+      <div class="quiz-q">A halophile would grow best in:</div>
+      <ul class="quiz-opts" data-correct="3">
+        <li data-i="0" onclick="pick(this)">Hot temperatures</li>
+        <li data-i="1" onclick="pick(this)">Cold temperatures</li>
+        <li data-i="2" onclick="pick(this)">Areas of low salt concentration</li>
+        <li data-i="3" onclick="pick(this)">Areas of high salt concentration</li>
+      </ul>
+      <div class="quiz-fb" id="qc4bfb"></div>
+      <div class="quiz-explain" id="qc4bex">"Halo" = salt, "phile" = loving. <strong>Halophiles</strong> thrive in salty environments like the Dead Sea or salt flats. Don't confuse with thermophile (heat-loving) or psychrophile (cold-loving).</div>
+    </div>
+
+    <div class="quiz" id="qc4c" style="margin-top:.75rem">
+      <div class="quiz-q">Most bacteria that infect humans grow between which pH?</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">pH 9.5 and 10.5</li>
+        <li data-i="1" onclick="pick(this)">pH 1.5 and 3.5</li>
+        <li data-i="2" onclick="pick(this)">pH 6.5 and 7.5</li>
+        <li data-i="3" onclick="pick(this)">pH 2.0 and 3.0</li>
+      </ul>
+      <div class="quiz-fb" id="qc4cfb"></div>
+      <div class="quiz-explain" id="qc4cex">Human blood has a pH of ~7.35&ndash;7.45. Pathogens that infect us have evolved to thrive at <strong>near-neutral pH (6.5&ndash;7.5)</strong>, matching the internal environment of the human body.</div>
+    </div>
+
+    <div class="quiz" id="qc4d" style="margin-top:.75rem">
+      <div class="quiz-q">Organisms that require high atmospheric pressure for growth are called:</div>
+      <ul class="quiz-opts" data-correct="3">
+        <li data-i="0" onclick="pick(this)">Halophile</li>
+        <li data-i="1" onclick="pick(this)">Mesophile</li>
+        <li data-i="2" onclick="pick(this)">Thermophile</li>
+        <li data-i="3" onclick="pick(this)">Barophile</li>
+      </ul>
+      <div class="quiz-fb" id="qc4dfb"></div>
+      <div class="quiz-explain" id="qc4dex">"Baro" = pressure (like barometer). <strong>Barophiles</strong> are found in deep ocean trenches where pressure is extreme. Each suffix tells you what the organism loves.</div>
+    </div>
+
+    <div class="quiz" id="qc4e" style="margin-top:.75rem">
+      <div class="quiz-q">Anaerobic bacteria require all of the following EXCEPT:</div>
+      <ul class="quiz-opts" data-correct="2">
+        <li data-i="0" onclick="pick(this)">ATP</li>
+        <li data-i="1" onclick="pick(this)">Glucose</li>
+        <li data-i="2" onclick="pick(this)">Oxygen</li>
+        <li data-i="3" onclick="pick(this)">All of these are required</li>
+      </ul>
+      <div class="quiz-fb" id="qc4efb"></div>
+      <div class="quiz-explain" id="qc4eex">By definition, <strong>anaerobic</strong> means "without oxygen." Anaerobic bacteria still need energy (ATP) and nutrients (glucose) but they do NOT use or require oxygen &mdash; in fact, oxygen may be toxic to obligate anaerobes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- C5: Biofilms -->
+<div class="card">
+  <div class="card-head green"><div class="card-icon">C5</div><div><div class="card-topic">Clinical Relevance</div><div class="card-title">Biofilms &amp; Their Clinical Importance</div></div></div>
+  <div class="card-body">
+    <div class="teach">
+      <h4>What Is a Biofilm?</h4>
+      <ul>
+        <li>A community of microorganisms encased in a <strong>sticky glycocalyx (slime layer)</strong></li>
+        <li>Protects bacteria from the <strong>immune system</strong> and <strong>antibiotics</strong></li>
+        <li>Resists routine cleaning and sterilization</li>
+        <li>Forms on medical devices (catheters, prosthetics, heart valves)</li>
+      </ul>
+      <h4 style="margin-top:.75rem">Where Biofilms Form in the Body</h4>
+      <ul>
+        <li>On <strong>teeth</strong> as dental plaque</li>
+        <li>In lungs of patients with <strong>cystic fibrosis</strong></li>
+        <li>On cardiac tissue in patients with <strong>endocarditis</strong></li>
+        <li>On indwelling catheters &rarr; causes <strong>HAIs</strong> (healthcare-acquired infections)</li>
+      </ul>
+    </div>
+    <div class="callout clinic">
+      <strong>Nursing Connection:</strong> This is why catheter care protocols emphasize regular assessment and prompt removal &mdash; biofilms begin forming within hours of insertion, making the infection progressively harder to treat.
+    </div>
+    <div class="quiz" id="qc5">
+      <div class="quiz-q">Which statement about biofilms is TRUE?</div>
+      <ul class="quiz-opts" data-correct="3">
+        <li data-i="0" onclick="pick(this)">Biofilms consist of a single layer of bacteria</li>
+        <li data-i="1" onclick="pick(this)">Biofilms are easily eradicated by antibiotics</li>
+        <li data-i="2" onclick="pick(this)">Biofilms are only found in aquatic environments</li>
+        <li data-i="3" onclick="pick(this)">Biofilms protect bacteria from the immune system and antibiotics</li>
+      </ul>
+      <div class="quiz-fb" id="qc5fb"></div>
+      <div class="quiz-explain" id="qc5ex">Biofilms are <strong>multi-layered communities</strong> embedded in a protective slime matrix. This matrix physically shields bacteria from immune cells and prevents antibiotics from penetrating &mdash; making biofilm infections notoriously difficult to treat.</div>
+    </div>
+  </div>
+</div>
+
+<div class="btn-row" style="justify-content:space-between">
+  <button class="btn btn-out" onclick="goSection('B')">&larr; Media</button>
+  <button class="btn btn-pri" onclick="showDone()">Finish Review</button>
+</div>
+</div><!-- /secC -->
+
+
+<!-- ══════ SCORE / DONE ══════ -->
+<div class="done" id="donePanel">
+  <div class="big">&#127891;</div>
+  <h2>Module 3 Review Complete!</h2>
+  <p id="scoreMsg">Great work reviewing Microbial Growth!</p>
+  <div class="score-bar" style="display:inline-flex;margin:1rem auto">
+    <div style="text-align:center;width:100%">
+      <div class="label">Your Score</div>
+      <div class="val" id="finalScore">0 / 0</div>
+    </div>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:1rem">
+    <button class="btn btn-out" onclick="goTOC()">Back to Contents</button>
+    <button class="btn btn-acc" onclick="resetAll()">Retry All Questions</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer class="ftr">
+  BIO 205 Microbiology &mdash; Tehrani Labs &bull; <a href="https://tehranilabs.org" target="_blank">tehranilabs.org</a>
+</footer>
+
+<script>
+// ── Quiz Engine ──
+let answered = {};
+let totalQs = 0;
+let correctCount = 0;
+
+function pick(li) {
+  const quiz = li.closest('.quiz');
+  const qid = quiz.id;
+  if (answered[qid]) return; // already answered
+
+  const opts = quiz.querySelectorAll('.quiz-opts li');
+  const correct = parseInt(quiz.querySelector('.quiz-opts').dataset.correct);
+  const chosen = parseInt(li.dataset.i);
+  const fb = document.getElementById(qid + 'fb');
+  const ex = document.getElementById(qid + 'ex');
+
+  answered[qid] = true;
+  totalQs++;
+
+  if (chosen === correct) {
+    li.classList.add('correct');
+    fb.textContent = 'Correct!';
+    fb.className = 'quiz-fb ok';
+    correctCount++;
+  } else {
+    li.classList.add('wrong');
+    opts[correct].classList.add('reveal');
+    fb.textContent = 'Not quite \u2014 see the correct answer highlighted above.';
+    fb.className = 'quiz-fb no';
+  }
+
+  // disable all options
+  opts.forEach(o => o.style.pointerEvents = 'none');
+  if (ex) ex.classList.add('show');
+}
+
+// ── Navigation ──
+function hideAll() {
+  document.getElementById('tocPanel').classList.remove('active');
+  document.getElementById('donePanel').classList.remove('active');
+  ['secA','secB','secC'].forEach(id => document.getElementById(id).classList.remove('active'));
+}
+
+function goTOC() {
+  hideAll();
+  document.getElementById('tocPanel').classList.add('active');
+  updateProg(0);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goSection(s) {
+  hideAll();
+  document.getElementById('sec' + s).classList.add('active');
+  const map = {A:1,B:2,C:3};
+  updateProg(map[s]);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showDone() {
+  hideAll();
+  document.getElementById('donePanel').classList.add('active');
+  document.getElementById('finalScore').textContent = correctCount + ' / ' + totalQs;
+  const pct = totalQs > 0 ? Math.round((correctCount/totalQs)*100) : 0;
+  let msg = '';
+  if (pct >= 90) msg = 'Excellent! You\'re well prepared for Module 3!';
+  else if (pct >= 70) msg = 'Good work! Review the explanations for any you missed.';
+  else msg = 'Keep studying! Go through each section again and focus on the explanations.';
+  document.getElementById('scoreMsg').textContent = msg;
+  updateProg(3);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetAll() {
+  answered = {};
+  totalQs = 0;
+  correctCount = 0;
+  document.querySelectorAll('.quiz-opts li').forEach(li => {
+    li.classList.remove('correct','wrong','reveal','selected');
+    li.style.pointerEvents = '';
+  });
+  document.querySelectorAll('.quiz-fb').forEach(fb => {fb.textContent='';fb.className='quiz-fb'});
+  document.querySelectorAll('.quiz-explain').forEach(ex => ex.classList.remove('show'));
+  goTOC();
+}
+
+function updateProg(step) {
+  const pct = Math.round((step/3)*100);
+  document.getElementById('progBar').style.width = pct+'%';
+  const labels = {0:'Start',1:'Section A: Aseptic Technique',2:'Section B: Media',3:'Section C: Growth Conditions'};
+  document.getElementById('progLbl').textContent = labels[step] || '';
+}
+</script>
+</body>
+</html>

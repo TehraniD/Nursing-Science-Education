@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCR-240 Pathophysiology Resources</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.4em;
+            color: #f0f0f0;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            color: #e0e0e0;
+            font-style: italic;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .resource-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            border-top: 5px solid;
+        }
+
+        .resource-card:nth-child(1) {
+            border-top-color: #e74c3c;
+            animation-delay: 0.1s;
+        }
+
+        .resource-card:nth-child(2) {
+            border-top-color: #3498db;
+            animation-delay: 0.2s;
+        }
+
+        .resource-card:nth-child(3) {
+            border-top-color: #2ecc71;
+            animation-delay: 0.3s;
+        }
+
+        .resource-card:nth-child(4) {
+            border-top-color: #f39c12;
+            animation-delay: 0.4s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .resource-icon {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .resource-card h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .resource-card p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .resource-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .badge.module {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .badge.type {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            margin-left: 10px;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .info-section li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            color: #fff;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .btn-download {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 HCR-240 Pathophysiology</h1>
+            <p>Interactive Study Resources & Learning Tools</p>
+            <p class="subtitle">Nursing Pathophysiology - Pro: Tehrani</p>
+        </div>
+
+        <div class="resources-grid">
+            <!-- Jeopardy Game -->
+            <div class="resource-card">
+                <div class="resource-icon">🎯</div>
+                <h2>Week 6 Jeopardy Game</h2>
+                <div class="resource-meta">
+                    <span class="badge module">Module 6</span>
+                    <span class="badge type">Interactive Game</span>
+                </div>
+                <p>
+                    Test your knowledge with this fun, retro-style Jeopardy game! Features case study questions, 
+                    Daily Doubles, 30-second timer, and score tracking for 4 teams.
+                </p>
+                <p><strong>Topics Covered:</strong> Endocrine disorders, Diabetes, Neurological conditions, Renal & Urinary systems</p>
+                <a href="Patho_Week6_Jeopardy.html" class="btn">🎮 Play Jeopardy</a>
+            </div>
+
+            <!-- Study Guide -->
+            <div class="resource-card">
+                <div class="resource-icon">📚</div>
+                <h2>Final Exam Study Guide</h2>
+                <div class="resource-meta">
+                    <span class="badge module">Modules 4-7</span>
+                    <span class="badge type">Study Guide</span>
+                </div>
+                <p>
+                    Comprehensive study guide organized by topics with question counts and priority levels. 
+                    All 75 multiple choice questions mapped out for efficient studying.
+                </p>
+                <p><strong>Covers:</strong> Musculoskeletal, Digestive, Endocrine, Nervous, Urinary & Reproductive Systems</p>
+                <a href="HCR240_Final_Exam_Study_Guide.html" class="btn">📖 View Study Guide</a>
+            </div>
+
+            <!-- Canvas Quiz -->
+            <div class="resource-card">
+                <div class="resource-icon">📝</div>
+                <h2>Week 6 Practice Quiz</h2>
+                <div class="resource-meta">
+                    <span class="badge module">Week 6</span>
+                    <span class="badge type">Canvas Quiz</span>
+                </div>
+                <p>
+                    Canvas-ready practice quiz in QTI 1.2 format with 16 multiple choice questions covering 
+                    key Week 6 topics including rheumatology, pancreatitis, diabetes, and more.
+                </p>
+                <p><strong>Format:</strong> QTI 1.2 Package - Upload directly to Canvas</p>
+                <a href="HCR240_Week6_Quiz.zip" class="btn btn-download">💾 Download Quiz</a>
+            </div>
+
+            <!-- Week 6 Lecture Notes -->
+            <div class="resource-card">
+                <div class="resource-icon">🧠</div>
+                <h2>Additional Resources</h2>
+                <div class="resource-meta">
+                    <span class="badge module">All Modules</span>
+                    <span class="badge type">Reference</span>
+                </div>
+                <p>
+                    Access lecture notes, lab materials, and interactive guides for comprehensive pathophysiology learning.
+                </p>
+                <p><strong>Coming Soon:</strong> More interactive learning tools and practice materials!</p>
+                <a href="#" class="btn" style="opacity: 0.6; cursor: not-allowed;">🔒 Coming Soon</a>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>📋 How to Use These Resources</h2>
+            <ul>
+                <li><strong>Jeopardy Game:</strong> Perfect for group study sessions or individual practice. Click to play directly in your browser!</li>
+                <li><strong>Study Guide:</strong> Use this to prioritize your studying based on the number of exam questions per topic</li>
+                <li><strong>Canvas Quiz:</strong> Download the ZIP file and upload to Canvas for practice testing</li>
+                <li><strong>Interactive Format:</strong> All resources work on desktop, tablet, and mobile devices</li>
+                <li><strong>No Installation Needed:</strong> Everything runs directly in your web browser</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>🎯 Final Exam Quick Facts</h2>
+            <ul>
+                <li><strong>Total Questions:</strong> 75 (All Multiple Choice)</li>
+                <li><strong>Biggest Section:</strong> Module 7 - Urinary & Reproductive (22 questions)</li>
+                <li><strong>Top Priority:</strong> Renal Disorders (8 questions) and Reproductive Disorders (7 questions)</li>
+                <li><strong>Study Strategy:</strong> Focus on topics with 3+ questions first</li>
+                <li><strong>No Surprises:</strong> All multiple choice - no complex question formats!</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>HCR-240 Pathophysiology Resources</strong></p>
+            <p>Created for nursing students • Last updated: February 2026</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">💡 Bookmark this page for easy access to all study materials!</p>
+        </div>
+    </div>
+</body>
+</html>

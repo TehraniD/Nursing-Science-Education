@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Road Salt Simulator - Freezing Point Depression</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #a8dadc, #f1faee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        h1 .emoji {
+            -webkit-text-fill-color: initial;
+        }
+
+        .subtitle {
+            color: #a8dadc;
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #a8dadc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-wrapper {
+            height: 350px;
+            position: relative;
+        }
+
+        /* Temperature Display */
+        .temp-display {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .temp-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .temp-card.active {
+            border-color: #a8dadc;
+            background: rgba(168, 218, 220, 0.1);
+        }
+
+        .temp-card.frozen {
+            border-color: #e63946;
+            background: rgba(230, 57, 70, 0.1);
+        }
+
+        .temp-card.liquid {
+            border-color: #2a9d8f;
+            background: rgba(42, 157, 143, 0.1);
+        }
+
+        .temp-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .temp-name {
+            font-size: 0.9rem;
+            color: #a8dadc;
+            margin-bottom: 5px;
+        }
+
+        .temp-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .temp-status {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .temp-status.frozen {
+            background: rgba(230, 57, 70, 0.3);
+            color: #ff8fa3;
+        }
+
+        .temp-status.liquid {
+            background: rgba(42, 157, 143, 0.3);
+            color: #81e6d9;
+        }
+
+        /* Controls */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            color: #a8dadc;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a8dadc, #f1faee);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(168, 218, 220, 0.5);
+        }
+
+        .slider-value {
+            min-width: 80px;
+            text-align: right;
+            font-weight: bold;
+            color: #f1faee;
+            font-size: 1.1rem;
+        }
+
+        /* Salt Selection */
+        .salt-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .salt-option {
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .salt-option:hover {
+            border-color: #a8dadc;
+            background: rgba(168, 218, 220, 0.1);
+        }
+
+        .salt-option.selected {
+            border-color: #2a9d8f;
+            background: rgba(42, 157, 143, 0.2);
+        }
+
+        .salt-option .formula {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .salt-option .details {
+            font-size: 0.75rem;
+            color: #a8dadc;
+        }
+
+        /* Info Panels */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #a8dadc;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Road Visualization */
+        .road-viz {
+            background: linear-gradient(180deg, #2d3436 0%, #636e72 100%);
+            border-radius: 15px;
+            height: 120px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .road-surface {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80%;
+            background: #2d3436;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        .road-line {
+            width: 60px;
+            height: 8px;
+            background: #f1c40f;
+            margin: 0 30px;
+            border-radius: 2px;
+        }
+
+        .ice-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(168, 218, 220, 0.8) 0%, rgba(168, 218, 220, 0.3) 100%);
+            transition: all 0.5s ease;
+        }
+
+        .ice-layer.melted {
+            height: 5%;
+            background: rgba(168, 218, 220, 0.2);
+        }
+
+        .salt-particles {
+            position: absolute;
+            top: 20%;
+            left: 0;
+            right: 0;
+            height: 60%;
+            pointer-events: none;
+        }
+
+        .salt-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 1px;
+            animation: dissolve 2s ease-out forwards;
+        }
+
+        @keyframes dissolve {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+
+        .road-status {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .road-status.icy {
+            background: rgba(230, 57, 70, 0.8);
+        }
+
+        .road-status.safe {
+            background: rgba(42, 157, 143, 0.8);
+        }
+
+        .road-status.warning {
+            background: rgba(243, 156, 18, 0.8);
+        }
+
+        /* Comparison Chart */
+        .comparison-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .bar-label {
+            width: 80px;
+            font-size: 0.85rem;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .bar-fill.nacl { background: linear-gradient(90deg, #457b9d, #1d3557); }
+        .bar-fill.cacl2 { background: linear-gradient(90deg, #e63946, #9d0208); }
+        .bar-fill.mgcl2 { background: linear-gradient(90deg, #2a9d8f, #264653); }
+        .bar-fill.kcl { background: linear-gradient(90deg, #e9c46a, #f4a261); }
+
+        /* Fun Facts */
+        .fun-fact {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.1), rgba(243, 156, 18, 0.1));
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .fun-fact h4 {
+            color: #e63946;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .fun-fact p {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        /* Animation Controls */
+        .animation-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .anim-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .anim-btn.primary {
+            background: linear-gradient(90deg, #2a9d8f, #264653);
+            color: #fff;
+        }
+
+        .anim-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .anim-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(42, 157, 143, 0.3);
+        }
+
+        /* Thermometer */
+        .thermometer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .thermometer {
+            width: 40px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thermo-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #e63946 0%, #457b9d 100%);
+            transition: height 0.5s ease;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .thermo-bulb {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: #e63946;
+            border-radius: 50%;
+        }
+
+        .thermo-marks {
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            right: -30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            color: #666;
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+        }
+
+        .brand-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #a8dadc, #f1faee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .approval-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #e63946, #f4a261);
+            color: #0d1b2a;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .footer-quote {
+            font-style: italic;
+            color: #a8dadc;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="emoji">🧂</span> Road Salt Simulator <span class="emoji">❄️</span></h1>
+            <p class="subtitle">Interactive Freezing Point Depression for Winter Road Treatment</p>
+        </header>
+
+        <!-- Temperature Cards -->
+        <div class="temp-display">
+            <div class="temp-card" id="card-none">
+                <div class="temp-icon">💧</div>
+                <div class="temp-name">Pure Water</div>
+                <div class="temp-value">0°C</div>
+                <div class="temp-status" id="status-none">—</div>
+            </div>
+            <div class="temp-card" id="card-nacl">
+                <div class="temp-icon">🧂</div>
+                <div class="temp-name">Rock Salt (NaCl)</div>
+                <div class="temp-value" id="fp-nacl">-3.72°C</div>
+                <div class="temp-status" id="status-nacl">—</div>
+            </div>
+            <div class="temp-card" id="card-cacl2">
+                <div class="temp-icon">🔥</div>
+                <div class="temp-name">Calcium Chloride</div>
+                <div class="temp-value" id="fp-cacl2">-5.58°C</div>
+                <div class="temp-status" id="status-cacl2">—</div>
+            </div>
+            <div class="temp-card" id="card-mgcl2">
+                <div class="temp-icon">⚗️</div>
+                <div class="temp-name">Magnesium Chloride</div>
+                <div class="temp-value" id="fp-mgcl2">-5.58°C</div>
+                <div class="temp-status" id="status-mgcl2">—</div>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <!-- Left Panel: Chart -->
+            <div class="panel">
+                <div class="panel-title">📊 Effectiveness Comparison</div>
+                <div class="chart-wrapper">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Right Panel: Controls -->
+            <div class="panel">
+                <div class="panel-title">🎮 Control Panel</div>
+                
+                <div class="control-group">
+                    <label class="control-label">🌡️ Current Road Temperature</label>
+                    <div class="slider-container">
+                        <input type="range" id="tempSlider" min="-25" max="5" value="-5" oninput="updateSimulation()">
+                        <span class="slider-value" id="tempValue">-5°C</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">🧪 Salt Concentration (molality)</label>
+                    <div class="slider-container">
+                        <input type="range" id="concSlider" min="0.1" max="4" step="0.1" value="1" oninput="updateSimulation()">
+                        <span class="slider-value" id="concValue">1.0 m</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">💰 Budget Priority</label>
+                    <div class="salt-grid">
+                        <div class="salt-option selected" data-salt="nacl" onclick="selectSalt('nacl')">
+                            <div class="formula">NaCl</div>
+                            <div class="details">$60/ton • i=2 • Effective to -9°C</div>
+                        </div>
+                        <div class="salt-option" data-salt="cacl2" onclick="selectSalt('cacl2')">
+                            <div class="formula">CaCl₂</div>
+                            <div class="details">$300/ton • i=3 • Effective to -29°C</div>
+                        </div>
+                        <div class="salt-option" data-salt="mgcl2" onclick="selectSalt('mgcl2')">
+                            <div class="formula">MgCl₂</div>
+                            <div class="details">$200/ton • i=3 • Effective to -15°C</div>
+                        </div>
+                        <div class="salt-option" data-salt="kcl" onclick="selectSalt('kcl')">
+                            <div class="formula">KCl</div>
+                            <div class="details">$120/ton • i=2 • Effective to -7°C</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-value" id="deltaTDisplay">3.72°C</div>
+                        <div class="info-label">ΔT Depression</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-value" id="costDisplay">$60</div>
+                        <div class="info-label">Cost per Ton</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-value" id="efficiencyDisplay">0.062</div>
+                        <div class="info-label">°C per Dollar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Road Visualization -->
+        <div class="panel">
+            <div class="panel-title">🛣️ Road Surface Simulation</div>
+            <div class="road-viz" id="roadViz">
+                <div class="ice-layer" id="iceLayer"></div>
+                <div class="salt-particles" id="saltParticles"></div>
+                <div class="road-surface">
+                    <div class="road-line"></div>
+                    <div class="road-line"></div>
+                    <div class="road-line"></div>
+                </div>
+                <div class="road-status" id="roadStatus">CHECKING...</div>
+            </div>
+            
+            <div class="animation-controls">
+                <button class="anim-btn primary" onclick="applySalt()">🧂 Apply Salt</button>
+                <button class="anim-btn secondary" onclick="resetRoad()">❄️ Reset (Ice Over)</button>
+            </div>
+        </div>
+
+        <!-- Comparison Bars -->
+        <div class="dashboard">
+            <div class="panel">
+                <div class="panel-title">📈 Freezing Point Depression at Current Concentration</div>
+                
+                <div class="comparison-bar">
+                    <span class="bar-label">NaCl</span>
+                    <div class="bar-container">
+                        <div class="bar-fill nacl" id="bar-nacl" style="width: 50%">-3.72°C</div>
+                    </div>
+                </div>
+                <div class="comparison-bar">
+                    <span class="bar-label">CaCl₂</span>
+                    <div class="bar-container">
+                        <div class="bar-fill cacl2" id="bar-cacl2" style="width: 75%">-5.58°C</div>
+                    </div>
+                </div>
+                <div class="comparison-bar">
+                    <span class="bar-label">MgCl₂</span>
+                    <div class="bar-container">
+                        <div class="bar-fill mgcl2" id="bar-mgcl2" style="width: 75%">-5.58°C</div>
+                    </div>
+                </div>
+                <div class="comparison-bar">
+                    <span class="bar-label">KCl</span>
+                    <div class="bar-container">
+                        <div class="bar-fill kcl" id="bar-kcl" style="width: 50%">-3.72°C</div>
+                    </div>
+                </div>
+
+                <div class="fun-fact">
+                    <h4>❄️ Did You Know?</h4>
+                    <p id="funFact">The U.S. uses about 20 million tons of road salt every year — that's roughly 60 pounds per person!</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">🧮 The Math Behind It</div>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 1.8rem; font-family: serif; color: #a8dadc;">
+                        ΔT = i × k<sub>f</sub> × m
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: #888;">
+                        <span style="color: #f1faee">ΔT</span> = Temperature Depression &nbsp;|&nbsp;
+                        <span style="color: #f1faee">i</span> = van't Hoff Factor &nbsp;|&nbsp;
+                        <span style="color: #f1faee">k<sub>f</sub></span> = 1.86°C/m &nbsp;|&nbsp;
+                        <span style="color: #f1faee">m</span> = Molality
+                    </div>
+                </div>
+
+                <div style="font-size: 0.9rem; line-height: 1.8;">
+                    <p><strong style="color: #a8dadc;">Selected Salt:</strong> <span id="calcSalt">NaCl</span></p>
+                    <p><strong style="color: #a8dadc;">van't Hoff Factor (i):</strong> <span id="calcI">2</span> particles</p>
+                    <p><strong style="color: #a8dadc;">Concentration (m):</strong> <span id="calcM">1.0</span> mol/kg</p>
+                    <p style="margin-top: 15px; padding: 15px; background: rgba(42, 157, 143, 0.2); border-radius: 10px;">
+                        <strong>ΔT = <span id="calcIVal">2</span> × 1.86 × <span id="calcMVal">1.0</span> = <span id="calcResult" style="color: #2a9d8f; font-size: 1.2rem;">3.72°C</span></strong>
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <strong style="color: #a8dadc;">New Freezing Point:</strong> 0°C - <span id="calcDelta">3.72</span>°C = <span id="calcFP" style="color: #e63946; font-size: 1.1rem;">-3.72°C</span>
+                    </p>
+                </div>
+
+                <div class="fun-fact" style="background: linear-gradient(135deg, rgba(42, 157, 143, 0.1), rgba(38, 70, 83, 0.1)); border-color: rgba(42, 157, 143, 0.3);">
+                    <h4 style="color: #2a9d8f;">🏥 Healthcare Connection</h4>
+                    <p>IV saline (0.9% NaCl) has a freezing point of -0.52°C — nearly identical to blood plasma (-0.56°C). The same chemistry that keeps roads safe keeps IV fluids isotonic!</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="brand-logo">🧪 TEHRANI LABS 2026 🧪</div>
+            <p>Interactive Road Salt Simulator | Chemistry Lab 2 - Version 3</p>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: #a8dadc;">
+                <strong>Chemistry That Actually Makes Sense™</strong>
+            </p>
+            <div class="approval-badge">
+                ✅ OFFICIALLY APPROVED BY TEHRANI LABS
+            </div>
+            <p class="footer-quote">
+                "Salt lowers the freezing point. Wisdom lowers the confusion point. You are somewhere in between." <br>— Tehrani
+            </p>
+            <p style="margin-top: 15px; font-size: 0.75rem; color: #666;">
+                🚗 Chemistry isn't just in the lab — it's on every road you drive, in every snowstorm you survive. 🌨️
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Constants
+        const KF = 1.86;
+        
+        // Salt data
+        const salts = {
+            nacl: { name: 'NaCl', i: 2, cost: 60, minTemp: -9, color: '#457b9d' },
+            cacl2: { name: 'CaCl₂', i: 3, cost: 300, minTemp: -29, color: '#e63946' },
+            mgcl2: { name: 'MgCl₂', i: 3, cost: 200, minTemp: -15, color: '#2a9d8f' },
+            kcl: { name: 'KCl', i: 2, cost: 120, minTemp: -7, color: '#e9c46a' }
+        };
+
+        // State
+        let currentSalt = 'nacl';
+        let currentTemp = -5;
+        let concentration = 1.0;
+        let chart;
+
+        // Fun facts
+        const funFacts = [
+            "The U.S. uses about 20 million tons of road salt every year — that's roughly 60 pounds per person!",
+            "Road salt causes approximately $5 billion in vehicle corrosion damage annually in the United States.",
+            "Wisconsin has experimented with cheese brine (a waste product) as a road deicer. It works!",
+            "The word 'salary' comes from 'salt' — Roman soldiers were sometimes paid in salt!",
+            "Some lakes near highways now have salt levels approaching 10% of seawater concentration.",
+            "CaCl₂ releases heat when dissolving (exothermic), giving it a double ice-melting action!",
+            "At -21°C, no amount of rock salt will melt ice — it's below the eutectic point.",
+            "Beet juice mixed with brine can lower freezing points while reducing corrosion!"
+        ];
+
+        function updateSimulation() {
+            currentTemp = parseInt(document.getElementById('tempSlider').value);
+            concentration = parseFloat(document.getElementById('concSlider').value);
+            
+            document.getElementById('tempValue').textContent = currentTemp + '°C';
+            document.getElementById('concValue').textContent = concentration.toFixed(1) + ' m';
+            
+            updateCalculations();
+            updateCards();
+            updateBars();
+            updateRoadStatus();
+            updateChart();
+        }
+
+        function updateCalculations() {
+            const salt = salts[currentSalt];
+            const deltaT = salt.i * KF * concentration;
+            const fp = -deltaT;
+            const efficiency = (deltaT / salt.cost * 1000).toFixed(3);
+            
+            document.getElementById('deltaTDisplay').textContent = deltaT.toFixed(2) + '°C';
+            document.getElementById('costDisplay').textContent = '$' + salt.cost;
+            document.getElementById('efficiencyDisplay').textContent = efficiency;
+            
+            // Update math display
+            document.getElementById('calcSalt').textContent = salt.name;
+            document.getElementById('calcI').textContent = salt.i;
+            document.getElementById('calcM').textContent = concentration.toFixed(1);
+            document.getElementById('calcIVal').textContent = salt.i;
+            document.getElementById('calcMVal').textContent = concentration.toFixed(1);
+            document.getElementById('calcResult').textContent = deltaT.toFixed(2) + '°C';
+            document.getElementById('calcDelta').textContent = deltaT.toFixed(2);
+            document.getElementById('calcFP').textContent = fp.toFixed(2) + '°C';
+        }
+
+        function updateCards() {
+            const saltTypes = ['nacl', 'cacl2', 'mgcl2'];
+            
+            // Pure water card
+            const waterCard = document.getElementById('card-none');
+            const waterStatus = document.getElementById('status-none');
+            if (currentTemp < 0) {
+                waterCard.classList.add('frozen');
+                waterCard.classList.remove('liquid');
+                waterStatus.textContent = '🧊 FROZEN';
+                waterStatus.classList.add('frozen');
+                waterStatus.classList.remove('liquid');
+            } else {
+                waterCard.classList.add('liquid');
+                waterCard.classList.remove('frozen');
+                waterStatus.textContent = '💧 LIQUID';
+                waterStatus.classList.add('liquid');
+                waterStatus.classList.remove('frozen');
+            }
+            
+            // Salt solution cards
+            saltTypes.forEach(saltKey => {
+                const salt = salts[saltKey];
+                const fp = -(salt.i * KF * concentration);
+                const card = document.getElementById('card-' + saltKey);
+                const fpDisplay = document.getElementById('fp-' + saltKey);
+                const status = document.getElementById('status-' + saltKey);
+                
+                if (fpDisplay) fpDisplay.textContent = fp.toFixed(2) + '°C';
+                
+                if (card && status) {
+                    if (currentTemp < fp || currentTemp < salt.minTemp) {
+                        card.classList.add('frozen');
+                        card.classList.remove('liquid');
+                        status.textContent = '🧊 FROZEN';
+                        status.classList.add('frozen');
+                        status.classList.remove('liquid');
+                    } else {
+                        card.classList.add('liquid');
+                        card.classList.remove('frozen');
+                        status.textContent = '💧 MELTING';
+                        status.classList.add('liquid');
+                        status.classList.remove('frozen');
+                    }
+                }
+            });
+        }
+
+        function updateBars() {
+            const maxDelta = 20; // For scaling
+            
+            Object.keys(salts).forEach(saltKey => {
+                const salt = salts[saltKey];
+                const deltaT = salt.i * KF * concentration;
+                const percentage = Math.min((deltaT / maxDelta) * 100, 100);
+                const bar = document.getElementById('bar-' + saltKey);
+                if (bar) {
+                    bar.style.width = percentage + '%';
+                    bar.textContent = '-' + deltaT.toFixed(2) + '°C';
+                }
+            });
+        }
+
+        function updateRoadStatus() {
+            const salt = salts[currentSalt];
+            const fp = -(salt.i * KF * concentration);
+            const roadStatus = document.getElementById('roadStatus');
+            const iceLayer = document.getElementById('iceLayer');
+            
+            if (currentTemp >= 0) {
+                roadStatus.textContent = '✓ CLEAR - No Ice';
+                roadStatus.className = 'road-status safe';
+                iceLayer.classList.add('melted');
+            } else if (currentTemp >= fp && currentTemp >= salt.minTemp) {
+                roadStatus.textContent = '✓ SAFE - Salt Working';
+                roadStatus.className = 'road-status safe';
+                iceLayer.classList.add('melted');
+            } else if (currentTemp >= salt.minTemp) {
+                roadStatus.textContent = '⚠ CAUTION - Partial Melt';
+                roadStatus.className = 'road-status warning';
+                iceLayer.classList.remove('melted');
+            } else {
+                roadStatus.textContent = '✗ DANGER - Salt Ineffective';
+                roadStatus.className = 'road-status icy';
+                iceLayer.classList.remove('melted');
+            }
+        }
+
+        function selectSalt(saltKey) {
+            currentSalt = saltKey;
+            
+            document.querySelectorAll('.salt-option').forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.salt === saltKey) {
+                    opt.classList.add('selected');
+                }
+            });
+            
+            updateSimulation();
+            
+            // Show random fun fact
+            document.getElementById('funFact').textContent = funFacts[Math.floor(Math.random() * funFacts.length)];
+        }
+
+        function applySalt() {
+            const particles = document.getElementById('saltParticles');
+            particles.innerHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'salt-particle';
+                particle.style.left = (Math.random() * 100) + '%';
+                particle.style.top = (Math.random() * 50) + '%';
+                particle.style.animationDelay = (Math.random() * 0.5) + 's';
+                particles.appendChild(particle);
+            }
+            
+            setTimeout(() => {
+                document.getElementById('iceLayer').classList.add('melted');
+            }, 500);
+            
+            updateRoadStatus();
+        }
+
+        function resetRoad() {
+            document.getElementById('iceLayer').classList.remove('melted');
+            document.getElementById('saltParticles').innerHTML = '';
+            updateRoadStatus();
+        }
+
+        function createChart() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            const temperatures = [];
+            for (let t = 5; t >= -25; t -= 1) {
+                temperatures.push(t);
+            }
+            
+            const datasets = Object.keys(salts).map(saltKey => {
+                const salt = salts[saltKey];
+                const fp = -(salt.i * KF * concentration);
+                
+                return {
+                    label: salt.name,
+                    data: temperatures.map(t => ({
+                        x: t,
+                        y: t >= fp && t >= salt.minTemp ? 100 : (t >= salt.minTemp ? 50 : 0)
+                    })),
+                    borderColor: salt.color,
+                    backgroundColor: salt.color + '40',
+                    fill: true,
+                    tension: 0.1
+                };
+            });
+            
+            if (chart) chart.destroy();
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: { datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#a8dadc' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const effectiveness = ctx.parsed.y;
+                                    return `${ctx.dataset.label}: ${effectiveness === 100 ? 'Effective' : effectiveness === 50 ? 'Limited' : 'Ineffective'}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Temperature (°C)', color: '#888' },
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#888' },
+                            reverse: true
+                        },
+                        y: {
+                            title: { display: true, text: 'Effectiveness (%)', color: '#888' },
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#888' },
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart() {
+            if (!chart) return;
+            
+            chart.data.datasets = Object.keys(salts).map(saltKey => {
+                const salt = salts[saltKey];
+                const fp = -(salt.i * KF * concentration);
+                
+                const temperatures = [];
+                for (let t = 5; t >= -25; t -= 1) {
+                    temperatures.push(t);
+                }
+                
+                return {
+                    label: salt.name,
+                    data: temperatures.map(t => ({
+                        x: t,
+                        y: t >= fp && t >= salt.minTemp ? 100 : (t >= salt.minTemp ? Math.max(0, 50 + (t - salt.minTemp) * 5) : 0)
+                    })),
+                    borderColor: salt.color,
+                    backgroundColor: salt.color + '40',
+                    fill: true,
+                    tension: 0.4
+                };
+            });
+            
+            chart.update();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSimulation();
+            createChart();
+        });
+    </script>
+</body>
+</html>

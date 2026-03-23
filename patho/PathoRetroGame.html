@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PATHO QUEST - Hospital Shift Simulator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* CRT Screen Effect */
+        .crt {
+            position: relative;
+        }
+        
+        .crt::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        /* Game Container */
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .game-header {
+            text-align: center;
+            padding: 20px;
+            border: 4px solid #00ff00;
+            background: #000;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .game-header::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px solid #00ff00;
+            pointer-events: none;
+        }
+        
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            margin-bottom: 10px;
+            animation: flicker 2s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+            52% { opacity: 0.9; }
+            54% { opacity: 1; }
+        }
+        
+        .game-subtitle {
+            font-size: 18px;
+            color: #00ccff;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: #111;
+            border: 3px solid #333;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-label {
+            color: #888;
+        }
+        
+        .stat-value {
+            color: #ffff00;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+        }
+        
+        .health-bar {
+            width: 150px;
+            height: 20px;
+            background: #333;
+            border: 2px solid #666;
+            position: relative;
+        }
+        
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(to bottom, #00ff00, #00aa00);
+            transition: width 0.5s;
+        }
+        
+        /* Ward Selection */
+        .ward-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .ward-btn {
+            background: #111;
+            border: 3px solid #444;
+            padding: 20px 15px;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .ward-btn:hover {
+            background: #1a1a1a;
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .ward-btn.active {
+            border-color: #00ff00;
+            background: #0a2a0a;
+        }
+        
+        .ward-btn.completed {
+            border-color: #00ccff;
+            background: #0a1a2a;
+        }
+        
+        .ward-btn.completed::after {
+            content: ' ✓';
+            color: #00ccff;
+        }
+        
+        .ward-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .ward-progress {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* Case Display */
+        .case-container {
+            background: #0a0a0a;
+            border: 4px solid #00ff00;
+            padding: 0;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .case-container.active {
+            display: block;
+        }
+        
+        .case-header {
+            background: #002200;
+            padding: 15px 20px;
+            border-bottom: 2px solid #00ff00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .case-number {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: #00ff00;
+        }
+        
+        .case-ward {
+            color: #00ccff;
+            font-size: 16px;
+        }
+        
+        .case-body {
+            padding: 25px;
+        }
+        
+        .patient-info {
+            background: #111;
+            border: 2px solid #333;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .patient-sprite {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 48px;
+            opacity: 0.3;
+        }
+        
+        .patient-label {
+            color: #ff6600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .patient-text {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #ddd;
+            max-width: 85%;
+        }
+        
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .vital-box {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .vital-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .vital-value {
+            font-size: 18px;
+            color: #00ff00;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+        }
+        
+        .vital-value.critical {
+            color: #ff0000;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Question Section */
+        .question-section {
+            margin-top: 20px;
+        }
+        
+        .question-label {
+            color: #ffff00;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .question-label::before {
+            content: '▶';
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .question-text {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        /* Answer Options */
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .option-btn {
+            background: #111;
+            border: 3px solid #333;
+            padding: 18px 20px;
+            color: #ccc;
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .option-btn:hover:not(.disabled) {
+            background: #1a1a1a;
+            border-color: #00ff00;
+            color: #fff;
+        }
+        
+        .option-btn .option-key {
+            background: #222;
+            padding: 5px 12px;
+            border: 2px solid #444;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            color: #00ff00;
+        }
+        
+        .option-btn.correct {
+            border-color: #00ff00;
+            background: #0a2a0a;
+            color: #00ff00;
+        }
+        
+        .option-btn.incorrect {
+            border-color: #ff0000;
+            background: #2a0a0a;
+            color: #ff0000;
+        }
+        
+        .option-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        /* Feedback Box */
+        .feedback-box {
+            margin-top: 20px;
+            padding: 20px;
+            border: 3px solid;
+            display: none;
+        }
+        
+        .feedback-box.show {
+            display: block;
+        }
+        
+        .feedback-box.correct {
+            border-color: #00ff00;
+            background: #0a1a0a;
+        }
+        
+        .feedback-box.incorrect {
+            border-color: #ff6600;
+            background: #1a0a0a;
+        }
+        
+        .feedback-header {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-box.correct .feedback-header {
+            color: #00ff00;
+        }
+        
+        .feedback-box.incorrect .feedback-header {
+            color: #ff6600;
+        }
+        
+        .feedback-text {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+        
+        .feedback-text strong {
+            color: #00ccff;
+        }
+        
+        .key-point {
+            background: #111;
+            border-left: 4px solid #00ccff;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .key-point-label {
+            color: #00ccff;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        /* Next Button */
+        .next-btn {
+            background: linear-gradient(to bottom, #00aa00, #006600);
+            border: 3px solid #00ff00;
+            padding: 15px 40px;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            transition: all 0.2s;
+        }
+        
+        .next-btn:hover {
+            background: linear-gradient(to bottom, #00cc00, #008800);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+        
+        .next-btn.show {
+            display: inline-block;
+        }
+        
+        /* Start Screen */
+        .start-screen {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .start-screen h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: #00ff00;
+            margin-bottom: 30px;
+        }
+        
+        .start-text {
+            font-size: 22px;
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .start-btn {
+            background: linear-gradient(to bottom, #ff6600, #cc4400);
+            border: 4px solid #ff9900;
+            padding: 20px 50px;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            cursor: pointer;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 10px #ff6600; }
+            to { box-shadow: 0 0 30px #ff6600, 0 0 50px #ff6600; }
+        }
+        
+        .start-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Completion Screen */
+        .completion-screen {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        
+        .completion-screen.show {
+            display: block;
+        }
+        
+        .completion-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #00ff00;
+        }
+        
+        .final-score {
+            font-size: 72px;
+            color: #ffff00;
+            font-family: 'Press Start 2P', cursive;
+            margin: 30px 0;
+        }
+        
+        .score-breakdown {
+            font-size: 24px;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .grade {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 48px;
+            padding: 20px 40px;
+            border: 4px solid;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .grade.a { color: #00ff00; border-color: #00ff00; }
+        .grade.b { color: #00ccff; border-color: #00ccff; }
+        .grade.c { color: #ffff00; border-color: #ffff00; }
+        .grade.d { color: #ff6600; border-color: #ff6600; }
+        .grade.f { color: #ff0000; border-color: #ff0000; }
+        
+        /* Topic Review */
+        .topic-review {
+            margin-top: 30px;
+            text-align: left;
+            background: #111;
+            border: 2px solid #333;
+            padding: 20px;
+        }
+        
+        .topic-review h3 {
+            color: #00ccff;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .topic-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .topic-name {
+            color: #888;
+        }
+        
+        .topic-score {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+        }
+        
+        .topic-score.good { color: #00ff00; }
+        .topic-score.ok { color: #ffff00; }
+        .topic-score.bad { color: #ff0000; }
+        
+        /* Instructions Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #111;
+            border: 4px solid #00ff00;
+            padding: 30px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modal-text {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .close-modal {
+            background: #333;
+            border: 2px solid #00ff00;
+            padding: 10px 30px;
+            color: #00ff00;
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .ward-selection {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .vitals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .game-title {
+                font-size: 16px;
+            }
+            
+            .stats-bar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="crt">
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1 class="game-title">PATHO QUEST</h1>
+            <p class="game-subtitle">Hospital Shift Simulator</p>
+            <p class="game-subtitle">Dr.Tehrani Simulations 2028</p>
+        </header>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar" style="display: none;">
+            <div class="stat">
+                <span class="stat-label">SCORE:</span>
+                <span class="stat-value" id="scoreDisplay">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">CASE:</span>
+                <span class="stat-value"><span id="currentCase">1</span>/<span id="totalCases">30</span></span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">STREAK:</span>
+                <span class="stat-value" id="streakDisplay">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">SHIFT ENERGY:</span>
+                <div class="health-bar">
+                    <div class="health-fill" id="healthFill" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <h2>WELCOME, STUDENT CLINICIAN</h2>
+            <p class="start-text">
+                Your 12-hour shift begins now at Metro General Hospital.<br><br>
+                Navigate through 9 different wards. Each patient presents a clinical puzzle.<br><br>
+                Apply your pathophysiology knowledge to help diagnose and understand each case.<br><br>
+                Score points for correct clinical reasoning. Learn from every case!
+            </p>
+            <button class="start-btn" onclick="startGame()">INSERT COIN TO START</button>
+        </div>
+        
+        <!-- Ward Selection -->
+        <div class="ward-selection" id="wardSelection" style="display: none;">
+            <button class="ward-btn" data-ward="cellular" onclick="selectWard('cellular')">
+                <span class="ward-icon">🔬</span>
+                CELLULAR ADAPTATION
+                <span class="ward-progress" id="progress-cellular">0/4</span>
+            </button>
+            <button class="ward-btn" data-ward="genetics" onclick="selectWard('genetics')">
+                <span class="ward-icon">🧬</span>
+                GENETICS CLINIC
+                <span class="ward-progress" id="progress-genetics">0/3</span>
+            </button>
+            <button class="ward-btn" data-ward="inflammation" onclick="selectWard('inflammation')">
+                <span class="ward-icon">🔥</span>
+                INFLAMMATION & WOUNDS
+                <span class="ward-progress" id="progress-inflammation">0/4</span>
+            </button>
+            <button class="ward-btn" data-ward="infection" onclick="selectWard('infection')">
+                <span class="ward-icon">🦠</span>
+                INFECTIOUS DISEASE
+                <span class="ward-progress" id="progress-infection">0/3</span>
+            </button>
+            <button class="ward-btn" data-ward="immune" onclick="selectWard('immune')">
+                <span class="ward-icon">🛡️</span>
+                IMMUNOLOGY
+                <span class="ward-progress" id="progress-immune">0/4</span>
+            </button>
+            <button class="ward-btn" data-ward="cardiac" onclick="selectWard('cardiac')">
+                <span class="ward-icon">❤️</span>
+                CARDIAC CARE
+                <span class="ward-progress" id="progress-cardiac">0/5</span>
+            </button>
+            <button class="ward-btn" data-ward="respiratory" onclick="selectWard('respiratory')">
+                <span class="ward-icon">🫁</span>
+                RESPIRATORY
+                <span class="ward-progress" id="progress-respiratory">0/4</span>
+            </button>
+            <button class="ward-btn" data-ward="hematology" onclick="selectWard('hematology')">
+                <span class="ward-icon">🩸</span>
+                HEMATOLOGY
+                <span class="ward-progress" id="progress-hematology">0/4</span>
+            </button>
+            <button class="ward-btn" data-ward="vascular" onclick="selectWard('vascular')">
+                <span class="ward-icon">🩺</span>
+                VASCULAR
+                <span class="ward-progress" id="progress-vascular">0/3</span>
+            </button>
+        </div>
+        
+        <!-- Case Container -->
+        <div class="case-container" id="caseContainer">
+            <div class="case-header">
+                <span class="case-number" id="caseNumber">CASE #001</span>
+                <span class="case-ward" id="caseWard">CARDIAC WARD</span>
+            </div>
+            <div class="case-body">
+                <div class="patient-info">
+                    <div class="patient-sprite" id="patientSprite">🧑</div>
+                    <div class="patient-label">PATIENT PRESENTATION</div>
+                    <p class="patient-text" id="patientText">Loading case...</p>
+                    <div class="vitals-grid" id="vitalsGrid"></div>
+                </div>
+                
+                <div class="question-section">
+                    <div class="question-label">CLINICAL QUESTION</div>
+                    <p class="question-text" id="questionText">What is your assessment?</p>
+                    
+                    <div class="options-grid" id="optionsGrid"></div>
+                    
+                    <div class="feedback-box" id="feedbackBox">
+                        <div class="feedback-header" id="feedbackHeader">CORRECT!</div>
+                        <p class="feedback-text" id="feedbackText"></p>
+                        <div class="key-point" id="keyPoint">
+                            <div class="key-point-label">KEY LEARNING POINT</div>
+                            <p id="keyPointText"></p>
+                        </div>
+                    </div>
+                    
+                    <button class="next-btn" id="nextBtn" onclick="nextCase()">NEXT PATIENT →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Completion Screen -->
+        <div class="completion-screen" id="completionScreen">
+            <h2 class="completion-title">SHIFT COMPLETE!</h2>
+            <div class="final-score" id="finalScore">0</div>
+            <p class="score-breakdown" id="scoreBreakdown">0 / 34 cases correct</p>
+            <div class="grade" id="finalGrade">A</div>
+            
+            <div class="topic-review" id="topicReview">
+                <h3>TOPIC BREAKDOWN</h3>
+            </div>
+            
+            <button class="start-btn" onclick="restartGame()" style="margin-top: 30px;">PLAY AGAIN</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            score: 0,
+            currentCase: 0,
+            totalCases: 0,
+            streak: 0,
+            health: 100,
+            currentWard: null,
+            wardProgress: {},
+            topicScores: {},
+            casesCompleted: []
+        };
+
+        // All Cases Data - Organized by Ward
+        const cases = {
+            cellular: [
+                {
+                    id: 'cell1',
+                    patient: "A 68-year-old patient has been bedridden for 3 weeks following hip surgery. Physical therapy notes significant weakness and reduced muscle mass in both legs compared to admission.",
+                    sprite: "👴",
+                    vitals: { BP: "118/72", HR: "76", Temp: "98.2°F", O2: "97%" },
+                    question: "What cellular adaptation is occurring in this patient's muscles, and what intervention would best address it?",
+                    options: [
+                        { text: "Atrophy from disuse - Active range of motion exercises", correct: true },
+                        { text: "Hypertrophy from inflammation - Anti-inflammatory medications", correct: false },
+                        { text: "Hyperplasia from injury - Continued bed rest", correct: false },
+                        { text: "Necrosis from ischemia - Surgical intervention", correct: false }
+                    ],
+                    explanation: "Disuse atrophy occurs when muscles aren't used regularly. The cells shrink in size (not number) due to decreased demand.",
+                    keyPoint: "ATROPHY = cells shrinking in SIZE. Prevented by maintaining activity. Different from muscle cell death (necrosis). ROM exercises stimulate the muscles to prevent further wasting.",
+                    topic: "Cellular Adaptation"
+                },
+                {
+                    id: 'cell2',
+                    patient: "A 55-year-old with a 30-year smoking history undergoes bronchoscopy. Biopsy reveals the normal columnar ciliated epithelium has been replaced by stratified squamous epithelium.",
+                    sprite: "🧑",
+                    vitals: { BP: "142/88", HR: "82", Temp: "98.6°F", O2: "94%" },
+                    question: "This cellular change represents which adaptation, and why did it occur?",
+                    options: [
+                        { text: "Metaplasia - cells changed type to better tolerate chronic irritation", correct: true },
+                        { text: "Dysplasia - cells are now cancerous", correct: false },
+                        { text: "Hyperplasia - cells increased in number", correct: false },
+                        { text: "Neoplasia - a tumor has formed", correct: false }
+                    ],
+                    explanation: "Metaplasia is the reversible replacement of one mature cell type with another. It's an adaptive response to chronic irritation.",
+                    keyPoint: "METAPLASIA = one cell TYPE replaces another (still organized, still reversible). The body substitutes a more resistant cell type. Common in smokers (respiratory) and GERD patients (esophageal - Barrett's).",
+                    topic: "Cellular Adaptation"
+                },
+                {
+                    id: 'cell3',
+                    patient: "A 52-year-old with chronic ulcerative colitis undergoes colonoscopy. Pathology reports 'architectural distortion with nuclear enlargement, hyperchromatism, and loss of polarity' in several areas.",
+                    sprite: "👩",
+                    vitals: { BP: "126/78", HR: "70", Temp: "98.4°F", O2: "98%" },
+                    question: "What does this pathology finding indicate, and what is the clinical significance?",
+                    options: [
+                        { text: "Dysplasia - abnormal growth with potential for malignancy", correct: true },
+                        { text: "Metaplasia - normal adaptive response to inflammation", correct: false },
+                        { text: "Hyperplasia - benign increase in cell number", correct: false },
+                        { text: "Atrophy - cells are shrinking from disease", correct: false }
+                    ],
+                    explanation: "Dysplasia represents disordered cellular growth with abnormal size, shape, and organization. It's a pre-cancerous condition requiring monitoring.",
+                    keyPoint: "DYSPLASIA = DIS-organized growth. Abnormal size, shape, and arrangement. It's PRE-malignant (not yet cancer, but increased risk). Requires close surveillance.",
+                    topic: "Cellular Adaptation"
+                },
+                {
+                    id: 'cell4',
+                    patient: "A researcher is studying why some cells with DNA damage become cancerous while others do not. They're investigating a programmed cell death pathway that normally eliminates damaged cells.",
+                    sprite: "🔬",
+                    vitals: null,
+                    question: "What is this regulated cell death process, and what happens when it fails?",
+                    options: [
+                        { text: "Apoptosis - failure leads to potential neoplasia/cancer", correct: true },
+                        { text: "Necrosis - failure leads to inflammation", correct: false },
+                        { text: "Autophagy - failure leads to cell starvation", correct: false },
+                        { text: "Lysis - failure leads to cell swelling", correct: false }
+                    ],
+                    explanation: "Apoptosis is programmed cell death - a 'clean' death that removes damaged or unnecessary cells without inflammation.",
+                    keyPoint: "APOPTOSIS = programmed 'cellular suicide' (clean, controlled). NECROSIS = unplanned death (messy, inflammatory). When apoptosis fails, damaged cells survive and may become cancerous.",
+                    topic: "Cellular Adaptation"
+                }
+            ],
+            genetics: [
+                {
+                    id: 'gen1',
+                    patient: "A couple is undergoing genetic counseling. Both are carriers for an autosomal recessive blood disorder. They want to understand the inheritance pattern and severity differences.",
+                    sprite: "👫",
+                    vitals: null,
+                    question: "If both parents are carriers of sickle cell trait, what determines disease severity in their children?",
+                    options: [
+                        { text: "Homozygous (HbSS) = severe disease; Heterozygous (HbAS) = carrier/mild", correct: true },
+                        { text: "All children will have equally severe disease", correct: false },
+                        { text: "Only male children can be affected", correct: false },
+                        { text: "Severity depends on birth order", correct: false }
+                    ],
+                    explanation: "Sickle cell anemia follows autosomal recessive inheritance. Homozygous individuals (HbSS) have severe disease; heterozygous carriers (HbAS) are usually asymptomatic.",
+                    keyPoint: "AUTOSOMAL RECESSIVE = need TWO copies for disease. Carriers (one copy) usually unaffected. When both parents are carriers: 25% affected, 50% carriers, 25% unaffected.",
+                    topic: "Genetics"
+                },
+                {
+                    id: 'gen2',
+                    patient: "A 35-year-old presents with progressive involuntary movements described as 'dance-like.' Family history reveals their father died at 50 with similar symptoms and dementia.",
+                    sprite: "🧑",
+                    vitals: { BP: "128/82", HR: "88", Temp: "98.6°F", O2: "98%" },
+                    question: "Based on this presentation and family history, what is the likely progression of symptoms?",
+                    options: [
+                        { text: "Chorea and involuntary movements first, then behavioral and cognitive decline", correct: true },
+                        { text: "Memory loss first, then motor problems develop", correct: false },
+                        { text: "Symptoms will improve with age", correct: false },
+                        { text: "Weakness and paralysis without cognitive changes", correct: false }
+                    ],
+                    explanation: "Huntington's disease typically presents with movement disorders (chorea) first, followed by psychiatric symptoms and cognitive decline.",
+                    keyPoint: "HUNTINGTON'S DISEASE: Autosomal DOMINANT (50% inheritance). CAG repeat expansion. Chorea (involuntary movements) → behavioral changes → dementia. Progressive and fatal.",
+                    topic: "Genetics"
+                },
+                {
+                    id: 'gen3',
+                    patient: "A newborn is noted to have low muscle tone, upward slanting eyes, a flat facial profile, and a single transverse palmar crease. The parents ask what test will confirm the diagnosis.",
+                    sprite: "👶",
+                    vitals: { BP: "70/45", HR: "140", Temp: "98.0°F", O2: "96%" },
+                    question: "What diagnostic test confirms this chromosomal condition?",
+                    options: [
+                        { text: "Karyotyping to visualize chromosome number and structure", correct: true },
+                        { text: "Blood glucose test", correct: false },
+                        { text: "MRI of the brain", correct: false },
+                        { text: "Metabolic panel", correct: false }
+                    ],
+                    explanation: "Down syndrome (Trisomy 21) is diagnosed by karyotyping, which visually demonstrates three copies of chromosome 21.",
+                    keyPoint: "DOWN SYNDROME = Trisomy 21 (three copies of chromosome 21). KARYOTYPING shows all chromosomes. Features: hypotonia, characteristic facies, single palmar crease, intellectual disability, heart defects common.",
+                    topic: "Genetics"
+                }
+            ],
+            inflammation: [
+                {
+                    id: 'inf1',
+                    patient: "A patient presents 2 days after stepping on a nail. The wound site shows redness, swelling, warmth, and tenderness. They also report the area is painful to touch.",
+                    sprite: "🦶",
+                    vitals: { BP: "124/80", HR: "78", Temp: "99.8°F", O2: "98%" },
+                    question: "These findings represent which cardinal signs of inflammation?",
+                    options: [
+                        { text: "Rubor (redness), Tumor (swelling), Calor (heat), Dolor (pain)", correct: true },
+                        { text: "Infection, necrosis, gangrene, sepsis", correct: false },
+                        { text: "Chronic inflammation only", correct: false },
+                        { text: "Allergic reaction signs", correct: false }
+                    ],
+                    explanation: "The classic cardinal signs of acute inflammation are redness, swelling, heat, pain, and loss of function (functio laesa).",
+                    keyPoint: "5 CARDINAL SIGNS of inflammation: Rubor (RED), Tumor (SWELLING), Calor (HEAT), Dolor (PAIN), Functio Laesa (LOSS OF FUNCTION). These result from increased blood flow and vascular permeability.",
+                    topic: "Inflammation"
+                },
+                {
+                    id: 'inf2',
+                    patient: "During a lecture on inflammation, students are learning about how white blood cells navigate to injury sites. The professor describes chemical signals that guide leukocytes.",
+                    sprite: "📚",
+                    vitals: null,
+                    question: "What is the process called when leukocytes follow chemical signals to the site of injury?",
+                    options: [
+                        { text: "Chemotaxis - migration following chemical gradients", correct: true },
+                        { text: "Diapedesis - passing through blood vessel walls", correct: false },
+                        { text: "Opsonization - marking pathogens for destruction", correct: false },
+                        { text: "Phagocytosis - engulfing pathogens", correct: false }
+                    ],
+                    explanation: "Chemotaxis is the directed movement of cells along a chemical concentration gradient toward the source of the signal.",
+                    keyPoint: "CHEMOTAXIS = chemical 'GPS' for WBCs. Chemicals released at injury site create a trail. Leukocytes follow this trail to find the problem. Key mediators: complement, cytokines, bacterial products.",
+                    topic: "Inflammation"
+                },
+                {
+                    id: 'inf3',
+                    patient: "A surgeon is monitoring wound healing in a patient who had an uncomplicated appendectomy 10 days ago. The incision was closed with sutures and healing well.",
+                    sprite: "🏥",
+                    vitals: { BP: "118/76", HR: "72", Temp: "98.4°F", O2: "99%" },
+                    question: "What is the correct sequence of wound healing phases this patient has gone through?",
+                    options: [
+                        { text: "Hemostasis → Inflammation → Proliferation → Remodeling", correct: true },
+                        { text: "Inflammation → Hemostasis → Remodeling → Proliferation", correct: false },
+                        { text: "Proliferation → Inflammation → Hemostasis → Remodeling", correct: false },
+                        { text: "Remodeling → Proliferation → Inflammation → Hemostasis", correct: false }
+                    ],
+                    explanation: "Wound healing proceeds through four overlapping phases: hemostasis (clotting), inflammation, proliferation (new tissue), and remodeling.",
+                    keyPoint: "WOUND HEALING PHASES: 1) Hemostasis (stop bleeding), 2) Inflammation (clean up), 3) Proliferation (rebuild), 4) Remodeling (strengthen). Takes months to complete fully.",
+                    topic: "Inflammation"
+                },
+                {
+                    id: 'inf4',
+                    patient: "A patient with a large abdominal wound from a surgical complication has a wound that cannot be closed with sutures. It's healing slowly from the bottom up with visible granulation tissue.",
+                    sprite: "🛏️",
+                    vitals: { BP: "132/84", HR: "80", Temp: "99.2°F", O2: "97%" },
+                    question: "What type of wound healing is this patient experiencing?",
+                    options: [
+                        { text: "Secondary intention - edges not approximated, heals with granulation and scarring", correct: true },
+                        { text: "Primary intention - edges closed together with minimal scarring", correct: false },
+                        { text: "Tertiary intention - wound left open then closed later", correct: false },
+                        { text: "Regeneration - tissue replaced with identical cells", correct: false }
+                    ],
+                    explanation: "Secondary intention healing occurs when wound edges cannot be approximated. The wound fills with granulation tissue and contracts, resulting in more scarring.",
+                    keyPoint: "PRIMARY INTENTION = edges together, minimal scar (surgical incision). SECONDARY INTENTION = edges apart, fills with granulation tissue, more scarring (large wounds). TERTIARY = delayed primary closure.",
+                    topic: "Inflammation"
+                }
+            ],
+            infection: [
+                {
+                    id: 'bac1',
+                    patient: "A 45-year-old gardener presents with muscle rigidity, difficulty opening their jaw, and painful muscle spasms. They recall a puncture wound from a rusty nail 10 days ago.",
+                    sprite: "🧑‍🌾",
+                    vitals: { BP: "150/95", HR: "110", Temp: "100.4°F", O2: "94%" },
+                    question: "What organism causes these symptoms, and what is its mechanism?",
+                    options: [
+                        { text: "Clostridium tetani - toxin causes sustained muscle contraction (spastic paralysis)", correct: true },
+                        { text: "Clostridium botulinum - toxin prevents muscle contraction (flaccid paralysis)", correct: false },
+                        { text: "Staphylococcus aureus - causes localized skin infection", correct: false },
+                        { text: "Streptococcus pyogenes - causes strep throat", correct: false }
+                    ],
+                    explanation: "C. tetani produces a toxin that blocks inhibitory neurotransmitters, causing unopposed muscle contraction (tetanus/lockjaw).",
+                    keyPoint: "TETANI = TETANUS = TIGHT muscles (spastic). BOTULINUM = BOTULISM = FLOPPY muscles (flaccid). Opposite effects! Tetanus: puncture wounds, rust. Botulism: contaminated food, 'floppy baby.'",
+                    topic: "Bacteria"
+                },
+                {
+                    id: 'bac2',
+                    patient: "A hospital is dealing with an outbreak of antibiotic-resistant infections. Culture results show the organism is resistant to methicillin and other beta-lactam antibiotics.",
+                    sprite: "🏥",
+                    vitals: null,
+                    question: "What organism is indicated by the acronym MRSA?",
+                    options: [
+                        { text: "Methicillin-Resistant Staphylococcus aureus", correct: true },
+                        { text: "Methicillin-Resistant Streptococcus agalactiae", correct: false },
+                        { text: "Multi-Resistant Salmonella agent", correct: false },
+                        { text: "Methicillin-Resistant Serratia aureus", correct: false }
+                    ],
+                    explanation: "MRSA is Staphylococcus aureus that has developed resistance to methicillin and related antibiotics. It's a major healthcare-associated infection concern.",
+                    keyPoint: "MRSA = Staph aureus resistant to methicillin. VRSA = resistant to vancomycin. S. aureus is a major pathogen causing skin infections, pneumonia, endocarditis, osteomyelitis. Resistance = harder to treat.",
+                    topic: "Bacteria"
+                },
+                {
+                    id: 'bac3',
+                    patient: "A 72-year-old nursing home resident develops fever, productive cough with rust-colored sputum, and shortness of breath. Chest X-ray shows lobar consolidation. This is their first episode.",
+                    sprite: "👴",
+                    vitals: { BP: "138/88", HR: "102", Temp: "102.8°F", O2: "91%" },
+                    question: "What is the most likely causative organism for this community-acquired pneumonia?",
+                    options: [
+                        { text: "Streptococcus pneumoniae - most common cause of community-acquired pneumonia", correct: true },
+                        { text: "Pseudomonas aeruginosa - primarily hospital-acquired", correct: false },
+                        { text: "Mycobacterium tuberculosis - would show different X-ray pattern", correct: false },
+                        { text: "Candida albicans - a fungus, not typical pneumonia cause", correct: false }
+                    ],
+                    explanation: "S. pneumoniae (pneumococcus) is the most common cause of community-acquired bacterial pneumonia, often presenting with rust-colored sputum and lobar consolidation.",
+                    keyPoint: "STREP PNEUMONIAE = #1 cause of community-acquired pneumonia. 'Rust-colored' sputum is classic. Lobar consolidation on X-ray. Vaccine available (Pneumovax). Treat with antibiotics.",
+                    topic: "Bacteria"
+                }
+            ],
+            immune: [
+                {
+                    id: 'imm1',
+                    patient: "A patient received a blood transfusion 30 minutes ago. They suddenly develop fever, back pain, and dark urine. The transfusion is stopped immediately.",
+                    sprite: "🩸",
+                    vitals: { BP: "90/60", HR: "120", Temp: "102°F", O2: "94%" },
+                    question: "What type of hypersensitivity reaction is this?",
+                    options: [
+                        { text: "Type II (Cytotoxic) - antibodies attack transfused RBCs", correct: true },
+                        { text: "Type I (Immediate) - IgE mediated allergic reaction", correct: false },
+                        { text: "Type III (Immune Complex) - antigen-antibody deposits", correct: false },
+                        { text: "Type IV (Delayed) - T-cell mediated", correct: false }
+                    ],
+                    explanation: "Transfusion reactions are Type II hypersensitivity - antibodies bind to antigens on transfused RBCs, causing their destruction (hemolysis).",
+                    keyPoint: "TYPE II = CYTOTOXIC = antibodies attack CELLS. Examples: transfusion reactions, hemolytic disease of newborn, autoimmune hemolytic anemia. Antibodies (IgG/IgM) bind cell surface antigens → cell destruction.",
+                    topic: "Hypersensitivity"
+                },
+                {
+                    id: 'imm2',
+                    patient: "A 28-year-old presents with hay fever symptoms every spring. They experience sneezing, watery eyes, and nasal congestion when pollen counts are high.",
+                    sprite: "🤧",
+                    vitals: { BP: "118/76", HR: "72", Temp: "98.6°F", O2: "99%" },
+                    question: "Which cells and antibodies are primarily involved in this allergic response?",
+                    options: [
+                        { text: "Mast cells releasing histamine, mediated by IgE antibodies", correct: true },
+                        { text: "T cells releasing cytokines, no antibody involvement", correct: false },
+                        { text: "B cells producing IgG, attacking pollen directly", correct: false },
+                        { text: "Neutrophils releasing enzymes, mediated by IgM", correct: false }
+                    ],
+                    explanation: "Type I hypersensitivity involves IgE antibodies on mast cell surfaces. When allergens cross-link IgE, mast cells degranulate and release histamine and other mediators.",
+                    keyPoint: "TYPE I = IMMEDIATE = IgE + MAST CELLS. IgE sits on mast cells like 'antennae.' Allergen binds → mast cell explodes (degranulates) → histamine release → allergy symptoms within MINUTES.",
+                    topic: "Hypersensitivity"
+                },
+                {
+                    id: 'imm3',
+                    patient: "A 35-year-old woman presents with joint pain, fever, and a distinctive rash across her cheeks and nose. Lab work shows elevated ANA and anti-dsDNA antibodies.",
+                    sprite: "👩",
+                    vitals: { BP: "148/92", HR: "88", Temp: "100.2°F", O2: "97%" },
+                    question: "What condition does this presentation suggest, and what hypersensitivity mechanism is involved?",
+                    options: [
+                        { text: "Systemic Lupus Erythematosus - Type III (immune complex) hypersensitivity", correct: true },
+                        { text: "Rheumatoid arthritis - Type IV hypersensitivity", correct: false },
+                        { text: "Allergic reaction - Type I hypersensitivity", correct: false },
+                        { text: "Contact dermatitis - Type II hypersensitivity", correct: false }
+                    ],
+                    explanation: "SLE is characterized by autoantibodies forming immune complexes that deposit in tissues, causing inflammation (Type III hypersensitivity).",
+                    keyPoint: "SLE features: 'BUTTERFLY RASH' (malar rash), joint pain, kidney problems, + ANA. TYPE III = IMMUNE COMPLEX = antibody-antigen complexes deposit in tissues → inflammation. Affects multiple organ systems.",
+                    topic: "Hypersensitivity"
+                },
+                {
+                    id: 'imm4',
+                    patient: "A 3-year-old has had repeated respiratory infections since infancy, including multiple episodes of pneumonia and ear infections. Testing reveals very low immunoglobulin levels.",
+                    sprite: "👧",
+                    vitals: { BP: "90/60", HR: "110", Temp: "101.5°F", O2: "95%" },
+                    question: "What type of immune deficiency does this suggest?",
+                    options: [
+                        { text: "Primary antibody deficiency (hypogammaglobulinemia) - B cell/antibody problem", correct: true },
+                        { text: "AIDS - viral destruction of T cells", correct: false },
+                        { text: "Complement deficiency - problem with complement proteins", correct: false },
+                        { text: "Neutropenia - low neutrophil count", correct: false }
+                    ],
+                    explanation: "Recurrent bacterial respiratory infections with low immunoglobulins suggests a primary B-cell/antibody deficiency (humoral immunodeficiency).",
+                    keyPoint: "ANTIBODY DEFICIENCIES → recurrent BACTERIAL infections (especially respiratory, encapsulated organisms). IgA deficiency = most common primary immunodeficiency. Treatment: immunoglobulin replacement.",
+                    topic: "Immune Deficiency"
+                }
+            ],
+            cardiac: [
+                {
+                    id: 'card1',
+                    patient: "A 65-year-old with diabetes and hypertension experiences sudden severe chest pain radiating to the left arm, profuse sweating, and nausea. ECG shows ST elevation.",
+                    sprite: "👴",
+                    vitals: { BP: "160/100", HR: "110", Temp: "98.6°F", O2: "92%" },
+                    question: "What is happening, and what lab marker will be elevated?",
+                    options: [
+                        { text: "Myocardial infarction - cardiac troponin will be elevated", correct: true },
+                        { text: "Angina pectoris - no lab markers elevated", correct: false },
+                        { text: "Heart failure - BNP elevated but troponin normal", correct: false },
+                        { text: "Pericarditis - ESR elevated", correct: false }
+                    ],
+                    explanation: "MI causes cardiac cell death, releasing troponins into the blood. Troponin is the most specific and sensitive marker for myocardial damage.",
+                    keyPoint: "MI = actual heart muscle DEATH. TROPONIN = gold standard marker (rises 3-6 hrs, peaks 24 hrs). ANGINA = temporary ischemia, no cell death, no troponin. MI is the 'most serious coronary event.'",
+                    topic: "Cardiac Events"
+                },
+                {
+                    id: 'card2',
+                    patient: "A patient with known coronary artery disease reports chest pressure with exertion that goes away when they rest. Nitroglycerin also relieves the symptoms.",
+                    sprite: "🧑",
+                    vitals: { BP: "138/86", HR: "78", Temp: "98.6°F", O2: "98%" },
+                    question: "What distinguishes this condition from a myocardial infarction?",
+                    options: [
+                        { text: "Stable angina - temporary ischemia relieved by rest or nitrates, no cell death", correct: true },
+                        { text: "This is an MI - all chest pain indicates heart attack", correct: false },
+                        { text: "Heart failure - related to pump dysfunction", correct: false },
+                        { text: "Pericarditis - inflammation of the heart lining", correct: false }
+                    ],
+                    explanation: "Stable angina is predictable chest pain with exertion that resolves with rest or nitroglycerin. Unlike MI, it doesn't cause permanent damage.",
+                    keyPoint: "ANGINA = 'heart cramp' - temporary oxygen shortage. STABLE = predictable, with exertion, relieved by rest/nitro. UNSTABLE = unpredictable, at rest = medical emergency. Angina warns of CAD.",
+                    topic: "Cardiac Events"
+                },
+                {
+                    id: 'card3',
+                    patient: "A 70-year-old with chronic heart failure wakes up gasping for air. They've been sleeping on 3 pillows and have noticed their ankles swelling by evening.",
+                    sprite: "👴",
+                    vitals: { BP: "148/92", HR: "96", Temp: "98.2°F", O2: "89%" },
+                    question: "The breathing difficulty when lying flat indicates what, and which side of the heart is primarily failing?",
+                    options: [
+                        { text: "Orthopnea and paroxysmal nocturnal dyspnea - indicates LEFT heart failure", correct: true },
+                        { text: "These symptoms indicate RIGHT heart failure", correct: false },
+                        { text: "This is a pulmonary embolism, not heart failure", correct: false },
+                        { text: "Symptoms indicate COPD, not cardiac disease", correct: false }
+                    ],
+                    explanation: "Left heart failure causes pulmonary congestion (fluid backs up into lungs), leading to orthopnea (difficulty breathing lying flat) and PND (waking up breathless).",
+                    keyPoint: "LEFT FAILURE = LUNG symptoms (crackles, orthopnea, PND, pulmonary edema). RIGHT FAILURE = systemic/BODY symptoms (JVD, peripheral edema, ascites, hepatomegaly). 'Left = Lungs, Right = Rest of body.'",
+                    topic: "Heart Failure"
+                },
+                {
+                    id: 'card4',
+                    patient: "A patient with severe COPD develops distended neck veins, liver enlargement, and significant leg swelling. Echocardiogram shows right ventricular enlargement.",
+                    sprite: "🧓",
+                    vitals: { BP: "136/88", HR: "92", Temp: "98.4°F", O2: "88%" },
+                    question: "What condition has developed, and what is the underlying mechanism?",
+                    options: [
+                        { text: "Cor pulmonale - right heart failure secondary to pulmonary disease", correct: true },
+                        { text: "Left heart failure from hypertension", correct: false },
+                        { text: "Cardiomyopathy from alcohol use", correct: false },
+                        { text: "Pericardial effusion compressing the heart", correct: false }
+                    ],
+                    explanation: "Cor pulmonale is right heart failure caused by lung disease. Chronic lung disease increases pulmonary pressure, overworking the right ventricle until it fails.",
+                    keyPoint: "COR PULMONALE = 'heart problem from lung problem.' Lung disease → ↑pulmonary pressure → right heart has to work harder → right heart fails. Classic findings: JVD, peripheral edema, hepatomegaly.",
+                    topic: "Heart Failure"
+                },
+                {
+                    id: 'card5',
+                    patient: "A 55-year-old is found unresponsive. The cardiac monitor shows a chaotic, irregular rhythm with no discernible P waves or QRS complexes. No pulse is detected.",
+                    sprite: "🚨",
+                    vitals: { BP: "--/--", HR: "---", Temp: "---", O2: "---" },
+                    question: "What rhythm is this, and what is the immediate treatment priority?",
+                    options: [
+                        { text: "Ventricular fibrillation - requires immediate defibrillation", correct: true },
+                        { text: "Atrial fibrillation - give blood thinners", correct: false },
+                        { text: "Asystole - give epinephrine only", correct: false },
+                        { text: "Normal sinus rhythm - observe", correct: false }
+                    ],
+                    explanation: "Ventricular fibrillation is chaotic, uncoordinated ventricular activity producing no cardiac output. It's a shockable rhythm requiring immediate defibrillation.",
+                    keyPoint: "V-FIB = rapid, chaotic quivering of ventricles = NO effective pumping = PULSELESS. SHOCKABLE rhythm - defibrillation is KEY intervention. Different from asystole (flatline) which is NOT shockable.",
+                    topic: "Dysrhythmias"
+                }
+            ],
+            respiratory: [
+                {
+                    id: 'resp1',
+                    patient: "A 25-year-old with a history of allergies presents with sudden onset of wheezing, chest tightness, and difficulty breathing after exposure to dust while cleaning.",
+                    sprite: "🧑",
+                    vitals: { BP: "128/82", HR: "108", Temp: "98.6°F", O2: "93%" },
+                    question: "What is the hallmark characteristic of this respiratory condition?",
+                    options: [
+                        { text: "Reversible airway obstruction - improves with bronchodilators", correct: true },
+                        { text: "Irreversible airway obstruction - doesn't improve with treatment", correct: false },
+                        { text: "Infection causing consolidation in the lungs", correct: false },
+                        { text: "Permanent destruction of alveoli", correct: false }
+                    ],
+                    explanation: "Asthma is characterized by REVERSIBLE airway obstruction. Bronchodilators and corticosteroids can relieve the bronchospasm and inflammation.",
+                    keyPoint: "ASTHMA = REVERSIBLE airway obstruction (gets better with treatment). COPD/Emphysema = IRREVERSIBLE. Asthma: triggered by allergens, exercise, cold air. Treatment: bronchodilators + inhaled steroids.",
+                    topic: "Asthma"
+                },
+                {
+                    id: 'resp2',
+                    patient: "A 68-year-old with a 50-pack-year smoking history has progressive dyspnea, barrel chest, and uses accessory muscles to breathe. PFTs show increased total lung capacity.",
+                    sprite: "👴",
+                    vitals: { BP: "142/88", HR: "92", Temp: "98.4°F", O2: "88%" },
+                    question: "What is the underlying pathophysiology of this condition?",
+                    options: [
+                        { text: "Emphysema - loss of elastic recoil and destruction of alveolar walls", correct: true },
+                        { text: "Asthma - reversible bronchospasm", correct: false },
+                        { text: "Pneumonia - infection filling alveoli", correct: false },
+                        { text: "Pleural effusion - fluid around the lungs", correct: false }
+                    ],
+                    explanation: "Emphysema involves destruction of alveolar walls and loss of elastic recoil. Air gets trapped (barrel chest), and gas exchange is impaired.",
+                    keyPoint: "EMPHYSEMA = alveolar wall DESTRUCTION + loss of ELASTIC RECOIL. Air gets trapped (hyperinflation, barrel chest). Part of COPD. Caused by smoking (protease/antiprotease imbalance). IRREVERSIBLE damage.",
+                    topic: "Emphysema"
+                },
+                {
+                    id: 'resp3',
+                    patient: "A college student presents with cough, low-grade fever, chest discomfort, and is producing yellow-green sputum for the past 5 days. Lungs have scattered rhonchi.",
+                    sprite: "🧑‍🎓",
+                    vitals: { BP: "118/76", HR: "82", Temp: "100.2°F", O2: "97%" },
+                    question: "What is the likely diagnosis, and what treatment helps clear the mucus?",
+                    options: [
+                        { text: "Acute bronchitis - expectorants help mobilize and clear mucus", correct: true },
+                        { text: "Pneumonia - requires immediate IV antibiotics", correct: false },
+                        { text: "Tuberculosis - requires isolation", correct: false },
+                        { text: "Lung cancer - requires surgical evaluation", correct: false }
+                    ],
+                    explanation: "Acute bronchitis causes inflammation of the bronchi with productive cough. Expectorants thin mucus to help clear it; cough suppressants would trap secretions.",
+                    keyPoint: "ACUTE BRONCHITIS = inflammation of BRONCHI (airways). Productive cough, chest discomfort, often post-viral. EXPECTORANT = helps COUGH UP mucus. SUPPRESSANT = stops coughing (avoid if productive).",
+                    topic: "Acute Bronchitis"
+                },
+                {
+                    id: 'resp4',
+                    patient: "After a motor vehicle accident, a trauma patient suddenly develops severe right-sided chest pain and shortness of breath. Breath sounds are absent on the right side.",
+                    sprite: "🚑",
+                    vitals: { BP: "100/68", HR: "124", Temp: "98.6°F", O2: "85%" },
+                    question: "What does absent breath sounds on one side suggest, and what is the underlying problem?",
+                    options: [
+                        { text: "Pneumothorax - air in pleural space collapsing the lung", correct: true },
+                        { text: "Pleural effusion - fluid compressing the lung", correct: false },
+                        { text: "Pneumonia - consolidation from infection", correct: false },
+                        { text: "Asthma attack - bronchospasm", correct: false }
+                    ],
+                    explanation: "Absent breath sounds with trauma suggests pneumothorax - air enters the pleural space and the lung collapses on that side.",
+                    keyPoint: "PNEUMOTHORAX = air in pleural space. Breath sounds ABSENT on affected side. Traumatic or spontaneous. Tension pneumo = medical emergency (mediastinal shift, cardiovascular collapse).",
+                    topic: "Pneumothorax"
+                }
+            ],
+            hematology: [
+                {
+                    id: 'hem1',
+                    patient: "A 30-year-old woman reports fatigue, pallor, and has been craving ice (pica). Labs show low hemoglobin, low MCV (microcytic), and low serum ferritin.",
+                    sprite: "👩",
+                    vitals: { BP: "108/68", HR: "92", Temp: "98.6°F", O2: "98%" },
+                    question: "What type of anemia is this, and what treatments are appropriate?",
+                    options: [
+                        { text: "Iron deficiency anemia - treat with oral iron and vitamin C to enhance absorption", correct: true },
+                        { text: "B12 deficiency - treat with B12 injections", correct: false },
+                        { text: "Hemolytic anemia - treat with steroids", correct: false },
+                        { text: "Aplastic anemia - treat with bone marrow transplant", correct: false }
+                    ],
+                    explanation: "Iron deficiency anemia is characterized by microcytic (small) RBCs and low ferritin. Pica (ice craving) is a classic symptom. Vitamin C enhances iron absorption.",
+                    keyPoint: "IRON DEFICIENCY = most common anemia worldwide. MICROcytic (small RBCs). Low ferritin. Symptoms: fatigue, pallor, PICA (ice/dirt craving). Treatment: oral iron + vitamin C (enhances absorption).",
+                    topic: "Anemia"
+                },
+                {
+                    id: 'hem2',
+                    patient: "A 25-year-old presents to the ER after a car accident with estimated 30% blood loss. They are tachycardic and hypotensive. Labs are sent.",
+                    sprite: "🚨",
+                    vitals: { BP: "88/58", HR: "128", Temp: "97.8°F", O2: "96%" },
+                    question: "What would be an UNEXPECTED finding in this acute blood loss scenario?",
+                    options: [
+                        { text: "A normal hematocrit - it takes time for hemodilution to show anemia", correct: true },
+                        { text: "Elevated heart rate - expected compensatory response", correct: false },
+                        { text: "Low blood pressure - expected from volume loss", correct: false },
+                        { text: "Decreased urine output - expected from reduced kidney perfusion", correct: false }
+                    ],
+                    explanation: "In acute blood loss, hematocrit may initially appear normal because whole blood is lost. It takes hours for fluid shifts to reveal the anemia (hemodilution).",
+                    keyPoint: "ACUTE blood loss: Hct may be NORMAL initially (lose RBCs and plasma proportionally). Takes 24-48 hrs for Hct to drop (fluid shifts). Compensatory: ↑HR, ↓BP, ↓urine output, pallor.",
+                    topic: "Blood Loss"
+                },
+                {
+                    id: 'hem3',
+                    patient: "A patient with a family history of bleeding disorders has frequent nosebleeds and prolonged bleeding after dental procedures. PT is normal, but PTT is prolonged.",
+                    sprite: "🩸",
+                    vitals: { BP: "120/78", HR: "72", Temp: "98.6°F", O2: "99%" },
+                    question: "What does the lab pattern suggest about this bleeding disorder?",
+                    options: [
+                        { text: "Hemophilia - deficiency in a clotting factor (likely VIII or IX)", correct: true },
+                        { text: "Vitamin K deficiency - would affect PT more", correct: false },
+                        { text: "Low platelets - would show up on platelet count", correct: false },
+                        { text: "Liver disease - both PT and PTT would be affected", correct: false }
+                    ],
+                    explanation: "Hemophilia involves deficiency of clotting factors VIII (Hemophilia A) or IX (Hemophilia B). PTT is prolonged because these are intrinsic pathway factors.",
+                    keyPoint: "HEMOPHILIA = missing clotting factor (VIII or IX). X-linked recessive (mostly males). PTT prolonged, PT normal. Prolonged bleeding time from factor ABSENCE. Treatment: replace the missing factor.",
+                    topic: "Coagulation"
+                },
+                {
+                    id: 'hem4',
+                    patient: "A 60-year-old has enlarged lymph nodes. Biopsy reveals 'owl-eye' appearing cells with multiple nuclei. History includes mononucleosis 30 years ago.",
+                    sprite: "🧓",
+                    vitals: { BP: "132/84", HR: "78", Temp: "99.5°F", O2: "97%" },
+                    question: "What do these pathognomonic cells indicate, and what is the connection to the viral history?",
+                    options: [
+                        { text: "Hodgkin lymphoma - Reed-Sternberg cells; EBV is a risk factor", correct: true },
+                        { text: "Non-Hodgkin lymphoma - no specific cell type", correct: false },
+                        { text: "Chronic lymphocytic leukemia - small mature lymphocytes", correct: false },
+                        { text: "Multiple myeloma - plasma cell cancer", correct: false }
+                    ],
+                    explanation: "Reed-Sternberg cells ('owl-eye' appearance) are pathognomonic for Hodgkin lymphoma. Prior Epstein-Barr virus (causes mono) is a risk factor.",
+                    keyPoint: "HODGKIN LYMPHOMA: Reed-Sternberg cells (large, binucleated 'owl eyes') from B lymphocytes. EBV history = risk factor. More common in males. ORDERLY spread to adjacent lymph nodes.",
+                    topic: "Lymphoma"
+                }
+            ],
+            vascular: [
+                {
+                    id: 'vas1',
+                    patient: "A 62-year-old post-hip surgery patient develops sudden calf pain, warmth, and swelling on day 3 post-op. They've been minimally mobile due to pain.",
+                    sprite: "🦵",
+                    vitals: { BP: "138/86", HR: "88", Temp: "99.8°F", O2: "97%" },
+                    question: "What condition is suspected, and what risk factors from Virchow's Triad are present?",
+                    options: [
+                        { text: "Deep vein thrombosis - stasis (immobility) and endothelial injury (surgery)", correct: true },
+                        { text: "Peripheral artery disease - would cause cold, pale limb", correct: false },
+                        { text: "Cellulitis - infection without clot formation", correct: false },
+                        { text: "Varicose veins - superficial vein dilation", correct: false }
+                    ],
+                    explanation: "DVT risk factors follow Virchow's Triad: stasis (immobility), endothelial injury (surgery), and hypercoagulability. This patient has two of three.",
+                    keyPoint: "VIRCHOW'S TRIAD for clot formation: 1) STASIS (immobility), 2) ENDOTHELIAL INJURY (surgery, trauma), 3) HYPERCOAGULABILITY (cancer, pregnancy, clotting disorders). DVT risk: surgery + immobility = HIGH.",
+                    topic: "DVT"
+                },
+                {
+                    id: 'vas2',
+                    patient: "A 50-year-old nurse who works long hours standing develops visible, twisted, rope-like veins on her legs that worsen by end of shift. She reports aching and heaviness.",
+                    sprite: "👩‍⚕️",
+                    vitals: { BP: "124/78", HR: "72", Temp: "98.6°F", O2: "99%" },
+                    question: "What is this condition called, and what is the underlying problem?",
+                    options: [
+                        { text: "Varicose veins - abnormally dilated superficial veins from valve incompetence", correct: true },
+                        { text: "Deep vein thrombosis - clot in deep veins", correct: false },
+                        { text: "Arterial insufficiency - inadequate arterial blood supply", correct: false },
+                        { text: "Lymphedema - lymphatic drainage problem", correct: false }
+                    ],
+                    explanation: "Varicose veins are dilated, tortuous superficial veins caused by valve failure. Prolonged standing increases venous pressure, worsening the condition.",
+                    keyPoint: "VARICOSE VEINS = dilated SUPERFICIAL veins. Valve incompetence → blood pools → veins stretch. Risk factors: standing, obesity, pregnancy. Symptoms worse at end of day. Complication: venous ulcers.",
+                    topic: "Venous Insufficiency"
+                },
+                {
+                    id: 'vas3',
+                    patient: "A patient needs long-term dialysis access. The surgeon discusses creating a connection between an artery and vein in the arm to provide reliable vascular access.",
+                    sprite: "💪",
+                    vitals: { BP: "158/94", HR: "82", Temp: "98.6°F", O2: "98%" },
+                    question: "What is this surgically created connection called?",
+                    options: [
+                        { text: "Arteriovenous fistula - direct connection between artery and vein", correct: true },
+                        { text: "Aneurysm - weakening and bulging of artery wall", correct: false },
+                        { text: "Stenosis - narrowing of a vessel", correct: false },
+                        { text: "Anastomosis - surgical connection of two hollow structures", correct: false }
+                    ],
+                    explanation: "An AV fistula is a surgically created connection between an artery and vein, causing the vein to enlarge ('arterialize') for easier dialysis access.",
+                    keyPoint: "FISTULA = abnormal CONNECTION between two structures (in this case, artery and vein). For dialysis: allows high blood flow access. Takes weeks to mature. Preferred over grafts/catheters for long-term dialysis.",
+                    topic: "Vascular Access"
+                }
+            ]
+        };
+
+        // Initialize ward progress
+        function initializeProgress() {
+            Object.keys(cases).forEach(ward => {
+                gameState.wardProgress[ward] = 0;
+                gameState.topicScores[ward] = { correct: 0, total: cases[ward].length };
+            });
+            gameState.totalCases = Object.values(cases).reduce((sum, ward) => sum + ward.length, 0);
+        }
+
+        // Start the game
+        function startGame() {
+            initializeProgress();
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('statsBar').style.display = 'flex';
+            document.getElementById('wardSelection').style.display = 'grid';
+            document.getElementById('totalCases').textContent = gameState.totalCases;
+            updateStats();
+        }
+
+        // Select a ward
+        function selectWard(wardName) {
+            gameState.currentWard = wardName;
+            document.querySelectorAll('.ward-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-ward="${wardName}"]`).classList.add('active');
+            
+            // Find next uncompleted case in this ward
+            const wardCases = cases[wardName];
+            let nextCaseIndex = -1;
+            
+            for (let i = 0; i < wardCases.length; i++) {
+                if (!gameState.casesCompleted.includes(wardCases[i].id)) {
+                    nextCaseIndex = i;
+                    break;
+                }
+            }
+            
+            if (nextCaseIndex === -1) {
+                alert('All cases in this ward completed! Choose another ward.');
+                return;
+            }
+            
+            loadCase(wardName, nextCaseIndex);
+        }
+
+        // Load a specific case
+        function loadCase(wardName, caseIndex) {
+            const caseData = cases[wardName][caseIndex];
+            
+            document.getElementById('wardSelection').style.display = 'none';
+            document.getElementById('caseContainer').classList.add('active');
+            
+            // Update case header
+            document.getElementById('caseNumber').textContent = `CASE #${String(gameState.casesCompleted.length + 1).padStart(3, '0')}`;
+            document.getElementById('caseWard').textContent = wardName.toUpperCase() + ' WARD';
+            
+            // Update patient info
+            document.getElementById('patientSprite').textContent = caseData.sprite;
+            document.getElementById('patientText').textContent = caseData.patient;
+            
+            // Update vitals
+            const vitalsGrid = document.getElementById('vitalsGrid');
+            vitalsGrid.innerHTML = '';
+            
+            if (caseData.vitals) {
+                Object.entries(caseData.vitals).forEach(([label, value]) => {
+                    const vitalBox = document.createElement('div');
+                    vitalBox.className = 'vital-box';
+                    
+                    const isCritical = (label === 'O2' && parseInt(value) < 92) ||
+                                       (label === 'HR' && (parseInt(value) > 100 || parseInt(value) < 60)) ||
+                                       (label === 'BP' && value.includes('--'));
+                    
+                    vitalBox.innerHTML = `
+                        <div class="vital-label">${label}</div>
+                        <div class="vital-value ${isCritical ? 'critical' : ''}">${value}</div>
+                    `;
+                    vitalsGrid.appendChild(vitalBox);
+                });
+            }
+            
+            // Update question
+            document.getElementById('questionText').textContent = caseData.question;
+            
+            // Update options
+            const optionsGrid = document.getElementById('optionsGrid');
+            optionsGrid.innerHTML = '';
+            
+            const shuffledOptions = [...caseData.options].sort(() => Math.random() - 0.5);
+            const keys = ['A', 'B', 'C', 'D'];
+            
+            shuffledOptions.forEach((option, index) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option-btn';
+                optionBtn.innerHTML = `
+                    <span class="option-key">${keys[index]}</span>
+                    <span>${option.text}</span>
+                `;
+                optionBtn.onclick = () => selectAnswer(optionBtn, option.correct, caseData);
+                optionsGrid.appendChild(optionBtn);
+            });
+            
+            // Reset feedback
+            document.getElementById('feedbackBox').classList.remove('show', 'correct', 'incorrect');
+            document.getElementById('nextBtn').classList.remove('show');
+            
+            // Store current case data
+            gameState.currentCaseData = { wardName, caseIndex, caseData };
+        }
+
+        // Handle answer selection
+        function selectAnswer(selectedBtn, isCorrect, caseData) {
+            // Disable all options
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.add('disabled');
+                btn.onclick = null;
+            });
+            
+            // Mark selected answer
+            if (isCorrect) {
+                selectedBtn.classList.add('correct');
+                gameState.score += 100 + (gameState.streak * 10);
+                gameState.streak++;
+                gameState.topicScores[gameState.currentWard].correct++;
+            } else {
+                selectedBtn.classList.add('incorrect');
+                gameState.streak = 0;
+                gameState.health = Math.max(0, gameState.health - 10);
+                
+                // Show correct answer
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    if (btn.textContent.includes(caseData.options.find(o => o.correct).text.substring(0, 30))) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Show feedback
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+            document.getElementById('feedbackHeader').textContent = isCorrect ? '✓ CORRECT!' : '✗ REVIEW THIS:';
+            document.getElementById('feedbackText').textContent = caseData.explanation;
+            document.getElementById('keyPointText').textContent = caseData.keyPoint;
+            
+            // Show next button
+            document.getElementById('nextBtn').classList.add('show');
+            
+            // Mark case as completed
+            gameState.casesCompleted.push(caseData.id);
+            gameState.wardProgress[gameState.currentWard]++;
+            
+            updateStats();
+        }
+
+        // Move to next case
+        function nextCase() {
+            const { wardName } = gameState.currentCaseData;
+            const wardCases = cases[wardName];
+            
+            // Update ward progress display
+            document.getElementById(`progress-${wardName}`).textContent = 
+                `${gameState.wardProgress[wardName]}/${wardCases.length}`;
+            
+            // Check if ward is complete
+            if (gameState.wardProgress[wardName] >= wardCases.length) {
+                document.querySelector(`[data-ward="${wardName}"]`).classList.add('completed');
+            }
+            
+            // Check if game is complete
+            if (gameState.casesCompleted.length >= gameState.totalCases) {
+                showCompletion();
+                return;
+            }
+            
+            // Return to ward selection
+            document.getElementById('caseContainer').classList.remove('active');
+            document.getElementById('wardSelection').style.display = 'grid';
+            
+            // Update current case counter
+            document.getElementById('currentCase').textContent = gameState.casesCompleted.length;
+        }
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('scoreDisplay').textContent = gameState.score;
+            document.getElementById('currentCase').textContent = gameState.casesCompleted.length;
+            document.getElementById('streakDisplay').textContent = gameState.streak;
+            document.getElementById('healthFill').style.width = gameState.health + '%';
+            
+            if (gameState.health < 30) {
+                document.getElementById('healthFill').style.background = 'linear-gradient(to bottom, #ff4444, #aa0000)';
+            }
+        }
+
+        // Show completion screen
+        function showCompletion() {
+            document.getElementById('caseContainer').classList.remove('active');
+            document.getElementById('wardSelection').style.display = 'none';
+            document.getElementById('statsBar').style.display = 'none';
+            document.getElementById('completionScreen').classList.add('show');
+            
+            const totalCorrect = Object.values(gameState.topicScores).reduce((sum, t) => sum + t.correct, 0);
+            const percentage = Math.round((totalCorrect / gameState.totalCases) * 100);
+            
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('scoreBreakdown').textContent = `${totalCorrect} / ${gameState.totalCases} cases correct (${percentage}%)`;
+            
+            // Determine grade
+            let grade, gradeClass;
+            if (percentage >= 90) { grade = 'A'; gradeClass = 'a'; }
+            else if (percentage >= 80) { grade = 'B'; gradeClass = 'b'; }
+            else if (percentage >= 70) { grade = 'C'; gradeClass = 'c'; }
+            else if (percentage >= 60) { grade = 'D'; gradeClass = 'd'; }
+            else { grade = 'F'; gradeClass = 'f'; }
+            
+            const gradeElement = document.getElementById('finalGrade');
+            gradeElement.textContent = grade;
+            gradeElement.className = 'grade ' + gradeClass;
+            
+            // Show topic breakdown
+            const topicReview = document.getElementById('topicReview');
+            topicReview.innerHTML = '<h3>TOPIC BREAKDOWN</h3>';
+            
+            Object.entries(gameState.topicScores).forEach(([ward, scores]) => {
+                const wardPercent = Math.round((scores.correct / scores.total) * 100);
+                let scoreClass = wardPercent >= 80 ? 'good' : wardPercent >= 60 ? 'ok' : 'bad';
+                
+                const wardNames = {
+                    cellular: 'Cellular Adaptation',
+                    genetics: 'Genetics',
+                    inflammation: 'Inflammation & Wounds',
+                    infection: 'Infectious Disease',
+                    immune: 'Immunology',
+                    cardiac: 'Cardiac Care',
+                    respiratory: 'Respiratory',
+                    hematology: 'Hematology',
+                    vascular: 'Vascular'
+                };
+                
+                topicReview.innerHTML += `
+                    <div class="topic-item">
+                        <span class="topic-name">${wardNames[ward]}</span>
+                        <span class="topic-score ${scoreClass}">${scores.correct}/${scores.total} (${wardPercent}%)</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Restart the game
+        function restartGame() {
+            gameState = {
+                score: 0,
+                currentCase: 0,
+                totalCases: 0,
+                streak: 0,
+                health: 100,
+                currentWard: null,
+                wardProgress: {},
+                topicScores: {},
+                casesCompleted: []
+            };
+            
+            document.getElementById('completionScreen').classList.remove('show');
+            document.getElementById('healthFill').style.background = 'linear-gradient(to bottom, #00ff00, #00aa00)';
+            
+            // Reset ward buttons
+            document.querySelectorAll('.ward-btn').forEach(btn => {
+                btn.classList.remove('completed', 'active');
+            });
+            
+            startGame();
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            const keys = ['a', 'b', 'c', 'd'];
+            const keyIndex = keys.indexOf(e.key.toLowerCase());
+            
+            if (keyIndex !== -1) {
+                const options = document.querySelectorAll('.option-btn:not(.disabled)');
+                if (options[keyIndex]) {
+                    options[keyIndex].click();
+                }
+            }
+            
+            if (e.key === 'Enter' || e.key === ' ') {
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn.classList.contains('show')) {
+                    nextBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
