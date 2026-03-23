@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kinetics Lab — Interactive Environment</title>
+<style>
+:root {
+  --navy:   #0D2B4E;
+  --teal:   #006D75;
+  --orange: #C0550A;
+  --purple: #4A148C;
+  --green:  #1B5E20;
+  --red:    #B71C1C;
+  --gold:   #E8B86D;
+  --bg:     #f0f3f8;
+  --white:  #ffffff;
+  --border: #cdd3e0;
+  --text:   #1a1a2e;
+  --sub:    #556070;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+/* ── Header ── */
+.hdr { background: linear-gradient(135deg, var(--navy) 0%, #1a3a6a 100%); color: #fff; padding: 18px 30px; }
+.hdr-title { font-size: 20px; font-weight: 700; }
+.hdr-sub   { font-size: 12.5px; color: rgba(255,255,255,.65); margin-top: 3px; }
+
+/* ── Tabs ── */
+.tabs { display: flex; background: #0a1e38; border-bottom: 1px solid rgba(255,255,255,.1); gap: 0; }
+.tab  { flex: 1; padding: 12px 8px; text-align: center; color: rgba(255,255,255,.45); cursor: pointer;
+        font-size: 12.5px; font-weight: 600; border: none; background: none;
+        border-bottom: 3px solid transparent; transition: all .2s; }
+.tab:hover  { color: rgba(255,255,255,.75); }
+.tab.active { color: #fff; border-bottom-color: var(--gold); }
+
+/* ── Main ── */
+.main  { max-width: 1080px; margin: 0 auto; padding: 24px 18px 60px; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── Cards ── */
+.card { background: var(--white); border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.07); padding: 20px 22px; margin-bottom: 16px; }
+.card-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.card-sub   { font-size: 13px; color: var(--sub); margin-bottom: 14px; line-height: 1.55; }
+
+/* ── Section headers ── */
+.sec-hdr { border-radius: 8px; padding: 12px 18px; color: #fff; margin-bottom: 16px; }
+.sec-hdr h2 { font-size: 16px; font-weight: 700; }
+.sec-hdr p  { font-size: 12px; opacity: .8; margin-top: 3px; }
+
+/* ── Experiment grid ── */
+.exp-grid   { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+.beaker-box { flex: 1; min-width: 150px; text-align: center; }
+.beaker-lbl { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.beaker-sub { font-size: 11px; color: var(--sub); margin-bottom: 5px; }
+canvas.beaker { border-radius: 6px; }
+.beaker-time { font-size: 13px; font-weight: 700; margin-top: 5px; height: 20px; }
+
+/* ── Buttons ── */
+.btn { padding: 8px 20px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; }
+.btn-teal   { background: var(--teal); color: #fff; }
+.btn-teal:hover   { background: #008090; }
+.btn-gray   { background: #dde3ee; color: #444; }
+.btn-gray:hover   { background: #c5ccd8; }
+.btn-row    { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+
+/* ── Theory cards ── */
+.theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; }
+.theory-card { border-radius: 8px; padding: 14px 16px; }
+.theory-card .tc-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+.theory-card .tc-body  { font-size: 12.5px; line-height: 1.5; }
+
+/* ── Reference procedure ── */
+.proc-grid  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.proc-card  { border-radius: 8px; padding: 16px; }
+.proc-card h3 { font-size: 13.5px; font-weight: 700; margin-bottom: 8px; }
+.proc-card ol { padding-left: 18px; font-size: 12.5px; line-height: 1.7; }
+
+/* ── Data recorder ── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th { padding: 8px 10px; text-align: center; font-weight: 600; color: #fff; }
+.tbl td { padding: 6px 8px; border: 1px solid #dde; text-align: center; vertical-align: middle; }
+.tbl tr:nth-child(even) td { background: #f7f9fc; }
+.tbl .lbl { text-align: left; font-weight: 600; padding-left: 12px; background: #eef1f8; }
+input[type=number], input[type=text] {
+  width: 100%; padding: 4px 6px; border: 1.5px solid #bcc4d4; border-radius: 4px;
+  text-align: center; font-size: 12.5px; font-family: inherit; }
+input:focus { outline: none; border-color: var(--teal); }
+textarea { width: 100%; padding: 4px 6px; border: 1.5px solid #bcc4d4; border-radius: 4px;
+           font-size: 12px; font-family: inherit; resize: vertical; min-height: 50px; }
+textarea:focus { outline: none; border-color: var(--teal); }
+
+/* ── Results ── */
+.chart-wrap { position: relative; margin: 10px 0; }
+.bar-row    { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+.bar-label  { width: 200px; font-size: 12.5px; text-align: right; flex-shrink: 0; }
+.bar-track  { flex: 1; background: #eef1f8; border-radius: 4px; height: 32px; position: relative; overflow: hidden; }
+.bar-fill   { height: 100%; border-radius: 4px; transition: width .6s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
+.bar-val    { font-size: 12px; font-weight: 700; color: #fff; }
+.bar-axis   { display: flex; margin-left: 212px; font-size: 11px; color: var(--sub); justify-content: space-between; }
+
+/* ── Info boxes ── */
+.info-box { border-left: 4px solid; border-radius: 0 6px 6px 0; padding: 10px 14px; margin: 8px 0; font-size: 13px; }
+
+/* ── Reaction formula ── */
+.rxn { background: #eef4ff; border: 1px solid #c5d5f5; border-radius: 8px; padding: 12px 18px; text-align: center; font-weight: 700; font-family: 'Courier New', monospace; font-size: 13.5px; color: var(--navy); margin: 10px 0; letter-spacing: .5px; }
+
+/* ── Print ── */
+@media print {
+  .hdr, .tabs, .btn { display: none !important; }
+  .panel { display: block !important; }
+  .card  { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-title">General Chemistry II — Reaction Kinetics &amp; Pharmacokinetics</div>
+  <div class="hdr-sub">Interactive Lab Environment &nbsp;·&nbsp; Effervescent Tablet Dissolution Study</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active"   onclick="showTab('explorer')">Experiment Simulator</button>
+  <button class="tab"          onclick="showTab('theory')">Theory &amp; Concepts</button>
+  <button class="tab"          onclick="showTab('procedure')">Procedure Reference</button>
+  <button class="tab"          onclick="showTab('data')">Data Recorder</button>
+  <button class="tab"          onclick="showTab('results')">Results &amp; Charts</button>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════ EXPLORER ══ -->
+<div class="panel active" id="panel-explorer">
+
+  <div class="card">
+    <div class="card-title" style="color:var(--navy)">How to Use This Simulator</div>
+    <div class="card-sub">
+      Each experiment shows animated beakers side by side so you can compare conditions directly.
+      Click <strong>Run</strong> to start all beakers simultaneously — watch which reacts fastest.
+      The time displayed is <em>simulated</em> (compressed) to illustrate the trend; real lab times will be longer.
+    </div>
+  </div>
+
+  <!-- Experiment A -->
+  <div class="sec-hdr" style="background: linear-gradient(135deg, var(--teal) 0%, #008090 100%)">
+    <h2>Experiment A — Effect of Surface Area</h2>
+    <p>Independent variable: tablet surface area &nbsp;|&nbsp; Controlled: 100 mL room-temp distilled water</p>
+  </div>
+  <div class="card">
+    <div class="exp-grid" id="grid-a"></div>
+    <div class="btn-row">
+      <button class="btn btn-teal" onclick="runExp('a')">▶ Run Experiment A</button>
+      <button class="btn btn-gray" onclick="resetExp('a')">↺ Reset</button>
+      <span id="status-a" style="font-size:12.5px;color:var(--sub)"></span>
+    </div>
+    <div class="info-box" style="border-color:var(--teal);background:#e0f4f4;margin-top:12px">
+      <strong style="color:var(--teal)">What to notice:</strong>
+      The crushed powder exposes many more reactant molecules to the water simultaneously,
+      so productive collisions happen far more often per second. The whole tablet can only react at its surface.
+    </div>
+  </div>
+
+  <!-- Experiment B -->
+  <div class="sec-hdr" style="background: linear-gradient(135deg, var(--orange) 0%, #d4660f 100%)">
+    <h2>Experiment B — Effect of Temperature</h2>
+    <p>Independent variable: water temperature &nbsp;|&nbsp; Controlled: whole tablet, 100 mL water</p>
+  </div>
+  <div class="card">
+    <div class="exp-grid" id="grid-b"></div>
+    <div class="btn-row">
+      <button class="btn btn-teal" onclick="runExp('b')">▶ Run Experiment B</button>
+      <button class="btn btn-gray" onclick="resetExp('b')">↺ Reset</button>
+      <span id="status-b" style="font-size:12.5px;color:var(--sub)"></span>
+    </div>
+    <div class="info-box" style="border-color:var(--orange);background:#fef3eb;margin-top:12px">
+      <strong style="color:var(--orange)">What to notice:</strong>
+      Hot water molecules have greater average kinetic energy. More molecules simultaneously
+      exceed the activation energy (Eₐ), so more collisions are productive per second — faster dissolution.
+    </div>
+  </div>
+
+  <!-- Experiment C -->
+  <div class="sec-hdr" style="background: linear-gradient(135deg, var(--purple) 0%, #6a1fa0 100%)">
+    <h2>Experiment C — Effect of pH / Concentration</h2>
+    <p>Independent variable: solvent composition &nbsp;|&nbsp; Controlled: whole tablet, 100 mL total volume, room temp</p>
+  </div>
+  <div class="card">
+    <div class="exp-grid" id="grid-c"></div>
+    <div class="btn-row">
+      <button class="btn btn-teal" onclick="runExp('c')">▶ Run Experiment C</button>
+      <button class="btn btn-gray" onclick="resetExp('c')">↺ Reset</button>
+      <span id="status-c" style="font-size:12.5px;color:var(--sub)"></span>
+    </div>
+    <div class="info-box" style="border-color:var(--purple);background:#f3ecfb;margin-top:12px">
+      <strong style="color:var(--purple)">What to notice:</strong>
+      Acetic acid (C2) adds H⁺ ions — higher [H⁺] increases collision frequency with HCO₃⁻, speeding CO₂ production (simulates acidic stomach, pH 1.5–3.5).
+      Baking soda solution (C3) raises pH — fewer H⁺ ions available means fewer productive collisions and slower dissolution (simulates the intestine or post-antacid stomach, pH ≈ 8).
+      Expected order: Acidic &lt; Neutral &lt; Basic (dissolution time).
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════ THEORY ══ -->
+<div class="panel" id="panel-theory">
+  <div class="card">
+    <div class="card-title" style="color:var(--navy)">The Chemical Reaction</div>
+    <div class="rxn">H₃C₆H₅O₇(s)  +  3 NaHCO₃(s)  →  Na₃C₆H₅O₇(aq)  +  3 H₂O(l)  +  3 CO₂(g)</div>
+    <div class="card-sub" style="margin-top:8px">
+      Citric acid and sodium bicarbonate are both <strong>solids</strong> inside the tablet.
+      Dissolution in water is necessary before they can react.
+      CO₂ gas is responsible for the vigorous fizzing you observe.
+      The reaction is complete when bubbling stops AND no solid pieces remain.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--navy)">Collision Theory</div>
+    <div class="theory-grid">
+      <div class="theory-card" style="background:#e0f4f4">
+        <div class="tc-label" style="color:var(--teal)">Criterion 1 — Kinetic Energy</div>
+        <div class="tc-body">Colliding molecules must possess kinetic energy ≥ the activation energy (Eₐ).
+        Without this minimum threshold, existing bonds cannot break and the reaction does not occur.</div>
+      </div>
+      <div class="theory-card" style="background:#eef4ff">
+        <div class="tc-label" style="color:var(--blue,#1565C0)">Criterion 2 — Orientation</div>
+        <div class="tc-body">Molecules must collide at the correct geometric angle so reacting atoms or
+        functional groups make direct contact. A wrong-angle collision fails even with sufficient energy.</div>
+      </div>
+      <div class="theory-card" style="background:#fef6e8">
+        <div class="tc-label" style="color:var(--orange)">The Arrhenius Equation</div>
+        <div class="tc-body"><strong>k = A · e^(−Eₐ/RT)</strong><br>
+        As temperature T increases, e^(−Eₐ/RT) increases → k increases → faster reaction rate.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--navy)">Clinical Connections — Pharmacokinetics</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:8px">
+      <div style="background:#e0f4f4;border-radius:8px;padding:14px">
+        <div style="font-weight:700;color:var(--teal);margin-bottom:6px;font-size:13px">Surface Area</div>
+        <div style="font-size:12.5px;line-height:1.6">
+          Crushing a tablet maximizes dissolution rate. Extended-release (XR) capsules are engineered to
+          minimize exposed surface area — never crush or chew them. Doing so releases the full dose at once,
+          risking toxicity or overdose.
+        </div>
+      </div>
+      <div style="background:#fef6e8;border-radius:8px;padding:14px">
+        <div style="font-weight:700;color:var(--orange);margin-bottom:6px;font-size:13px">Temperature</div>
+        <div style="font-size:12.5px;line-height:1.6">
+          Body temperature (37°C) provides consistent drug dissolution. In hypothermia (low T),
+          enzymatic reaction rates slow. In fever (high T), metabolic reactions modestly accelerate.
+          Critically ill patients may have unpredictable drug absorption.
+        </div>
+      </div>
+      <div style="background:#f3ecfb;border-radius:8px;padding:14px">
+        <div style="font-weight:700;color:var(--purple);margin-bottom:6px;font-size:13px">pH / Concentration</div>
+        <div style="font-size:12.5px;line-height:1.6">
+          The stomach is acidic (pH 1.5–3.5), accelerating dissolution of basic drugs like antacids.
+          Enteric-coated tablets resist this environment and only dissolve in the neutral intestine
+          (pH 7–8) — protecting the stomach lining and targeting intestinal absorption.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ PROCEDURE ══ -->
+<div class="panel" id="panel-procedure">
+  <div class="card">
+    <div class="card-title" style="color:var(--navy)">Quick Reference — Lab Procedures</div>
+    <div class="card-sub">Use this during the lab to keep your place. Each experiment uses a whole tablet unless noted.</div>
+    <div style="background:#fff8e1;border-left:4px solid #f0a500;padding:10px 14px;border-radius:0 6px 6px 0;margin-bottom:14px;font-size:13px;color:#6b4000">
+      <strong>Endpoint definition:</strong> The reaction is complete the exact moment vigorous bubbling ceases
+      AND no solid tablet pieces remain visible. Both conditions must be met.
+    </div>
+    <div class="proc-grid">
+      <div class="proc-card" style="background:#e0f4f4;border:1px solid #b0dde0">
+        <h3 style="color:var(--teal)">Experiment A — Surface Area</h3>
+        <ol>
+          <li>100 mL room-temp distilled water</li>
+          <li>Drop <strong>whole tablet</strong> → time → record</li>
+          <li>Rinse beaker; fresh 100 mL water</li>
+          <li>Break tablet into <strong>4 quarters</strong> → drop all at once → time</li>
+          <li>Rinse; fresh water; <strong>crush tablet to powder</strong> (mortar/pestle) → transfer → time</li>
+        </ol>
+      </div>
+      <div class="proc-card" style="background:#fef6e8;border:1px solid #f5c78a">
+        <h3 style="color:var(--orange)">Experiment B — Temperature</h3>
+        <ol>
+          <li>100 mL <strong>cold water</strong> (ice bath, no ice) → measure temp → whole tablet → time</li>
+          <li>Transfer room-temp data from Exp A, Trial 1</li>
+          <li>100 mL <strong>hot water</strong> (~50°C) → measure temp → whole tablet → time</li>
+          <li>Caution: use tongs or heat-resistant gloves for hot beaker</li>
+        </ol>
+      </div>
+      <div class="proc-card" style="background:#f3ecfb;border:1px solid #c9a5e5">
+        <h3 style="color:var(--purple)">Experiment C — pH / Concentration</h3>
+        <ol>
+          <li>Transfer distilled water data from Exp A, Trial 1 → record as C1</li>
+          <li>Mix <strong>50 mL distilled water + 50 mL acetic acid</strong> (vinegar, pH ≈ 3) → drop tablet → time → C2</li>
+          <li>Mix <strong>50 mL distilled water + 50 mL baking soda solution</strong> (0.1 M NaHCO₃, pH ≈ 8.3) → drop tablet → time → C3</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ DATA RECORDER ══ -->
+<div class="panel" id="panel-data">
+
+  <div class="card">
+    <div class="card-title" style="color:var(--teal)">Table 1 — Effect of Surface Area</div>
+    <div class="card-sub">Controlled variables: 100 mL room-temperature distilled water per trial.</div>
+    <table class="tbl">
+      <thead><tr style="background:var(--teal)">
+        <th style="text-align:left;padding-left:12px">Trial</th>
+        <th>Tablet State</th>
+        <th>Time to Endpoint (s)</th>
+        <th>Observations</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="lbl">A1</td><td style="text-align:left;padding-left:10px">Whole tablet (intact)</td>
+          <td><input type="number" id="t1-a1" placeholder="s"></td>
+          <td><textarea id="o1-a1" rows="2"></textarea></td></tr>
+        <tr><td class="lbl">A2</td><td style="text-align:left;padding-left:10px">Quartered (4 pieces, simultaneously)</td>
+          <td><input type="number" id="t1-a2" placeholder="s"></td>
+          <td><textarea id="o1-a2" rows="2"></textarea></td></tr>
+        <tr><td class="lbl">A3</td><td style="text-align:left;padding-left:10px">Crushed powder</td>
+          <td><input type="number" id="t1-a3" placeholder="s"></td>
+          <td><textarea id="o1-a3" rows="2"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--orange)">Table 2 — Effect of Temperature</div>
+    <div class="card-sub">Controlled variables: whole tablet, 100 mL water per trial.</div>
+    <table class="tbl">
+      <thead><tr style="background:var(--orange)">
+        <th style="text-align:left;padding-left:12px">Trial</th>
+        <th>Water Condition</th>
+        <th>Measured Temp (°C)</th>
+        <th>Time to Endpoint (s)</th>
+        <th>Observations</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="lbl">B1</td><td style="text-align:left;padding-left:10px">Cold water (ice bath)</td>
+          <td><input type="number" id="temp-b1" step="0.1" placeholder="°C"></td>
+          <td><input type="number" id="t2-b1" placeholder="s"></td>
+          <td><textarea id="o2-b1" rows="2"></textarea></td></tr>
+        <tr><td class="lbl">B2</td><td style="text-align:left;padding-left:10px">Room temperature (transfer from A1)</td>
+          <td><input type="number" id="temp-b2" step="0.1" placeholder="°C"></td>
+          <td><input type="number" id="t2-b2" placeholder="s"></td>
+          <td><textarea id="o2-b2" rows="2"></textarea></td></tr>
+        <tr><td class="lbl">B3</td><td style="text-align:left;padding-left:10px">Hot water (~50°C)</td>
+          <td><input type="number" id="temp-b3" step="0.1" placeholder="°C"></td>
+          <td><input type="number" id="t2-b3" placeholder="s"></td>
+          <td><textarea id="o2-b3" rows="2"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--purple)">Table 3 — Effect of Concentration / pH</div>
+    <div class="card-sub">Controlled variables: whole tablet, 100 mL total liquid volume, room temperature.</div>
+    <table class="tbl">
+      <thead><tr style="background:var(--purple)">
+        <th style="text-align:left;padding-left:12px">Trial</th>
+        <th>Solvent Condition</th>
+        <th>Time to Endpoint (s)</th>
+        <th>Observations</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="lbl">C1</td><td style="text-align:left;padding-left:10px">100 mL distilled water — Neutral (pH ≈ 7)</td>
+          <td><input type="number" id="t3-c1" placeholder="s"></td>
+          <td><textarea id="o3-c1" rows="2"></textarea></td></tr>
+        <tr><td class="lbl">C2</td><td style="text-align:left;padding-left:10px">50 mL water + 50 mL acetic acid — Acidic (pH ≈ 3)</td>
+          <td><input type="number" id="t3-c2" placeholder="s"></td>
+          <td><textarea id="o3-c2" rows="2"></textarea></td></tr>
+        <tr><td class="lbl">C3</td><td style="text-align:left;padding-left:10px">50 mL water + 50 mL baking soda solution — Basic (pH ≈ 8.3)</td>
+          <td><input type="number" id="t3-c3" placeholder="s"></td>
+          <td><textarea id="o3-c3" rows="2"></textarea></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-top:4px">
+    <button class="btn btn-teal" onclick="showTab('results');renderCharts()">Generate Charts →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ RESULTS ══ -->
+<div class="panel" id="panel-results">
+
+  <div class="card">
+    <div class="card-title" style="color:var(--teal)">Experiment A — Surface Area vs. Reaction Time</div>
+    <div id="chart-a" class="chart-wrap"></div>
+    <div id="interp-a" class="info-box" style="border-color:var(--teal);background:#e0f4f4;margin-top:10px;display:none"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--orange)">Experiment B — Temperature vs. Reaction Time</div>
+    <div id="chart-b" class="chart-wrap"></div>
+    <div id="interp-b" class="info-box" style="border-color:var(--orange);background:#fef3eb;margin-top:10px;display:none"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--purple)">Experiment C — pH / Concentration vs. Reaction Time</div>
+    <div id="chart-c" class="chart-wrap"></div>
+    <div id="interp-c" class="info-box" style="border-color:var(--purple);background:#f3ecfb;margin-top:10px;display:none"></div>
+  </div>
+
+  <div class="card" id="summary-card" style="display:none">
+    <div class="card-title" style="color:var(--navy)">Summary of Trends</div>
+    <div id="summary-text" style="font-size:13.5px;line-height:1.8;color:#333"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-teal" onclick="renderCharts()">Refresh Charts</button>
+    <button class="btn btn-gray" onclick="window.print()">Print / Save PDF</button>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+//  TAB NAVIGATION
+// ════════════════════════════════════════════════════════════════════════
+const PANEL_IDS = ['explorer','theory','procedure','data','results'];
+
+function showTab(name) {
+  PANEL_IDS.forEach(id => {
+    document.getElementById('panel-'+id).classList.toggle('active', id===name);
+  });
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', PANEL_IDS[i]===name);
+  });
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  BEAKER SIMULATION
+// ════════════════════════════════════════════════════════════════════════
+class BeakerSim {
+  constructor(canvas, cfg) {
+    this.cv  = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.cfg = cfg;    // {rate, label, color, tabletType, waterColor}
+    this.reset();
+  }
+
+  reset() {
+    this.elapsed  = 0;
+    this.done     = false;
+    this.running  = false;
+    this.bubbles  = [];
+    this.tabletFrac = 1.0;   // 1 = full, 0 = dissolved
+    this.spawnAcc = 0;
+    this.draw();
+  }
+
+  update(dt) {
+    if (this.done) return;
+    this.elapsed += dt;
+
+    // Dissolve tablet
+    this.tabletFrac -= dt * this.cfg.rate * 0.18;
+    if (this.tabletFrac <= 0) { this.tabletFrac = 0; this.done = true; }
+
+    // Spawn bubbles proportional to dissolve rate and remaining tablet
+    this.spawnAcc += dt * this.cfg.rate * 18 * this.tabletFrac;
+    while (this.spawnAcc >= 1) {
+      this.spawnAcc -= 1;
+      const bx = this._tabletX() + (Math.random()-0.5)*this._tabletW()*0.8;
+      this.bubbles.push({
+        x: bx, y: this._waterTop() + this._waterH() - 10,
+        r: 1.5 + Math.random()*2.5,
+        vx: (Math.random()-0.5)*8,
+        vy: 25 + Math.random()*35 * this.cfg.rate,
+        life: 1.0,
+      });
+    }
+
+    // Move and age bubbles
+    this.bubbles = this.bubbles.filter(b => {
+      b.x  += b.vx * dt;
+      b.y  -= b.vy * dt;
+      b.life -= dt * 0.6;
+      return b.life > 0 && b.y > this._waterTop();
+    });
+  }
+
+  draw() {
+    const ctx = this.ctx;
+    const W = this.cv.width, H = this.cv.height;
+    ctx.clearRect(0,0,W,H);
+
+    // Background
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0,0,W,H);
+
+    // Water fill
+    const wt = this._waterTop(), wh = this._waterH(), wl = 22, ww = W-44;
+    ctx.fillStyle = this.cfg.waterColor || 'rgba(173,219,240,0.28)';
+    ctx.fillRect(wl, wt, ww, wh);
+
+    // Bubbles (below water surface)
+    this.bubbles.forEach(b => {
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${b.life*0.75})`;
+      ctx.fill();
+      ctx.strokeStyle = `rgba(150,210,240,${b.life*0.5})`;
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+    });
+
+    // Tablet
+    if (this.tabletFrac > 0.01) this._drawTablet(ctx, W, H);
+
+    // Beaker outline
+    ctx.strokeStyle = '#6a8aaa';
+    ctx.lineWidth   = 2;
+    ctx.strokeRect(wl, wt, ww, wh);
+
+    // Beaker lip / top rim
+    ctx.beginPath();
+    ctx.moveTo(wl-4, wt); ctx.lineTo(wl+ww+4, wt);
+    ctx.strokeStyle = '#6a8aaa'; ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Measurement lines on beaker
+    ctx.setLineDash([3,3]); ctx.strokeStyle = '#aac'; ctx.lineWidth = 0.7;
+    for (let i=1; i<4; i++) {
+      const y = wt + wh*i/4;
+      ctx.beginPath(); ctx.moveTo(wl, y); ctx.lineTo(wl+12, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(wl+ww-12, y); ctx.lineTo(wl+ww, y); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // Done label
+    if (this.done) {
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.fillRect(0, H/2-16, W, 32);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 13px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('COMPLETE', W/2, H/2+5);
+      ctx.textAlign = 'left';
+    }
+
+    // Idle label
+    if (!this.running && !this.done) {
+      ctx.fillStyle = 'rgba(100,140,180,0.08)';
+      ctx.fillRect(wl, wt, ww, wh);
+      ctx.fillStyle = 'rgba(80,110,150,0.55)';
+      ctx.font = '11px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('Press Run', W/2, wt+wh/2+5);
+      ctx.textAlign = 'left';
+    }
+  }
+
+  _drawTablet(ctx, W, H) {
+    const type = this.cfg.tabletType || 'whole';
+    const bW   = this._beakerW();
+    const by   = this._waterTop() + this._waterH() - 18;
+
+    if (type === 'whole') {
+      const tw = bW * 0.42 * this.tabletFrac;
+      const th = 14 * Math.sqrt(this.tabletFrac);
+      ctx.fillStyle = '#f0f0f0'; ctx.strokeStyle = '#bbb'; ctx.lineWidth = 1.2;
+      ctx.fillRect(W/2-tw/2, by-th/2, tw, th);
+      ctx.strokeRect(W/2-tw/2, by-th/2, tw, th);
+      // Score line
+      if (this.tabletFrac > 0.3) {
+        ctx.beginPath(); ctx.moveTo(W/2, by-th/2+2); ctx.lineTo(W/2, by+th/2-2);
+        ctx.strokeStyle='#ccc'; ctx.lineWidth=0.8; ctx.stroke();
+      }
+
+    } else if (type === 'quarters') {
+      const s = 11 * Math.sqrt(this.tabletFrac);
+      const gap = 4;
+      const cx = W/2, cy = by;
+      [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([dx,dy]) => {
+        const x = cx + dx*(s/2+gap/2) - s/2;
+        const y = cy + dy*(s/2+gap/2) - s/2;
+        ctx.fillStyle = '#f0f0f0'; ctx.strokeStyle = '#bbb'; ctx.lineWidth = 1;
+        ctx.fillRect(x, y, s, s); ctx.strokeRect(x, y, s, s);
+      });
+
+    } else if (type === 'powder') {
+      const n = Math.floor(60 * this.tabletFrac);
+      ctx.fillStyle = 'rgba(220,220,220,0.9)';
+      const bw = this._beakerW() * 0.6;
+      for (let i=0; i<n; i++) {
+        const px = W/2 - bw/2 + (i % 10) * (bw/10) + Math.sin(i*1.3)*2;
+        const py = by - Math.floor(i/10) * 3;
+        const ps = 1.2 + Math.random()*1.5;
+        ctx.fillRect(px, py, ps, ps);
+      }
+    }
+  }
+
+  _waterTop()  { return 28; }
+  _waterH()    { return this.cv.height - 55; }
+  _beakerW()   { return this.cv.width - 44; }
+  _tabletX()   { return this.cv.width/2; }
+  _tabletW()   { return this._beakerW() * 0.4 * this.tabletFrac; }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  EXPERIMENT CONFIG
+// ════════════════════════════════════════════════════════════════════════
+const EXPS = {
+  a: {
+    id: 'a',
+    sims: [
+      { label:'Whole Tablet',    sub:'1 piece',  rate:0.18, tabletType:'whole',    waterColor:'rgba(173,219,240,0.25)', color:'#006D75' },
+      { label:'Quartered',       sub:'4 pieces', rate:0.45, tabletType:'quarters', waterColor:'rgba(173,219,240,0.25)', color:'#1565C0' },
+      { label:'Crushed Powder',  sub:'~100 particles', rate:1.0, tabletType:'powder', waterColor:'rgba(173,219,240,0.25)', color:'#006D75' },
+    ]
+  },
+  b: {
+    id: 'b',
+    sims: [
+      { label:'Cold Water',    sub:'~5°C',  rate:0.12, tabletType:'whole', waterColor:'rgba(145,195,230,0.30)', color:'#1565C0' },
+      { label:'Room Temp',     sub:'~22°C', rate:0.28, tabletType:'whole', waterColor:'rgba(173,219,240,0.25)', color:'#006D75' },
+      { label:'Hot Water',     sub:'~50°C', rate:0.90, tabletType:'whole', waterColor:'rgba(255,180,100,0.20)', color:'#C0550A' },
+    ]
+  },
+  c: {
+    id: 'c',
+    sims: [
+      { label:'Distilled Water',      sub:'pH ≈ 7 (neutral)', rate:0.28, tabletType:'whole', waterColor:'rgba(173,219,240,0.25)', color:'#1565C0' },
+      { label:'Acetic Acid Mix',      sub:'pH ≈ 3 (acidic)',  rate:0.70, tabletType:'whole', waterColor:'rgba(210,240,180,0.30)', color:'#4A148C' },
+      { label:'Baking Soda Solution', sub:'pH ≈ 8.3 (basic)', rate:0.16, tabletType:'whole', waterColor:'rgba(200,230,200,0.30)', color:'#1B5E20' },
+    ]
+  },
+};
+
+const simInstances = { a:[], b:[], c:[] };
+let rafId = null;
+
+function buildGrids() {
+  ['a','b','c'].forEach(eid => {
+    const grid = document.getElementById('grid-'+eid);
+    const exp  = EXPS[eid];
+    simInstances[eid] = [];
+
+    exp.sims.forEach(cfg => {
+      const box = document.createElement('div');
+      box.className = 'beaker-box';
+
+      const lbl = document.createElement('div');
+      lbl.className = 'beaker-lbl';
+      lbl.style.color = cfg.color;
+      lbl.textContent = cfg.label;
+
+      const sub = document.createElement('div');
+      sub.className = 'beaker-sub';
+      sub.textContent = cfg.sub;
+
+      const cv = document.createElement('canvas');
+      cv.width  = 160;
+      cv.height = 180;
+      cv.className = 'beaker';
+
+      const timDiv = document.createElement('div');
+      timDiv.className = 'beaker-time';
+      timDiv.style.color = cfg.color;
+      timDiv.id = `btime-${eid}-${simInstances[eid].length}`;
+
+      box.append(lbl, sub, cv, timDiv);
+      grid.appendChild(box);
+
+      const sim = new BeakerSim(cv, cfg);
+      sim.timeDiv = timDiv;
+      simInstances[eid].push(sim);
+    });
+  });
+}
+
+function runExp(eid) {
+  simInstances[eid].forEach(s => { s.reset(); s.running = true; });
+  document.getElementById('status-'+eid).textContent = 'Running…';
+  startLoop();
+}
+
+function resetExp(eid) {
+  simInstances[eid].forEach((s,i) => {
+    s.reset();
+    document.getElementById(`btime-${eid}-${i}`).textContent = '';
+  });
+  document.getElementById('status-'+eid).textContent = '';
+}
+
+let lastTs = null;
+function startLoop() {
+  if (rafId) return;
+  lastTs = null;
+  rafId = requestAnimationFrame(loop);
+}
+
+function loop(ts) {
+  if (!lastTs) lastTs = ts;
+  const dt = Math.min((ts - lastTs) / 1000, 0.05);
+  lastTs = ts;
+
+  let anyActive = false;
+
+  ['a','b','c'].forEach(eid => {
+    const sims = simInstances[eid];
+    let allDone = true;
+
+    sims.forEach((s,i) => {
+      if (!s.running) return;
+      if (!s.done) {
+        s.update(dt);
+        allDone = false;
+        anyActive = true;
+        // Update time display
+        document.getElementById(`btime-${eid}-${i}`).textContent =
+          `${s.elapsed.toFixed(1)} s`;
+      } else {
+        document.getElementById(`btime-${eid}-${i}`).textContent =
+          `✓ ${s.elapsed.toFixed(1)} s`;
+      }
+      s.draw();
+    });
+
+    if (allDone && sims.some(s=>s.running)) {
+      document.getElementById('status-'+eid).textContent = 'Complete';
+    }
+  });
+
+  if (anyActive) {
+    rafId = requestAnimationFrame(loop);
+  } else {
+    rafId = null;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  CHARTS
+// ════════════════════════════════════════════════════════════════════════
+function getVal(id) {
+  const el = document.getElementById(id);
+  return el ? parseFloat(el.value) || null : null;
+}
+
+function renderCharts() {
+  renderBarChart('chart-a', [
+    { label:'A1 — Whole Tablet',    color:'#006D75', val: getVal('t1-a1') },
+    { label:'A2 — Quartered',       color:'#1565C0', val: getVal('t1-a2') },
+    { label:'A3 — Crushed Powder',  color:'#4A148C', val: getVal('t1-a3') },
+  ], 'Time to Endpoint (s)');
+
+  renderBarChart('chart-b', [
+    { label:'B1 — Cold Water',    color:'#1565C0', val: getVal('t2-b1') },
+    { label:'B2 — Room Temp',     color:'#006D75', val: getVal('t2-b2') },
+    { label:'B3 — Hot Water',     color:'#C0550A', val: getVal('t2-b3') },
+  ], 'Time to Endpoint (s)');
+
+  renderBarChart('chart-c', [
+    { label:'C1 — Distilled Water', color:'#1565C0', val: getVal('t3-c1') },
+    { label:'C2 — Acetic Acid Mix', color:'#4A148C', val: getVal('t3-c2') },
+  ], 'Time to Endpoint (s)');
+
+  // Auto-interpretations
+  interpA(); interpB(); interpC(); buildSummary();
+}
+
+function renderBarChart(containerId, bars, xLabel) {
+  const div = document.getElementById(containerId);
+  const vals = bars.map(b=>b.val).filter(v=>v!==null);
+  const maxVal = vals.length ? Math.max(...vals) : 300;
+
+  let html = `<div style="margin-bottom:8px;font-size:11.5px;color:var(--sub)">${xLabel}</div>`;
+
+  bars.forEach(b => {
+    const pct = b.val !== null ? (b.val / maxVal * 100) : 0;
+    const valStr = b.val !== null ? `${b.val} s` : 'no data';
+    html += `
+    <div class="bar-row">
+      <div class="bar-label">${b.label}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%;background:${b.color}">
+          <span class="bar-val">${valStr}</span>
+        </div>
+        ${b.val===null?'<span style="font-size:12px;color:#aaa;padding:6px">enter data to see bar</span>':''}
+      </div>
+    </div>`;
+  });
+
+  const barAxis = `<div class="bar-axis">
+    <span>0</span><span>${(maxVal/4).toFixed(0)}</span>
+    <span>${(maxVal/2).toFixed(0)}</span><span>${(3*maxVal/4).toFixed(0)}</span>
+    <span>${maxVal.toFixed(0)} s</span>
+  </div>`;
+
+  div.innerHTML = html + barAxis;
+}
+
+function interpA() {
+  const a1=getVal('t1-a1'), a2=getVal('t1-a2'), a3=getVal('t1-a3');
+  const el = document.getElementById('interp-a');
+  if (!a1||!a2||!a3) { el.style.display='none'; return; }
+  el.style.display='block';
+  const trend = (a3 < a2 && a2 < a1) ? 'consistent with' : 'partially consistent with';
+  el.innerHTML = `<strong style="color:var(--teal)">Interpretation:</strong>
+    Whole tablet: ${a1} s → Quartered: ${a2} s → Crushed: ${a3} s.
+    Your data is <em>${trend}</em> the expected trend (Crushed &lt; Quartered &lt; Whole).
+    The crushed tablet reacted ${(a1/a3).toFixed(1)}× faster than the whole tablet,
+    because grinding dramatically increases the total surface area of solid reactant exposed to the solvent,
+    raising collision frequency. ${a3<15?'<strong>Note:</strong> Very fast completion for crushed powder — consistent with large surface area exposure.':''}`;
+}
+
+function interpB() {
+  const b1=getVal('t2-b1'), b2=getVal('t2-b2'), b3=getVal('t2-b3');
+  const el = document.getElementById('interp-b');
+  if (!b1||!b2||!b3) { el.style.display='none'; return; }
+  el.style.display='block';
+  const trend = (b3 < b2 && b2 < b1) ? 'consistent with' : 'partially consistent with';
+  const tc1=getVal('temp-b1'), tc2=getVal('temp-b2'), tc3=getVal('temp-b3');
+  const tempStr = tc1&&tc2&&tc3 ? ` (${tc1}°C → ${tc2}°C → ${tc3}°C)` : '';
+  el.innerHTML = `<strong style="color:var(--orange)">Interpretation:</strong>
+    Cold: ${b1} s → Room temp: ${b2} s → Hot: ${b3} s${tempStr}.
+    Your data is <em>${trend}</em> the expected trend (Hot &lt; Room temp &lt; Cold).
+    Hot water increased the reaction rate ${(b1/b3).toFixed(1)}× compared to cold water.
+    According to the Arrhenius equation (k = A·e^(−Eₐ/RT)), higher temperature increases k
+    because more molecules simultaneously possess kinetic energy ≥ Eₐ.`;
+}
+
+function interpC() {
+  const c1=getVal('t3-c1'), c2=getVal('t3-c2'), c3=getVal('t3-c3');
+  const el = document.getElementById('interp-c');
+  if (!c1&&!c2&&!c3) { el.style.display='none'; return; }
+  el.style.display='block';
+
+  let lines = `<strong style="color:var(--purple)">Interpretation:</strong><br>`;
+  if (c1) lines += `Neutral water (C1): ${c1} s &nbsp;`;
+  if (c2) lines += `Acidic / acetic acid (C2): ${c2} s &nbsp;`;
+  if (c3) lines += `Basic / baking soda (C3): ${c3} s`;
+  lines += `<br><br>`;
+
+  if (c1 && c2) {
+    const acidFactor = (c1/c2).toFixed(1);
+    lines += `🔴 <strong>Acid vs. Neutral:</strong> Acetic acid dissolved the tablet ${acidFactor}× faster than neutral water.
+      Extra H⁺ ions react directly with HCO₃⁻ — H⁺(aq) + HCO₃⁻(aq) → H₂O(l) + CO₂(g) —
+      increasing the concentration of reactive species and collision frequency.
+      Simulates the acidic stomach (pH 1.5–3.5).<br><br>`;
+  }
+
+  if (c1 && c3) {
+    const baseFactor = (c3/c1).toFixed(1);
+    const trend = c3 > c1 ? 'slower' : 'faster';
+    lines += `🟢 <strong>Base vs. Neutral:</strong> Baking soda solution was ${baseFactor}× ${trend} than neutral water.
+      Higher pH means fewer H⁺ ions available to drive the acid–base reaction,
+      reducing collision frequency with bicarbonate and slowing CO₂ production.
+      Simulates intestinal or post-antacid conditions (pH 7.5–8.5).<br><br>`;
+  }
+
+  if (c2 && c3) {
+    const fullRange = (c3/c2).toFixed(1);
+    lines += `📊 <strong>Full pH range:</strong> Shifting from acidic (pH ≈ 3) to basic (pH ≈ 8.3) slowed the reaction ${fullRange}×,
+      demonstrating that [H⁺] is a direct kinetic variable — not just a passive condition.`;
+  }
+
+  el.innerHTML = lines;
+}
+
+function buildSummary() {
+  const a1=getVal('t1-a1'), a3=getVal('t1-a3');
+  const b1=getVal('t2-b1'), b3=getVal('t2-b3');
+  const c1=getVal('t3-c1'), c2=getVal('t3-c2'), c3=getVal('t3-c3');
+  const card = document.getElementById('summary-card');
+  const txt  = document.getElementById('summary-text');
+
+  const parts = [];
+  if (a1&&a3) parts.push(`🧪 <strong>Surface Area:</strong> Crushing the tablet increased the reaction rate by ${(a1/a3).toFixed(1)}×. Greater surface area = more solid reactant molecules exposed to water = higher collision frequency.`);
+  if (b1&&b3) parts.push(`🌡 <strong>Temperature:</strong> Raising the water temperature from cold to hot increased the rate by ${(b1/b3).toFixed(1)}×. Higher T raises molecular kinetic energy, making more collisions exceed the activation energy Eₐ.`);
+  if (c2&&c3) parts.push(`🔬 <strong>pH / Concentration:</strong> Acidic (pH 3) was ${(c3/c2).toFixed(1)}× faster than basic (pH 8.3). [H⁺] is a direct kinetic variable — more H⁺ ions = more reactive collisions with HCO₃⁻ = faster CO₂ production.`);
+  else if (c1&&c2) parts.push(`🔬 <strong>pH / Concentration:</strong> The acidic solution reacted ${(c1/c2).toFixed(1)}× faster than neutral water. Increased [H⁺] provides more reactive ions that collide with bicarbonate, accelerating CO₂ production.`);
+
+  if (!parts.length) { card.style.display='none'; return; }
+  card.style.display='block';
+  txt.innerHTML = parts.join('<br><br>');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════════════════
+buildGrids();
+</script>
+</body>
+</html>

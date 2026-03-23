@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHM 130 Lab 2: Soap Making - Saponification</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #11998e;
+            border-bottom: 3px solid #11998e;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .safety-warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .safety-warning strong {
+            color: #856404;
+        }
+        .danger-warning {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .danger-warning strong {
+            color: #721c24;
+        }
+        .timer {
+            background-color: #d1f2eb;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: #11998e;
+            margin-bottom: 15px;
+        }
+        .question-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #11998e;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #11998e;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .step {
+            background-color: #d1f2eb;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #11998e;
+        }
+        .step-number {
+            background-color: #11998e;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 12px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .checkpoint {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .chemical-structure {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+        }
+        .learning-objectives {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .learning-objectives ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .btn {
+            background-color: #11998e;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #0d8074;
+        }
+        .fun-fact {
+            background-color: #e1f5fe;
+            border-left: 4px solid #03a9f4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        @media print {
+            .btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CHM 130 Laboratory 2</h1>
+        <h2>Soap Making: The Chemistry of Saponification</h2>
+        <p><strong>Total Lab Time:</strong> 3 Hours | <strong>Post-Lab Assignment:</strong> 2 Hours</p>
+    </div>
+
+    <!-- PRE-LAB SECTION (40-45 minutes total) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB REVIEW: 30 minutes</div>
+        <h2 class="section-title">Pre-Lab: Background Information</h2>
+
+        <div class="learning-objectives">
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Understand saponification reactions and how soap is made</li>
+                <li>Explore the chemistry of fats, oils, and triglycerides</li>
+                <li>Learn about acids, bases, and neutralization reactions</li>
+                <li>Understand how soap works at the molecular level (micelle formation)</li>
+                <li>Recognize the importance of proper hand hygiene in healthcare settings</li>
+            </ul>
+        </div>
+
+        <h3>Introduction: Why Soap Matters in Healthcare</h3>
+        <p>As future healthcare professionals, you will constantly emphasize the importance of handwashing to prevent infection. But have you ever wondered <em>how</em> soap actually works? Understanding the chemistry behind soap helps you appreciate why proper handwashing technique is so critical in clinical settings.</p>
+
+        <div class="fun-fact">
+            <strong>🧼 Did You Know?</strong> Proper handwashing with soap and water can reduce diarrheal disease-associated deaths by up to 50% and respiratory infections by nearly 20% according to the CDC. Soap doesn't just rinse germs away - it actually destroys many pathogens!
+        </div>
+
+        <h3>What is Saponification?</h3>
+        <p><strong>Saponification</strong> is the chemical reaction between a fat or oil (triglyceride) and a strong base (like sodium hydroxide, NaOH) to produce soap and glycerol.</p>
+
+        <div class="chemical-structure">
+            <h3>The Saponification Reaction</h3>
+            <p><strong>Triglyceride (Fat/Oil) + Sodium Hydroxide (Base) → Soap + Glycerol</strong></p>
+            <p style="margin-top: 10px;">C₃H₅(OOCR)₃ + 3 NaOH → 3 RCOONa + C₃H₅(OH)₃</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">The soap molecule has a <strong>hydrophilic (water-loving) head</strong> and a <strong>hydrophobic (water-fearing) tail</strong>, which is why it can remove both water-soluble and oil-soluble dirt.</p>
+        </div>
+
+        <h3>How Does Soap Clean?</h3>
+        <p>Soap molecules form structures called <strong>micelles</strong> in water. The hydrophobic tails cluster together in the center (trapping oils, dirt, and many germs), while the hydrophilic heads face outward toward the water. This allows soap to surround and remove oils, dirt, and microorganisms from your skin.</p>
+
+        <div class="fun-fact">
+            <strong>🦠 Soap vs. Bacteria:</strong> Soap doesn't necessarily kill all bacteria, but it mechanically removes them from your skin. However, the soap's structure can also disrupt the lipid membranes of many viruses (including coronavirus) and bacteria, effectively destroying them!
+        </div>
+
+        <h3>Types of Fats and Oils for Soap Making</h3>
+        <p>Different oils produce soap with different properties:</p>
+        <ul>
+            <li><strong>Coconut Oil:</strong> Creates a hard bar with lots of lather</li>
+            <li><strong>Olive Oil:</strong> Produces a gentle, moisturizing soap</li>
+            <li><strong>Palm Oil:</strong> Makes a hard, long-lasting bar</li>
+            <li><strong>Vegetable Shortening:</strong> Creates an inexpensive, mild soap</li>
+        </ul>
+
+        <div class="danger-warning">
+            <strong>⚠️ CRITICAL SAFETY INFORMATION - SODIUM HYDROXIDE (LYE)</strong>
+            <ul>
+                <li><strong>Sodium hydroxide (NaOH) is a STRONG BASE and is HIGHLY CORROSIVE</strong></li>
+                <li>Can cause severe chemical burns to skin and eyes</li>
+                <li>ALWAYS wear safety goggles and chemical-resistant gloves</li>
+                <li>Add NaOH to water, NEVER add water to NaOH (can cause violent reaction)</li>
+                <li>Work in a well-ventilated area - NaOH solution produces heat</li>
+                <li>If contact occurs, rinse immediately with copious amounts of water and notify instructor</li>
+                <li>Keep away from face - do not lean over beakers containing NaOH</li>
+            </ul>
+        </div>
+
+        <div class="safety-warning">
+            <strong>⚠️ GENERAL SAFETY PRECAUTIONS</strong>
+            <ul>
+                <li>Hot oil can splatter - use caution when heating</li>
+                <li>Hot water bath can cause burns</li>
+                <li>Do not touch soap mixture until it has fully cooled and cured</li>
+                <li>Clean up any spills immediately</li>
+                <li>Wash hands thoroughly after lab</li>
+            </ul>
+        </div>
+
+        <h3>Clinical Application: Hand Hygiene in Healthcare</h3>
+        <p>According to the World Health Organization (WHO), proper hand hygiene is the single most important measure to prevent healthcare-associated infections. As a nurse, you will need to:</p>
+        <ul>
+            <li>Wash hands before and after patient contact</li>
+            <li>Wash before aseptic procedures</li>
+            <li>Wash after body fluid exposure risk</li>
+            <li>Wash after touching patient surroundings</li>
+            <li>Educate patients and families about proper handwashing</li>
+        </ul>
+
+        <div class="fun-fact">
+            <strong>📊 Healthcare Stat:</strong> Handwashing compliance among healthcare workers averages only 40-50%, yet increasing compliance to 70% can reduce hospital infection rates by 25-30%!
+        </div>
+
+        <h3>Key Chemistry Concepts</h3>
+        <div class="step">
+            <strong>Triglycerides:</strong> Fats and oils are esters made from glycerol and three fatty acid chains.
+        </div>
+        <div class="step">
+            <strong>Hydrophilic vs. Hydrophobic:</strong> Hydrophilic = "water-loving" (polar); Hydrophobic = "water-fearing" (nonpolar)
+        </div>
+        <div class="step">
+            <strong>Micelle:</strong> A spherical structure formed by soap molecules where hydrophobic tails point inward and hydrophilic heads point outward.
+        </div>
+        <div class="step">
+            <strong>Saturated vs. Unsaturated Fats:</strong> Saturated fats (no double bonds) make harder soap; unsaturated fats (with double bonds) make softer soap.
+        </div>
+    </div>
+
+    <!-- PRE-LAB QUESTIONS (10-15 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB QUESTIONS: 10-15 minutes</div>
+        <h2 class="section-title">Pre-Lab Questions</h2>
+        <p><em>Answer these questions before beginning the experiment. Your instructor will review answers before you proceed.</em></p>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> What is saponification? Write the general chemical equation.
+            <textarea id="prelab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> Explain how soap removes dirt and oils from your skin at the molecular level.
+            <textarea id="prelab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> Why is sodium hydroxide (lye) dangerous? List at least three safety precautions you must take when handling it.
+            <textarea id="prelab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> As a future nurse, when are the five moments you should perform hand hygiene according to WHO guidelines?
+            <textarea id="prelab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> What is the difference between a hydrophilic and hydrophobic molecule? Which part of a soap molecule is hydrophilic?
+            <textarea id="prelab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor review your pre-lab questions and demonstrate proper NaOH handling before proceeding.
+            <br><input type="checkbox" id="instructor-check1"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials1">
+        </div>
+    </div>
+
+    <!-- EXPERIMENT SECTION (90 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ EXPERIMENT: 90 minutes</div>
+        <h2 class="section-title">Experimental Procedure</h2>
+
+        <h3>Materials Needed</h3>
+        <table class="data-table">
+            <tr>
+                <th>Chemicals</th>
+                <th>Equipment</th>
+            </tr>
+            <tr>
+                <td>
+                    • Vegetable oil or coconut oil (25 mL)<br>
+                    • Sodium hydroxide (NaOH) pellets (4 g)<br>
+                    • Ethanol (15 mL)<br>
+                    • Saturated salt (NaCl) solution (50 mL)<br>
+                    • Distilled water<br>
+                    • Optional: Essential oils, natural colorants
+                </td>
+                <td>
+                    • 250 mL beaker<br>
+                    • Hot plate or hot water bath<br>
+                    • Stirring rod<br>
+                    • Thermometer<br>
+                    • Graduated cylinders (25 mL and 50 mL)<br>
+                    • Balance<br>
+                    • Paper cups or soap molds<br>
+                    • pH paper<br>
+                    • Safety goggles and chemical gloves<br>
+                    • Lab apron
+                </td>
+            </tr>
+        </table>
+
+        <h3>Procedure</h3>
+
+        <div class="danger-warning">
+            <strong>🛑 BEFORE STARTING:</strong> Put on safety goggles, chemical-resistant gloves, and lab apron. Keep safety goggles on throughout the entire experiment!
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Prepare NaOH solution (10 min - INSTRUCTOR MAY PREPARE IN ADVANCE)</strong><br>
+            In a well-ventilated area, carefully measure 10 mL of distilled water in a graduated cylinder. Pour into a 250 mL beaker. Carefully weigh 4.0 g of sodium hydroxide (NaOH) pellets. <strong>SLOWLY</strong> add the NaOH pellets to the water while stirring. <strong>CAUTION: This reaction is exothermic (produces heat)!</strong> Allow to cool to room temperature.
+        </div>
+
+        <div class="checkpoint">
+            ⚠️ <strong>Safety Check:</strong> Is your NaOH solution cooling? Do you have proper PPE on?
+            <br><input type="checkbox" id="safety-check1"> Safety verified by: <input type="text" style="width: 200px;" id="safety-initials1">
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Measure and heat oil (5 min)</strong><br>
+            Measure 25 mL of vegetable oil (or coconut oil) using a graduated cylinder. Pour into a clean 250 mL beaker. Gently heat the oil to approximately 40-50°C using a hot water bath or hot plate on low setting. <strong>Do not overheat!</strong>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Add ethanol (3 min)</strong><br>
+            Once the oil reaches 40-50°C, remove from heat. Carefully add 15 mL of ethanol to the warm oil and stir gently. The ethanol helps the oil and NaOH solution mix better.
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Combine NaOH solution with oil mixture (5 min)</strong><br>
+            <strong>SLOWLY</strong> pour the cooled NaOH solution into the oil-ethanol mixture while stirring constantly. The mixture should become cloudy. Continue stirring for 2-3 minutes.
+        </div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <strong>Heat and stir the mixture (20-25 min)</strong><br>
+            Place the beaker in a hot water bath (70-80°C) or on a hot plate at low setting. Stir the mixture continuously for 20-25 minutes. The mixture should thicken and may change from cloudy to more translucent. This is called "trace" in soap making - the mixture will leave a trace or trail when drizzled from the stirring rod.
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Lab Partner Check:</strong> Has the mixture reached trace (thickened consistency)?
+            <br><input type="checkbox" id="partner-check1"> Partner initials: <input type="text" style="width: 200px;" id="partner-initials1">
+            <br>Time when trace was reached: <input type="text" style="width: 150px;" id="trace-time">
+        </div>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <strong>Add saturated salt solution - "Salting Out" (10 min)</strong><br>
+            Remove the beaker from heat. Slowly add 50 mL of saturated salt solution while stirring. The soap will begin to separate and float to the top (soap is less dense than the salt solution). This process is called "salting out" and helps purify the soap. Allow to sit for 5 minutes.
+        </div>
+
+        <div class="step">
+            <span class="step-number">7</span>
+            <strong>Collect the soap (5 min)</strong><br>
+            The soap should float as a solid layer on top. Carefully scoop or decant the soap layer into a paper cup or soap mold. Avoid collecting too much of the liquid layer underneath (this contains excess NaOH, glycerol, and salt).
+        </div>
+
+        <div class="step">
+            <span class="step-number">8</span>
+            <strong>Optional: Add scents or colors (3 min)</strong><br>
+            If desired, add 5-10 drops of essential oil (lavender, peppermint, etc.) or a small amount of natural colorant to the soap and mix gently. <em>Note: Only use additives approved by your instructor.</em>
+        </div>
+
+        <div class="step">
+            <span class="step-number">9</span>
+            <strong>Test pH of soap (5 min)</strong><br>
+            Take a small piece of your soap and dissolve it in 10 mL of distilled water. Test the pH using pH paper. Record the pH value. <strong>If pH is above 10, the soap still contains excess NaOH and should NOT be used on skin until it cures for 2-4 weeks.</strong>
+        </div>
+
+        <div class="step">
+            <span class="step-number">10</span>
+            <strong>Test soap's cleaning ability (10 min)</strong><br>
+            Prepare test tubes with:
+            <ul>
+                <li>Tube A: 5 mL water + 5 drops vegetable oil</li>
+                <li>Tube B: 5 mL water + 5 drops vegetable oil + small piece of your soap</li>
+                <li>Tube C: 5 mL distilled water + small piece of your soap (control)</li>
+            </ul>
+            Cap and shake each tube vigorously for 30 seconds. Observe and record what happens in each tube.
+        </div>
+
+        <div class="step">
+            <span class="step-number">11</span>
+            <strong>Observations (5 min)</strong><br>
+            Observe the appearance, texture, and smell of your soap. Record detailed observations in the data table below.
+        </div>
+
+        <h3>Data Collection</h3>
+        <table class="data-table">
+            <tr>
+                <th>Measurement/Observation</th>
+                <th>Value/Description</th>
+            </tr>
+            <tr>
+                <td>Mass of NaOH used</td>
+                <td><input type="text" id="mass-naoh"> g</td>
+            </tr>
+            <tr>
+                <td>Volume of oil used</td>
+                <td><input type="text" id="vol-oil"> mL</td>
+            </tr>
+            <tr>
+                <td>Type of oil used</td>
+                <td><input type="text" id="oil-type"></td>
+            </tr>
+            <tr>
+                <td>Time to reach trace</td>
+                <td><input type="text" id="trace-time-data"> minutes</td>
+            </tr>
+            <tr>
+                <td>Appearance of soap (color, texture)</td>
+                <td><input type="text" id="soap-appearance"></td>
+            </tr>
+            <tr>
+                <td>pH of soap solution</td>
+                <td><input type="text" id="soap-ph"></td>
+            </tr>
+            <tr>
+                <td>Estimated mass of soap produced</td>
+                <td><input type="text" id="soap-mass"> g</td>
+            </tr>
+        </table>
+
+        <h3>Soap Testing Results</h3>
+        <table class="data-table">
+            <tr>
+                <th>Test Tube</th>
+                <th>Contents</th>
+                <th>Observations After Shaking</th>
+            </tr>
+            <tr>
+                <td>A</td>
+                <td>Water + Oil (no soap)</td>
+                <td><textarea id="tube-a" style="height: 60px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>Water + Oil + Soap</td>
+                <td><textarea id="tube-b" style="height: 60px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td>Water + Soap (control)</td>
+                <td><textarea id="tube-c" style="height: 60px;"></textarea></td>
+            </tr>
+        </table>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor verify your data and soap product before cleanup.
+            <br><input type="checkbox" id="instructor-check2"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials2">
+        </div>
+    </div>
+
+    <!-- POST-LAB SECTION (30-45 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ POST-LAB: 30-45 minutes</div>
+        <h2 class="section-title">Post-Lab Analysis and Questions</h2>
+
+        <h3>Analysis Questions</h3>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> Based on your pH test, is your soap safe to use immediately? Explain why or why not, referencing specific pH values.
+            <textarea id="postlab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> Compare the results in test tubes A and B. What evidence do you have that soap can emulsify (mix) oil and water?
+            <textarea id="postlab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> Draw a simple diagram showing how soap molecules form a micelle around an oil droplet. Label the hydrophilic heads and hydrophobic tails.
+            <textarea id="postlab-q3" placeholder="Draw your diagram here or describe in detail..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> Explain why we added salt solution to the soap mixture. What is the purpose of "salting out"?
+            <textarea id="postlab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> What is glycerol (also called glycerin)? Where did it go in our soap-making process? (Hint: It's a byproduct of saponification)
+            <textarea id="postlab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 6:</strong> Commercial soaps often have pH values between 9-10. Why is soap typically basic rather than neutral?
+            <textarea id="postlab-q6" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 7:</strong> Some people have sensitive skin and cannot use regular soap. Based on what you learned today, what chemical property of soap might irritate sensitive skin? What alternatives might you recommend to patients?
+            <textarea id="postlab-q7" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <h3>Clinical Connection</h3>
+
+        <div class="question-box">
+            <strong>Reflection Question 1:</strong> You're teaching a patient who has been hospitalized for C. difficile infection about proper hand hygiene at home. Explain to the patient why soap and water is necessary (rather than just alcohol-based hand sanitizer) for C. diff, using your knowledge of how soap works.
+            <textarea id="clinical-q1" placeholder="Type your patient education here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Reflection Question 2:</strong> Why is the COVID-19 pandemic a good example of why understanding soap chemistry matters? How does soap help destroy the coronavirus?
+            <textarea id="clinical-q2" placeholder="Type your answer here..." style="min-height: 100px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Reflection Question 3:</strong> In your clinical rotations, you'll see many patients with skin conditions. How might understanding the chemistry of soap help you recommend appropriate cleansing products for patients with eczema, psoriasis, or other skin conditions?
+            <textarea id="clinical-q3" placeholder="Type your answer here..." style="min-height: 100px;"></textarea>
+        </div>
+
+        <div class="checkpoint">
+            <strong>Before Leaving Lab:</strong>
+            <ul>
+                <li><input type="checkbox"> Properly dispose of all chemical waste per instructor directions</li>
+                <li><input type="checkbox"> Neutralize any remaining NaOH solution before disposal</li>
+                <li><input type="checkbox"> Clean and dry all glassware</li>
+                <li><input type="checkbox"> Wipe down your work station with soap and water (ironically!)</li>
+                <li><input type="checkbox"> Wash your hands thoroughly</li>
+                <li><input type="checkbox"> Complete all post-lab questions above</li>
+                <li><input type="checkbox"> Label your soap with your name and date - it needs to cure for 2-4 weeks before use</li>
+                <li><input type="checkbox"> Submit this worksheet to Canvas</li>
+            </ul>
+        </div>
+
+        <button class="btn" onclick="window.print()">🖨️ Print Worksheet</button>
+        <button class="btn" onclick="alert('Save your work! Use your browser\'s save function or copy your responses to Canvas.')">💾 Save Responses</button>
+    </div>
+
+    <!-- POST-LAB ASSIGNMENT (2 hours, completed outside of lab) -->
+    <div class="section">
+        <div class="timer">📹 POST-LAB VIDEO ASSIGNMENT: 2 hours (complete outside of lab)</div>
+        <h2 class="section-title">Post-Lab Video Assignment</h2>
+
+        <p><strong>Due:</strong> Within 48 hours of lab completion</p>
+
+        <div class="learning-objectives">
+            <h3>Assignment Instructions</h3>
+            <p>Create a 2-3 minute video that includes:</p>
+            <ol>
+                <li><strong>Lab Summary (45-60 seconds):</strong> Explain the saponification process and demonstrate/describe your soap product</li>
+                <li><strong>Hand Hygiene Education (60-90 seconds):</strong> Pretend you're educating a patient or family member about proper handwashing. Use your knowledge of soap chemistry to explain WHY it's important to wash for at least 20 seconds and use soap (not just water). Demonstrate proper handwashing technique.</li>
+                <li><strong>Clinical Application (15-30 seconds):</strong> Share one situation in your future nursing career where understanding soap chemistry will help you provide better patient care</li>
+            </ol>
+        </div>
+
+        <div class="question-box">
+            <strong>Video Link Submission:</strong><br>
+            Upload your video to Canvas or paste your YouTube/OneDrive link here:
+            <input type="text" id="video-link" placeholder="Paste video link here...">
+        </div>
+
+        <div class="safety-warning">
+            <strong>💡 Pro Tips for Your Video:</strong>
+            <ul>
+                <li>Consider actually demonstrating handwashing in your video</li>
+                <li>Show your soap product if possible (even if it's still curing)</li>
+                <li>Use the WHO's 5 Moments for Hand Hygiene as a framework</li>
+                <li>Be creative - maybe create a short patient education handout to show</li>
+                <li>Make it engaging - this could be content you actually use with future patients!</li>
+            </ul>
+        </div>
+
+        <div class="fun-fact">
+            <strong>🎯 Challenge Activity (Optional Bonus):</strong> Research and compare bar soap vs. liquid soap vs. antibacterial soap vs. alcohol-based hand sanitizers. When would you recommend each type to a patient? Include this in your video for extra credit!
+        </div>
+    </div>
+
+    <div class="section" style="background-color: #f0fff4;">
+        <h3>Additional Resources</h3>
+        <ul>
+            <li>📖 Textbook: Chapters on Lipids, Esters, and Acid-Base Chemistry</li>
+            <li>🔗 <a href="https://www.who.int/gpsc/5may/Hand_Hygiene_Why_How_and_When_Brochure.pdf" target="_blank">WHO Hand Hygiene Guidelines</a></li>
+            <li>🔗 <a href="https://www.cdc.gov/handwashing/" target="_blank">CDC: When and How to Wash Your Hands</a></li>
+            <li>🎥 Khan Academy: Fats, Oils, and Saponification</li>
+            <li>📱 Office Hours: Wednesdays 2-4 PM or by appointment</li>
+        </ul>
+
+        <div class="fun-fact">
+            <strong>🏺 History Moment:</strong> The earliest evidence of soap-making dates back to ancient Babylon around 2800 BC. The word "soap" comes from Mount Sapo in ancient Rome, where animal fats and wood ashes (containing lye) mixed in the rain, creating a soapy substance!
+        </div>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        function autoSave() {
+            const formData = {};
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                if(input.id) {
+                    formData[input.id] = input.value;
+                    localStorage.setItem('soap_lab_' + input.id, input.value);
+                }
+            });
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                if(input.id) {
+                    const savedValue = localStorage.getItem('soap_lab_' + input.id);
+                    if(savedValue) {
+                        input.value = savedValue;
+                    }
+                }
+            });
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(autoSave, 30000);
+
+        // Load saved data when page loads
+        window.onload = loadSavedData;
+
+        // Save before closing
+        window.addEventListener('beforeunload', autoSave);
+    </script>
+</body>
+</html>

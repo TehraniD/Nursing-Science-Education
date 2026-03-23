@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 2: Freezing Point Depression - COMPLETE WALKTHROUGH</title>
+    <style>
+        body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.6; max-width: 850px; margin: 0 auto; padding: 20px; }
+        h1 { color: #1a5276; border-bottom: 3px solid #1a5276; padding-bottom: 10px; text-align: center; }
+        h2 { color: #2874a6; border-bottom: 2px solid #2874a6; padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: #3498db; margin-top: 20px; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #2874a6; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .instructor-note { background-color: #fff3cd; border: 2px solid #ffc107; padding: 15px; margin: 15px 0; }
+        .student-answer { background-color: #d4edda; border: 2px solid #28a745; padding: 15px; margin: 15px 0; }
+        .common-mistake { background-color: #f8d7da; border: 2px solid #dc3545; padding: 15px; margin: 15px 0; }
+        .tip { background-color: #e8f4f8; border-left: 4px solid #2874a6; padding: 15px; margin: 15px 0; }
+        .calc { font-family: "Courier New", monospace; background-color: #f8f9fa; padding: 10px; margin: 10px 0; border-left: 3px solid #2874a6; }
+        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #1a5276; }
+    </style>
+</head>
+<body>
+
+<h1>⚗ Lab 2: Freezing Point Depression</h1>
+<h2 style="text-align: center; border: none; color: #666;">COMPLETE INSTRUCTOR WALKTHROUGH</h2>
+<p style="text-align: center;"><em>Step-by-step guide with realistic community college lab results</em></p>
+
+<div class="instructor-note">
+    <h3>☰ Before You Start: Setting Expectations</h3>
+    <p><strong>Reality check for community college labs:</strong></p>
+    <ul>
+        <li>Old thermometers may be off by 0.5-1.0°C — that's okay!</li>
+        <li>Crushed ice quality varies — some will have larger chunks</li>
+        <li>Students work at different paces — have fast finishers help others</li>
+        <li>Expect 10-25% error — this is normal with basic equipment</li>
+        <li>The CONCEPTS matter more than perfect numbers</li>
+    </ul>
+</div>
+
+<hr>
+
+<h2>📝 Part 1: Pre-Lab Calculations</h2>
+
+<p><em>Do these BEFORE coming to lab. They take about 15-20 minutes.</em></p>
+
+<h3>Given Information</h3>
+<table>
+    <tr><th>Constant</th><th>Value</th></tr>
+    <tr><td>k<sub>f</sub> (water)</td><td>1.86 °C/m</td></tr>
+    <tr><td>Molar mass NaCl</td><td>58.44 g/mol</td></tr>
+    <tr><td>Molar mass CaCl₂</td><td>110.98 g/mol</td></tr>
+    <tr><td>i for NaCl</td><td>2 (Na⁺ + Cl⁻)</td></tr>
+    <tr><td>i for CaCl₂</td><td>3 (Ca²⁺ + 2Cl⁻)</td></tr>
+</table>
+
+<h3>Calculation 1: Heavy Salt (7.5 g NaCl in 50 g water)</h3>
+
+<div class="student-answer">
+    <p><strong>Step 1: Calculate moles of NaCl</strong></p>
+    <div class="calc">
+        moles = mass ÷ molar mass<br>
+        moles = 7.5 g ÷ 58.44 g/mol<br>
+        moles = <strong>0.128 mol</strong>
+    </div>
+    
+    <p><strong>Step 2: Calculate molality</strong></p>
+    <div class="calc">
+        m = moles ÷ kg of solvent<br>
+        m = 0.128 mol ÷ 0.050 kg<br>
+        m = <strong>2.57 m</strong>
+    </div>
+    <div class="tip">
+        <strong>※ Common confusion:</strong> Why 0.050 kg? Because 50 g = 0.050 kg. Molality uses kilograms!
+    </div>
+    
+    <p><strong>Step 3: Calculate ΔT</strong></p>
+    <div class="calc">
+        ΔT = i × k<sub>f</sub> × m<br>
+        ΔT = 2 × 1.86 × 2.57<br>
+        ΔT = <strong>9.56 °C</strong>
+    </div>
+    
+    <p><strong>Step 4: Calculate expected freezing point</strong></p>
+    <div class="calc">
+        FP = 0°C − ΔT<br>
+        FP = 0°C − 9.56°C<br>
+        FP = <strong>−9.56 °C</strong>
+    </div>
+</div>
+
+<div class="common-mistake">
+    <strong>✗ Common Mistake #1:</strong> Forgetting to convert grams to kilograms<br>
+    Wrong: m = 0.128 mol ÷ 50 = 0.00256 m<br>
+    Right: m = 0.128 mol ÷ 0.050 kg = 2.57 m
+</div>
+
+<h3>Calculation 2: Premium Salt (5.0 g CaCl₂ in 50 g water)</h3>
+
+<div class="student-answer">
+    <p><strong>Step 1: Calculate moles of CaCl₂</strong></p>
+    <div class="calc">
+        moles = 5.0 g ÷ 110.98 g/mol<br>
+        moles = <strong>0.0451 mol</strong>
+    </div>
+    
+    <p><strong>Step 2: Calculate molality</strong></p>
+    <div class="calc">
+        m = 0.0451 mol ÷ 0.050 kg<br>
+        m = <strong>0.901 m</strong>
+    </div>
+    
+    <p><strong>Step 3: Calculate ΔT</strong></p>
+    <div class="calc">
+        ΔT = i × k<sub>f</sub> × m<br>
+        ΔT = <strong>3</strong> × 1.86 × 0.901  ← Notice i = 3 for CaCl₂!<br>
+        ΔT = <strong>5.03 °C</strong>
+    </div>
+    
+    <p><strong>Step 4: Calculate expected freezing point</strong></p>
+    <div class="calc">
+        FP = 0°C − 5.03°C<br>
+        FP = <strong>−5.03 °C</strong>
+    </div>
+</div>
+
+<div class="common-mistake">
+    <strong>✗ Common Mistake #2:</strong> Using i = 2 for CaCl₂<br>
+    Wrong: ΔT = 2 × 1.86 × 0.901 = 3.35°C<br>
+    Right: ΔT = 3 × 1.86 × 0.901 = 5.03°C<br><br>
+    <em>Remember: CaCl₂ → Ca²⁺ + Cl⁻ + Cl⁻ = 3 particles!</em>
+</div>
+
+<h3>✓ Completed Pre-Lab Summary Table</h3>
+<table>
+    <tr><th>Solution</th><th>Salt</th><th>Water</th><th>Molality (m)</th><th>i</th><th>ΔT (°C)</th><th>Expected FP (°C)</th></tr>
+    <tr><td>Control</td><td>0 g</td><td>50 g</td><td>0</td><td>—</td><td>0</td><td>0°C</td></tr>
+    <tr><td>Light NaCl</td><td>2.5 g</td><td>50 g</td><td>0.856</td><td>2</td><td>3.18</td><td>−3.18°C</td></tr>
+    <tr><td>Heavy NaCl</td><td>7.5 g</td><td>50 g</td><td><strong>2.57</strong></td><td>2</td><td><strong>9.56</strong></td><td><strong>−9.56°C</strong></td></tr>
+    <tr><td>CaCl₂</td><td>5.0 g</td><td>50 g</td><td><strong>0.901</strong></td><td>3</td><td><strong>5.03</strong></td><td><strong>−5.03°C</strong></td></tr>
+</table>
+
+<hr>
+
+<h2>⚛ Part 2: The Experiment (In Lab)</h2>
+
+<h3>Part A: Calibration — Check Your Thermometer!</h3>
+
+<div class="instructor-note">
+    <strong>Why this matters:</strong> Old thermometers drift. A thermometer that reads 0.8°C in ice water will read 0.8°C too high for ALL measurements. We need to know this offset.
+</div>
+
+<p><strong>What you do:</strong></p>
+<ol>
+    <li>Fill a beaker with crushed ice</li>
+    <li>Add just enough distilled water to make a slurry (ice should be wet, not floating)</li>
+    <li>Stir gently for 2 full minutes</li>
+    <li>Insert thermometer, wait 30 seconds, read temperature</li>
+</ol>
+
+<div class="student-answer">
+    <p><strong>Realistic Result (Community College Lab):</strong></p>
+    <p><strong>Thermometer reading:</strong> <u>&nbsp; 0.8 &nbsp;</u> °C</p>
+    <p><strong>Correction factor:</strong> <u>&nbsp; −0.8 &nbsp;</u> °C</p>
+    <p><em>This means: subtract 0.8 from all future readings to get the "true" temperature</em></p>
+</div>
+
+<div class="tip">
+    <strong>※ Instructor tip:</strong> If students get readings between −0.5°C and +1.0°C, their thermometer is fine. Anything outside this range — have them try a different thermometer.
+</div>
+
+<hr>
+
+<h3>Part B: Prepare Your Solutions</h3>
+
+<p><strong>What you do:</strong></p>
+<ol>
+    <li>Label 4 beakers: Control, Light, Heavy, Premium</li>
+    <li>Use the balance to measure 50 g of crushed ice into each beaker</li>
+    <li>Add salt to each according to the table:
+        <ul>
+            <li>Control: 0 g (nothing)</li>
+            <li>Light: 2.5 g NaCl</li>
+            <li>Heavy: 7.5 g NaCl</li>
+            <li>Premium: 5.0 g CaCl₂</li>
+        </ul>
+    </li>
+    <li>Stir each solution with a glass rod for 30 seconds</li>
+</ol>
+
+<div class="instructor-note">
+    <strong>⚠ Heads up for CaCl₂:</strong> Students will notice the CaCl₂ beaker gets WARM at first! This is the exothermic heat of dissolution. Tell them: "Yes, it's supposed to do that. Keep stirring — it will get cold soon."
+</div>
+
+<hr>
+
+<h3>Part C: Data Collection — The Main Event</h3>
+
+<p><strong>What you do:</strong></p>
+<ol>
+    <li>Start your timer when you add the salt</li>
+    <li>Insert thermometer into beaker, stir gently</li>
+    <li>Record temperature every 60 seconds</li>
+    <li>Continue until temperature stabilizes (stops changing)</li>
+</ol>
+
+<div class="student-answer">
+    <h4>✓ Realistic Data Table (Community College Equipment)</h4>
+    <table>
+        <tr><th>Time (s)</th><th>Control</th><th>Light NaCl</th><th>Heavy NaCl</th><th>CaCl₂</th></tr>
+        <tr><td>0</td><td>1.2°C</td><td>0.5°C</td><td>0.3°C</td><td>2.1°C *</td></tr>
+        <tr><td>60</td><td>0.9°C</td><td>−1.2°C</td><td>−4.5°C</td><td>−0.8°C</td></tr>
+        <tr><td>120</td><td>0.8°C</td><td>−2.1°C</td><td>−6.8°C</td><td>−2.9°C</td></tr>
+        <tr><td>180</td><td>0.8°C</td><td>−2.5°C</td><td>−7.9°C</td><td>−4.1°C</td></tr>
+        <tr><td>240</td><td>0.9°C</td><td>−2.6°C</td><td>−8.2°C</td><td>−4.5°C</td></tr>
+        <tr><td>300</td><td>1.0°C</td><td>−2.5°C</td><td>−8.1°C</td><td>−4.4°C</td></tr>
+        <tr><td>Final</td><td><strong>0.9°C</strong></td><td><strong>−2.5°C</strong></td><td><strong>−8.1°C</strong></td><td><strong>−4.4°C</strong></td></tr>
+    </table>
+    <p><em>* CaCl₂ starts warm due to heat of dissolution — this is normal!</em></p>
+</div>
+
+<div class="tip">
+    <strong>※ What "realistic" means:</strong>
+    <ul>
+        <li>Control never quite hits 0°C — room temp warms it</li>
+        <li>Temperatures fluctuate slightly — that's normal</li>
+        <li>Heavy NaCl should get the coldest</li>
+        <li>Values won't match theory exactly — expect 10-20% off</li>
+    </ul>
+</div>
+
+<div class="common-mistake">
+    <strong>✗ Common Mistake #3:</strong> Not stirring enough<br>
+    If students get weird readings (like −2°C for Heavy NaCl), ask: "Did you stir?" Salt sitting at the bottom doesn't dissolve properly.
+</div>
+
+<hr>
+
+<h3>Part D: Cold Limit Test</h3>
+
+<p><strong>What you do:</strong></p>
+<ol>
+    <li>Make a "super-cold bath" — large beaker with lots of ice + lots of salt</li>
+    <li>This bath should reach about −15°C</li>
+    <li>Place small test tubes of each solution into the bath</li>
+    <li>Observe: which ones freeze? Which stay liquid?</li>
+</ol>
+
+<div class="student-answer">
+    <h4>✓ Realistic Results</h4>
+    <table>
+        <tr><th>Solution</th><th>Freezes at −15°C?</th><th>Why?</th></tr>
+        <tr><td>Control (water)</td><td><strong>YES</strong> — freezes immediately</td><td>FP = 0°C, way above bath temp</td></tr>
+        <tr><td>Light NaCl</td><td><strong>YES</strong> — freezes after ~1 min</td><td>FP = −3.18°C, still above −15°C</td></tr>
+        <tr><td>Heavy NaCl</td><td><strong>PARTIALLY</strong> — gets slushy</td><td>FP = −9.56°C, close to bath temp</td></tr>
+        <tr><td>CaCl₂</td><td><strong>NO</strong> — stays liquid!</td><td>CaCl₂ effective to −29°C</td></tr>
+    </table>
+</div>
+
+<div class="instructor-note">
+    <strong>◉ Teaching moment:</strong> This is WHY cities switch to CaCl₂ in extreme cold! Point to the Heavy NaCl getting slushy and say: "This is what happens to roads when NaCl stops working."
+</div>
+
+<hr>
+
+<h2>📊 Part 3: Results & Calculations</h2>
+
+<h3>Apply the Calibration Correction</h3>
+
+<p>Our thermometer read 0.8°C in ice water. So we subtract 0.8°C from all readings:</p>
+
+<div class="student-answer">
+    <table>
+        <tr><th>Solution</th><th>Raw Reading</th><th>Correction</th><th>Corrected Value</th></tr>
+        <tr><td>Control</td><td>0.9°C</td><td>−0.8°C</td><td><strong>0.1°C</strong></td></tr>
+        <tr><td>Light NaCl</td><td>−2.5°C</td><td>−0.8°C</td><td><strong>−3.3°C</strong></td></tr>
+        <tr><td>Heavy NaCl</td><td>−8.1°C</td><td>−0.8°C</td><td><strong>−8.9°C</strong></td></tr>
+        <tr><td>CaCl₂</td><td>−4.4°C</td><td>−0.8°C</td><td><strong>−5.2°C</strong></td></tr>
+    </table>
+</div>
+
+<h3>Calculate % Error</h3>
+
+<div class="student-answer">
+    <p><strong>Formula:</strong> % Error = |theoretical − experimental| ÷ |theoretical| × 100</p>
+    
+    <h4>Light NaCl:</h4>
+    <div class="calc">
+        % Error = |−3.18 − (−3.3)| ÷ |−3.18| × 100<br>
+        % Error = |0.12| ÷ 3.18 × 100<br>
+        % Error = <strong>3.8%</strong> ✓ Excellent!
+    </div>
+    
+    <h4>Heavy NaCl:</h4>
+    <div class="calc">
+        % Error = |−9.56 − (−8.9)| ÷ |−9.56| × 100<br>
+        % Error = |−0.66| ÷ 9.56 × 100<br>
+        % Error = <strong>6.9%</strong> ✓ Good!
+    </div>
+    
+    <h4>CaCl₂:</h4>
+    <div class="calc">
+        % Error = |−5.03 − (−5.2)| ÷ |−5.03| × 100<br>
+        % Error = |0.17| ÷ 5.03 × 100<br>
+        % Error = <strong>3.4%</strong> ✓ Excellent!
+    </div>
+</div>
+
+<h3>✓ Final Results Table</h3>
+<table>
+    <tr><th>Treatment</th><th>Predicted FP</th><th>Actual FP (corrected)</th><th>% Error</th></tr>
+    <tr><td>Control</td><td>0°C</td><td>0.1°C</td><td>—</td></tr>
+    <tr><td>Light NaCl</td><td>−3.18°C</td><td>−3.3°C</td><td><strong>3.8%</strong></td></tr>
+    <tr><td>Heavy NaCl</td><td>−9.56°C</td><td>−8.9°C</td><td><strong>6.9%</strong></td></tr>
+    <tr><td>CaCl₂</td><td>−5.03°C</td><td>−5.2°C</td><td><strong>3.4%</strong></td></tr>
+</table>
+
+<div class="tip">
+    <strong>※ What's acceptable?</strong>
+    <ul>
+        <li><strong>Under 10%:</strong> Excellent — publish-worthy!</li>
+        <li><strong>10-15%:</strong> Good — typical for teaching labs</li>
+        <li><strong>15-25%:</strong> Acceptable — technique needs work</li>
+        <li><strong>Over 25%:</strong> Something went wrong — check calibration, stirring, measurements</li>
+    </ul>
+</div>
+
+<hr>
+
+<h2>💰 Part 4: Cost Analysis</h2>
+
+<div class="student-answer">
+    <h4>NaCl (Heavy):</h4>
+    <div class="calc">
+        Cost of 7.5 g = 7.5 g × ($60 / 907,185 g) = $0.000496<br>
+        ΔT achieved = 9.56°C<br>
+        Cost per °C = $0.000496 ÷ 9.56 = <strong>$0.000052 per °C</strong>
+    </div>
+    
+    <h4>CaCl₂:</h4>
+    <div class="calc">
+        Cost of 5.0 g = 5.0 g × ($300 / 907,185 g) = $0.00165<br>
+        ΔT achieved = 5.03°C<br>
+        Cost per °C = $0.00165 ÷ 5.03 = <strong>$0.000328 per °C</strong>
+    </div>
+    
+    <h4>Conclusion:</h4>
+    <p><strong>NaCl is about 6× more cost-effective</strong> ($0.000052 vs $0.000328 per degree).</p>
+    <p><strong>BUT:</strong> NaCl only works above −10°C. For extreme cold, you MUST use CaCl₂ despite the higher cost — there's no cheaper alternative that works.</p>
+</div>
+
+<hr>
+
+<h2>✍️ Part 5: Analysis Questions — Model Answers</h2>
+
+<div class="student-answer">
+    <p><strong>1. Why does CaCl₂ produce a greater freezing point depression than NaCl at the same molality?</strong></p>
+    <p><em>CaCl₂ has a van't Hoff factor of 3 (it produces 3 ions: Ca²⁺ + 2Cl⁻), while NaCl only has i = 2 (Na⁺ + Cl⁻). Since ΔT = i × k<sub>f</sub> × m, a higher i means greater freezing point depression.</em></p>
+</div>
+
+<div class="student-answer">
+    <p><strong>2. Why do cities switch from NaCl to CaCl₂ when temperatures drop below −10°C?</strong></p>
+    <p><em>NaCl becomes ineffective below about −10°C because it reaches its eutectic point — the solution becomes saturated and can't dissolve more salt, so it stops melting ice. CaCl₂ works down to −29°C, so it's the only option for extreme cold.</em></p>
+</div>
+
+<div class="student-answer">
+    <p><strong>3. Why do cities spray salt brine BEFORE a storm instead of spreading dry salt after?</strong></p>
+    <p><em>Brine is already dissolved, so it starts working immediately. Dry salt needs liquid water to dissolve first — if the ice is too cold and dry, the salt just sits on top. Pre-treatment also prevents ice from bonding to the pavement, making plowing easier.</em></p>
+</div>
+
+<div class="student-answer">
+    <p><strong>4. How does road salt damage the environment? (Name 2 effects)</strong></p>
+    <p><em>1) Chloride accumulates in lakes and streams, harming freshwater fish and plants (chloride doesn't break down naturally).<br>
+    2) Salt contaminates groundwater and drinking wells near roads.</em></p>
+    <p><em>(Also acceptable: kills roadside plants, corrodes bridges and vehicles)</em></p>
+</div>
+
+<div class="student-answer">
+    <p><strong>5. Storm forecast: −5°C. Which salt should the city use, and why?</strong></p>
+    <p><em>Use NaCl (rock salt). At −5°C, NaCl is effective (works down to −9°C) and costs 5× less than CaCl₂. Save the CaCl₂ for when temperatures drop below −10°C.</em></p>
+</div>
+
+<hr>
+
+<h2>☰ Summary: What Students Should Take Away</h2>
+
+<div class="tip">
+    <ol>
+        <li><strong>Salt lowers the freezing point</strong> by interfering with ice crystal formation</li>
+        <li><strong>More particles = more depression:</strong> CaCl₂ (3 particles) beats NaCl (2 particles)</li>
+        <li><strong>There's a limit:</strong> NaCl stops working around −10°C</li>
+        <li><strong>Cost vs. performance:</strong> NaCl is cheaper, CaCl₂ works in extreme cold</li>
+        <li><strong>Real-world trade-offs:</strong> Safety, cost, and environmental damage all matter</li>
+    </ol>
+</div>
+
+<hr>
+
+<div class="footer">
+    <h2>⚗ TEHRANI ⚗</h2>
+    <p>© Tehrani 2028</p>
+    <p><em>"Temperature is just molecules arguing about how fast to move — equilibrium is when they finally agree to disagree."</em></p>
+    <p style="margin-top:8px; font-size:0.85em; letter-spacing:2px;">H₂O · NaCl · CaCl₂ · ΔTₓ · Kf · i</p>
+</div>
+
+</body>
+</html>

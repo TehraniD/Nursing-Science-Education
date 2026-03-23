@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 2: Chemical Kinetics - Answer Key</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #2980b9;
+            --accent: #c0392b;
+            --border: #d5dbdb;
+            --bg: #ffffff;
+            --text: #2c3e50;
+            --answer-bg: #fdebd0;
+            --answer-border: #e67e22;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 { font-size: 1.5rem; color: var(--accent); }
+        .header h2 { font-size: 1.1rem; font-weight: 400; color: var(--secondary); }
+        .header .key-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            letter-spacing: 2px;
+        }
+        .header .brand { font-size: 0.85rem; color: #888; letter-spacing: 3px; margin-top: 0.3rem; }
+
+        .question {
+            margin-bottom: 2rem;
+            page-break-inside: avoid;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .q-number {
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .q-points {
+            color: #888;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .q-text { font-weight: 600; color: var(--primary); }
+
+        .q-body { padding-left: 2.3rem; }
+
+        .answer {
+            background: var(--answer-bg);
+            border: 2px solid var(--answer-border);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .answer strong { color: var(--accent); }
+
+        .equation-box {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            margin: 0.5rem 0;
+            text-align: center;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.05rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.6rem;
+            text-align: center;
+        }
+
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        .sub-parts { padding-left: 1rem; }
+        .sub-parts .part { margin-bottom: 0.5rem; }
+        .part-label { font-weight: 600; }
+
+        .grading-note {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-top: 2px solid var(--accent);
+            margin-top: 2rem;
+            color: #888;
+        }
+
+        footer .brand { letter-spacing: 4px; font-size: 0.95rem; color: var(--accent); margin-bottom: 0.3rem; }
+        footer .copy { font-size: 0.8rem; }
+        footer .quote { font-style: italic; font-size: 0.75rem; opacity: 0.7; margin-top: 0.2rem; }
+        footer .equation { font-family: 'Cambria Math', serif; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px; margin-top: 0.3rem; }
+
+        @media print {
+            body { padding: 0.5cm; font-size: 11pt; }
+            .answer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Workshop 2: Chemical Kinetics</h1>
+    <h2>CHM152 ~ Take-Home Worksheet</h2>
+    <div class="key-badge">&#9883; ANSWER KEY &#9883;</div>
+    <div class="brand">&#9883; TEHRANI &#9883;</div>
+</div>
+
+<!-- ===== QUESTION 1 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">1</div>
+        <span class="q-text">Define chemical kinetics and give two real-world examples.</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="answer">
+            <strong>Chemical kinetics</strong> is the study of the rate (speed) of chemical reactions &mdash; how quickly reactants are consumed and products are formed. (4 pts for definition)
+            <br><br>
+            <strong>Examples</strong> (2 pts each, accept any reasonable answers):
+            <br>&#8226; The lifetime of pollutants in the atmosphere (e.g., how quickly ozone decomposes)
+            <br>&#8226; Drug delivery and metabolism in the body
+            <br>&#8226; Food spoilage / effectiveness of preservatives
+            <br>&#8226; Catalytic converters cleaning exhaust gases
+        </div>
+        <p class="grading-note">Accept any reasonable real-world examples involving reaction speed.</p>
+    </div>
+</div>
+
+<!-- ===== QUESTION 2 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">2</div>
+        <span class="q-text">Rate expression for C&#8323;H&#8328; + 5O&#8322; &#8594; 3CO&#8322; + 4H&#8322;O</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="answer">
+            <div class="equation-box">
+                Rate = &minus;&#916;[C&#8323;H&#8328;]/&#916;t = &minus;(1/5)&#916;[O&#8322;]/&#916;t = +(1/3)&#916;[CO&#8322;]/&#916;t = +(1/4)&#916;[H&#8322;O]/&#916;t
+            </div>
+        </div>
+        <p class="grading-note">2 pts per correct term. Deduct 1 pt for missing negative signs on reactants or missing 1/coefficient.</p>
+    </div>
+</div>
+
+<!-- ===== QUESTION 3 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">3</div>
+        <span class="q-text">Rate expression for 2Fe + 6HCl &#8594; 2FeCl&#8323; + 3H&#8322;</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="answer">
+            <div class="equation-box">
+                Rate = &minus;(1/2)&#916;[Fe]/&#916;t = &minus;(1/6)&#916;[HCl]/&#916;t = +(1/2)&#916;[FeCl&#8323;]/&#916;t = +(1/3)&#916;[H&#8322;]/&#916;t
+            </div>
+        </div>
+        <p class="grading-note">2 pts per correct term.</p>
+    </div>
+</div>
+
+<!-- ===== QUESTION 4 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">4</div>
+        <span class="q-text">Rate law for NO&#8322; + O&#8323; &#8594; NO&#8323; + O&#8322;</span>
+        <span class="q-points">(14 pts)</span>
+    </div>
+    <div class="q-body">
+        <table>
+            <tr><th>Exp</th><th>[NO&#8322;] M</th><th>[O&#8323;] M</th><th>Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>5.0&times;10&#8315;&#8309;</td><td>1.0&times;10&#8315;&#8309;</td><td>0.022</td></tr>
+            <tr><td>2</td><td>5.0&times;10&#8315;&#8309;</td><td>2.0&times;10&#8315;&#8309;</td><td>0.044</td></tr>
+            <tr><td>3</td><td>2.5&times;10&#8315;&#8309;</td><td>2.0&times;10&#8315;&#8309;</td><td>0.022</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Order in NO&#8322; (3 pts):
+                <div class="answer">
+                    Compare Exp 2 &amp; 3 ([O&#8323;] constant):<br>
+                    Rate&#8323;/Rate&#8322; = 0.022/0.044 = 0.5<br>
+                    [NO&#8322;]&#8323;/[NO&#8322;]&#8322; = (2.5&times;10&#8315;&#8309;)/(5.0&times;10&#8315;&#8309;) = 0.5<br>
+                    0.5 = 0.5<sup>a</sup> &#8594; <strong>a = 1 (first order in NO&#8322;)</strong>
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Order in O&#8323; (3 pts):
+                <div class="answer">
+                    Compare Exp 1 &amp; 2 ([NO&#8322;] constant):<br>
+                    Rate&#8322;/Rate&#8321; = 0.044/0.022 = 2<br>
+                    [O&#8323;]&#8322;/[O&#8323;]&#8321; = (2.0&times;10&#8315;&#8309;)/(1.0&times;10&#8315;&#8309;) = 2<br>
+                    2 = 2<sup>b</sup> &#8594; <strong>b = 1 (first order in O&#8323;)</strong>
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Rate law (4 pts):
+                <div class="answer">
+                    <strong>Rate = k[NO&#8322;][O&#8323;]</strong> &mdash; first order in each, second order overall
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(d)</span> Value of k (4 pts):
+                <div class="answer">
+                    k = Rate / ([NO&#8322;][O&#8323;]) = 0.022 / (5.0&times;10&#8315;&#8309; &times; 1.0&times;10&#8315;&#8309;)<br>
+                    k = 0.022 / (5.0&times;10&#8315;&#185;&#8304;) = <strong>4.4 &times; 10&#8311; M&#8315;&#185;s&#8315;&#185;</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 5 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">5</div>
+        <span class="q-text">Rate law for 2NO + Cl&#8322; &#8594; 2NOCl</span>
+        <span class="q-points">(14 pts)</span>
+    </div>
+    <div class="q-body">
+        <table>
+            <tr><th>Exp</th><th>[NO] M</th><th>[Cl&#8322;] M</th><th>Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>0.10</td><td>0.10</td><td>2.53&times;10&#8315;&#8310;</td></tr>
+            <tr><td>2</td><td>0.10</td><td>0.20</td><td>5.06&times;10&#8315;&#8310;</td></tr>
+            <tr><td>3</td><td>0.20</td><td>0.10</td><td>10.1&times;10&#8315;&#8310;</td></tr>
+            <tr><td>4</td><td>0.30</td><td>0.10</td><td>22.8&times;10&#8315;&#8310;</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Order in NO (4 pts):
+                <div class="answer">
+                    Compare Exp 1 &amp; 3 ([Cl&#8322;] constant):<br>
+                    10.1&times;10&#8315;&#8310; / 2.53&times;10&#8315;&#8310; &asymp; 4.0<br>
+                    0.20/0.10 = 2.0<br>
+                    4 = 2<sup>a</sup> &#8594; <strong>a = 2 (second order in NO)</strong>
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Order in Cl&#8322; (4 pts):
+                <div class="answer">
+                    Compare Exp 1 &amp; 2 ([NO] constant):<br>
+                    5.06&times;10&#8315;&#8310; / 2.53&times;10&#8315;&#8310; = 2.0<br>
+                    0.20/0.10 = 2.0<br>
+                    2 = 2<sup>b</sup> &#8594; <strong>b = 1 (first order in Cl&#8322;)</strong>
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Rate law and k (6 pts):
+                <div class="answer">
+                    <strong>Rate = k[NO]&#178;[Cl&#8322;]</strong> &mdash; second order in NO, first order in Cl&#8322;, third order overall<br><br>
+                    k = Rate / ([NO]&#178;[Cl&#8322;]) = 2.53&times;10&#8315;&#8310; / (0.10&#178; &times; 0.10)<br>
+                    k = 2.53&times;10&#8315;&#8310; / 1.0&times;10&#8315;&#179; = <strong>2.53 &times; 10&#8315;&#179; M&#8315;&#178;s&#8315;&#185;</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 6 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">6</div>
+        <span class="q-text">Compare zero, first, and second order reactions.</span>
+        <span class="q-points">(10 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="answer">
+            <table>
+                <tr><th>Order</th><th>Linear Plot</th><th>Slope =</th><th>Units of k</th></tr>
+                <tr><td>Zero</td><td>[A] vs. t</td><td>&minus;k</td><td>M&middot;s&#8315;&#185;</td></tr>
+                <tr><td>First</td><td>ln[A] vs. t</td><td>&minus;k</td><td>s&#8315;&#185;</td></tr>
+                <tr><td>Second</td><td>1/[A] vs. t</td><td>+k</td><td>M&#8315;&#185;&middot;s&#8315;&#185;</td></tr>
+            </table>
+        </div>
+        <p class="grading-note">Award ~3 pts per row filled correctly (1 pt per column). Plus 1 pt for overall presentation.</p>
+    </div>
+</div>
+
+<!-- ===== QUESTION 7 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">7</div>
+        <span class="q-text">Order &amp; k for decomposition of N&#8322;O&#8325;</span>
+        <span class="q-points">(12 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Calculated values (4 pts):
+                <div class="answer">
+                    <table>
+                        <tr><th>Time (s)</th><th>[N&#8322;O&#8325;]</th><th>ln[N&#8322;O&#8325;]</th><th>1/[N&#8322;O&#8325;]</th></tr>
+                        <tr><td>0</td><td>5.00</td><td>1.609</td><td>0.200</td></tr>
+                        <tr><td>500</td><td>3.52</td><td>1.258</td><td>0.284</td></tr>
+                        <tr><td>1000</td><td>2.48</td><td>0.908</td><td>0.403</td></tr>
+                        <tr><td>1500</td><td>1.75</td><td>0.559</td><td>0.571</td></tr>
+                        <tr><td>2000</td><td>1.23</td><td>0.207</td><td>0.813</td></tr>
+                        <tr><td>2500</td><td>0.87</td><td>&minus;0.139</td><td>1.149</td></tr>
+                        <tr><td>3000</td><td>0.61</td><td>&minus;0.494</td><td>1.639</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Reaction order (4 pts):
+                <div class="answer">
+                    The plot of <strong>ln[N&#8322;O&#8325;] vs. time</strong> is linear (the ln values decrease by approximately 0.35 each 500 s interval = roughly constant change). Therefore the reaction is <strong>first order</strong>.
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Rate constant (4 pts):
+                <div class="answer">
+                    k = &minus;slope = &minus;(ln value change) / (time change)<br>
+                    k = &minus;(&minus;0.494 &minus; 1.609) / (3000 &minus; 0) = 2.103 / 3000 = <strong>7.01 &times; 10&#8315;&#8308; s&#8315;&#185;</strong><br>
+                    (Accept values in the range 6.9&ndash;7.1 &times; 10&#8315;&#8308; s&#8315;&#185;)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 8 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">8</div>
+        <span class="q-text">Arrhenius equation and linearized form.</span>
+        <span class="q-points">(10 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Arrhenius equation (3 pts):
+                <div class="answer">
+                    <div class="equation-box">k = A&middot;e<sup>&minus;E<sub>a</sub>/RT</sup></div>
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Variable definitions (4 pts):
+                <div class="answer">
+                    &#8226; <strong>k</strong> = rate constant<br>
+                    &#8226; <strong>A</strong> = Arrhenius factor (pre-exponential factor); related to collision frequency and orientation<br>
+                    &#8226; <strong>E<sub>a</sub></strong> = activation energy (J/mol); minimum energy required to initiate reaction<br>
+                    &#8226; <strong>R</strong> = ideal gas constant = 8.314 J/(mol&middot;K)<br>
+                    &#8226; <strong>T</strong> = temperature in Kelvin
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Linearized form (3 pts):
+                <div class="answer">
+                    <div class="equation-box">ln k = &minus;(E<sub>a</sub>/R)&middot;(1/T) + ln A</div>
+                    Plot <strong>ln k</strong> (y-axis) vs. <strong>1/T</strong> (x-axis)<br>
+                    Slope = <strong>&minus;E<sub>a</sub>/R</strong><br>
+                    y-intercept = <strong>ln A</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 9 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">9</div>
+        <span class="q-text">E<sub>a</sub> from Arrhenius slope of &minus;15,200 K.</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="answer">
+            slope = &minus;E<sub>a</sub>/R<br>
+            &minus;15,200 K = &minus;E<sub>a</sub> / 8.314 J/(mol&middot;K)<br>
+            E<sub>a</sub> = 15,200 &times; 8.314 = 126,373 J/mol<br>
+            <strong>E<sub>a</sub> &asymp; 126 kJ/mol</strong>
+        </div>
+        <p class="grading-note">4 pts for setup, 4 pts for correct answer with units. Accept 126&ndash;127 kJ/mol.</p>
+    </div>
+</div>
+
+<!-- ===== QUESTION 10 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">10</div>
+        <span class="q-text">Conceptual synthesis: two-point Arrhenius problem.</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <table>
+            <tr><th>Temperature</th><th>k</th></tr>
+            <tr><td>300 K</td><td>1.5 &times; 10&#8315;&#179; s&#8315;&#185;</td></tr>
+            <tr><td>350 K</td><td>4.2 &times; 10&#8315;&#178; s&#8315;&#185;</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Order from units (3 pts):
+                <div class="answer">
+                    The units of k are <strong>s&#8315;&#185;</strong>, which corresponds to a <strong>first-order</strong> reaction.<br>
+                    (For rate = k[A], the units work out: M&middot;s&#8315;&#185; = s&#8315;&#185; &times; M &#10003;)
+                </div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Two-point Arrhenius (5 pts):
+                <div class="answer">
+                    ln(k&#8322;/k&#8321;) = &minus;(E<sub>a</sub>/R)(1/T&#8322; &minus; 1/T&#8321;)<br><br>
+                    ln(4.2&times;10&#8315;&#178; / 1.5&times;10&#8315;&#179;) = &minus;(E<sub>a</sub>/8.314)(1/350 &minus; 1/300)<br>
+                    ln(28) = &minus;(E<sub>a</sub>/8.314)(0.002857 &minus; 0.003333)<br>
+                    3.332 = &minus;(E<sub>a</sub>/8.314)(&minus;4.762&times;10&#8315;&#8308;)<br>
+                    3.332 = (E<sub>a</sub>/8.314)(4.762&times;10&#8315;&#8308;)<br>
+                    E<sub>a</sub> = (3.332 &times; 8.314) / 4.762&times;10&#8315;&#8308;<br>
+                    E<sub>a</sub> = 27.71 / 4.762&times;10&#8315;&#8308;<br>
+                    E<sub>a</sub> = 58,174 J/mol<br>
+                    <strong>E<sub>a</sub> &asymp; 58.2 kJ/mol</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="brand">&#9883; TEHRANI &#9883;</div>
+    <div class="copy">&copy; Tehrani 2028</div>
+    <div class="quote">"If you think kinetics is just about speed, you clearly haven't met a catalyst at a dinner party."</div>
+    <div class="equation">&#916;G = &#916;H &minus; T&#916;S &nbsp; &#8741; &nbsp; PV = nRT &nbsp; &#8741; &nbsp; k = Ae<sup>&minus;E<sub>a</sub>/RT</sup></div>
+</footer>
+
+</body>
+</html>

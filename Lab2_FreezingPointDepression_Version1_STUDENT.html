@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Lab 2: Freezing Point Depression - Version 1 (Student)</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Lab 2: Freezing Point Depression - Version 1
+(Student)</h1>
+</header>
+<h1 id="lab-2-freezing-point-depression">Lab 2: Freezing Point
+Depression</h1>
+<h2 id="why-does-your-iv-bag-not-freeze-your-blood-edition">“Why Does
+Your IV Bag Not Freeze Your Blood?” Edition</h2>
+<p><strong>Course:</strong> General Chemistry II
+<strong>Duration:</strong> ~2 hours <strong>Safety Level:</strong> Low
+risk (food-grade materials used)</p>
+<hr />
+<h2 id="the-real-world-hook-why-should-you-care">The Real-World Hook:
+Why Should You Care?</h2>
+<p>Picture this: You’re a nurse in the ER. A patient comes in severely
+dehydrated. You hang an IV bag of saline solution. Ever wonder why that
+solution doesn’t freeze your patient’s blood vessels, even though the
+bag was stored in a cold environment? Or why hospitals are SO specific
+about IV concentrations?</p>
+<p><strong>The answer is freezing point depression</strong> — and
+understanding it could literally save lives in your future healthcare
+career.</p>
+<p>This same principle explains: - Why we use <strong>antifreeze in
+cars</strong> (and why drinking it is deadly — it’s ethylene glycol!) -
+Why <strong>salt melts ice</strong> on roads - Why your <strong>cells
+don’t freeze</strong> even though they’re mostly water - Why
+<strong>cryopreservation</strong> of organs uses specific solutions -
+Why <strong>diabetic blood</strong> has a slightly different freezing
+point</p>
+<hr />
+<h2 id="part-1-the-concept-no-memorization-required">Part 1: The Concept
+(No Memorization Required!)</h2>
+<h3 id="whats-actually-happening-the-aha-explanation">What’s Actually
+Happening? (The “Aha!” Explanation)</h3>
+<p>Imagine a crowded dance floor (pure water). Everyone is moving in
+sync, and when the music slows down (temperature drops), they can easily
+organize into a nice pattern (ice crystals).</p>
+<p>Now throw a bunch of random people (solute particles) into that dance
+floor. Chaos! The dancers can’t organize as easily because strangers are
+in the way. You need to slow the music down EVEN MORE (lower
+temperature) before they can finally form that organized pattern.</p>
+<p><strong>That’s freezing point depression in a nutshell.</strong></p>
+<h3 id="the-math-its-easier-than-you-think">The Math (It’s Easier Than
+You Think)</h3>
+<p><span class="math display">\[\Delta T_{fp} = i \cdot k_f \cdot
+m\]</span></p>
+<p>Let’s break this down like we’re explaining it to a friend:</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 44%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>What It Means</th>
+<th>Real Talk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(\Delta T_{fp}\)</span></td>
+<td>Change in freezing point</td>
+<td>“How much colder does it need to get to freeze?”</td>
+</tr>
+<tr>
+<td><span class="math inline">\(i\)</span></td>
+<td>van’t Hoff factor</td>
+<td>“How many particles does your solute break into?”</td>
+</tr>
+<tr>
+<td><span class="math inline">\(k_f\)</span></td>
+<td>Freezing point constant</td>
+<td>“How sensitive is this liquid to dissolved stuff?” (Water =
+1.86°C/m)</td>
+</tr>
+<tr>
+<td><span class="math inline">\(m\)</span></td>
+<td>Molality</td>
+<td>“How concentrated is your solution?” (moles solute ÷ kg
+solvent)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-vant-hoff-factor-the-particle-counter">The van’t Hoff Factor
+— The Particle Counter</h3>
+<p>This is where students often get confused. Let’s make it simple:</p>
+<table>
+<thead>
+<tr>
+<th>Substance</th>
+<th>What happens in water</th>
+<th>van’t Hoff factor (i)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sugar (glucose)</td>
+<td>Stays as one piece</td>
+<td>i = 1</td>
+</tr>
+<tr>
+<td>Table salt (NaCl)</td>
+<td>Splits into Na⁺ and Cl⁻</td>
+<td>i = 2</td>
+</tr>
+<tr>
+<td>Calcium chloride (CaCl₂)</td>
+<td>Splits into Ca²⁺ and 2Cl⁻</td>
+<td>i = 3</td>
+</tr>
+<tr>
+<td>Magnesium sulfate (MgSO₄)</td>
+<td>Splits into Mg²⁺ and SO₄²⁻</td>
+<td>i = 2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Memory trick:</strong> Count the ions! NaCl → 1 sodium + 1
+chloride = 2 particles</p>
+<hr />
+<h2 id="part-2-todays-healthcare-connection">Part 2: Today’s Healthcare
+Connection</h2>
+<h3 id="scenario-youre-developing-a-cryoprotectant-solution">Scenario:
+You’re Developing a Cryoprotectant Solution</h3>
+<p>Cryopreservation is the science of freezing biological samples
+(sperm, eggs, stem cells, even organs someday!) without destroying them.
+The key? <strong>Controlling ice crystal formation through freezing
+point depression.</strong></p>
+<p>If ice crystals form inside cells, they rupture the cell membranes.
+Dead cells. Failed transplant.</p>
+<p>Your job today: Understand how concentration affects freezing point
+so you can predict the behavior of cryoprotectant solutions.</p>
+<hr />
+<h2 id="part-3-the-experiment">Part 3: The Experiment</h2>
+<h3 id="materials-all-food-safe">Materials (All Food-Safe!)</h3>
+<ul>
+<li>Ice bath (crushed ice + water)</li>
+<li>Salt (NaCl) — various amounts</li>
+<li>Digital thermometer or temperature probe</li>
+<li>100 mL beakers (3)</li>
+<li>Distilled water</li>
+<li>Stirring rod</li>
+<li>Timer/phone</li>
+<li><strong>Optional:</strong> Glucose tablets or table sugar</li>
+<li>Lab notebook</li>
+</ul>
+<h3 id="safety-notes">Safety Notes</h3>
+<ul>
+<li>Wear goggles (good lab practice!)</li>
+<li>Don’t drink your solutions (duh, but we have to say it)</li>
+<li>Be careful with ice — it’s slippery</li>
+</ul>
+<hr />
+<h3 id="procedure-a-calibration-pure-waters-freezing-point">Procedure A:
+Calibration — Pure Water’s Freezing Point</h3>
+<p><strong>Why do this?</strong> Every thermometer has slight errors.
+Scientists always calibrate!</p>
+<ol type="1">
+<li>Fill a beaker with ~50 mL crushed ice</li>
+<li>Add ~20 mL distilled water</li>
+<li>Stir gently for 2 minutes</li>
+<li>Record the temperature when it stabilizes</li>
+</ol>
+<p><strong>Your reading:</strong> _______ °C</p>
+<p><strong>Expected:</strong> 0°C (or close to it)</p>
+<p><strong>Thermometer correction factor:</strong> _______ °C (If your
+thermometer reads 0.5°C in ice water, your correction is -0.5°C)</p>
+<hr />
+<h3 id="procedure-b-the-main-event-salt-solutions">Procedure B: The Main
+Event — Salt Solutions</h3>
+<p>You’ll make three solutions with different concentrations.</p>
+<p><strong>Solution Preparation Table:</strong></p>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 16%" />
+<col style="width: 8%" />
+<col style="width: 17%" />
+<col style="width: 16%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr>
+<th>Solution</th>
+<th>Salt (NaCl)</th>
+<th>Water</th>
+<th>Molality (m)</th>
+<th>Expected ΔT</th>
+<th>Expected Freezing Point</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A (Low)</td>
+<td>2.92 g</td>
+<td>100 g</td>
+<td>0.5 m</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td>B (Medium)</td>
+<td>5.85 g</td>
+<td>100 g</td>
+<td>1.0 m</td>
+<td>?</td>
+<td>?</td>
+</tr>
+<tr>
+<td>C (High)</td>
+<td>11.69 g</td>
+<td>100 g</td>
+<td>2.0 m</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pre-Lab Calculation (Do this BEFORE starting!):</strong></p>
+<p>For Solution A: - Molality = moles of NaCl ÷ kg of water - Moles of
+NaCl = 2.92 g ÷ 58.44 g/mol = _______ mol - Molality = _______ mol ÷
+0.100 kg = _______ m</p>
+<p><strong>Calculate the expected ΔT:</strong> <span
+class="math display">\[\Delta T = i \times k_f \times m = 2 \times 1.86
+\times 0.5 = \text{_______ °C}\]</span></p>
+<p><strong>Expected freezing point:</strong> 0°C - ΔT = _______ °C</p>
+<hr />
+<h3 id="procedure-c-measuring-freezing-points">Procedure C: Measuring
+Freezing Points</h3>
+<p><strong>The Cooling Curve Method:</strong></p>
+<ol type="1">
+<li><p>Place your solution beaker inside a larger container filled with
+ice and rock salt (this creates a super-cold bath, around
+-15°C!)</p></li>
+<li><p>Insert your thermometer into the solution (not touching the
+sides!)</p></li>
+<li><p>Start your timer and record temperature every 30 seconds</p></li>
+<li><p>Stir GENTLY and continuously</p></li>
+<li><p>Watch for the “plateau” — when temperature stays constant, that’s
+your freezing point!</p></li>
+<li><p>Continue until you see the plateau OR 15 minutes pass</p></li>
+</ol>
+<p><strong>Data Table for Solution A:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Time (s)</th>
+<th>Temperature (°C)</th>
+<th>Observations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>30</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>60</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>90</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>120</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>150</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>180</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>210</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>240</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>300</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>360</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>420</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>480</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>(Repeat for Solutions B and C on separate sheets)</p>
+<hr />
+<h2 id="part-4-data-analysis">Part 4: Data Analysis</h2>
+<h3 id="graph-it">Graph It!</h3>
+<p>Create a cooling curve for each solution: - X-axis: Time (seconds) -
+Y-axis: Temperature (°C)</p>
+<p><strong>What to look for:</strong></p>
+<pre><code>Temperature
+    |
+    |  \
+    |   \
+    |    \______ ← PLATEAU (This is your freezing point!)
+    |           \
+    |            \
+    |_______________ Time</code></pre>
+<h3 id="results-summary-table">Results Summary Table</h3>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 16%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr>
+<th>Solution</th>
+<th>Calculated ΔT (theory)</th>
+<th>Measured Freezing Point</th>
+<th>Measured ΔT</th>
+<th>% Error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Percent Error Formula:</strong> <span
+class="math display">\[\% \text{ Error} = \frac{|\text{Theoretical} -
+\text{Experimental}|}{|\text{Theoretical}|} \times 100\]</span></p>
+<hr />
+<h2 id="part-5-healthcare-application-questions">Part 5: Healthcare
+Application Questions</h2>
+<p>Answer these in complete sentences. Think like a future healthcare
+professional!</p>
+<h3 id="question-1-iv-fluid-design">Question 1: IV Fluid Design</h3>
+<p>Normal saline (0.9% NaCl) is used for IV fluids. Calculate its
+freezing point. - 0.9% means 0.9 g NaCl per 100 mL water (assume density
+= 1 g/mL, so 100 g water)</p>
+<p>Show your work:</p>
+<p><strong>Why does this matter clinically?</strong></p>
+<h3 id="question-2-blood-osmolarity">Question 2: Blood Osmolarity</h3>
+<p>Blood plasma has a freezing point of approximately -0.56°C. If
+someone’s blood freezing point measures -0.52°C, what might this
+indicate about their blood concentration? (Hint: Think about
+hydration!)</p>
+<h3 id="question-3-cryopreservation-challenge">Question 3:
+Cryopreservation Challenge</h3>
+<p>A fertility clinic needs to store embryos at -196°C (liquid nitrogen
+temperature). Why isn’t freezing point depression alone enough to
+protect cells? What else must be considered?</p>
+<h3 id="question-4-the-antifreeze-poisoning-case">Question 4: The
+Antifreeze Poisoning Case</h3>
+<p>A patient arrives in the ER after accidentally drinking antifreeze
+(ethylene glycol). Their blood work shows an unusually LOW freezing
+point (more negative than normal). Explain why this happens
+chemically.</p>
+<h3 id="question-5-medication-storage">Question 5: Medication
+Storage</h3>
+<p>Some liquid medications say “Do not freeze.” Using your knowledge of
+freezing point depression, explain why a medication’s effectiveness
+might change if frozen.</p>
+<hr />
+<h2 id="part-6-critical-thinking-the-so-what-section">Part 6: Critical
+Thinking — The “So What?” Section</h2>
+<h3 id="connect-the-dots">Connect the Dots</h3>
+<ol type="1">
+<li><p><strong>If you were designing an organ preservation
+solution</strong>, what properties would you want? (Think about
+concentration, ice crystal formation, toxicity)</p></li>
+<li><p><strong>Why do hospitals use 0.9% saline instead of pure water
+for IVs?</strong> (Hint: It’s not just about freezing point — research
+“isotonic”)</p></li>
+<li><p><strong>Climate Change Connection:</strong> Road salt runs off
+into waterways. How might this affect aquatic organisms that rely on
+specific freezing points for their life cycles?</p></li>
+</ol>
+<hr />
+<h2 id="lab-report-checklist">Lab Report Checklist</h2>
+<p>Before you leave, make sure you have:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Completed all calculations (pre-lab
+and post-lab)</label></li>
+<li><label><input type="checkbox" />Recorded all temperature
+data</label></li>
+<li><label><input type="checkbox" />Created cooling curves
+(graphs)</label></li>
+<li><label><input type="checkbox" />Answered all healthcare application
+questions</label></li>
+<li><label><input type="checkbox" />Cleaned your station and returned
+materials</label></li>
+</ul>
+<hr />
+<h2 id="bonus-quick-reference-card">Bonus: Quick Reference Card</h2>
+<p><strong>Cut this out and keep it!</strong></p>
+<pre><code>┌─────────────────────────────────────────────┐
+│     FREEZING POINT DEPRESSION              │
+│                                             │
+│     ΔT = i × k_f × m                       │
+│                                             │
+│     Water: k_f = 1.86 °C/m                 │
+│                                             │
+│     Common i values:                        │
+│       Glucose, sucrose = 1                  │
+│       NaCl, KBr = 2                        │
+│       CaCl₂ = 3                            │
+│       FeCl₃ = 4                            │
+│                                             │
+│     Molality = mol solute / kg solvent     │
+│                                             │
+│     NEW freezing point = 0°C - ΔT          │
+└─────────────────────────────────────────────┘</code></pre>
+<hr />
+<h2 id="notes-section">Notes Section</h2>
+<p>Use this space for observations, questions, or “aha!” moments:</p>
+<pre><code>
+
+
+
+
+
+
+
+
+</code></pre>
+<hr />
+<div style="text-align:center; padding:20px 0; border-top:2px solid #2c3e50;">
+<h3>⚗ TEHRANI ⚗</h3>
+<p>© Tehrani 2028</p>
+<p><em>"A solute walks into a solvent and the freezing point drops — nobody asked it to, but that's what happens when you let strangers into a perfectly organized system."</em></p>
+<p style="font-size:0.85em; letter-spacing:2px; margin-top:8px;">ΔTₓ = i · Kf · m · General Chemistry II</p>
+</div>
+</body>
+</html>

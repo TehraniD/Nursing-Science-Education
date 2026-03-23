@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop 2: Chemical Kinetics - Student Worksheet</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #2980b9;
+            --border: #d5dbdb;
+            --bg: #ffffff;
+            --text: #2c3e50;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 { font-size: 1.5rem; color: var(--primary); }
+        .header h2 { font-size: 1.1rem; font-weight: 400; color: var(--secondary); }
+        .header .brand { font-size: 0.85rem; color: #888; letter-spacing: 3px; margin-top: 0.3rem; }
+
+        .info-box {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.3rem;
+        }
+
+        .info-box .label { font-weight: 600; }
+        .info-box .line { border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
+
+        .instructions {
+            background: #ebf5fb;
+            border-left: 4px solid var(--secondary);
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .instructions p { font-size: 0.9rem; }
+
+        .question {
+            margin-bottom: 2rem;
+            page-break-inside: avoid;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .q-number {
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .q-points {
+            color: #888;
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        .q-text { font-weight: 600; color: var(--primary); }
+
+        .q-body {
+            padding-left: 2.3rem;
+        }
+
+        .answer-lines {
+            margin-top: 0.5rem;
+        }
+
+        .answer-line {
+            border-bottom: 1px solid var(--border);
+            height: 2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .answer-line.tall { height: 3rem; }
+
+        .answer-box {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            min-height: 80px;
+            margin-top: 0.5rem;
+            padding: 0.3rem;
+        }
+
+        .answer-box.large { min-height: 140px; }
+
+        .equation-box {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            margin: 0.5rem 0;
+            text-align: center;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.05rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.6rem;
+            text-align: center;
+        }
+
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        .sub-parts { padding-left: 1rem; }
+        .sub-parts .part { margin-bottom: 0.5rem; }
+        .part-label { font-weight: 600; }
+
+        .hint {
+            color: #888;
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-top: 0.3rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-top: 2px solid var(--primary);
+            margin-top: 2rem;
+            color: #888;
+        }
+
+        footer .brand { letter-spacing: 4px; font-size: 0.95rem; color: var(--primary); margin-bottom: 0.3rem; }
+        footer .copy { font-size: 0.8rem; }
+        footer .quote { font-style: italic; font-size: 0.75rem; opacity: 0.7; margin-top: 0.2rem; }
+        footer .equation { font-family: 'Cambria Math', serif; font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px; margin-top: 0.3rem; }
+
+        @media print {
+            body { padding: 0.5cm; font-size: 11pt; }
+            .info-box { page-break-inside: avoid; }
+            .question { page-break-inside: avoid; }
+            .instructions { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Workshop 2: Chemical Kinetics</h1>
+    <h2>CHM152 ~ Take-Home Worksheet</h2>
+    <div class="brand">&#9883; TEHRANI &#9883;</div>
+</div>
+
+<div class="info-box">
+    <div class="label">Name:</div>
+    <div class="line">&nbsp;</div>
+    <div class="label">Date:</div>
+    <div class="line">&nbsp;</div>
+    <div class="label">Section:</div>
+    <div class="line">&nbsp;</div>
+    <div class="label">Points:</div>
+    <div>_________ / 100</div>
+</div>
+
+<div class="instructions">
+    <p><strong>&#9883; Instructions:</strong> Complete all 10 questions using your Workshop 2 Learning Guide. Show your work for full credit. Due at the beginning of next week's class. Answers without work shown will receive half credit at most.</p>
+</div>
+
+<!-- ===== QUESTION 1 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">1</div>
+        <span class="q-text">Define chemical kinetics in your own words and give two real-world examples where reaction rates matter.</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <p class="hint">Hint: Check the Introduction section of the Learning Guide.</p>
+        <div class="answer-box large"></div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 2 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">2</div>
+        <span class="q-text">Write the rate expression for the following reaction in terms of the change in concentration of each reactant and product.</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="equation-box">
+            C&#8323;H&#8328;(g) + 5O&#8322;(g) &#8594; 3CO&#8322;(g) + 4H&#8322;O(g)
+        </div>
+        <p>Rate = </p>
+        <div class="answer-lines">
+            <div class="answer-line tall"></div>
+            <div class="answer-line tall"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 3 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">3</div>
+        <span class="q-text">Write the rate expression for this reaction:</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="equation-box">
+            2Fe(s) + 6HCl(aq) &#8594; 2FeCl&#8323;(aq) + 3H&#8322;(g)
+        </div>
+        <p>Rate = </p>
+        <div class="answer-lines">
+            <div class="answer-line tall"></div>
+            <div class="answer-line tall"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 4 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">4</div>
+        <span class="q-text">Using the data below, determine the rate law and the value of k for the reaction:</span>
+        <span class="q-points">(14 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="equation-box">
+            NO&#8322;(g) + O&#8323;(g) &#8594; NO&#8323;(g) + O&#8322;(g)
+        </div>
+        <table>
+            <tr><th>Experiment</th><th>[NO&#8322;] (M)</th><th>[O&#8323;] (M)</th><th>Initial Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>5.0 &times; 10&#8315;&#8309;</td><td>1.0 &times; 10&#8315;&#8309;</td><td>0.022</td></tr>
+            <tr><td>2</td><td>5.0 &times; 10&#8315;&#8309;</td><td>2.0 &times; 10&#8315;&#8309;</td><td>0.044</td></tr>
+            <tr><td>3</td><td>2.5 &times; 10&#8315;&#8309;</td><td>2.0 &times; 10&#8315;&#8309;</td><td>0.022</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Determine the order with respect to NO&#8322;. Show your work.
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Determine the order with respect to O&#8323;. Show your work.
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Write the complete rate law.
+                <div class="answer-lines"><div class="answer-line"></div></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(d)</span> Calculate the value of k, including units.
+                <div class="answer-box"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 5 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">5</div>
+        <span class="q-text">Determine the rate law and k for the following reaction:</span>
+        <span class="q-points">(14 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="equation-box">
+            2NO(g) + Cl&#8322;(g) &#8594; 2NOCl(g)
+        </div>
+        <table>
+            <tr><th>Experiment</th><th>[NO] (M)</th><th>[Cl&#8322;] (M)</th><th>Initial Rate (M&middot;s&#8315;&#185;)</th></tr>
+            <tr><td>1</td><td>0.10</td><td>0.10</td><td>2.53 &times; 10&#8315;&#8310;</td></tr>
+            <tr><td>2</td><td>0.10</td><td>0.20</td><td>5.06 &times; 10&#8315;&#8310;</td></tr>
+            <tr><td>3</td><td>0.20</td><td>0.10</td><td>10.1 &times; 10&#8315;&#8310;</td></tr>
+            <tr><td>4</td><td>0.30</td><td>0.10</td><td>22.8 &times; 10&#8315;&#8310;</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Determine the order with respect to NO. Show your work.
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Determine the order with respect to Cl&#8322;. Show your work.
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Write the complete rate law and calculate k with units.
+                <div class="answer-box"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 6 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">6</div>
+        <span class="q-text">Explain the difference between zero order, first order, and second order reactions. For each, state which plot gives a straight line and what the slope represents.</span>
+        <span class="q-points">(10 pts)</span>
+    </div>
+    <div class="q-body">
+        <p class="hint">Hint: Check the Integrated Rate Laws section of the Learning Guide.</p>
+        <table>
+            <tr><th>Order</th><th>Linear Plot (y vs. x)</th><th>Slope =</th><th>Units of k</th></tr>
+            <tr><td>Zero</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>First</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>Second</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- ===== QUESTION 7 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">7</div>
+        <span class="q-text">The following concentration-time data were collected for the decomposition of N&#8322;O&#8325;:</span>
+        <span class="q-points">(12 pts)</span>
+    </div>
+    <div class="q-body">
+        <div class="equation-box">
+            2N&#8322;O&#8325; &#8594; 4NO&#8322; + O&#8322;
+        </div>
+        <table>
+            <tr><th>Time (s)</th><th>[N&#8322;O&#8325;] (M)</th></tr>
+            <tr><td>0</td><td>5.00</td></tr>
+            <tr><td>500</td><td>3.52</td></tr>
+            <tr><td>1000</td><td>2.48</td></tr>
+            <tr><td>1500</td><td>1.75</td></tr>
+            <tr><td>2000</td><td>1.23</td></tr>
+            <tr><td>2500</td><td>0.87</td></tr>
+            <tr><td>3000</td><td>0.61</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Calculate ln[N&#8322;O&#8325;] and 1/[N&#8322;O&#8325;] for each time point.
+                <table>
+                    <tr><th>Time (s)</th><th>[N&#8322;O&#8325;]</th><th>ln[N&#8322;O&#8325;]</th><th>1/[N&#8322;O&#8325;]</th></tr>
+                    <tr><td>0</td><td>5.00</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tr><td>500</td><td>3.52</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tr><td>1000</td><td>2.48</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tr><td>1500</td><td>1.75</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tr><td>2000</td><td>1.23</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tr><td>2500</td><td>0.87</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                    <tr><td>3000</td><td>0.61</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                </table>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Which plot would be linear? Determine the order of the reaction.
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Determine k, the rate constant (include units).
+                <div class="answer-box"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 8 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">8</div>
+        <span class="q-text">Write the Arrhenius equation and define each variable. Then write the linearized form and state what you plot, what the slope equals, and what the y-intercept equals.</span>
+        <span class="q-points">(10 pts)</span>
+    </div>
+    <div class="q-body">
+        <p class="hint">Hint: Check the Arrhenius section of the Learning Guide.</p>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> Arrhenius equation:
+                <div class="answer-lines"><div class="answer-line tall"></div></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Define each variable (k, A, E<sub>a</sub>, R, T):
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(c)</span> Linearized form and what to plot:
+                <div class="answer-box"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 9 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">9</div>
+        <span class="q-text">The slope of an Arrhenius plot (ln k vs. 1/T) for a certain reaction is &minus;15,200 K. Calculate the activation energy (E<sub>a</sub>) in kJ/mol.</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <p class="hint">Remember: slope = &minus;E<sub>a</sub>/R, where R = 8.314 J/(mol&middot;K)</p>
+        <div class="answer-box large"></div>
+    </div>
+</div>
+
+<!-- ===== QUESTION 10 ===== -->
+<div class="question">
+    <div class="question-header">
+        <div class="q-number">10</div>
+        <span class="q-text">Conceptual Synthesis: A student measures the rate constant for a reaction at two temperatures:</span>
+        <span class="q-points">(8 pts)</span>
+    </div>
+    <div class="q-body">
+        <table>
+            <tr><th>Temperature</th><th>k</th></tr>
+            <tr><td>300 K</td><td>1.5 &times; 10&#8315;&#179; s&#8315;&#185;</td></tr>
+            <tr><td>350 K</td><td>4.2 &times; 10&#8315;&#178; s&#8315;&#185;</td></tr>
+        </table>
+        <div class="sub-parts">
+            <div class="part">
+                <span class="part-label">(a)</span> What is the overall order of this reaction? How do you know from the units of k?
+                <div class="answer-box"></div>
+            </div>
+            <div class="part">
+                <span class="part-label">(b)</span> Using the two-point Arrhenius equation, calculate E<sub>a</sub> in kJ/mol. Show all work.
+                <div class="equation-box" style="text-align:left; font-size:0.9rem;">
+                    Two-point form: ln(k&#8322;/k&#8321;) = &minus;(E<sub>a</sub>/R)&middot;(1/T&#8322; &minus; 1/T&#8321;)
+                </div>
+                <div class="answer-box large"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="brand">&#9883; TEHRANI &#9883;</div>
+    <div class="copy">&copy; Tehrani 2028</div>
+    <div class="quote">"If you think kinetics is just about speed, you clearly haven't met a catalyst at a dinner party."</div>
+    <div class="equation">&#916;G = &#916;H &minus; T&#916;S &nbsp; &#8741; &nbsp; PV = nRT &nbsp; &#8741; &nbsp; k = Ae<sup>&minus;E<sub>a</sub>/RT</sup></div>
+</footer>
+
+</body>
+</html>

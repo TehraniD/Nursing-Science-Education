@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHM 130 Lab 4: Ester Synthesis - The Chemistry of Smell</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 52%, #2BFF88 90%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #FA8BFF;
+            border-bottom: 3px solid #FA8BFF;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .safety-warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .safety-warning strong {
+            color: #856404;
+        }
+        .timer {
+            background-color: #e0f7fa;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: #00838f;
+            margin-bottom: 15px;
+        }
+        .question-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #FA8BFF;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #FA8BFF;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .step {
+            background-color: #fce4ec;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #FA8BFF;
+        }
+        .step-number {
+            background-color: #FA8BFF;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 12px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .checkpoint {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .chemical-structure {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+        }
+        .learning-objectives {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .learning-objectives ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .btn {
+            background-color: #FA8BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #e577e6;
+        }
+        .fun-fact {
+            background-color: #e1f5fe;
+            border-left: 4px solid #03a9f4;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .ester-card {
+            background-color: #f0f8ff;
+            border: 2px solid #4fc3f7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .smell-scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .smell-option {
+            padding: 8px 15px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+        .smell-option:hover {
+            background-color: #c8e6c9;
+        }
+        @media print {
+            .btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CHM 130 Laboratory 4</h1>
+        <h2>Ester Synthesis: The Sweet Chemistry of Smells 🍓🍌🍍</h2>
+        <p><strong>Total Lab Time:</strong> 3 Hours | <strong>Post-Lab Assignment:</strong> 2 Hours</p>
+    </div>
+
+    <!-- PRE-LAB SECTION (40-45 minutes total) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB REVIEW: 30 minutes</div>
+        <h2 class="section-title">Pre-Lab: Background Information</h2>
+
+        <div class="learning-objectives">
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Understand esterification reactions and functional groups in organic chemistry</li>
+                <li>Learn how esters create familiar scents and flavors</li>
+                <li>Practice organic synthesis techniques including reflux and extraction</li>
+                <li>Recognize the role of organic chemistry in pharmaceuticals and healthcare products</li>
+                <li>Apply knowledge of esters to medication administration and patient care</li>
+            </ul>
+        </div>
+
+        <h3>Introduction: The Chemistry of Your Senses</h3>
+        <p>Have you ever wondered what gives a banana its distinctive smell? Or why wintergreen oil smells so refreshing? The answer lies in a class of organic compounds called <strong>esters</strong>. These molecules are responsible for the pleasant smells and flavors of many fruits, flowers, and even some medications!</p>
+
+        <div class="fun-fact">
+            <strong>👃 Smell Science:</strong> The human nose can detect over 1 trillion different scents! When ester molecules reach olfactory receptors in your nose, they trigger specific neural signals that your brain interprets as distinct smells. This is why tiny differences in molecular structure create completely different scents!
+        </div>
+
+        <h3>What are Esters?</h3>
+        <p>Esters are organic compounds formed by the reaction between a <strong>carboxylic acid</strong> and an <strong>alcohol</strong>. This reaction is called <strong>esterification</strong> and typically requires an acid catalyst (like sulfuric acid).</p>
+
+        <div class="chemical-structure">
+            <h3>The Esterification Reaction</h3>
+            <p><strong>Carboxylic Acid + Alcohol → Ester + Water</strong></p>
+            <p style="margin-top: 10px;">R-COOH + R'-OH → R-COO-R' + H₂O</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">This is a <strong>condensation reaction</strong> - two molecules combine and release a small molecule (water) in the process.</p>
+        </div>
+
+        <h3>Esters We'll Create Today</h3>
+
+        <div class="ester-card">
+            <h4>🍌 Isoamyl Acetate (Banana Scent)</h4>
+            <p><strong>Acetic acid + Isoamyl alcohol</strong></p>
+            <p>Found in: Bananas, pears, some bee pheromones</p>
+            <p><em>Clinical note: Also used as a solvent in some topical medications</em></p>
+        </div>
+
+        <div class="ester-card">
+            <h4>🍓 Methyl Salicylate (Wintergreen)</h4>
+            <p><strong>Salicylic acid + Methanol</strong></p>
+            <p>Found in: Wintergreen plants, topical pain relief products</p>
+            <p><em>Clinical note: Active ingredient in Ben-Gay, Icy Hot, and other topical analgesics</em></p>
+        </div>
+
+        <div class="ester-card">
+            <h4>🍊 Octyl Acetate (Orange Scent)</h4>
+            <p><strong>Acetic acid + Octanol</strong></p>
+            <p>Found in: Oranges, citrus fruits</p>
+            <p><em>Used in: Perfumes, flavorings, and aromatherapy</em></p>
+        </div>
+
+        <div class="ester-card">
+            <h4>🍍 Ethyl Butyrate (Pineapple)</h4>
+            <p><strong>Butyric acid + Ethanol</strong></p>
+            <p>Found in: Pineapples, strawberries</p>
+            <p><em>Used in: Artificial fruit flavorings</em></p>
+        </div>
+
+        <h3>Clinical Applications of Esters</h3>
+
+        <h4>1. Medications and Topical Analgesics</h4>
+        <p><strong>Methyl salicylate (oil of wintergreen)</strong> is found in many pain-relief rubs and liniments:</p>
+        <ul>
+            <li>Ben-Gay, Icy Hot, Tiger Balm</li>
+            <li>Acts as a rubefacient (increases blood flow to the area)</li>
+            <li>Provides topical pain relief for muscle and joint pain</li>
+            <li><strong>Nursing consideration:</strong> Can be toxic if ingested - keep away from children!</li>
+        </ul>
+
+        <h4>2. Injectable Medications</h4>
+        <p>Many injectable medications are formulated as esters to:</p>
+        <ul>
+            <li>Improve stability</li>
+            <li>Control release rate (long-acting formulations)</li>
+            <li>Increase lipid solubility</li>
+            <li><strong>Examples:</strong> Testosterone cypionate (ester), haloperidol decanoate (long-acting antipsychotic)</li>
+        </ul>
+
+        <h4>3. Local Anesthetics</h4>
+        <p>Two classes of local anesthetics: <strong>esters</strong> (procaine, benzocaine) and <strong>amides</strong> (lidocaine, bupivacaine)</p>
+        <ul>
+            <li>Ester anesthetics: Procaine (Novocain), benzocaine (throat lozenges)</li>
+            <li>Higher allergy risk with ester-type anesthetics</li>
+            <li><strong>Nursing assessment:</strong> Always ask about anesthetic allergies before procedures!</li>
+        </ul>
+
+        <h4>4. Aspirin (Acetylsalicylic Acid)</h4>
+        <p>Aspirin is technically an ester! It's acetylated salicylic acid.</p>
+
+        <div class="fun-fact">
+            <strong>🏥 Nursing Alert:</strong> Some patients may say they're "allergic to esters" when referring to local anesthetics. It's important to distinguish between ester-type local anesthetics (procaine) and ester medications in general (like aspirin), as cross-reactivity is not always present.
+        </div>
+
+        <h3>Why Do Esters Smell?</h3>
+        <p>Esters are:</p>
+        <ul>
+            <li><strong>Volatile</strong> - they evaporate easily at room temperature</li>
+            <li><strong>Small enough</strong> to be carried in the air</li>
+            <li><strong>Shaped perfectly</strong> to fit into olfactory receptors in your nose</li>
+            <li><strong>Polar enough</strong> to interact with mucus membranes but <strong>nonpolar enough</strong> to pass through them</li>
+        </ul>
+
+        <div class="safety-warning">
+            <strong>⚠️ CRITICAL SAFETY INFORMATION</strong>
+            <ul>
+                <li><strong>Concentrated sulfuric acid (H₂SO₄) is EXTREMELY corrosive</strong> - can cause severe burns</li>
+                <li>Always add acid to alcohol, NEVER the reverse</li>
+                <li>Wear safety goggles and chemical-resistant gloves at all times</li>
+                <li>Work in well-ventilated area - some starting materials have unpleasant odors</li>
+                <li>Hot water bath can cause burns - use test tube holders</li>
+                <li>Many esters are flammable - keep away from open flames</li>
+                <li>NEVER smell chemicals by placing them directly under your nose - use wafting technique</li>
+                <li>Some alcohols (especially methanol) are toxic - avoid skin contact</li>
+            </ul>
+        </div>
+
+        <h3>Key Chemistry Concepts</h3>
+
+        <div class="step">
+            <strong>Functional Group:</strong> A specific group of atoms within a molecule that determines its chemical properties. Esters have the R-COO-R' functional group.
+        </div>
+
+        <div class="step">
+            <strong>Esterification:</strong> The formation of an ester from a carboxylic acid and an alcohol, releasing water as a byproduct.
+        </div>
+
+        <div class="step">
+            <strong>Catalyst:</strong> A substance that speeds up a reaction without being consumed. Sulfuric acid catalyzes esterification.
+        </div>
+
+        <div class="step">
+            <strong>Reflux:</strong> A technique where reactants are heated and vapors are condensed back into the reaction vessel, allowing reactions to proceed at higher temperatures without losing material.
+        </div>
+
+        <div class="step">
+            <strong>Volatility:</strong> The tendency of a substance to evaporate. Volatile compounds easily become vapors at room temperature.
+        </div>
+
+        <div class="fun-fact">
+            <strong>🍇 Nature's Perfume:</strong> Plants produce esters naturally to attract pollinators and seed dispersers! The pleasant fruit smells you enjoy are actually plant chemical signals designed to get animals (including humans) to eat the fruit and spread seeds!
+        </div>
+    </div>
+
+    <!-- PRE-LAB QUESTIONS (10-15 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB QUESTIONS: 10-15 minutes</div>
+        <h2 class="section-title">Pre-Lab Questions</h2>
+        <p><em>Answer these questions before beginning the experiment. Your instructor will review answers before you proceed.</em></p>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> What is an ester? Write the general equation for esterification.
+            <textarea id="prelab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> List three medications or healthcare products that contain esters. For each, briefly describe its clinical use.
+            <textarea id="prelab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> Why is concentrated sulfuric acid dangerous? What safety precautions must you take when handling it?
+            <textarea id="prelab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> A patient tells you they're allergic to procaine (Novocain). What class of local anesthetic is procaine, and what safer alternative might the dentist use instead?
+            <textarea id="prelab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> Explain the proper "wafting" technique for smelling chemicals safely in the laboratory.
+            <textarea id="prelab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor review your pre-lab questions and demonstrate proper wafting technique before proceeding.
+            <br><input type="checkbox" id="instructor-check1"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials1">
+        </div>
+    </div>
+
+    <!-- EXPERIMENT SECTION (90 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ EXPERIMENT: 90 minutes</div>
+        <h2 class="section-title">Experimental Procedure</h2>
+
+        <h3>General Materials (for all esters)</h3>
+        <table class="data-table">
+            <tr>
+                <th>Equipment</th>
+                <th>Safety Equipment</th>
+            </tr>
+            <tr>
+                <td>
+                    • Test tubes (large, heat-resistant)<br>
+                    • Test tube rack<br>
+                    • Hot water bath (70-80°C)<br>
+                    • Test tube holders/clamps<br>
+                    • Graduated cylinders (10 mL)<br>
+                    • Dropper pipettes<br>
+                    • Beakers for waste disposal<br>
+                    • Timer<br>
+                    • White index cards (for color comparison)
+                </td>
+                <td>
+                    • Safety goggles (REQUIRED)<br>
+                    • Chemical-resistant gloves<br>
+                    • Lab apron or coat<br>
+                    • Fume hood or well-ventilated area<br>
+                    • Fire extinguisher (nearby)<br>
+                    • Eyewash station (locate before starting)<br>
+                    • Safety shower (locate before starting)
+                </td>
+            </tr>
+        </table>
+
+        <h3>Specific Reagents for Each Ester</h3>
+        <p><em>Your instructor will assign you 2-3 different esters to synthesize</em></p>
+
+        <table class="data-table">
+            <tr>
+                <th>Ester Product</th>
+                <th>Alcohol Needed</th>
+                <th>Carboxylic Acid Needed</th>
+                <th>Expected Scent</th>
+            </tr>
+            <tr>
+                <td>Isoamyl acetate</td>
+                <td>Isoamyl alcohol (3 mL)</td>
+                <td>Acetic acid (glacial, 1 mL)</td>
+                <td>Banana</td>
+            </tr>
+            <tr>
+                <td>Methyl salicylate</td>
+                <td>Methanol (2 mL)</td>
+                <td>Salicylic acid (0.5 g)</td>
+                <td>Wintergreen</td>
+            </tr>
+            <tr>
+                <td>Octyl acetate</td>
+                <td>Octanol (3 mL)</td>
+                <td>Acetic acid (glacial, 1 mL)</td>
+                <td>Orange</td>
+            </tr>
+            <tr>
+                <td>Ethyl butyrate</td>
+                <td>Ethanol (2 mL)</td>
+                <td>Butyric acid (1 mL)</td>
+                <td>Pineapple</td>
+            </tr>
+        </table>
+
+        <div class="safety-warning">
+            <strong>🛑 BEFORE STARTING:</strong> Put on safety goggles, chemical-resistant gloves, and lab apron. Locate the eyewash station and safety shower. Review the MSDS sheets for your chemicals. Keep safety goggles on throughout the entire experiment!
+        </div>
+
+        <h3>General Procedure (Repeat for Each Assigned Ester)</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Set up hot water bath (5 min)</strong><br>
+            Prepare a hot water bath at approximately 70-80°C using a hot plate and large beaker. Use a thermometer to monitor temperature. <strong>Do not boil!</strong>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Prepare test tube (3 min per ester)</strong><br>
+            For each ester, label a large test tube with:
+            <ul>
+                <li>Your name</li>
+                <li>Ester name</li>
+                <li>Date and time</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Add alcohol (2 min per ester)</strong><br>
+            Using a clean, dry graduated cylinder, measure the specified amount of alcohol for your ester. Pour into the labeled test tube. <strong>CAUTION: Methanol is especially toxic - avoid skin contact!</strong>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Add carboxylic acid (3 min per ester)</strong><br>
+            Carefully measure and add the specified amount of carboxylic acid to the test tube. <strong>Note: For salicylic acid, you'll need to weigh the solid on a balance first.</strong> <em>Warning: Butyric acid smells terrible (like vomit) - work quickly in fume hood!</em>
+        </div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <strong>Add catalyst - CAREFULLY! (3 min per ester)</strong><br>
+            <strong>CRITICAL STEP:</strong> Add 3-5 drops of concentrated sulfuric acid (H₂SO₄) as a catalyst. <br>
+            <strong>⚠️ ADD DROPS SLOWLY along the side of the test tube</strong><br>
+            <strong>⚠️ The reaction is EXOTHERMIC (produces heat)</strong><br>
+            <strong>⚠️ DO NOT allow H₂SO₄ to touch skin or eyes</strong>
+        </div>
+
+        <div class="checkpoint">
+            ⚠️ <strong>Safety Check:</strong> Have you added H₂SO₄ safely? Is the mixture warming but not boiling over?
+            <br><input type="checkbox" id="safety-check1"> Safety verified by: <input type="text" style="width: 200px;" id="safety-initials1">
+        </div>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <strong>Heat in water bath (15-20 min per ester)</strong><br>
+            Using a test tube holder or clamp, place the test tube in the hot water bath. Heat for 15-20 minutes, gently swirling every 3-5 minutes. <strong>DO NOT heat longer than 20 minutes as some esters will decompose.</strong> The ester will form as a distinct layer (often oily).
+        </div>
+
+        <div class="step">
+            <span class="step-number">7</span>
+            <strong>Cool to room temperature (5 min per ester)</strong><br>
+            Remove test tube from water bath and place in test tube rack to cool for 5 minutes. The ester layer should become more distinct as it cools.
+        </div>
+
+        <div class="step">
+            <span class="step-number">8</span>
+            <strong>Smell test - USE WAFTING TECHNIQUE! (5 min per ester)</strong><br>
+            <strong>IMPORTANT: NEVER smell chemicals directly!</strong>
+            <ol>
+                <li>Hold the test tube at arm's length</li>
+                <li>Use your hand to gently fan vapors toward your nose</li>
+                <li>Take a cautious sniff - the smell may be strong!</li>
+                <li>Record your observations</li>
+            </ol>
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Lab Partner Smell Test:</strong> Have your lab partner also smell your esters using proper wafting technique and confirm the scent.
+            <br><input type="checkbox" id="partner-check1"> Partner initials: <input type="text" style="width: 200px;" id="partner-initials1">
+        </div>
+
+        <div class="step">
+            <span class="step-number">9</span>
+            <strong>Compare with commercial products (Optional - 10 min)</strong><br>
+            If available, compare your methyl salicylate to commercial wintergreen-scented products (Ben-Gay, Icy Hot). Compare banana-scented ester to actual banana or banana candy. How similar are they?
+        </div>
+
+        <h3>Data Collection</h3>
+
+        <h4>Ester #1</h4>
+        <table class="data-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Your Data</th>
+            </tr>
+            <tr>
+                <td>Target Ester</td>
+                <td><input type="text" id="ester1-name"></td>
+            </tr>
+            <tr>
+                <td>Alcohol used (name and volume)</td>
+                <td><input type="text" id="ester1-alcohol"></td>
+            </tr>
+            <tr>
+                <td>Carboxylic acid used (name and volume/mass)</td>
+                <td><input type="text" id="ester1-acid"></td>
+            </tr>
+            <tr>
+                <td>Number of drops of H₂SO₄</td>
+                <td><input type="text" id="ester1-h2so4"></td>
+            </tr>
+            <tr>
+                <td>Heating time</td>
+                <td><input type="text" id="ester1-time"> minutes</td>
+            </tr>
+            <tr>
+                <td>Appearance of product</td>
+                <td><textarea id="ester1-appearance" style="height: 60px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>Scent description (be detailed!)</td>
+                <td><textarea id="ester1-scent" style="height: 80px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>How closely does it match expected scent? (1-10 scale)</td>
+                <td><input type="number" min="1" max="10" id="ester1-rating"></td>
+            </tr>
+        </table>
+
+        <h4>Ester #2</h4>
+        <table class="data-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Your Data</th>
+            </tr>
+            <tr>
+                <td>Target Ester</td>
+                <td><input type="text" id="ester2-name"></td>
+            </tr>
+            <tr>
+                <td>Alcohol used (name and volume)</td>
+                <td><input type="text" id="ester2-alcohol"></td>
+            </tr>
+            <tr>
+                <td>Carboxylic acid used (name and volume/mass)</td>
+                <td><input type="text" id="ester2-acid"></td>
+            </tr>
+            <tr>
+                <td>Number of drops of H₂SO₄</td>
+                <td><input type="text" id="ester2-h2so4"></td>
+            </tr>
+            <tr>
+                <td>Heating time</td>
+                <td><input type="text" id="ester2-time"> minutes</td>
+            </tr>
+            <tr>
+                <td>Appearance of product</td>
+                <td><textarea id="ester2-appearance" style="height: 60px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>Scent description (be detailed!)</td>
+                <td><textarea id="ester2-scent" style="height: 80px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>How closely does it match expected scent? (1-10 scale)</td>
+                <td><input type="number" min="1" max="10" id="ester2-rating"></td>
+            </tr>
+        </table>
+
+        <h4>Ester #3 (if assigned)</h4>
+        <table class="data-table">
+            <tr>
+                <th>Parameter</th>
+                <th>Your Data</th>
+            </tr>
+            <tr>
+                <td>Target Ester</td>
+                <td><input type="text" id="ester3-name"></td>
+            </tr>
+            <tr>
+                <td>Alcohol used (name and volume)</td>
+                <td><input type="text" id="ester3-alcohol"></td>
+            </tr>
+            <tr>
+                <td>Carboxylic acid used (name and volume/mass)</td>
+                <td><input type="text" id="ester3-acid"></td>
+            </tr>
+            <tr>
+                <td>Number of drops of H₂SO₄</td>
+                <td><input type="text" id="ester3-h2so4"></td>
+            </tr>
+            <tr>
+                <td>Heating time</td>
+                <td><input type="text" id="ester3-time"> minutes</td>
+            </tr>
+            <tr>
+                <td>Appearance of product</td>
+                <td><textarea id="ester3-appearance" style="height: 60px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>Scent description (be detailed!)</td>
+                <td><textarea id="ester3-scent" style="height: 80px;"></textarea></td>
+            </tr>
+            <tr>
+                <td>How closely does it match expected scent? (1-10 scale)</td>
+                <td><input type="number" min="1" max="10" id="ester3-rating"></td>
+            </tr>
+        </table>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor smell and verify your ester products before cleanup.
+            <br><input type="checkbox" id="instructor-check2"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials2">
+        </div>
+    </div>
+
+    <!-- POST-LAB SECTION (30-45 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ POST-LAB: 30-45 minutes</div>
+        <h2 class="section-title">Post-Lab Analysis and Questions</h2>
+
+        <h3>Analysis Questions</h3>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> Write the complete chemical equation (with structures or molecular formulas) for ONE of the esters you synthesized. Label the carboxylic acid, alcohol, ester, and water.
+            <textarea id="postlab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> How closely did your synthetic esters match the expected natural scents? What factors might cause differences between your product and natural fruit scents?
+            <textarea id="postlab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> What was the role of sulfuric acid in this reaction? Would the reaction occur without it? Why or why not?
+            <textarea id="postlab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> Why are esters often described as "fruity" smelling, while the carboxylic acids used to make them often smell unpleasant (like vinegar or worse)?
+            <textarea id="postlab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> Esterification is a reversible reaction (can go forward or backward). What is the reverse reaction called? Under what conditions would an ester break down back into an alcohol and carboxylic acid?
+            <textarea id="postlab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 6:</strong> Many perfumes and artificial flavorings contain synthetic esters rather than natural fruit extracts. What are the advantages of using synthetic esters in commercial products?
+            <textarea id="postlab-q6" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <h3>Clinical Application Questions</h3>
+
+        <div class="question-box">
+            <strong>Clinical Question 1:</strong> You're applying a topical pain relief gel containing methyl salicylate (wintergreen oil) to a patient's sore muscles. The patient asks, "How does this work?" Use your knowledge of ester chemistry and pharmacology to explain:
+            <ul>
+                <li>What methyl salicylate is (chemically)</li>
+                <li>How it's absorbed through the skin</li>
+                <li>Why it creates a warming sensation</li>
+                <li>Safety precautions (why not to use too much)</li>
+            </ul>
+            <textarea id="clinical-q1" placeholder="Type your patient education here..." style="min-height: 150px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Clinical Question 2:</strong> A patient is scheduled for a dental procedure and tells you they had a severe allergic reaction to "Novocain" (procaine) in the past. Research and explain:
+            <ul>
+                <li>What class of local anesthetic is procaine (ester or amide)?</li>
+                <li>What alternative local anesthetic would be safer for this patient?</li>
+                <li>Why does this allergy matter for other medical procedures?</li>
+            </ul>
+            <textarea id="clinical-q2" placeholder="Type your answer here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Clinical Question 3:</strong> Many medications are formulated as "prodrugs" - inactive ester forms that are converted to active drugs in the body. Research ONE example of a prodrug ester medication and explain:
+            <ul>
+                <li>The medication name and what it treats</li>
+                <li>Why it's formulated as an ester</li>
+                <li>How the body converts it to the active form</li>
+                <li>Advantages of the ester formulation</li>
+            </ul>
+            <textarea id="clinical-q3" placeholder="Type your research here..." style="min-height: 150px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Clinical Question 4:</strong> Aspirin (acetylsalicylic acid) is an ester of salicylic acid. Research and explain:
+            <ul>
+                <li>How is aspirin's ester structure related to the methyl salicylate you made today?</li>
+                <li>Why is aspirin less irritating to the stomach than plain salicylic acid?</li>
+                <li>What happens to aspirin in the body (is it hydrolyzed)?</li>
+            </ul>
+            <textarea id="clinical-q4" placeholder="Type your answer here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Reflection:</strong> How does understanding organic chemistry and functional groups (like esters) help you as a future healthcare professional? Give specific examples beyond what was mentioned in class.
+            <textarea id="clinical-reflection" placeholder="Type your reflection here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="checkpoint">
+            <strong>Before Leaving Lab:</strong>
+            <ul>
+                <li><input type="checkbox"> Properly dispose of all ester products and waste per instructor directions</li>
+                <li><input type="checkbox"> Neutralize any remaining H₂SO₄ before disposal</li>
+                <li><input type="checkbox"> Clean and dry all glassware thoroughly</li>
+                <li><input type="checkbox"> Wipe down your work station</li>
+                <li><input type="checkbox"> Wash your hands thoroughly - some chemicals can be absorbed through skin</li>
+                <li><input type="checkbox"> Complete all post-lab questions above</li>
+                <li><input type="checkbox"> Submit this worksheet to Canvas</li>
+            </ul>
+        </div>
+
+        <button class="btn" onclick="window.print()">🖨️ Print Worksheet</button>
+        <button class="btn" onclick="alert('Save your work! Use your browser\'s save function or copy your responses to Canvas.')">💾 Save Responses</button>
+    </div>
+
+    <!-- POST-LAB ASSIGNMENT (2 hours, completed outside of lab) -->
+    <div class="section">
+        <div class="timer">📹 POST-LAB VIDEO ASSIGNMENT: 2 hours (complete outside of lab)</div>
+        <h2 class="section-title">Post-Lab Video Assignment</h2>
+
+        <p><strong>Due:</strong> Within 48 hours of lab completion</p>
+
+        <div class="learning-objectives">
+            <h3>Assignment Instructions</h3>
+            <p>Create a 2-3 minute video that includes:</p>
+            <ol>
+                <li><strong>Lab Summary (45 seconds):</strong>
+                    <ul>
+                        <li>Explain esterification in simple terms</li>
+                        <li>Describe which esters you made</li>
+                        <li>Share your favorite scent and why</li>
+                    </ul>
+                </li>
+                <li><strong>Clinical Connection (60-75 seconds):</strong>
+                    <ul>
+                        <li>Choose ONE clinical application of esters (medications, topical analgesics, local anesthetics, or prodrugs)</li>
+                        <li>Create a patient education scenario - imagine you're explaining to a patient</li>
+                        <li>Be specific about mechanism of action, uses, and safety considerations</li>
+                    </ul>
+                </li>
+                <li><strong>Creative Element (30-45 seconds):</strong>
+                    <ul>
+                        <li>Show the esterification reaction with props, drawings, or models</li>
+                        <li>OR demonstrate how you would assess a patient for ester-type local anesthetic allergy</li>
+                        <li>OR show commercial products that contain esters and explain their chemistry</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="question-box">
+            <strong>Video Link Submission:</strong><br>
+            Upload your video to Canvas or paste your YouTube/OneDrive link here:
+            <input type="text" id="video-link" placeholder="Paste video link here...">
+        </div>
+
+        <div class="safety-warning">
+            <strong>💡 Pro Tips for Your Video:</strong>
+            <ul>
+                <li>If you took photos of your esters in lab, show them!</li>
+                <li>Compare synthetic ester scents to real fruits - fun visual</li>
+                <li>Show actual products (Ben-Gay, Icy Hot, banana flavoring) that contain esters</li>
+                <li>Use props or drawings to show molecular structures</li>
+                <li>For patient education, be clear and avoid overly technical jargon</li>
+                <li>Practice your patient education portion - this is a real nursing skill!</li>
+            </ul>
+        </div>
+
+        <div class="fun-fact">
+            <strong>🎯 Bonus Challenge (Optional Extra Credit):</strong>
+            <p>Create your own "Ester Detective" game! Find 5 commercial products at home or in stores that contain esters (check ingredient lists). For each product:</p>
+            <ul>
+                <li>Take a photo</li>
+                <li>Identify the ester (chemical name)</li>
+                <li>Explain why that ester is used in that product</li>
+            </ul>
+            <p>Include this scavenger hunt in your video or as a separate document for bonus points!</p>
+        </div>
+    </div>
+
+    <div class="section" style="background-color: #fff0f5;">
+        <h3>Additional Resources</h3>
+        <ul>
+            <li>📖 Textbook: Chapters on Organic Chemistry, Functional Groups, and Esters</li>
+            <li>🔗 <a href="https://www.compoundchem.com/2014/06/11/esters/" target="_blank">Compound Interest: The Chemistry of Smell (Esters)</a></li>
+            <li>🔗 <a href="https://www.acs.org/content/acs/en/education/resources/highschool/chemmatters/past-issues/archive-2014-2015/scents-and-sensibility.html" target="_blank">ACS: Scents and Sensibility</a></li>
+            <li>🎥 Khan Academy: Carboxylic Acids and Esters</li>
+            <li>🎥 Professor Dave Explains: Esterification Reactions</li>
+            <li>📱 Office Hours: Wednesdays 2-4 PM or by appointment</li>
+        </ul>
+
+        <div class="fun-fact">
+            <strong>🍓 Fun Chemistry Fact:</strong> When you smell a ripe strawberry, you're detecting over 300 different chemicals! But just ONE ester - ethyl butyrate - creates the distinctive "strawberry-ness" of the scent. Food scientists use this knowledge to create artificial flavors that trick your brain into recognizing familiar fruits!
+        </div>
+
+        <div class="fun-fact">
+            <strong>💊 Pharmacy Fact:</strong> The "acetate" in many medication names (testosterone cypionate, desmopressin acetate, medroxyprogesterone acetate) indicates an ester formulation. These ester forms often provide better absorption, longer duration of action, or improved stability compared to non-ester forms!
+        </div>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        function autoSave() {
+            const formData = {};
+            const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
+            inputs.forEach(input => {
+                if(input.id) {
+                    formData[input.id] = input.value;
+                    localStorage.setItem('ester_lab_' + input.id, input.value);
+                }
+            });
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
+            inputs.forEach(input => {
+                if(input.id) {
+                    const savedValue = localStorage.getItem('ester_lab_' + input.id);
+                    if(savedValue) {
+                        input.value = savedValue;
+                    }
+                }
+            });
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(autoSave, 30000);
+
+        // Load saved data when page loads
+        window.onload = loadSavedData;
+
+        // Save before closing
+        window.addEventListener('beforeunload', autoSave);
+    </script>
+</body>
+</html>

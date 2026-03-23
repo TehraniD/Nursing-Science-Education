@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 4 — Week 2 Data Analyzer | CHM 152</title>
+<style>
+:root {
+  --navy:   #0f3460;
+  --teal:   #006D75;
+  --orange: #C0550A;
+  --blue:   #1565C0;
+  --purple: #7B1FA2;
+  --green:  #1a8a44;
+  --red:    #b71c1c;
+  --gold:   #e8b86d;
+  --bg:     #f2f4f8;
+  --white:  #ffffff;
+  --border: #cdd3e0;
+  --text:   #1a1a2e;
+  --sub:    #5a6070;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
+
+/* ── Header ──────────────────────────────────── */
+.hdr { background: linear-gradient(135deg, var(--navy) 0%, #1a4a7a 100%); color: #fff; padding: 16px 28px; }
+.hdr-title { font-size: 19px; font-weight: 700; }
+.hdr-sub   { font-size: 12.5px; color: rgba(255,255,255,.65); margin-top: 3px; }
+
+/* ── Progress ────────────────────────────────── */
+.prog { display: flex; background: #0a2444; border-bottom: 1px solid rgba(255,255,255,.1); }
+.sp { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 8px;
+      color: rgba(255,255,255,.4); cursor: pointer; font-size: 12.5px; font-weight: 600;
+      border-bottom: 3px solid transparent; transition: all .2s; user-select: none; }
+.sp:hover { color: rgba(255,255,255,.7); }
+.sp.active { color: #fff; border-bottom-color: var(--gold); }
+.sp.done   { color: rgba(255,255,255,.65); }
+.sp .num { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center;
+           justify-content: center; font-size: 11px; background: rgba(255,255,255,.15); }
+.sp.active .num { background: var(--gold); color: var(--navy); }
+.sp.done   .num { background: var(--teal); }
+
+/* ── Layout ──────────────────────────────────── */
+.main { max-width: 1000px; margin: 0 auto; padding: 26px 18px 70px; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── Card ────────────────────────────────────── */
+.card { background: var(--white); border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.07); padding: 20px 22px; margin-bottom: 16px; }
+.card-title { font-size: 15.5px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+.card-sub   { font-size: 13px; color: var(--sub); margin-bottom: 14px; line-height: 1.55; }
+
+/* ── Tables ──────────────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tbl th { background: var(--navy); color: #fff; padding: 7px 9px; text-align: center; font-weight: 600; line-height: 1.35; }
+.tbl td { padding: 5px 8px; border: 1px solid #dde3ee; text-align: center; vertical-align: middle; }
+.tbl tr:nth-child(even) td { background: #f7f9fc; }
+.tbl .lbl { text-align: left; font-weight: 600; background: #eef1f8; padding-left: 10px; }
+.tbl .pre { color: var(--sub); }
+.tbl .cmp { color: var(--teal); font-family: 'Courier New', monospace; font-size: 12px; }
+
+/* ── Inputs ──────────────────────────────────── */
+input[type=number] { width: 88px; padding: 4px 7px; border: 1.5px solid #bcc4d4; border-radius: 5px;
+                     text-align: center; font-size: 12.5px; font-family: inherit; transition: border-color .15s; }
+input[type=number]:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 2px rgba(15,52,96,.15); }
+input[type=number].bad { border-color: var(--red); background: #fff5f5; }
+
+/* ── Buttons ─────────────────────────────────── */
+.btn { padding: 9px 22px; border: none; border-radius: 6px; font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all .15s; }
+.btn-navy  { background: var(--navy); color: #fff; }
+.btn-navy:hover  { background: #1a4a7a; }
+.btn-teal  { background: var(--teal); color: #fff; }
+.btn-teal:hover  { background: #00868f; }
+.btn-row   { display: flex; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+.btn-nav   { display: flex; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 10px; }
+
+/* ── Result boxes ────────────────────────────── */
+.rbox { background: #eef4ff; border-left: 4px solid var(--navy); border-radius: 0 7px 7px 0; padding: 14px 18px; margin-top: 14px; }
+.rbox .eq { font-family: 'Courier New', monospace; font-size: 14px; font-weight: 700; color: var(--navy); margin: 5px 0; }
+.rbox .eq2{ font-family: 'Courier New', monospace; font-size: 14px; font-weight: 700; color: var(--teal); margin: 5px 0; }
+.rlbl { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #888; margin-bottom: 2px; }
+.rgrd { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 10px; margin-top: 12px; }
+.rcell { background: #fff; border: 1px solid #dde; border-radius: 6px; padding: 9px 12px; }
+.rcell .v { font-size: 13.5px; font-weight: 700; margin-top: 2px; }
+.good { color: var(--green); }
+.bad  { color: var(--red); }
+
+/* ── Warning ─────────────────────────────────── */
+.warn { background: #fffbea; border-left: 4px solid #f0a500; border-radius: 0 6px 6px 0;
+        padding: 9px 13px; margin-top: 9px; font-size: 12.5px; color: #6b4c00; }
+.info { background: #e8f8f5; border-left: 4px solid var(--teal); border-radius: 0 6px 6px 0;
+        padding: 9px 13px; margin-top: 9px; font-size: 12.5px; color: #004d52; }
+
+/* ── Run tabs ────────────────────────────────── */
+.rtabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 0; }
+.rtab { padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+        border: 2px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0;
+        color: var(--sub); background: #edf0f7; margin-right: 4px; transition: all .15s; }
+.rtab.active { color: #fff; border-color: var(--navy); background: var(--navy); }
+.rpanel { display: none; padding-top: 14px; }
+.rpanel.active { display: block; }
+
+/* ── Mix badges ──────────────────────────────── */
+.mbadges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.mb { background: #e8f0fe; border: 1px solid #b0c4f5; border-radius: 6px; padding: 5px 11px; font-size: 12px; }
+.mb b { color: var(--navy); }
+
+/* ── Math cards ──────────────────────────────── */
+.mcard { background: #f7f9fc; border: 1px solid #dde; border-radius: 7px; padding: 14px 16px; margin: 9px 0; }
+.mcard .mlbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: .6px; color: #888; margin-bottom: 5px; font-weight: 700; }
+.mcard .mf   { font-family: 'Courier New', monospace; font-size: 13.5px; color: var(--navy); line-height: 1.9; }
+.mcard .mr   { font-family: 'Courier New', monospace; font-size: 15px; font-weight: 700; color: var(--teal); margin-top: 5px; }
+
+/* ── Rate law hero ───────────────────────────── */
+.rl-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+           border-radius: 11px; padding: 26px 30px; text-align: center; color: #fff; margin: 18px 0; }
+.rl-hero .rl-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: .7; margin-bottom: 9px; }
+.rl-hero .rl-eq  { font-size: 21px; font-family: 'Courier New', monospace; font-weight: 700; letter-spacing: 1px; }
+
+/* ── Summary table ───────────────────────────── */
+.sum { width: 100%; border-collapse: collapse; }
+.sum th { background: var(--navy); color: #fff; padding: 8px 12px; font-size: 13px; }
+.sum td { border: 1px solid #dde; padding: 8px 12px; font-size: 13px; }
+.sum tr:nth-child(even) td { background: #f7f9fc; }
+
+/* ── Canvas ──────────────────────────────────── */
+canvas { max-width: 100%; border-radius: 8px; display: block; }
+
+/* ── Print ───────────────────────────────────── */
+@media print {
+  .hdr, .prog, .btn-row, .btn-nav, .rtabs { display: none !important; }
+  .panel { display: block !important; }
+  .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 10px; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-title">CHM 152 — Lab 4: Rate of Reaction</div>
+  <div class="hdr-sub">Week 2 Data Analyzer &nbsp;·&nbsp; Enter your absorbance data — all graphs and calculations are generated automatically</div>
+</div>
+
+<div class="prog" id="prog">
+  <div class="sp active" onclick="goTo(1)"><span class="num">1</span>Standard Curve</div>
+  <div class="sp"        onclick="goTo(2)"><span class="num">2</span>Kinetics Data</div>
+  <div class="sp"        onclick="goTo(3)"><span class="num">3</span>Plots &amp; k′</div>
+  <div class="sp"        onclick="goTo(4)"><span class="num">4</span>Rate Law &amp; k</div>
+</div>
+
+<div class="main">
+
+<!-- ════════════════════════════════════════════
+     PANEL 1 — STANDARD CURVE
+════════════════════════════════════════════ -->
+<div class="panel active" id="panel-1">
+  <div class="card">
+    <div class="card-title">Step 1 — Standard Curve (Beer's Law Calibration)</div>
+    <div class="card-sub">
+      Enter the absorbance readings from your SPEC 20 for the blank and each standard.
+      Concentrations are pre-filled from your mixture table (total volume = 10.0 mL per standard).
+      Then click <strong>Build Standard Curve</strong>.
+    </div>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Standard</th>
+          <th>mL of 10⁻² M Br₂</th>
+          <th>mL DI water</th>
+          <th>[Br₂] (M)</th>
+          <th>Measured Absorbance</th>
+        </tr>
+      </thead>
+      <tbody id="sc-body">
+        <!-- filled by buildSCTable() -->
+      </tbody>
+    </table>
+    <div class="btn-row">
+      <button class="btn btn-navy" onclick="calcBeer()">Build Standard Curve</button>
+    </div>
+    <div id="sc-result" style="display:none"></div>
+    <div style="margin-top:16px; display:none" id="sc-plot-wrap">
+      <canvas id="sc-canvas" width="720" height="310"></canvas>
+    </div>
+  </div>
+  <div class="btn-nav">
+    <span></span>
+    <button class="btn btn-teal" id="btn12" style="display:none" onclick="goTo(2)">Next: Enter Kinetics Data →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PANEL 2 — KINETICS DATA
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-2">
+  <div class="card">
+    <div class="card-title">Step 2 — Kinetics Absorbance Data</div>
+    <div class="card-sub">
+      Enter your absorbance readings for each run. Time points are pre-filled (t = 0 – 300 s, every 15 s).
+      The <em>[Br₂] (M)</em> column updates automatically using your Beer's Law equation from Step 1.
+      Leave a cell blank if you missed a reading — it will be skipped in the analysis.
+    </div>
+    <div class="rtabs">
+      <div class="rtab active" onclick="showRun(1)">Run 1</div>
+      <div class="rtab"        onclick="showRun(2)">Run 2</div>
+      <div class="rtab"        onclick="showRun(3)">Run 3</div>
+    </div>
+
+    <!-- Run 1 -->
+    <div class="rpanel active" id="rp-1">
+      <div class="mbadges">
+        <div class="mb"><b>[Br₂]₀</b> = 2.0 × 10⁻³ M</div>
+        <div class="mb"><b>[HCl]₀</b> = 0.20 M</div>
+        <div class="mb"><b>[Acetone]₀</b> = 0.80 M</div>
+        <div class="mb" style="background:#fff8e8;border-color:#f5c842"><b>Baseline run</b></div>
+      </div>
+      <table class="tbl" id="kt-1"></table>
+    </div>
+
+    <!-- Run 2 -->
+    <div class="rpanel" id="rp-2">
+      <div class="mbadges">
+        <div class="mb"><b>[Br₂]₀</b> = 2.0 × 10⁻³ M</div>
+        <div class="mb"><b>[HCl]₀</b> = 0.40 M &nbsp;<span style="color:var(--red);font-weight:700">↑ doubled vs Run 1</span></div>
+        <div class="mb"><b>[Acetone]₀</b> = 0.80 M</div>
+        <div class="mb" style="background:#ebf5fb;border-color:#85c1e9"><b>Determines m (order in H⁺)</b></div>
+      </div>
+      <table class="tbl" id="kt-2"></table>
+    </div>
+
+    <!-- Run 3 -->
+    <div class="rpanel" id="rp-3">
+      <div class="mbadges">
+        <div class="mb"><b>[Br₂]₀</b> = 2.0 × 10⁻³ M</div>
+        <div class="mb"><b>[HCl]₀</b> = 0.20 M</div>
+        <div class="mb"><b>[Acetone]₀</b> = 1.60 M &nbsp;<span style="color:var(--purple);font-weight:700">↑ doubled vs Run 1</span></div>
+        <div class="mb" style="background:#f5eef8;border-color:#c39bd3"><b>Determines n (order in Acetone)</b></div>
+      </div>
+      <table class="tbl" id="kt-3"></table>
+    </div>
+  </div>
+  <div class="btn-nav">
+    <button class="btn btn-navy" onclick="goTo(1)">← Back</button>
+    <button class="btn btn-teal" onclick="goTo(3)">Next: Plots &amp; k′ →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PANEL 3 — PLOTS & k′
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-3">
+  <div class="card">
+    <div class="card-title">[Br₂] vs Time — All Three Runs</div>
+    <div class="card-sub">
+      A straight line for each run confirms that the reaction is <strong>zero order in Br₂</strong> (p = 0).
+      The slope of each line equals −k′. A steeper slope means a faster pseudo-rate.
+    </div>
+    <canvas id="kin-canvas" width="880" height="400"></canvas>
+    <div id="kin-result" style="margin-top:16px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Beer's Law Standard Curve</div>
+    <div class="card-sub">Used to convert every absorbance reading to [Br₂]. This trendline is applied to all kinetics data.</div>
+    <canvas id="sc-canvas-2" width="680" height="300"></canvas>
+  </div>
+
+  <div class="btn-nav">
+    <button class="btn btn-navy" onclick="goTo(2)">← Back</button>
+    <button class="btn btn-teal" onclick="goTo(4)">Next: Rate Law &amp; k →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PANEL 4 — RATE LAW & k
+════════════════════════════════════════════ -->
+<div class="panel" id="panel-4">
+  <div id="p4-content"></div>
+  <div class="btn-nav">
+    <button class="btn btn-navy" onclick="goTo(3)">← Back</button>
+    <button class="btn btn-teal" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+//  CONSTANTS
+// ════════════════════════════════════════════════════════════════════════
+const SC_ML   = [0, 0.50, 1.00, 2.00, 3.00];            // mL of stock
+const SC_CONC = [0, 5e-4, 1e-3, 2e-3, 3e-3];            // [Br2] in M
+const SC_DIML = [10.0, 9.50, 9.00, 8.00, 7.00];         // mL DI water
+const SC_LBLS = ['Blank','Std 1','Std 2','Std 3','Std 4'];
+
+const TIMES = Array.from({length:21}, (_,i) => i*15);   // 0,15,...,300
+
+const RUNS = [
+  { ace: 0.80, hcl: 0.20, br2: 2e-3, label:'Run 1 — Baseline',      color:'#C0550A' },
+  { ace: 0.80, hcl: 0.40, br2: 2e-3, label:'Run 2 — [HCl] ×2',     color:'#1565C0' },
+  { ace: 1.60, hcl: 0.20, br2: 2e-3, label:'Run 3 — [Ace] ×2',     color:'#7B1FA2' },
+];
+
+// ════════════════════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════════════════════
+let beer = null;   // {slope, intercept, r2}
+let kp   = [null, null, null];   // k' values
+let kpR2 = [null, null, null];
+let kpSl = [null, null, null];   // slopes (negative)
+let kpIn = [null, null, null];   // intercepts
+
+// ════════════════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════════════════════════════════
+function goTo(n) {
+  document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', i+1===n));
+  document.querySelectorAll('.sp').forEach((s,i) => {
+    s.classList.toggle('active', i+1===n);
+    s.classList.toggle('done',   i+1<n);
+  });
+  if (n===3) renderStep3();
+  if (n===4) renderStep4();
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  BUILD HTML TABLES
+// ════════════════════════════════════════════════════════════════════════
+function buildSCTable() {
+  let h = '';
+  SC_LBLS.forEach((lbl,i) => {
+    h += `<tr>
+      <td class="lbl">${lbl}</td>
+      <td class="pre">${SC_ML[i].toFixed(2)}</td>
+      <td class="pre">${SC_DIML[i].toFixed(2)}</td>
+      <td class="pre">${i===0 ? '0' : fmtC(SC_CONC[i])}</td>
+      <td><input type="number" id="sc${i}" step="0.001" min="0" max="3.5" placeholder="A"></td>
+    </tr>`;
+  });
+  document.getElementById('sc-body').innerHTML = h;
+}
+
+function buildKinTables() {
+  for (let r = 1; r <= 3; r++) {
+    let h = `<thead><tr>
+      <th>Time (s)</th>
+      <th>Absorbance<br><span style="font-weight:400;font-size:10.5px">(enter here)</span></th>
+      <th>[Br₂] (M)<br><span style="font-weight:400;font-size:10.5px">(auto-calculated)</span></th>
+    </tr></thead><tbody>`;
+    TIMES.forEach((t,i) => {
+      h += `<tr>
+        <td class="pre">${t}</td>
+        <td><input type="number" id="k${r}-${i}" step="0.001" min="0" max="3.5"
+             placeholder="A" oninput="onAbsInput(${r},${i})"></td>
+        <td class="cmp" id="k${r}-br2-${i}">—</td>
+      </tr>`;
+    });
+    h += '</tbody>';
+    document.getElementById('kt-'+r).innerHTML = h;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  STEP 1 — BEER'S LAW
+// ════════════════════════════════════════════════════════════════════════
+function calcBeer() {
+  const abs = SC_CONC.map((_,i) => {
+    const v = parseFloat(document.getElementById('sc'+i).value);
+    return isNaN(v) ? null : v;
+  });
+
+  const missing = abs.filter(v=>v===null).length;
+  if (missing > 0) {
+    alert(`Please enter absorbance values for all ${SC_CONC.length} standards (including blank).`);
+    return;
+  }
+  if (abs.some(v=>v<0)) { alert('Absorbance values cannot be negative.'); return; }
+
+  beer = linReg(SC_CONC, abs);
+
+  const r2cls = beer.r2 >= 0.99 ? 'good' : beer.r2 >= 0.97 ? '' : 'bad';
+  const r2msg = beer.r2 >= 0.99 ? 'Excellent — proceed' : beer.r2 >= 0.97 ? 'Acceptable' : 'Poor — check data';
+  const warnHtml = beer.r2 < 0.97
+    ? `<div class="warn">⚠ R² is below 0.97. Check that your absorbance values are correct and that the blank was zeroed with DI water. One mis-measured standard is the most common cause.</div>`
+    : `<div class="info">✓ Standard curve is reliable. You can proceed to kinetics data entry.</div>`;
+
+  document.getElementById('sc-result').style.display = 'block';
+  document.getElementById('sc-result').innerHTML = `
+    <div class="rbox">
+      <div class="rlbl">Beer's Law Equation</div>
+      <div class="eq">A  =  ${beer.slope.toFixed(2)} × [Br₂]  +  ${beer.intercept.toFixed(4)}</div>
+      <div class="eq2">[Br₂]  =  ( A  −  ${beer.intercept.toFixed(4)} )  ÷  ${beer.slope.toFixed(2)}</div>
+      <div class="rgrd">
+        <div class="rcell"><div class="rlbl">Slope (ε·l)</div><div class="v">${beer.slope.toFixed(2)} L mol⁻¹</div></div>
+        <div class="rcell"><div class="rlbl">Intercept</div><div class="v">${beer.intercept.toFixed(4)}</div></div>
+        <div class="rcell"><div class="rlbl">R²</div><div class="v ${r2cls}">${beer.r2.toFixed(5)}</div></div>
+        <div class="rcell"><div class="rlbl">Verdict</div><div class="v ${r2cls}">${r2msg}</div></div>
+      </div>
+      ${warnHtml}
+    </div>`;
+
+  document.getElementById('sc-plot-wrap').style.display = 'block';
+  drawBeerCanvas('sc-canvas', abs);
+  updateAllBr2();
+  document.getElementById('btn12').style.display = 'inline-block';
+}
+
+function onAbsInput(run, idx) {
+  const a = parseFloat(document.getElementById(`k${run}-${idx}`).value);
+  const cell = document.getElementById(`k${run}-br2-${idx}`);
+  if (!beer || isNaN(a) || a < 0) { cell.textContent = '—'; return; }
+  const c = (a - beer.intercept) / beer.slope;
+  cell.textContent = c > 0 ? fmtC(c) : '0';
+}
+
+function updateAllBr2() {
+  for (let r=1;r<=3;r++) TIMES.forEach((_,i) => onAbsInput(r,i));
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  RUN TABS
+// ════════════════════════════════════════════════════════════════════════
+function showRun(n) {
+  document.querySelectorAll('.rtab').forEach((t,i) => t.classList.toggle('active', i+1===n));
+  document.querySelectorAll('.rpanel').forEach((p,i) => p.classList.toggle('active', i+1===n));
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  DATA RETRIEVAL
+// ════════════════════════════════════════════════════════════════════════
+function getKinPts(run) {
+  // returns [{t, br2}] for all valid entries
+  if (!beer) return [];
+  return TIMES.map((t,i) => {
+    const a = parseFloat(document.getElementById(`k${run}-${i}`)?.value);
+    if (isNaN(a) || a < 0) return null;
+    const br2 = Math.max(0, (a - beer.intercept) / beer.slope);
+    return { t, br2 };
+  }).filter(Boolean);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  STEP 3 — RENDER
+// ════════════════════════════════════════════════════════════════════════
+function renderStep3() {
+  if (!beer) return;
+  // Compute k' for each run
+  for (let r=0; r<3; r++) {
+    const pts = getKinPts(r+1);
+    if (pts.length < 3) { kp[r]=null; continue; }
+    const reg = linReg(pts.map(p=>p.t), pts.map(p=>p.br2));
+    if (!reg) { kp[r]=null; continue; }
+    kpSl[r] = reg.slope;
+    kpIn[r] = reg.intercept;
+    kpR2[r] = reg.r2;
+    kp[r]   = Math.abs(reg.slope);
+  }
+
+  drawKinCanvas();
+  // Redraw Beer plot on this panel too
+  const abs = SC_CONC.map((_,i) => parseFloat(document.getElementById('sc'+i)?.value));
+  if (abs.every(v=>!isNaN(v))) drawBeerCanvas('sc-canvas-2', abs);
+
+  // Results table
+  let h = `<table class="sum"><thead><tr>
+    <th>Run</th><th>[HCl]₀ (M)</th><th>[Ace]₀ (M)</th>
+    <th>Trendline Slope (M s⁻¹)</th><th>R²</th><th>k′ = |slope| (M s⁻¹)</th>
+  </tr></thead><tbody>`;
+  RUNS.forEach((run,i) => {
+    const ok = kp[i] !== null;
+    const r2c = ok && kpR2[i]>=0.97 ? 'good' : 'bad';
+    const r2m = ok && kpR2[i]>=0.97 ? '✓' : '⚠';
+    h += `<tr>
+      <td style="font-weight:700;color:${run.color}">${run.label}</td>
+      <td>${run.hcl.toFixed(2)}</td><td>${run.ace.toFixed(2)}</td>
+      <td>${ok ? kpSl[i].toExponential(3) : '—'}</td>
+      <td class="${r2c}">${ok ? kpR2[i].toFixed(4)+' '+r2m : '—'}</td>
+      <td style="font-weight:700">${ok ? kp[i].toExponential(3) : '—'}</td>
+    </tr>`;
+  });
+  h += '</tbody></table>';
+  RUNS.forEach((_,i) => {
+    if (kp[i]!==null && kpR2[i]<0.97)
+      h += `<div class="warn">⚠ Run ${i+1} R² = ${kpR2[i].toFixed(4)} — below 0.97. The [Br₂] vs time line is not straight. Check for a transcription error at one time point (look for a point that doesn't fit the line).</div>`;
+    if (kp[i]===null)
+      h += `<div class="warn">⚠ Run ${i+1} has fewer than 3 data points. Return to Step 2 and enter absorbance values.</div>`;
+  });
+  document.getElementById('kin-result').innerHTML = h;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  STEP 4 — RATE LAW
+// ════════════════════════════════════════════════════════════════════════
+function renderStep4() {
+  const div = document.getElementById('p4-content');
+  if (!beer) {
+    div.innerHTML = '<div class="warn">⚠ Please complete Step 1 (Standard Curve) first.</div>'; return;
+  }
+  const anyK = kp.some(v=>v!==null);
+  if (!anyK) {
+    div.innerHTML = '<div class="warn">⚠ No kinetics data found. Return to Step 2 and enter absorbance readings.</div>'; return;
+  }
+
+  const k1=kp[0], k2=kp[1], k3=kp[2];
+
+  // m (order in H+): runs 1 and 2
+  let mRaw=null, mInt=null, mWarn='';
+  if (k1 && k2) {
+    mRaw = Math.log(k2/k1) / Math.log(2);
+    mInt = Math.round(mRaw);
+    if (Math.abs(mRaw-mInt)>0.25)
+      mWarn = `<div class="warn">⚠ m = ${mRaw.toFixed(2)} is not close to an integer. Expected m = 1. Possible causes: error in Run 1 or Run 2 absorbance data, or a timing error when mixing.</div>`;
+  }
+
+  // n (order in acetone): runs 1 and 3
+  let nRaw=null, nInt=null, nWarn='';
+  if (k1 && k3) {
+    nRaw = Math.log(k3/k1) / Math.log(2);
+    nInt = Math.round(nRaw);
+    if (Math.abs(nRaw-nInt)>0.25)
+      nWarn = `<div class="warn">⚠ n = ${nRaw.toFixed(2)} is not close to an integer. Expected n = 1.</div>`;
+  }
+
+  // k from each run: k = k' / ([Ace]^n * [H+]^m)
+  const kVals = RUNS.map((run,i) => {
+    if (!kp[i] || mInt===null || nInt===null) return null;
+    return kp[i] / (Math.pow(run.ace, nInt) * Math.pow(run.hcl, mInt));
+  });
+  const valid = kVals.filter(v=>v!==null);
+  const kAvg  = valid.length ? valid.reduce((a,b)=>a+b,0)/valid.length : null;
+
+  // Superscript helpers
+  const sup = n => n===0?'⁰': n===1?'': n===2?'²': n===3?'³': String(n);
+
+  let html = '';
+
+  // ── Finding m ──────────────────────────────────────────────────────
+  html += `<div class="card">
+    <div class="card-title">Step 4 — Find m: Order in H⁺</div>
+    <div class="card-sub">Between Run 1 and Run 2, only [HCl]₀ changed (doubled: 0.20 → 0.40 M). Any change in k′ is caused by that change alone.</div>
+    ${k1 && k2 ? `
+    <div class="mcard">
+      <div class="mlbl">Relationship</div>
+      <div class="mf">k′₂ / k′₁  =  ( [H⁺]₂ / [H⁺]₁ )ᵐ  =  ( 0.40 / 0.20 )ᵐ  =  2ᵐ</div>
+    </div>
+    <div class="mcard">
+      <div class="mlbl">Your values</div>
+      <div class="mf">k′₁  =  ${k1.toExponential(3)} M s⁻¹  (Run 1)</div>
+      <div class="mf">k′₂  =  ${k2.toExponential(3)} M s⁻¹  (Run 2)</div>
+    </div>
+    <div class="mcard">
+      <div class="mlbl">Calculation</div>
+      <div class="mf">Ratio  =  k′₂ / k′₁  =  ${k2.toExponential(3)} / ${k1.toExponential(3)}  =  ${(k2/k1).toFixed(3)}</div>
+      <div class="mf">m  =  log(${(k2/k1).toFixed(3)}) / log(2)  =  ${mRaw.toFixed(3)}</div>
+      <div class="mr">m  =  ${mInt}  (rounded to nearest integer)</div>
+    </div>
+    ${mWarn}` : '<div class="warn">⚠ Missing k′ for Run 1 or Run 2. Return to Step 2.</div>'}
+  </div>`;
+
+  // ── Finding n ──────────────────────────────────────────────────────
+  html += `<div class="card">
+    <div class="card-title">Step 5 — Find n: Order in Acetone</div>
+    <div class="card-sub">Between Run 1 and Run 3, only [Acetone]₀ changed (doubled: 0.80 → 1.60 M).</div>
+    ${k1 && k3 ? `
+    <div class="mcard">
+      <div class="mlbl">Relationship</div>
+      <div class="mf">k′₃ / k′₁  =  ( [Ace]₃ / [Ace]₁ )ⁿ  =  ( 1.60 / 0.80 )ⁿ  =  2ⁿ</div>
+    </div>
+    <div class="mcard">
+      <div class="mlbl">Your values</div>
+      <div class="mf">k′₁  =  ${k1.toExponential(3)} M s⁻¹  (Run 1)</div>
+      <div class="mf">k′₃  =  ${k3.toExponential(3)} M s⁻¹  (Run 3)</div>
+    </div>
+    <div class="mcard">
+      <div class="mlbl">Calculation</div>
+      <div class="mf">Ratio  =  k′₃ / k′₁  =  ${k3.toExponential(3)} / ${k1.toExponential(3)}  =  ${(k3/k1).toFixed(3)}</div>
+      <div class="mf">n  =  log(${(k3/k1).toFixed(3)}) / log(2)  =  ${nRaw.toFixed(3)}</div>
+      <div class="mr">n  =  ${nInt}  (rounded to nearest integer)</div>
+    </div>
+    ${nWarn}` : '<div class="warn">⚠ Missing k′ for Run 1 or Run 3. Return to Step 2.</div>'}
+  </div>`;
+
+  // ── k calculation ─────────────────────────────────────────────────
+  if (mInt!==null && nInt!==null) {
+    html += `<div class="card">
+      <div class="card-title">Step 6 — Calculate the True Rate Constant k</div>
+      <div class="card-sub">Since k′ = k [Ace]₀ⁿ [H⁺]₀ᵐ, rearranging gives k = k′ ÷ ( [Ace]₀ⁿ × [H⁺]₀ᵐ ).
+      Calculate k from each run independently, then average.</div>
+      <table class="sum"><thead><tr>
+        <th>Run</th><th>k′ (M s⁻¹)</th>
+        <th>[Ace]₀<sup>${nInt===1?'':nInt}</sup></th>
+        <th>[H⁺]₀<sup>${mInt===1?'':mInt}</sup></th>
+        <th>Denominator</th><th>k (M⁻¹ s⁻¹)</th>
+      </tr></thead><tbody>`;
+    RUNS.forEach((run,i) => {
+      if (!kp[i]) { html+=`<tr><td style="color:${run.color};font-weight:700">${run.label}</td><td colspan="5" style="color:#888">no data</td></tr>`; return; }
+      const aceN  = Math.pow(run.ace, nInt);
+      const hclM  = Math.pow(run.hcl, mInt);
+      const denom = aceN * hclM;
+      const kv    = kp[i] / denom;
+      html += `<tr>
+        <td style="color:${run.color};font-weight:700">${run.label}</td>
+        <td>${kp[i].toExponential(3)}</td>
+        <td>${aceN.toFixed(4)}</td><td>${hclM.toFixed(4)}</td>
+        <td>${denom.toFixed(5)}</td>
+        <td style="font-weight:700">${kv.toExponential(3)}</td>
+      </tr>`;
+    });
+    html += `<tr style="background:#e4f7f0">
+      <td colspan="5" style="font-weight:700;text-align:right">Average k =</td>
+      <td style="font-weight:700;font-size:15px;color:var(--teal)">${kAvg ? kAvg.toExponential(3)+' M⁻¹ s⁻¹' : '—'}</td>
+    </tr></tbody></table>
+    <div class="info" style="margin-top:10px;">Units check: k′ has units of M s⁻¹. Dividing by M${sup(nInt)} × M${sup(mInt)} = M² (when n=m=1) gives k in M⁻¹ s⁻¹ — correct for a second-order rate constant.</div>
+    </div>`;
+
+    // ── Final rate law ───────────────────────────────────────────────
+    const kStr = kAvg ? kAvg.toExponential(2) : 'k';
+    html += `
+    <div class="rl-hero">
+      <div class="rl-lbl">Your Experimentally Determined Rate Law</div>
+      <div class="rl-eq">rate  =  ${kStr}  [acetone]${sup(nInt)}  [H⁺]${sup(mInt)}  [Br₂]⁰</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Summary of All Results</div>
+      <table class="sum"><tbody>
+        <tr><td style="font-weight:700;width:42%">Order in Acetone (n)</td><td>${nInt}${nInt===1?' (first order)':nInt===0?' (zero order)':''}</td></tr>
+        <tr><td style="font-weight:700">Order in H⁺ (m)</td><td>${mInt}${mInt===1?' (first order)':''}</td></tr>
+        <tr><td style="font-weight:700">Order in Br₂ (p)</td><td>0 — confirmed by linear [Br₂] vs time graph</td></tr>
+        <tr><td style="font-weight:700">Overall reaction order</td><td>${nInt+mInt} &nbsp;(n + m + p = ${nInt} + ${mInt} + 0)</td></tr>
+        <tr><td style="font-weight:700">Rate constant k (avg)</td><td>${kAvg ? kAvg.toExponential(3)+' M⁻¹ s⁻¹' : '—'}</td></tr>
+        <tr><td style="font-weight:700">Units of k</td><td>M⁻¹ s⁻¹ &nbsp;(second-order overall when n=m=1)</td></tr>
+        <tr><td style="font-weight:700">k′₁ (Run 1 pseudo-rate constant)</td><td>${k1 ? k1.toExponential(3)+' M s⁻¹' : '—'}</td></tr>
+        <tr><td style="font-weight:700">k′₂ (Run 2 pseudo-rate constant)</td><td>${k2 ? k2.toExponential(3)+' M s⁻¹' : '—'}</td></tr>
+        <tr><td style="font-weight:700">k′₃ (Run 3 pseudo-rate constant)</td><td>${k3 ? k3.toExponential(3)+' M s⁻¹' : '—'}</td></tr>
+        <tr><td style="font-weight:700">Beer's Law slope (ε·l)</td><td>${beer.slope.toFixed(2)} L mol⁻¹</td></tr>
+        <tr><td style="font-weight:700">Beer's Law R²</td><td class="${beer.r2>=0.99?'good':beer.r2>=0.97?'':'bad'}">${beer.r2.toFixed(5)}</td></tr>
+      </tbody></table>
+    </div>`;
+  }
+
+  div.innerHTML = html;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  LINEAR REGRESSION
+// ════════════════════════════════════════════════════════════════════════
+function linReg(xs, ys) {
+  const n = xs.length;
+  if (n < 2) return null;
+  const sx  = xs.reduce((a,b)=>a+b, 0);
+  const sy  = ys.reduce((a,b)=>a+b, 0);
+  const sxy = xs.reduce((s,x,i)=>s+x*ys[i], 0);
+  const sx2 = xs.reduce((s,x)=>s+x*x, 0);
+  const D   = n*sx2 - sx*sx;
+  if (Math.abs(D) < 1e-30) return null;
+  const slope     = (n*sxy - sx*sy) / D;
+  const intercept = (sy - slope*sx) / n;
+  const yMean = sy / n;
+  const ssTot = ys.reduce((s,y)=>s+(y-yMean)**2, 0);
+  const ssRes = ys.reduce((s,y,i)=>s+(y-(slope*xs[i]+intercept))**2, 0);
+  const r2 = ssTot > 0 ? Math.max(0, 1 - ssRes/ssTot) : 1;
+  return { slope, intercept, r2 };
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  FORMATTING
+// ════════════════════════════════════════════════════════════════════════
+function fmtC(c) {
+  // scientific notation for small numbers
+  if (c === 0) return '0';
+  const e = Math.floor(Math.log10(Math.abs(c)));
+  if (e < -2 || e >= 4) {
+    const m = (c / Math.pow(10,e));
+    return m.toFixed(2).replace(/\.?0+$/,'') + '×10^' + e;
+  }
+  return c.toPrecision(3);
+}
+
+function fmtAxis(v) {
+  if (v === 0) return '0';
+  const a = Math.abs(v);
+  if (a >= 0.001 && a < 1000) return parseFloat(v.toPrecision(3)).toString();
+  const e = Math.floor(Math.log10(a));
+  const m = (v / Math.pow(10,e)).toFixed(1);
+  return m + 'e' + e;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  PLOTTING ENGINE
+// ════════════════════════════════════════════════════════════════════════
+function plotXY(canvasId, datasets, opts={}) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const PAD = { top:44, right:opts.legendW||30, bottom:52, left:72 };
+  const pw = W - PAD.left - PAD.right;
+  const ph = H - PAD.top  - PAD.bottom;
+
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+
+  // Data range
+  let xMin=Infinity, xMax=-Infinity, yMin=Infinity, yMax=-Infinity;
+  datasets.forEach(ds => ds.pts.forEach(p => {
+    if (p.x<xMin) xMin=p.x; if (p.x>xMax) xMax=p.x;
+    if (p.y<yMin) yMin=p.y; if (p.y>yMax) yMax=p.y;
+  }));
+  if (opts.xMin!=null) xMin=opts.xMin;
+  if (opts.xMax!=null) xMax=opts.xMax;
+  if (opts.yMin!=null) yMin=opts.yMin;
+  if (xMax===xMin) xMax=xMin+1;
+  if (yMax===yMin) yMax=yMin+1e-4;
+  yMax *= 1.09;
+  if (opts.xMax!=null) xMax=opts.xMax;
+
+  const toX = x => PAD.left + (x-xMin)/(xMax-xMin)*pw;
+  const toY = y => PAD.top  + ph - (y-yMin)/(yMax-yMin)*ph;
+
+  // Grid
+  const nGrid = 5;
+  ctx.strokeStyle='#eaeef5'; ctx.lineWidth=1;
+  for (let i=0;i<=nGrid;i++) {
+    const gy = yMin+(yMax-yMin)*i/nGrid;
+    ctx.beginPath(); ctx.moveTo(PAD.left,toY(gy)); ctx.lineTo(PAD.left+pw,toY(gy)); ctx.stroke();
+    const gx = xMin+(xMax-xMin)*i/nGrid;
+    ctx.beginPath(); ctx.moveTo(toX(gx),PAD.top); ctx.lineTo(toX(gx),PAD.top+ph); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle='#444'; ctx.lineWidth=1.8;
+  ctx.beginPath();
+  ctx.moveTo(PAD.left,PAD.top); ctx.lineTo(PAD.left,PAD.top+ph); ctx.lineTo(PAD.left+pw,PAD.top+ph);
+  ctx.stroke();
+
+  // Tick labels
+  ctx.fillStyle='#555'; ctx.font='11px Segoe UI'; ctx.textAlign='center';
+  for (let i=0;i<=nGrid;i++) {
+    const gx=xMin+(xMax-xMin)*i/nGrid, gy=yMin+(yMax-yMin)*i/nGrid;
+    ctx.fillText(fmtAxis(gx), toX(gx), PAD.top+ph+16);
+    ctx.textAlign='right'; ctx.fillText(fmtAxis(gy), PAD.left-6, toY(gy)+4); ctx.textAlign='center';
+  }
+
+  // Axis titles
+  ctx.fillStyle='#222'; ctx.font='bold 12px Segoe UI';
+  ctx.fillText(opts.xLabel||'x', PAD.left+pw/2, H-6);
+  ctx.save(); ctx.translate(13, PAD.top+ph/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText(opts.yLabel||'y', 0, 0); ctx.restore();
+
+  // Title
+  ctx.fillStyle=opts.titleColor||'#0f3460'; ctx.font='bold 12.5px Segoe UI';
+  ctx.fillText(opts.title||'', PAD.left+pw/2, 20);
+
+  // Trendlines
+  datasets.forEach(ds => {
+    if (!ds.reg) return;
+    const {slope,intercept} = ds.reg;
+    ctx.beginPath();
+    ctx.strokeStyle=ds.color; ctx.lineWidth=1.8; ctx.setLineDash([5,3]);
+    const x0=xMin, x1=opts.xMax!=null?opts.xMax:xMax;
+    const y0=slope*x0+intercept, y1=slope*x1+intercept;
+    const cy0=Math.max(yMin,Math.min(yMax,y0)), cy1=Math.max(yMin,Math.min(yMax,y1));
+    ctx.moveTo(toX(x0),toY(cy0)); ctx.lineTo(toX(x1),toY(cy1));
+    ctx.stroke(); ctx.setLineDash([]);
+  });
+
+  // Data points
+  datasets.forEach(ds => {
+    ctx.fillStyle=ds.color;
+    ds.pts.forEach(p => {
+      ctx.beginPath(); ctx.arc(toX(p.x),toY(p.y),4.5,0,Math.PI*2); ctx.fill();
+    });
+  });
+
+  // Legend
+  if (opts.legend) {
+    let ly = PAD.top+8;
+    const lx = PAD.left+pw+8;
+    datasets.forEach(ds => {
+      ctx.fillStyle=ds.color;
+      ctx.fillRect(lx,ly,13,13);
+      ctx.fillStyle='#333'; ctx.font='11px Segoe UI'; ctx.textAlign='left';
+      ctx.fillText(ds.label||'', lx+17, ly+11);
+      if (ds.kpLabel) {
+        ctx.fillStyle='#777'; ctx.font='10px Segoe UI';
+        ctx.fillText(ds.kpLabel, lx+17, ly+23);
+        ly += 12;
+      }
+      ly += 22;
+    });
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  DRAW BEER'S LAW PLOT
+// ════════════════════════════════════════════════════════════════════════
+function drawBeerCanvas(canvasId, abs) {
+  if (!beer) return;
+  const pts = SC_CONC.map((c,i) => ({x:c, y:abs[i]||0}));
+  plotXY(canvasId, [{
+    label: 'Standards',
+    pts,
+    color: '#0f3460',
+    reg: beer,
+  }], {
+    xLabel: '[Br₂] (M)',
+    yLabel: 'Absorbance',
+    title: `Beer's Law:  A = ${beer.slope.toFixed(1)}[Br₂] + ${beer.intercept.toFixed(3)}   R² = ${beer.r2.toFixed(4)}`,
+    xMin: 0, yMin: 0,
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  DRAW KINETICS PLOT
+// ════════════════════════════════════════════════════════════════════════
+function drawKinCanvas() {
+  const datasets = [];
+  RUNS.forEach((run,i) => {
+    const pts = getKinPts(i+1);
+    if (pts.length < 2) return;
+    datasets.push({
+      label:   run.label,
+      pts:     pts.map(p=>({x:p.t, y:p.br2})),
+      color:   run.color,
+      reg:     kp[i]!==null ? {slope:kpSl[i], intercept:kpIn[i]} : null,
+      kpLabel: kp[i]!==null ? `k′=${kp[i].toExponential(2)}` : null,
+    });
+  });
+  if (!datasets.length) return;
+  plotXY('kin-canvas', datasets, {
+    xLabel: 'Time (s)',
+    yLabel: '[Br₂] (M)',
+    title:  '[Br₂] vs Time — All Three Runs',
+    xMin: 0, yMin: 0, xMax: 300,
+    legend: true, legendW: 175,
+    titleColor: '#0f3460',
+  });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════════════════
+buildSCTable();
+buildKinTables();
+</script>
+</body>
+</html>

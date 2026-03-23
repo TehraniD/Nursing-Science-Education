@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 4 — Final Teaching Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; line-height: 1.7; }
+  header { background: linear-gradient(135deg, #0f3460, #1a1a2e); color: white; padding: 36px 40px; }
+  header h1 { font-size: 1.9rem; font-weight: 800; }
+  header p { color: #a8b8d8; margin-top: 6px; font-size: 0.95rem; }
+  .badges { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge { padding: 4px 13px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; }
+  .badge-red { background: #e94560; color: white; }
+  .badge-green { background: #2ecc71; color: white; }
+  .badge-blue { background: #3498db; color: white; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+
+  /* Cards */
+  .card { background: white; border-radius: 10px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .card-blue { border-left: 5px solid #3498db; }
+  .card-green { border-left: 5px solid #2ecc71; }
+  .card-orange { border-left: 5px solid #f39c12; }
+  .card-red { border-left: 5px solid #e94560; }
+  .card-purple { border-left: 5px solid #9b59b6; }
+  .card-dark { border-left: 5px solid #1a1a2e; }
+
+  h2 { font-size: 1.25rem; font-weight: 700; color: #0f3460; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  h3 { font-size: 1rem; font-weight: 700; color: #16213e; margin: 16px 0 8px; }
+  p { color: #333; font-size: 0.95rem; margin-bottom: 9px; }
+  ul, ol { padding-left: 20px; margin-bottom: 9px; }
+  li { color: #333; margin-bottom: 5px; font-size: 0.95rem; }
+
+  /* Quick ref grid */
+  .qr-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 14px 0; }
+  .qr-item { background: #f7f9fc; border-radius: 8px; padding: 12px; text-align: center; }
+  .qr-label { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 0.8px; }
+  .qr-value { font-size: 1.05rem; font-weight: 700; color: #0f3460; margin-top: 3px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.88rem; }
+  th { background: #0f3460; color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border-bottom: 1px solid #e8edf3; }
+  tr:nth-child(even) td { background: #f7f9fc; }
+  td.run-a { background: #fff8e8; }
+  td.run-b { background: #e8f4ff; }
+  td.run-c { background: #f0e8ff; }
+
+  /* Formula */
+  .formula { background: #1a1a2e; color: #7fdbff; border-radius: 8px; padding: 11px 18px; font-family: 'Courier New', monospace; font-size: 0.95rem; margin: 10px 0; text-align: center; }
+
+  /* Alert */
+  .alert { border-radius: 8px; padding: 11px 15px; margin: 10px 0; display: flex; gap: 10px; }
+  .alert-warn { background: #fff8e1; border-left: 4px solid #f39c12; }
+  .alert-info { background: #e8f4fd; border-left: 4px solid #3498db; }
+  .alert-success { background: #eafaf1; border-left: 4px solid #2ecc71; }
+  .alert-danger { background: #fdecea; border-left: 4px solid #e94560; }
+  .alert-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+  /* Timeline */
+  .timeline { padding-left: 20px; border-left: 3px solid #0f3460; margin: 12px 0; }
+  .tl-item { position: relative; margin-bottom: 14px; }
+  .tl-item::before { content: ''; position: absolute; left: -26px; top: 6px; width: 10px; height: 10px; background: #0f3460; border-radius: 50%; }
+  .tl-time { font-size: 0.75rem; font-weight: 700; color: #e94560; text-transform: uppercase; letter-spacing: 1px; }
+  .tl-text { font-size: 0.93rem; color: #333; }
+
+  /* Step */
+  .step-row { display: flex; gap: 12px; margin: 8px 0; }
+  .step-n { background: #0f3460; color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+  /* Two col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .insight { background: #fffde7; border-left: 4px solid #fbc02d; padding: 11px 15px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+  .insight-label { font-size: 0.75rem; font-weight: 700; color: #e67e22; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* Week badge */
+  .week-title { display: inline-block; background: #0f3460; color: white; padding: 5px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; margin-bottom: 14px; }
+
+  /* Excel */
+  .excel-code { font-family: 'Courier New', monospace; background: #1e1e1e; color: #9cdcfe; padding: 4px 9px; border-radius: 4px; font-size: 0.85rem; display: inline-block; margin: 3px 0; }
+  .excel-step { background: #e8f4fd; border-left: 3px solid #3498db; padding: 9px 13px; border-radius: 0 6px 6px 0; margin: 7px 0; font-size: 0.91rem; }
+
+  .big-answer { background: linear-gradient(135deg, #0f3460, #1a1a2e); color: white; border-radius: 10px; padding: 18px; text-align: center; margin: 14px 0; }
+  .big-answer .ba-formula { font-family: 'Courier New', monospace; font-size: 1.3rem; color: #7fdbff; font-weight: 700; }
+  .big-answer .ba-sub { color: #a8b8d8; font-size: 0.88rem; margin-top: 6px; }
+
+  @media(max-width:600px){ .two-col,.qr-grid{grid-template-columns:1fr;} header{padding:24px 20px;} .card{padding:18px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Lab 4 — Final Version: Rate of a Reaction</h1>
+  <p>CHM152 · Bromination of Acetone · 3 Runs · Two Weeks</p>
+  <div class="badges">
+    <span class="badge badge-red">INSTRUCTOR GUIDE</span>
+    <span class="badge badge-green">~65 MIN WEEK 1</span>
+    <span class="badge badge-blue">FINAL DESIGN</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- QUICK REF -->
+  <div class="card card-dark">
+    <h2>⚡ Quick Reference</h2>
+    <div class="qr-grid">
+      <div class="qr-item"><div class="qr-label">Wavelength</div><div class="qr-value">395 nm</div></div>
+      <div class="qr-item"><div class="qr-label">Br₂ Stock</div><div class="qr-value">10⁻² M</div></div>
+      <div class="qr-item"><div class="qr-label">HCl Stock</div><div class="qr-value">2 M</div></div>
+      <div class="qr-item"><div class="qr-label">Acetone Stock</div><div class="qr-value">8 M</div></div>
+      <div class="qr-item"><div class="qr-label">Kinetics Runs</div><div class="qr-value">3</div></div>
+      <div class="qr-item"><div class="qr-label">Week 1 Time</div><div class="qr-value">~65 min</div></div>
+      <div class="qr-item"><div class="qr-label">Expected p</div><div class="qr-value">0</div></div>
+      <div class="qr-item"><div class="qr-label">Expected n, m</div><div class="qr-value">1, 1</div></div>
+    </div>
+    <div class="big-answer" style="margin-top:14px;">
+      <div class="ba-formula">rate = k [acetone][H⁺]</div>
+      <div class="ba-sub">p = 0 (zero in Br₂) · n = 1 (first in acetone) · m = 1 (first in H⁺)</div>
+    </div>
+  </div>
+
+  <!-- WHAT CHANGED FROM ORIGINAL -->
+  <div class="card card-green">
+    <h2>✅ What's Upgraded From the Original Lab</h2>
+    <div class="two-col">
+      <div>
+        <h3>Stock Concentration</h3>
+        <p>Original used 10⁻³ M Br₂ → absorbance ≈ 0.025 (too faint, noisy data). <strong>This version uses 10⁻² M Br₂</strong> → absorbance ≈ 0.24 per run. Clean, reliable readings.</p>
+      </div>
+      <div>
+        <h3>Analysis Approach</h3>
+        <p>Original asked students to test 3 plot types and compare R². That's confusing. <strong>This version:</strong> tell students upfront that [Br₂] vs time is linear (zero order), show why mechanistically, then just use that one graph type for everything.</p>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top:12px;">
+      <div>
+        <h3>Excel Workflow</h3>
+        <p>All 3 runs go on <strong>one graph</strong> in Week 2. Students compare 3 lines side by side. Slopes give k'. Two ratios give n and m. Clean and visual.</p>
+      </div>
+      <div>
+        <h3>Timing</h3>
+        <p>Runs 2 and 3 will finish significantly faster than Run 1 (because rate is faster with more HCl/acetone). Total data collection: ~15 min. Week 1 stays under 65 min.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE CHEMISTRY -->
+  <div class="card card-red">
+    <h2>🧪 Chemistry You Need to Know</h2>
+    <div class="formula">CH₃COCH₃ + Br₂ → CH₃COCH₂Br + HBr &nbsp;&nbsp;(H⁺ is catalyst)</div>
+    <div class="formula">rate = k [acetone]ⁿ [H⁺]ᵐ [Br₂]ᵖ</div>
+
+    <h3>Why Zero Order in Br₂ — Teach This First, Don't Let Students Discover It Confused</h3>
+    <p>The reaction has two steps. Step 1 (slow): acetone + H⁺ → enol. Step 2 (fast): enol + Br₂ → product. The slow step controls the rate. Br₂ is only in the fast step. More Br₂ = faster fast step, but the bottleneck is Step 1, which doesn't involve Br₂ at all.</p>
+
+    <div class="insight">
+      <div class="insight-label">What to say at the start of lab</div>
+      <p>"Before you touch anything — I want you to predict something. If you put 4× more Br₂ in your flask, what happens to the rate? Write it down. We'll come back to it after you run your experiment."</p>
+      <p>Almost all students will say "faster." When Run 1's [Br₂] vs time graph comes out linear and identical in slope to another run — the prediction was wrong. That's the teaching moment. Not the graph comparison, not the R² numbers. The prediction they got wrong.</p>
+    </div>
+
+    <h3>Why [Br₂] vs Time Is the Right Plot (Zero Order)</h3>
+    <p>If p = 0: rate = −d[Br₂]/dt = k' (constant). So [Br₂] decreases at a constant rate → straight line. You don't need to compare it to first or second order plots. Teach them to look at the line: is it straight? Yes. Done. p = 0.</p>
+    <p>If it curves downward (decelerates) → first order. If it curves upward (decelerates faster) → second order. In this reaction, it's straight.</p>
+  </div>
+
+  <!-- WEEK 1 -->
+  <div class="card card-blue">
+    <h2>📅 Week 1 In-Lab Plan</h2>
+    <span class="week-title">WEEK 1 — DATA COLLECTION (~65 MIN)</span>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">0–15 min</div>
+        <div class="tl-text"><strong>Pre-lab intro.</strong> Explain the reaction, the mechanism, zero order. Ask for predictions. Set up SPEC 20 at 395 nm, zero with DI water.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">15–30 min</div>
+        <div class="tl-text"><strong>Standard curve.</strong> 5 standards (blank + 4). One shared set for class. Students record absorbance values.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">30–40 min</div>
+        <div class="tl-text"><strong>Run 1 (Baseline).</strong> ~5–6 min of 15-second readings. This is the reference for everything else.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">40–48 min</div>
+        <div class="tl-text"><strong>Run 2 (Double HCl).</strong> ~3 min — finishes faster than Run 1 because rate is higher.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">48–56 min</div>
+        <div class="tl-text"><strong>Run 3 (Double Acetone).</strong> ~3 min — also finishes faster than Run 1.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">56–65 min</div>
+        <div class="tl-text"><strong>Data check + cleanup.</strong> Verify all tables are filled. Each run needs at least 8–10 absorbance readings for a reliable slope.</div>
+      </div>
+    </div>
+
+    <h3>Reaction Mixture Table</h3>
+    <p style="font-size:0.85rem;color:#666;">Using 10⁻² M Br₂ stock. Total volume = 10.0 mL each.</p>
+    <table>
+      <tr>
+        <th>Run</th><th>mL Br₂ (10⁻²M)</th><th>mL HCl (2M)</th><th>mL Acetone (8M)</th><th>mL DI</th>
+        <th>[Br₂]₀</th><th>[HCl]₀</th><th>[Acetone]₀</th><th>Purpose</th>
+      </tr>
+      <tr>
+        <td><strong>1</strong></td>
+        <td class="run-a">2.0</td><td class="run-a">1.0</td><td class="run-a">1.0</td><td class="run-a">6.0</td>
+        <td>2×10⁻³ M</td><td>0.20 M</td><td>0.80 M</td><td>Baseline</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td class="run-b">2.0</td><td class="run-b">2.0</td><td class="run-b">1.0</td><td class="run-b">5.0</td>
+        <td>2×10⁻³ M</td><td>0.40 M</td><td>0.80 M</td><td>2× [H⁺] → find m</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td class="run-c">2.0</td><td class="run-c">1.0</td><td class="run-c">2.0</td><td class="run-c">5.0</td>
+        <td>2×10⁻³ M</td><td>0.20 M</td><td>1.60 M</td><td>2× [acetone] → find n</td>
+      </tr>
+    </table>
+
+    <div class="alert alert-warn">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Note:</strong> All 3 runs use the same amount of Br₂ (2 mL of 10⁻² M → 2×10⁻³ M in 10 mL). This is intentional. Since p=0, the Br₂ order doesn't change the slope — keeping it constant removes one variable and makes the slope comparison between runs cleaner.</div>
+    </div>
+
+    <h3>Standard Curve Setup</h3>
+    <table>
+      <tr><th>Standard</th><th>[Br₂] (M)</th><th>From 10⁻² M stock</th><th>Expected Absorbance</th></tr>
+      <tr><td>Blank</td><td>0</td><td>DI water only</td><td>0.00</td></tr>
+      <tr><td>1</td><td>5×10⁻⁴</td><td>0.5 mL → 10 mL</td><td>~0.062</td></tr>
+      <tr><td>2</td><td>1×10⁻³</td><td>1.0 mL → 10 mL</td><td>~0.122</td></tr>
+      <tr><td>3</td><td>2×10⁻³</td><td>2.0 mL → 10 mL</td><td>~0.242</td></tr>
+      <tr><td>4</td><td>3×10⁻³</td><td>3.0 mL → 10 mL</td><td>~0.364</td></tr>
+    </table>
+
+    <div class="alert alert-success">
+      <span class="alert-icon">✅</span>
+      <div>Absorbance range 0.06 – 0.36 is ideal for the SPEC 20. Compare: original 10⁻³ M stock gave ≈ 0.025 — barely measurable. This stock gives clean, reliable data.</div>
+    </div>
+
+    <h3>Procedure — Same for Every Run</h3>
+    <div class="step-row"><div class="step-n">1</div><p>Add Br₂ to volumetric flask. Then HCl. Then acetone LAST — this starts the reaction.</p></div>
+    <div class="step-row"><div class="step-n">2</div><p>Fill to 10 mL mark with DI. Cover with parafilm. Invert 3× to mix. <strong>Start stopwatch when acetone is added.</strong></p></div>
+    <div class="step-row"><div class="step-n">3</div><p>Transfer to cuvette immediately. Place in SPEC 20. Record absorbance every 15 seconds.</p></div>
+    <div class="step-row"><div class="step-n">4</div><p>Continue until absorbance ≈ 0 (colorless) or 5 minutes, whichever comes first.</p></div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div class="card card-purple">
+    <h2>💻 Week 2 — Excel Analysis (Simplified)</h2>
+    <span class="week-title">WEEK 2 — DATA ANALYSIS</span>
+
+    <div class="alert alert-success">
+      <span class="alert-icon">🎯</span>
+      <div><strong>The key simplification:</strong> Students make ONE type of graph — [Br₂] vs time — for all three runs. No choosing between zero/first/second order plots. The straight line on Run 1 is enough to establish p = 0. Then all three runs go on one graph and slopes get compared.</div>
+    </div>
+
+    <h3>Step 1 — Standard Curve (Sheet 1)</h3>
+    <div class="excel-step">Enter [Br₂] in Column A, Absorbance in Column B → Scatter plot → Linear trendline → Display equation + R²</div>
+    <p>You'll get: <span class="excel-code">A = slope × [Br₂] + intercept</span> (expect slope ≈ 121, R² ≈ 0.999)</p>
+    <p>Invert it: <span class="excel-code">[Br₂] = (A − intercept) / slope</span> — this is your decoder for all three runs.</p>
+
+    <h3>Step 2 — Convert Absorbance → [Br₂] for Each Run</h3>
+    <div class="excel-step">
+      For each run (Sheet 2, 3, 4):<br>
+      Column A: absorbance &nbsp;|&nbsp; Column B: time (s) &nbsp;|&nbsp; Column C: <span class="excel-code">=(A2−intercept)/slope</span><br>
+      Drag C2 formula down for all rows.
+    </div>
+
+    <h3>Step 3 — One Graph: All 3 Runs Together</h3>
+    <div class="excel-step">
+      Plot time vs [Br₂] for Runs 1, 2, and 3 as three separate series on the same chart.<br>
+      Add a linear trendline to each. Display equation (slope) and R² for each.<br><br>
+      <strong>Check Run 1:</strong> Is [Br₂] vs time a straight line (R² ≥ 0.99)? If yes → p = 0. That's the whole p determination. Done.
+    </div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">👁️</span>
+      <div><strong>Visual check for students:</strong> A straight line means the rate of Br₂ disappearance is constant — it doesn't care about how much Br₂ is left. That IS zero order. You don't need to test ln[Br₂] or 1/[Br₂] unless the line curves.</div>
+    </div>
+
+    <h3>Step 4 — Compare Slopes to Find n and m</h3>
+    <table>
+      <tr><th>Run</th><th>Slope = k'</th><th>[Acetone]₀</th><th>[H⁺]₀</th><th>What it tells you</th></tr>
+      <tr><td>1</td><td>k'₁ (your value)</td><td>0.80 M</td><td>0.20 M</td><td>Baseline</td></tr>
+      <tr><td>2</td><td>k'₂ ≈ 2 × k'₁</td><td>0.80 M</td><td>0.40 M</td><td>k'₂/k'₁ = 2ᵐ → m = 1</td></tr>
+      <tr><td>3</td><td>k'₃ ≈ 2 × k'₁</td><td>1.60 M</td><td>0.20 M</td><td>k'₃/k'₁ = 2ⁿ → n = 1</td></tr>
+    </table>
+    <div class="formula">k'₂ / k'₁ = ([H⁺]₂ / [H⁺]₁)ᵐ = (0.40/0.20)ᵐ = 2ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; if ratio ≈ 2, then m = 1</div>
+    <div class="formula">k'₃ / k'₁ = ([acetone]₃ / [acetone]₁)ⁿ = (1.60/0.80)ⁿ = 2ⁿ &nbsp;&nbsp;→&nbsp;&nbsp; if ratio ≈ 2, then n = 1</div>
+
+    <h3>Step 5 — Calculate k</h3>
+    <div class="formula">k = k' / ([acetone] × [H⁺]) &nbsp;&nbsp;→&nbsp;&nbsp; use this formula with each run's values, then average</div>
+    <p>Example: k = k'₁ / (0.80 × 0.20) = k'₁ / 0.16</p>
+    <p>Units: M/s ÷ M ÷ M = <strong>M⁻¹s⁻¹</strong></p>
+  </div>
+
+  <!-- MISCONCEPTIONS -->
+  <div class="card card-orange">
+    <h2>🧠 Three Misconceptions — Address These</h2>
+
+    <h3>1. "Run 2 and 3 finish faster — does that mean more Br₂ was used up?"</h3>
+    <p>No. All three runs start with the same [Br₂]₀ = 2×10⁻³ M. Runs 2 and 3 finish faster because the RATE is higher (more HCl or more acetone), not because there's more Br₂. They have the same amount of Br₂ to consume, just consumed faster.</p>
+
+    <h3>2. "The R² is 0.99 not 1.00 — is the line good enough?"</h3>
+    <p>Yes. No real experiment gives R² = 1.000. An R² of 0.990–0.999 is excellent. The question is: is it much better than 0.97 or 0.95? If so, the linear fit wins. For this reaction, R² for [Br₂] vs t is typically 0.995–0.999.</p>
+
+    <h3>3. "How can Br₂ be zero order if it's a reactant?"</h3>
+    <p>Zero order means its concentration doesn't control the rate — not that it's absent. Br₂ still reacts and gets used up. It's just not at the bottleneck. The slow step (enolization) doesn't involve it, so adding more Br₂ doesn't help.</p>
+  </div>
+
+  <!-- DISCUSSION QUESTIONS KEY -->
+  <div class="card card-dark">
+    <h2>❓ Discussion Questions — Instructor Answer Key</h2>
+
+    <h3>Q1: Why is the reaction zero order in Br₂?</h3>
+    <p>The rate-determining step is enolization of acetone (Step 1), which requires acetone and H⁺ but not Br₂. Br₂ only participates in the fast second step. Since the fast step is not the bottleneck, its concentration doesn't affect the overall rate.</p>
+
+    <h3>Q2: Why is H⁺ in the rate law if it's a catalyst?</h3>
+    <p>H⁺ participates in the slow step (enolization) and is regenerated in the fast step. Net: H⁺ is not consumed. But its concentration directly affects how fast the enolization occurs — more H⁺ = faster Step 1 = faster overall rate. Catalysts appear in rate laws when they're involved in the rate-determining step.</p>
+
+    <h3>Q3: Why do Runs 2 and 3 finish faster than Run 1?</h3>
+    <p>Both have higher rates (Run 2 has double H⁺; Run 3 has double acetone). Since all three start with the same [Br₂]₀ = 2×10⁻³ M, the one with the faster rate consumes that fixed amount of Br₂ in less time. Time to finish = [Br₂]₀ / rate.</p>
+
+    <h3>Q4: What would happen to the rate if you doubled [Br₂] instead?</h3>
+    <p>Nothing — the rate would stay exactly the same. p = 0. The slope of [Br₂] vs time would be unchanged, but the line would start at a higher y-intercept and take twice as long to reach zero.</p>
+
+    <h3>Q5: Write a mechanism consistent with your rate law.</h3>
+    <p>Step 1 (slow): CH₃COCH₃ + H⁺ → CH₂=C(OH)CH₃ + H⁺ (enolization)</p>
+    <p>Step 2 (fast): CH₂=C(OH)CH₃ + Br₂ → CH₂BrCOCH₃ + HBr (bromination of enol)</p>
+    <p>This gives rate = k[acetone][H⁺], consistent with n=1, m=1, p=0.</p>
+  </div>
+
+</div>
+
+<div style="text-align:center; padding:20px; color:#888; font-size:0.8rem;">
+  CHM152 · Lab 4 Final Version · Instructor Teaching Guide
+</div>
+</body>
+</html>

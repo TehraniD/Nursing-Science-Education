@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHM152L Lab 3: Heat of Fusion of Water - Interactive Lab Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f0f0f0;
+            border-bottom: 3px solid #2a5298;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover {
+            background: #e0e0e0;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #2a5298;
+            border-top: 3px solid #2a5298;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 5px solid #2a5298;
+        }
+
+        .section h2 {
+            color: #2a5298;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h3 {
+            color: #1e3c72;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            background-size: contain;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .concept-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .equation-box {
+            background: #1e3c72;
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3em;
+            font-family: 'Courier New', monospace;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: #2a5298;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .data-table input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .data-table input:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .calculated {
+            background: #e8f5e9 !important;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #2a5298;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .nav-tabs, button, .no-print {
+                display: none !important;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .tab-content {
+                display: block !important;
+                page-break-before: always;
+            }
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .quiz-option {
+            padding: 10px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #f0f0f0;
+            border-color: #2a5298;
+        }
+
+        .quiz-option input {
+            margin-right: 10px;
+        }
+
+        .result-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .result-summary h3 {
+            color: white;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 CHM152L Lab 3: Heat of Fusion of Water</h1>
+            <p>Interactive Laboratory Guide & Workbook</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Complete each section as you progress through the lab</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('learning')">📚 Learning Guide</button>
+            <button class="nav-tab" onclick="showTab('prelab')">📝 Pre-Lab</button>
+            <button class="nav-tab" onclick="showTab('safety')">⚠️ Safety</button>
+            <button class="nav-tab" onclick="showTab('procedure')">🔬 Procedure</button>
+            <button class="nav-tab" onclick="showTab('data')">📊 Data & Calculations</button>
+            <button class="nav-tab" onclick="showTab('analysis')">🧮 Analysis</button>
+            <button class="nav-tab" onclick="showTab('postlab')">✍️ Post-Lab</button>
+        </div>
+
+        <!-- LEARNING GUIDE TAB -->
+        <div id="learning" class="tab-content active">
+            <div class="section">
+                <h2>🎯 What You'll Learn Today</h2>
+                <div class="concept-card">
+                    <h3>The Big Question: How much energy does it take to melt ice?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Imagine you're holding an ice cube on a hot summer day. It melts, right? But here's the fascinating part:
+                        even though the ice is melting, its temperature stays at 0°C the entire time! Where does all that heat
+                        energy go? It's being used to break apart the hydrogen bonds holding the water molecules in their rigid
+                        ice structure. This "hidden" energy is called the <strong>Heat of Fusion</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🌡️ Understanding Heat vs. Temperature</h2>
+                <div class="info-box">
+                    <h3>Think of it this way:</h3>
+                    <p><strong>Temperature</strong> = How fast molecules are moving (the "speedometer" of molecules)</p>
+                    <p><strong>Heat</strong> = Total energy being transferred (the "fuel" being added or removed)</p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>The Party Analogy</h3>
+                    <p>Imagine molecules at a party:</p>
+                    <ul style="margin-left: 30px; margin-top: 10px;">
+                        <li><strong>Solid (Ice):</strong> Everyone's locked in their seats, barely wiggling</li>
+                        <li><strong>Melting:</strong> People are using energy to break free from their seats, but they're not moving around faster yet</li>
+                        <li><strong>Liquid (Water):</strong> Now they're free to move around the party!</li>
+                    </ul>
+                    <p style="margin-top: 15px;">The energy used to "break free" (break the bonds) is the Heat of Fusion!</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🔥 The Calorimetry Principle (The Heart of This Lab)</h2>
+                <div class="equation-box">
+                    Energy Lost by Hot Stuff = Energy Gained by Cold Stuff
+                </div>
+
+                <div class="concept-card">
+                    <h3>Here's what's happening in our experiment:</h3>
+                    <p><strong>Step 1:</strong> Warm water sits in the calorimeter, nice and cozy at about 35°C</p>
+                    <p><strong>Step 2:</strong> We add ice (at 0°C) to the warm water</p>
+                    <p><strong>Step 3:</strong> The warm water says "Here, take some of my heat energy!" and starts cooling down</p>
+                    <p><strong>Step 4:</strong> The ice says "Thanks!" and uses that energy to melt (but stays at 0°C while melting)</p>
+                    <p><strong>Step 5:</strong> Eventually, everything reaches the same temperature (thermal equilibrium)</p>
+                </div>
+
+                <div class="diagram">
+                    <svg width="600" height="300" viewBox="0 0 600 300">
+                        <!-- Warm Water -->
+                        <rect x="50" y="100" width="150" height="150" fill="#ff6b6b" stroke="#c92a2a" stroke-width="3"/>
+                        <text x="125" y="125" text-anchor="middle" fill="white" font-size="16" font-weight="bold">Warm Water</text>
+                        <text x="125" y="145" text-anchor="middle" fill="white" font-size="14">35°C</text>
+                        <text x="125" y="165" text-anchor="middle" fill="white" font-size="12">High Energy</text>
+
+                        <!-- Arrow -->
+                        <path d="M 210 175 L 280 175" stroke="#4c6ef5" stroke-width="4" fill="none" marker-end="url(#arrowhead)"/>
+                        <text x="245" y="165" text-anchor="middle" fill="#4c6ef5" font-size="14" font-weight="bold">Energy Transfer</text>
+
+                        <!-- Ice -->
+                        <rect x="290" y="100" width="150" height="150" fill="#a5d8ff" stroke="#1971c2" stroke-width="3"/>
+                        <text x="365" y="125" text-anchor="middle" fill="#1971c2" font-size="16" font-weight="bold">Ice</text>
+                        <text x="365" y="145" text-anchor="middle" fill="#1971c2" font-size="14">0°C</text>
+                        <text x="365" y="165" text-anchor="middle" fill="#1971c2" font-size="12">Needs Energy</text>
+
+                        <!-- Final Mixture -->
+                        <ellipse cx="500" cy="175" rx="60" ry="75" fill="#51cf66" stroke="#2b8a3e" stroke-width="3"/>
+                        <text x="500" y="165" text-anchor="middle" fill="white" font-size="14" font-weight="bold">Final Mix</text>
+                        <text x="500" y="185" text-anchor="middle" fill="white" font-size="13">~15-20°C</text>
+
+                        <!-- Arrow marker -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#4c6ef5" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📐 The Math Behind the Magic</h2>
+
+                <div class="concept-card">
+                    <h3>Equation 1: Heating/Cooling (NO phase change)</h3>
+                    <div class="equation-box">
+                        Q = m × c × ΔT
+                    </div>
+                    <p><strong>Q</strong> = Heat energy (Joules)</p>
+                    <p><strong>m</strong> = Mass (grams)</p>
+                    <p><strong>c</strong> = Specific heat capacity (J/g·°C) - Think of this as "How hard is it to heat this substance?"</p>
+                    <p><strong>ΔT</strong> = Temperature change (°C)</p>
+
+                    <div class="info-box" style="margin-top: 15px;">
+                        <strong>Example:</strong> If you have 100g of water and it cools from 30°C to 20°C:
+                        <br>Q = 100g × 4.184 J/(g·°C) × (20°C - 30°C)
+                        <br>Q = 100 × 4.184 × (-10) = <strong>-4,184 J</strong>
+                        <br>(Negative means energy is LEAVING the water)
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <h3>Equation 2: Phase Change (melting/freezing)</h3>
+                    <div class="equation-box">
+                        Q = m × ΔH<sub>f</sub>
+                    </div>
+                    <p><strong>Q</strong> = Heat energy (Joules)</p>
+                    <p><strong>m</strong> = Mass (grams)</p>
+                    <p><strong>ΔH<sub>f</sub></strong> = Heat of Fusion (J/g) - This is what we're trying to find!</p>
+
+                    <div class="info-box" style="margin-top: 15px;">
+                        <strong>The Literature Value:</strong> ΔH<sub>f</sub> for water = 333.55 J/g
+                        <br>This means it takes 333.55 Joules to melt 1 gram of ice at 0°C!
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <h3>Putting It All Together</h3>
+                    <div class="equation-box">
+                        Conservation of Energy: Q<sub>lost</sub> + Q<sub>gained</sub> = 0<br>
+                        Q<sub>ice</sub> = &minus;Q<sub>warm water</sub><br><br>
+                        m<sub>ice</sub> &times; ΔH<sub>f</sub> = &minus;(m<sub>water</sub> &times; c<sub>water</sub> &times; ΔT)
+                        <br><small>(ΔT is negative since water cools, so &minus;ΔT is positive)</small>
+                    </div>
+
+                    <p style="margin-top: 15px;"><strong>Solving for Heat of Fusion:</strong></p>
+                    <div class="equation-box">
+                        ΔH<sub>f</sub> = &minus;(m<sub>water</sub> &times; c<sub>water</sub> &times; ΔT) / m<sub>ice</sub>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎓 Key Concepts Simplified</h2>
+
+                <div class="concept-card">
+                    <h3>1. Why does temperature stay constant during melting?</h3>
+                    <p>All the energy is being used to break bonds, not to speed up molecules. Once all bonds are broken,
+                    THEN the temperature can start rising again.</p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>2. Why is water's heat of fusion so high?</h3>
+                    <p>Water molecules REALLY like each other (hydrogen bonding). It takes a lot of energy to convince
+                    them to let go of each other!</p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>3. What's a calorimeter?</h3>
+                    <p>It's just an insulated cup that prevents heat from escaping to the environment. We want ALL the
+                    heat from the warm water to go into melting the ice, not heating up the room!</p>
+                </div>
+
+                <div class="concept-card">
+                    <h3>4. Why do we dry the ice?</h3>
+                    <p>If there's liquid water on the ice, we're measuring the mass of that water too, but it doesn't
+                    need to melt (it's already liquid!). This would make our ice mass too high and our ΔH<sub>f</sub> too low.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🌊 Real-World Applications</h2>
+                <div class="concept-card">
+                    <h3>Why should you care about heat of fusion?</h3>
+                    <ul style="margin-left: 30px; margin-top: 10px; line-height: 2;">
+                        <li><strong>Weather & Climate:</strong> Ice melting in polar regions absorbs HUGE amounts of energy, affecting global climate</li>
+                        <li><strong>Food Preservation:</strong> Ice in your cooler keeps food cold for hours because it absorbs so much heat while melting</li>
+                        <li><strong>Medical Applications:</strong> Ice packs for injuries work because of heat of fusion</li>
+                        <li><strong>Engineering:</strong> Phase-change materials in buildings regulate temperature</li>
+                        <li><strong>Space Travel:</strong> Understanding phase changes helps design life support systems</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRE-LAB TAB -->
+        <div id="prelab" class="tab-content">
+            <div class="section">
+                <h2>📝 Pre-Lab Questions</h2>
+                <p>Answer these questions BEFORE starting the lab. They'll help you understand what you're doing!</p>
+
+                <div class="quiz-question">
+                    <h3>Question 1:</h3>
+                    <p>What is the heat of fusion?</p>
+                    <textarea id="prelab1" rows="3" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 2:</h3>
+                    <p>Why does the temperature of ice stay at 0°C while it's melting, even though heat is being added?</p>
+                    <textarea id="prelab2" rows="3" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 3:</h3>
+                    <p>Calculate: How much heat is released when 50.0 g of water cools from 40.0°C to 25.0°C?<br>
+                    (Use c<sub>water</sub> = 4.184 J/g·°C)</p>
+                    <input type="text" id="prelab3" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;">
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Show your work:</p>
+                    <textarea id="prelab3work" rows="3" style="width: 100%; padding: 10px; margin-top: 5px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 4:</h3>
+                    <p>If the literature value for the heat of fusion of ice is 333.55 J/g, how much energy is required to melt 20.0 g of ice at 0°C?</p>
+                    <input type="text" id="prelab4" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;">
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Show your work:</p>
+                    <textarea id="prelab4work" rows="3" style="width: 100%; padding: 10px; margin-top: 5px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 5:</h3>
+                    <p>Why is it important to dry the ice before adding it to the warm water?</p>
+                    <textarea id="prelab5" rows="3" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 6:</h3>
+                    <p>In this experiment, we assume no heat is lost to the surroundings. Is this realistic? How would heat loss affect your calculated ΔH<sub>f</sub> value?</p>
+                    <textarea id="prelab6" rows="4" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <button class="btn-calculate" onclick="savePrelab()">💾 Save Pre-Lab Answers</button>
+            </div>
+        </div>
+
+        <!-- SAFETY TAB -->
+        <div id="safety" class="tab-content">
+            <div class="section">
+                <h2>⚠️ Safety Information</h2>
+
+                <div class="warning-box">
+                    <h3>⚠️ General Lab Safety Rules</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety1">
+                        <label for="safety1">Wear safety goggles at all times in the laboratory</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety2">
+                        <label for="safety2">Wear closed-toe shoes (no sandals or open-toed shoes)</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety3">
+                        <label for="safety3">Tie back long hair</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety4">
+                        <label for="safety4">Know the location of safety equipment (eyewash, fire extinguisher, first aid kit)</label>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>🔬 Specific Hazards for This Lab</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety5">
+                        <label for="safety5"><strong>Hot Water:</strong> Water may be heated to 35-40°C. While not extremely hot, be careful when handling</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety6">
+                        <label for="safety6"><strong>Glassware:</strong> Handle thermometers carefully - they can break and cause cuts</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety7">
+                        <label for="safety7"><strong>Spills:</strong> Wipe up any water spills immediately to prevent slipping</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety8">
+                        <label for="safety8"><strong>Equipment:</strong> Handle the calorimeter carefully to avoid dents that could affect insulation</label>
+                    </div>
+                </div>
+
+                <div class="success-box">
+                    <h3>✅ Best Practices</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety9">
+                        <label for="safety9">Read the entire procedure before beginning</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety10">
+                        <label for="safety10">Keep your work area clean and organized</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety11">
+                        <label for="safety11">Record all measurements immediately in your data table</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety12">
+                        <label for="safety12">Clean and dry all equipment after use</label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="safety13">
+                        <label for="safety13">Wash your hands after completing the lab</label>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>🚨 In Case of Emergency</h3>
+                    <p><strong>Thermometer Breakage:</strong> Alert instructor immediately. Do NOT touch broken glass. Instructor will clean up mercury if present.</p>
+                    <p><strong>Burns:</strong> Run affected area under cool water for 10-15 minutes. Alert instructor.</p>
+                    <p><strong>Spills:</strong> Alert instructor. Use paper towels to clean up water spills.</p>
+                </div>
+
+                <button class="btn-calculate" onclick="checkSafety()">✅ Confirm Safety Review</button>
+            </div>
+        </div>
+
+        <!-- PROCEDURE TAB -->
+        <div id="procedure" class="tab-content">
+            <div class="section">
+                <h2>🔬 Experimental Procedure</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px;">Follow these steps carefully. Check off each step as you complete it!</p>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <h4>Measure the Empty Calorimeter</h4>
+                        <p>Place the empty calorimeter (aluminum cup + stirrer) on the balance.</p>
+                        <p><strong>Record the mass:</strong> <input type="number" step="0.1" id="proc-empty-cal" style="width: 150px;"> g</p>
+                        <div class="info-box">
+                            <strong>💡 Tip:</strong> Make sure the balance is zeroed before placing the calorimeter on it.
+                            Typical mass range: 50-60 g
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step1done">
+                            <label for="step1done">✅ Step 1 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <h4>Add Warm Water</h4>
+                        <p>Fill the calorimeter about halfway with warm water (~10°C above room temperature, around 33-37°C).</p>
+                        <p><strong>Measure the mass of calorimeter + warm water:</strong> <input type="number" step="0.1" id="proc-cal-water" style="width: 150px;"> g</p>
+                        <p><strong>Calculate mass of warm water:</strong> <span id="proc-water-calc" style="font-weight: bold; color: #2e7d32;">-</span> g</p>
+                        <div class="warning-box">
+                            <strong>⚠️ Important:</strong> Don't fill more than halfway! You need room for the ice.
+                            Typical water mass: 100-150 g
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step2done">
+                            <label for="step2done">✅ Step 2 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <h4>Record Initial Temperature</h4>
+                        <p>Place the thermometer in the warm water. Stir gently and wait 30 seconds for thermal equilibrium.</p>
+                        <p><strong>Record T<sub>i</sub> (initial temperature):</strong> <input type="number" step="0.1" id="proc-temp-initial" style="width: 150px;"> °C</p>
+                        <div class="info-box">
+                            <strong>💡 Tip:</strong> Make sure the thermometer bulb is fully submerged but not touching the bottom.
+                            Keep stirring gently until the temperature stabilizes.
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step3done">
+                            <label for="step3done">✅ Step 3 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-content">
+                        <h4>Prepare the Ice</h4>
+                        <p>Get crushed ice from the ice machine.</p>
+                        <p><strong>⚠️ CRITICAL:</strong> Gently pat the ice with a paper towel to remove surface water!</p>
+                        <p>Have the ice ready to add quickly to minimize heat exchange with room air.</p>
+                        <div class="warning-box">
+                            <strong>Why dry the ice?</strong> Excess liquid water on the ice will make your measured ice mass
+                            too high (you're measuring water + ice, but only the ice needs to melt). This causes your ΔH<sub>f</sub>
+                            to be too LOW.
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step4done">
+                            <label for="step4done">✅ Step 4 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-content">
+                        <h4>Add Ice</h4>
+                        <p>Add crushed ice to the warm water, a little at a time.</p>
+                        <p><strong>Stir CONTINUOUSLY and gently!</strong></p>
+                        <p>Keep adding ice until the temperature drops about <strong>15-20°C</strong> from the initial temperature.</p>
+                        <p>Stop adding ice when you reach this temperature drop.</p>
+                        <div class="info-box">
+                            <strong>💡 Strategy:</strong> If your initial temp was 35°C, stop adding ice when you get to about 15-20°C.
+                            Add ice slowly near the end to avoid overshooting!
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step5done">
+                            <label for="step5done">✅ Step 5 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">6</span>
+                    <div class="step-content">
+                        <h4>Record Final Temperature</h4>
+                        <p>Continue stirring until ALL ice is melted and the temperature stabilizes.</p>
+                        <p><strong>Record T<sub>f</sub> (the lowest stable temperature reached):</strong> <input type="number" step="0.1" id="proc-temp-final" style="width: 150px;"> °C</p>
+                        <div class="warning-box">
+                            <strong>⚠️ Important:</strong> Wait until ALL ice has melted before recording T<sub>f</sub>.
+                            If ice is still present, the temperature will stay at 0°C and your measurement will be wrong!
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step6done">
+                            <label for="step6done">✅ Step 6 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">7</span>
+                    <div class="step-content">
+                        <h4>Measure Final Mass</h4>
+                        <p>Measure the mass of the calorimeter + warm water + melted ice.</p>
+                        <p><strong>Record final mass:</strong> <input type="number" step="0.1" id="proc-final-mass" style="width: 150px;"> g</p>
+                        <p><strong>Calculate mass of ice:</strong> <span id="proc-ice-calc" style="font-weight: bold; color: #2e7d32;">-</span> g</p>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step7done">
+                            <label for="step7done">✅ Step 7 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">8</span>
+                    <div class="step-content">
+                        <h4>REPEAT for Trial 2</h4>
+                        <p>Dump the water and dry the calorimeter completely.</p>
+                        <p>Start fresh with new warm water and ice.</p>
+                        <p>Follow Steps 1-7 again for your second trial.</p>
+                        <div class="success-box">
+                            <strong>✅ Why two trials?</strong> Doing multiple trials helps us identify errors and get a more
+                            accurate average result. If your two trials are very different, something went wrong!
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="step8done">
+                            <label for="step8done">✅ Trial 2 Complete</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-calculate" onclick="transferProcedureData()">➡️ Transfer Data to Data Table</button>
+            </div>
+        </div>
+
+        <!-- DATA & CALCULATIONS TAB -->
+        <div id="data" class="tab-content">
+            <div class="section">
+                <h2>📊 Data Collection & Calculations</h2>
+
+                <h3>Trial 1 Data</h3>
+                <table class="data-table">
+                    <tr>
+                        <th>Measurement</th>
+                        <th>Value</th>
+                        <th>Units</th>
+                    </tr>
+                    <tr>
+                        <td>Mass of Empty Calorimeter</td>
+                        <td><input type="number" step="0.1" id="t1-empty-cal" oninput="calculateTrial1()"></td>
+                        <td>g</td>
+                    </tr>
+                    <tr>
+                        <td>Mass of Calorimeter + Warm Water</td>
+                        <td><input type="number" step="0.1" id="t1-cal-water" oninput="calculateTrial1()"></td>
+                        <td>g</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Mass of Warm Water, m<sub>w</sub></strong></td>
+                        <td id="t1-mass-water">-</td>
+                        <td>g</td>
+                    </tr>
+                    <tr>
+                        <td>Initial Temperature, T<sub>i</sub></td>
+                        <td><input type="number" step="0.1" id="t1-temp-i" oninput="calculateTrial1()"></td>
+                        <td>°C</td>
+                    </tr>
+                    <tr>
+                        <td>Final Temperature, T<sub>f</sub></td>
+                        <td><input type="number" step="0.1" id="t1-temp-f" oninput="calculateTrial1()"></td>
+                        <td>°C</td>
+                    </tr>
+                    <tr>
+                        <td>Mass of Calorimeter + Water + Ice</td>
+                        <td><input type="number" step="0.1" id="t1-final-mass" oninput="calculateTrial1()"></td>
+                        <td>g</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Mass of Ice, m<sub>ice</sub></strong></td>
+                        <td id="t1-mass-ice">-</td>
+                        <td>g</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Temperature Change, ΔT</strong></td>
+                        <td id="t1-delta-t">-</td>
+                        <td>°C</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Q<sub>warm water</sub></strong></td>
+                        <td id="t1-q-water">-</td>
+                        <td>J</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Q<sub>ice</sub></strong></td>
+                        <td id="t1-q-ice">-</td>
+                        <td>J</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>ΔH<sub>f</sub></strong></td>
+                        <td id="t1-delta-hf">-</td>
+                        <td>J/g</td>
+                    </tr>
+                </table>
+
+                <h3>Trial 1 Calculations (Auto-calculated)</h3>
+                <div class="concept-card">
+                    <p><strong>Mass of warm water:</strong> m<sub>w</sub> = <span id="calc1-formula">-</span></p>
+                    <p><strong>Mass of ice:</strong> m<sub>ice</sub> = <span id="calc2-formula">-</span></p>
+                    <p><strong>Temperature change:</strong> ΔT = <span id="calc3-formula">-</span></p>
+                    <p><strong>Heat lost by water:</strong> Q<sub>water</sub> = <span id="calc4-formula">-</span></p>
+                    <p><strong>Heat gained by ice:</strong> Q<sub>ice</sub> = <span id="calc5-formula">-</span></p>
+                    <p><strong>Heat of Fusion:</strong> ΔH<sub>f</sub> = <span id="calc6-formula">-</span></p>
+                </div>
+
+                <h3>Trial 2 Data</h3>
+                <table class="data-table">
+                    <tr>
+                        <th>Measurement</th>
+                        <th>Value</th>
+                        <th>Units</th>
+                    </tr>
+                    <tr>
+                        <td>Mass of Empty Calorimeter</td>
+                        <td><input type="number" step="0.1" id="t2-empty-cal" oninput="calculateTrial2()"></td>
+                        <td>g</td>
+                    </tr>
+                    <tr>
+                        <td>Mass of Calorimeter + Warm Water</td>
+                        <td><input type="number" step="0.1" id="t2-cal-water" oninput="calculateTrial2()"></td>
+                        <td>g</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Mass of Warm Water, m<sub>w</sub></strong></td>
+                        <td id="t2-mass-water">-</td>
+                        <td>g</td>
+                    </tr>
+                    <tr>
+                        <td>Initial Temperature, T<sub>i</sub></td>
+                        <td><input type="number" step="0.1" id="t2-temp-i" oninput="calculateTrial2()"></td>
+                        <td>°C</td>
+                    </tr>
+                    <tr>
+                        <td>Final Temperature, T<sub>f</sub></td>
+                        <td><input type="number" step="0.1" id="t2-temp-f" oninput="calculateTrial2()"></td>
+                        <td>°C</td>
+                    </tr>
+                    <tr>
+                        <td>Mass of Calorimeter + Water + Ice</td>
+                        <td><input type="number" step="0.1" id="t2-final-mass" oninput="calculateTrial2()"></td>
+                        <td>g</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Mass of Ice, m<sub>ice</sub></strong></td>
+                        <td id="t2-mass-ice">-</td>
+                        <td>g</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Temperature Change, ΔT</strong></td>
+                        <td id="t2-delta-t">-</td>
+                        <td>°C</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Q<sub>warm water</sub></strong></td>
+                        <td id="t2-q-water">-</td>
+                        <td>J</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>Q<sub>ice</sub></strong></td>
+                        <td id="t2-q-ice">-</td>
+                        <td>J</td>
+                    </tr>
+                    <tr class="calculated">
+                        <td><strong>ΔH<sub>f</sub></strong></td>
+                        <td id="t2-delta-hf">-</td>
+                        <td>J/g</td>
+                    </tr>
+                </table>
+
+                <button class="btn-calculate" onclick="calculateBoth()">🧮 Calculate All Values</button>
+                <button class="btn-reset" onclick="resetData()">🔄 Reset Data</button>
+            </div>
+        </div>
+
+        <!-- ANALYSIS TAB -->
+        <div id="analysis" class="tab-content">
+            <div class="section">
+                <h2>🧮 Data Analysis</h2>
+
+                <div class="result-summary">
+                    <h3>📊 Your Results</h3>
+                    <table style="width: 100%; color: white; margin-top: 20px;">
+                        <tr>
+                            <td style="padding: 10px; font-size: 1.2em;">Trial 1 ΔH<sub>f</sub>:</td>
+                            <td id="result-t1" style="padding: 10px; font-size: 1.5em; font-weight: bold;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; font-size: 1.2em;">Trial 2 ΔH<sub>f</sub>:</td>
+                            <td id="result-t2" style="padding: 10px; font-size: 1.5em; font-weight: bold;">-</td>
+                        </tr>
+                        <tr style="border-top: 2px solid white;">
+                            <td style="padding: 10px; font-size: 1.3em;"><strong>Average ΔH<sub>f</sub>:</strong></td>
+                            <td id="result-avg" style="padding: 10px; font-size: 1.8em; font-weight: bold;">-</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; font-size: 1.2em;">Theoretical ΔH<sub>f</sub>:</td>
+                            <td style="padding: 10px; font-size: 1.3em;">333.55 J/g</td>
+                        </tr>
+                        <tr style="border-top: 2px solid white;">
+                            <td style="padding: 10px; font-size: 1.3em;"><strong>Percent Error:</strong></td>
+                            <td id="result-error" style="padding: 10px; font-size: 1.8em; font-weight: bold;">-</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="concept-card">
+                    <h3>Calculation Details</h3>
+                    <p><strong>Average ΔH<sub>f</sub> Calculation:</strong></p>
+                    <p id="avg-calc-detail" style="margin: 10px 0; padding: 15px; background: #f0f0f0; border-radius: 5px;">-</p>
+
+                    <p style="margin-top: 20px;"><strong>Percent Error Calculation:</strong></p>
+                    <p id="error-calc-detail" style="margin: 10px 0; padding: 15px; background: #f0f0f0; border-radius: 5px;">-</p>
+                </div>
+
+                <div class="section">
+                    <h3>📈 Error Analysis</h3>
+                    <div id="error-interpretation"></div>
+                </div>
+
+                <div class="section">
+                    <h3>🔍 Sources of Error</h3>
+                    <p>List at least TWO possible sources of error and explain how each would affect your results:</p>
+
+                    <div class="concept-card">
+                        <h4>Error Source #1:</h4>
+                        <textarea id="error1" rows="3" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                        <p style="margin-top: 10px;"><strong>Effect on ΔH<sub>f</sub>:</strong></p>
+                        <select id="error1-effect" style="padding: 8px; margin-top: 5px; border: 2px solid #ddd; border-radius: 5px;">
+                            <option value="">Select...</option>
+                            <option value="high">Would make ΔH<sub>f</sub> too HIGH</option>
+                            <option value="low">Would make ΔH<sub>f</sub> too LOW</option>
+                        </select>
+                    </div>
+
+                    <div class="concept-card">
+                        <h4>Error Source #2:</h4>
+                        <textarea id="error2" rows="3" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                        <p style="margin-top: 10px;"><strong>Effect on ΔH<sub>f</sub>:</strong></p>
+                        <select id="error2-effect" style="padding: 8px; margin-top: 5px; border: 2px solid #ddd; border-radius: 5px;">
+                            <option value="">Select...</option>
+                            <option value="high">Would make ΔH<sub>f</sub> too HIGH</option>
+                            <option value="low">Would make ΔH<sub>f</sub> too LOW</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-calculate" onclick="calculateAnalysis()">📊 Update Analysis</button>
+            </div>
+        </div>
+
+        <!-- POST-LAB TAB -->
+        <div id="postlab" class="tab-content">
+            <div class="section">
+                <h2>✍️ Post-Lab Questions</h2>
+
+                <div class="quiz-question">
+                    <h3>Question 1:</h3>
+                    <p>What quantity of heat is required to raise the temperature of 500 grams of water from 25°C to 85°C?
+                    The specific heat capacity of water is 4.18 J/(g·°C).</p>
+                    <p style="margin-top: 10px;"><strong>Given:</strong></p>
+                    <ul style="margin-left: 30px;">
+                        <li>m = 500 g</li>
+                        <li>c = 4.18 J/(g·°C)</li>
+                        <li>T<sub>i</sub> = 25°C</li>
+                        <li>T<sub>f</sub> = 85°C</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Show your work:</strong></p>
+                    <textarea id="postlab1-work" rows="5" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                    <p style="margin-top: 10px;"><strong>Final Answer:</strong></p>
+                    <input type="text" id="postlab1-answer" style="width: 100%; padding: 10px; margin-top: 5px; border: 2px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 2:</h3>
+                    <p>A 250 g sample of water at 80°C is mixed with 100 g of water at 20°C. What is the final temperature of the mixture?
+                    (Assume no heat is lost to the surroundings)</p>
+                    <p style="margin-top: 10px;"><strong>Hint:</strong> Use Q<sub>hot</sub> + Q<sub>cold</sub> = 0</p>
+                    <p style="margin-top: 15px;"><strong>Show your work:</strong></p>
+                    <textarea id="postlab2-work" rows="5" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                    <p style="margin-top: 10px;"><strong>Final Answer:</strong></p>
+                    <input type="text" id="postlab2-answer" style="width: 100%; padding: 10px; margin-top: 5px; border: 2px solid #ddd; border-radius: 5px;">
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 3:</h3>
+                    <p>Explain why water has such a high heat of fusion compared to other substances. What does this tell us about the structure of ice?</p>
+                    <textarea id="postlab3" rows="5" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 4:</h3>
+                    <p>In this experiment, we assumed that the calorimeter is perfectly insulated (no heat lost to surroundings).
+                    Is this assumption realistic? How would you improve the experimental design to minimize heat loss?</p>
+                    <textarea id="postlab4" rows="5" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <div class="quiz-question">
+                    <h3>Question 5:</h3>
+                    <p>A student forgot to dry the ice before adding it to the calorimeter. There was 2.0 g of liquid water on the ice.
+                    The student measured the total mass as 22.0 g, thinking it was all ice. Explain specifically how this would affect
+                    the calculated ΔH<sub>f</sub> value (too high or too low) and why.</p>
+                    <textarea id="postlab5" rows="5" style="width: 100%; padding: 10px; margin-top: 10px; border: 2px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                <button class="btn-calculate" onclick="savePostlab()">💾 Save Post-Lab Answers</button>
+            </div>
+        </div>
+
+        <!-- FOOTER WITH BUTTONS -->
+        <div style="padding: 30px; background: #f0f0f0; text-align: center;" class="no-print">
+            <h3 style="margin-bottom: 20px;">📄 Generate Your Lab Report</h3>
+            <button class="btn-pdf" onclick="generatePDF()">🖨️ Print / Save as PDF</button>
+            <button class="btn-calculate" onclick="saveAllData()">💾 Save All Data to Browser</button>
+            <button class="btn-reset" onclick="loadSavedData()">📂 Load Saved Data</button>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                Click "Print / Save as PDF" and choose "Save as PDF" in your browser's print dialog
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked nav tab
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Procedure data transfer
+        function transferProcedureData() {
+            // Transfer from procedure tab to data tab
+            const procEmpty = document.getElementById('proc-empty-cal').value;
+            const procCalWater = document.getElementById('proc-cal-water').value;
+            const procTempI = document.getElementById('proc-temp-initial').value;
+            const procTempF = document.getElementById('proc-temp-final').value;
+            const procFinalMass = document.getElementById('proc-final-mass').value;
+
+            // Set Trial 1 values
+            if (procEmpty) document.getElementById('t1-empty-cal').value = procEmpty;
+            if (procCalWater) document.getElementById('t1-cal-water').value = procCalWater;
+            if (procTempI) document.getElementById('t1-temp-i').value = procTempI;
+            if (procTempF) document.getElementById('t1-temp-f').value = procTempF;
+            if (procFinalMass) document.getElementById('t1-final-mass').value = procFinalMass;
+
+            calculateTrial1();
+            alert('Data transferred to Trial 1! Switch to the "Data & Calculations" tab to see your results.');
+        }
+
+        // Update procedure calculations
+        document.getElementById('proc-cal-water').addEventListener('input', function() {
+            const empty = parseFloat(document.getElementById('proc-empty-cal').value) || 0;
+            const calWater = parseFloat(this.value) || 0;
+            document.getElementById('proc-water-calc').textContent = (calWater - empty).toFixed(1);
+        });
+
+        document.getElementById('proc-final-mass').addEventListener('input', function() {
+            const calWater = parseFloat(document.getElementById('proc-cal-water').value) || 0;
+            const finalMass = parseFloat(this.value) || 0;
+            document.getElementById('proc-ice-calc').textContent = (finalMass - calWater).toFixed(1);
+        });
+
+        // Trial 1 Calculations
+        function calculateTrial1() {
+            const emptyCal = parseFloat(document.getElementById('t1-empty-cal').value) || 0;
+            const calWater = parseFloat(document.getElementById('t1-cal-water').value) || 0;
+            const tempI = parseFloat(document.getElementById('t1-temp-i').value) || 0;
+            const tempF = parseFloat(document.getElementById('t1-temp-f').value) || 0;
+            const finalMass = parseFloat(document.getElementById('t1-final-mass').value) || 0;
+
+            const cWater = 4.184; // J/(g·°C)
+
+            // Calculate derived values
+            const massWater = calWater - emptyCal;
+            const massIce = finalMass - calWater;
+            const deltaT = tempF - tempI;
+            const qWater = massWater * cWater * deltaT;
+            const qIce = -qWater;
+            const deltaHf = massIce > 0 ? qIce / massIce : 0;
+
+            // Update table
+            document.getElementById('t1-mass-water').textContent = massWater.toFixed(1);
+            document.getElementById('t1-mass-ice').textContent = massIce.toFixed(1);
+            document.getElementById('t1-delta-t').textContent = deltaT.toFixed(1);
+            document.getElementById('t1-q-water').textContent = qWater.toFixed(0);
+            document.getElementById('t1-q-ice').textContent = qIce.toFixed(0);
+            document.getElementById('t1-delta-hf').textContent = deltaHf.toFixed(1);
+
+            // Update formulas
+            document.getElementById('calc1-formula').textContent = `${calWater.toFixed(1)} - ${emptyCal.toFixed(1)} = ${massWater.toFixed(1)} g`;
+            document.getElementById('calc2-formula').textContent = `${finalMass.toFixed(1)} - ${calWater.toFixed(1)} = ${massIce.toFixed(1)} g`;
+            document.getElementById('calc3-formula').textContent = `${tempF.toFixed(1)} - ${tempI.toFixed(1)} = ${deltaT.toFixed(1)} °C`;
+            document.getElementById('calc4-formula').textContent = `${massWater.toFixed(1)} × ${cWater} × ${deltaT.toFixed(1)} = ${qWater.toFixed(0)} J`;
+            document.getElementById('calc5-formula').textContent = `-Q_water = ${qIce.toFixed(0)} J`;
+            document.getElementById('calc6-formula').textContent = `${qIce.toFixed(0)} / ${massIce.toFixed(1)} = ${deltaHf.toFixed(1)} J/g`;
+
+            updateAnalysis();
+        }
+
+        // Trial 2 Calculations
+        function calculateTrial2() {
+            const emptyCal = parseFloat(document.getElementById('t2-empty-cal').value) || 0;
+            const calWater = parseFloat(document.getElementById('t2-cal-water').value) || 0;
+            const tempI = parseFloat(document.getElementById('t2-temp-i').value) || 0;
+            const tempF = parseFloat(document.getElementById('t2-temp-f').value) || 0;
+            const finalMass = parseFloat(document.getElementById('t2-final-mass').value) || 0;
+
+            const cWater = 4.184;
+
+            const massWater = calWater - emptyCal;
+            const massIce = finalMass - calWater;
+            const deltaT = tempF - tempI;
+            const qWater = massWater * cWater * deltaT;
+            const qIce = -qWater;
+            const deltaHf = massIce > 0 ? qIce / massIce : 0;
+
+            document.getElementById('t2-mass-water').textContent = massWater.toFixed(1);
+            document.getElementById('t2-mass-ice').textContent = massIce.toFixed(1);
+            document.getElementById('t2-delta-t').textContent = deltaT.toFixed(1);
+            document.getElementById('t2-q-water').textContent = qWater.toFixed(0);
+            document.getElementById('t2-q-ice').textContent = qIce.toFixed(0);
+            document.getElementById('t2-delta-hf').textContent = deltaHf.toFixed(1);
+
+            updateAnalysis();
+        }
+
+        function calculateBoth() {
+            calculateTrial1();
+            calculateTrial2();
+            alert('All calculations complete! Check the Analysis tab for your results.');
+        }
+
+        function updateAnalysis() {
+            const t1Hf = parseFloat(document.getElementById('t1-delta-hf').textContent) || 0;
+            const t2Hf = parseFloat(document.getElementById('t2-delta-hf').textContent) || 0;
+
+            if (t1Hf > 0 && t2Hf > 0) {
+                const avgHf = (t1Hf + t2Hf) / 2;
+                const theoretical = 333.55;
+                const error = Math.abs((avgHf - theoretical) / theoretical * 100);
+
+                document.getElementById('result-t1').textContent = t1Hf.toFixed(1) + ' J/g';
+                document.getElementById('result-t2').textContent = t2Hf.toFixed(1) + ' J/g';
+                document.getElementById('result-avg').textContent = avgHf.toFixed(1) + ' J/g';
+                document.getElementById('result-error').textContent = error.toFixed(1) + '%';
+
+                document.getElementById('avg-calc-detail').textContent =
+                    `(${t1Hf.toFixed(1)} + ${t2Hf.toFixed(1)}) / 2 = ${avgHf.toFixed(1)} J/g`;
+
+                document.getElementById('error-calc-detail').textContent =
+                    `|${avgHf.toFixed(1)} - ${theoretical}| / ${theoretical} × 100 = ${error.toFixed(1)}%`;
+
+                // Error interpretation
+                let interpretation = '';
+                if (error < 5) {
+                    interpretation = '<div class="success-box"><strong>✅ Excellent!</strong> Your percent error is less than 5%. This indicates very careful experimental technique!</div>';
+                } else if (error < 10) {
+                    interpretation = '<div class="info-box"><strong>👍 Good!</strong> Your percent error is between 5-10%. This is acceptable for this experiment.</div>';
+                } else if (error < 20) {
+                    interpretation = '<div class="warning-box"><strong>⚠️ Fair</strong> Your percent error is between 10-20%. Review your procedure for possible errors.</div>';
+                } else {
+                    interpretation = '<div class="warning-box"><strong>⚠️ High Error</strong> Your percent error is greater than 20%. Significant experimental errors likely occurred. Review your technique carefully.</div>';
+                }
+
+                document.getElementById('error-interpretation').innerHTML = interpretation;
+            }
+        }
+
+        function calculateAnalysis() {
+            updateAnalysis();
+            alert('Analysis updated!');
+        }
+
+        function resetData() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                const inputs = document.querySelectorAll('input[type="number"]');
+                inputs.forEach(input => input.value = '');
+                calculateTrial1();
+                calculateTrial2();
+                updateAnalysis();
+            }
+        }
+
+        function checkSafety() {
+            const checkboxes = document.querySelectorAll('#safety input[type="checkbox"]');
+            let allChecked = true;
+            checkboxes.forEach(cb => {
+                if (!cb.checked) allChecked = false;
+            });
+
+            if (allChecked) {
+                alert('✅ Safety review complete! You may proceed to the Procedure tab.');
+            } else {
+                alert('⚠️ Please check all safety items before proceeding.');
+            }
+        }
+
+        function savePrelab() {
+            alert('✅ Pre-lab answers saved! They will be included in your PDF report.');
+        }
+
+        function savePostlab() {
+            alert('✅ Post-lab answers saved! They will be included in your PDF report.');
+        }
+
+        function generatePDF() {
+            window.print();
+        }
+
+        function saveAllData() {
+            const data = {
+                prelab: {
+                    q1: document.getElementById('prelab1').value,
+                    q2: document.getElementById('prelab2').value,
+                    q3: document.getElementById('prelab3').value,
+                    q3work: document.getElementById('prelab3work').value,
+                    q4: document.getElementById('prelab4').value,
+                    q4work: document.getElementById('prelab4work').value,
+                    q5: document.getElementById('prelab5').value,
+                    q6: document.getElementById('prelab6').value
+                },
+                trial1: {
+                    emptyCal: document.getElementById('t1-empty-cal').value,
+                    calWater: document.getElementById('t1-cal-water').value,
+                    tempI: document.getElementById('t1-temp-i').value,
+                    tempF: document.getElementById('t1-temp-f').value,
+                    finalMass: document.getElementById('t1-final-mass').value
+                },
+                trial2: {
+                    emptyCal: document.getElementById('t2-empty-cal').value,
+                    calWater: document.getElementById('t2-cal-water').value,
+                    tempI: document.getElementById('t2-temp-i').value,
+                    tempF: document.getElementById('t2-temp-f').value,
+                    finalMass: document.getElementById('t2-final-mass').value
+                },
+                errors: {
+                    error1: document.getElementById('error1').value,
+                    error1Effect: document.getElementById('error1-effect').value,
+                    error2: document.getElementById('error2').value,
+                    error2Effect: document.getElementById('error2-effect').value
+                },
+                postlab: {
+                    q1work: document.getElementById('postlab1-work').value,
+                    q1answer: document.getElementById('postlab1-answer').value,
+                    q2work: document.getElementById('postlab2-work').value,
+                    q2answer: document.getElementById('postlab2-answer').value,
+                    q3: document.getElementById('postlab3').value,
+                    q4: document.getElementById('postlab4').value,
+                    q5: document.getElementById('postlab5').value
+                }
+            };
+
+            localStorage.setItem('heatOfFusionLab', JSON.stringify(data));
+            alert('✅ All data saved to browser! You can close the page and come back later.');
+        }
+
+        function loadSavedData() {
+            const saved = localStorage.getItem('heatOfFusionLab');
+            if (saved) {
+                const data = JSON.parse(saved);
+
+                // Load prelab
+                if (data.prelab) {
+                    document.getElementById('prelab1').value = data.prelab.q1 || '';
+                    document.getElementById('prelab2').value = data.prelab.q2 || '';
+                    document.getElementById('prelab3').value = data.prelab.q3 || '';
+                    document.getElementById('prelab3work').value = data.prelab.q3work || '';
+                    document.getElementById('prelab4').value = data.prelab.q4 || '';
+                    document.getElementById('prelab4work').value = data.prelab.q4work || '';
+                    document.getElementById('prelab5').value = data.prelab.q5 || '';
+                    document.getElementById('prelab6').value = data.prelab.q6 || '';
+                }
+
+                // Load trial 1
+                if (data.trial1) {
+                    document.getElementById('t1-empty-cal').value = data.trial1.emptyCal || '';
+                    document.getElementById('t1-cal-water').value = data.trial1.calWater || '';
+                    document.getElementById('t1-temp-i').value = data.trial1.tempI || '';
+                    document.getElementById('t1-temp-f').value = data.trial1.tempF || '';
+                    document.getElementById('t1-final-mass').value = data.trial1.finalMass || '';
+                }
+
+                // Load trial 2
+                if (data.trial2) {
+                    document.getElementById('t2-empty-cal').value = data.trial2.emptyCal || '';
+                    document.getElementById('t2-cal-water').value = data.trial2.calWater || '';
+                    document.getElementById('t2-temp-i').value = data.trial2.tempI || '';
+                    document.getElementById('t2-temp-f').value = data.trial2.tempF || '';
+                    document.getElementById('t2-final-mass').value = data.trial2.finalMass || '';
+                }
+
+                // Load errors
+                if (data.errors) {
+                    document.getElementById('error1').value = data.errors.error1 || '';
+                    document.getElementById('error1-effect').value = data.errors.error1Effect || '';
+                    document.getElementById('error2').value = data.errors.error2 || '';
+                    document.getElementById('error2-effect').value = data.errors.error2Effect || '';
+                }
+
+                // Load postlab
+                if (data.postlab) {
+                    document.getElementById('postlab1-work').value = data.postlab.q1work || '';
+                    document.getElementById('postlab1-answer').value = data.postlab.q1answer || '';
+                    document.getElementById('postlab2-work').value = data.postlab.q2work || '';
+                    document.getElementById('postlab2-answer').value = data.postlab.q2answer || '';
+                    document.getElementById('postlab3').value = data.postlab.q3 || '';
+                    document.getElementById('postlab4').value = data.postlab.q4 || '';
+                    document.getElementById('postlab5').value = data.postlab.q5 || '';
+                }
+
+                calculateTrial1();
+                calculateTrial2();
+                updateAnalysis();
+
+                alert('✅ Saved data loaded successfully!');
+            } else {
+                alert('No saved data found.');
+            }
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(function() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            let hasData = false;
+            inputs.forEach(input => {
+                if (input.value) hasData = true;
+            });
+            if (hasData) {
+                saveAllData();
+                console.log('Auto-saved at', new Date().toLocaleTimeString());
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

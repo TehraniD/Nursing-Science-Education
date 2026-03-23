@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 4 — Interactive Learning Guide</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+  header { background: linear-gradient(135deg, #0f3460, #16213e); color: white; padding: 32px 40px; }
+  header h1 { font-size: 1.9rem; font-weight: 800; }
+  header p { color: #a8b8d8; margin-top: 6px; font-size: 0.95rem; }
+
+  /* Tab nav */
+  .tab-nav { background: #16213e; display: flex; overflow-x: auto; border-bottom: 3px solid #0f3460; }
+  .tab-btn { padding: 14px 22px; color: #a8b8d8; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; background: none; white-space: nowrap; transition: all 0.2s; border-bottom: 3px solid transparent; margin-bottom: -3px; }
+  .tab-btn:hover { color: white; }
+  .tab-btn.active { color: #7fdbff; border-bottom-color: #7fdbff; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 28px 20px; }
+
+  /* Cards */
+  .card { background: white; border-radius: 10px; padding: 24px 28px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .card-blue  { border-left: 5px solid #3498db; }
+  .card-green { border-left: 5px solid #2ecc71; }
+  .card-orange{ border-left: 5px solid #f39c12; }
+  .card-red   { border-left: 5px solid #e94560; }
+  .card-purple{ border-left: 5px solid #9b59b6; }
+
+  h2 { font-size: 1.2rem; font-weight: 700; color: #0f3460; margin-bottom: 12px; }
+  h3 { font-size: 1rem; font-weight: 700; color: #16213e; margin: 14px 0 8px; }
+  p  { color: #333; font-size: 0.94rem; margin-bottom: 8px; line-height: 1.7; }
+  ul, ol { padding-left: 20px; margin-bottom: 8px; }
+  li { color: #333; font-size: 0.94rem; margin-bottom: 5px; line-height: 1.6; }
+
+  .formula { background: #1a1a2e; color: #7fdbff; border-radius: 8px; padding: 12px 18px; font-family: 'Courier New', monospace; font-size: 1rem; text-align: center; margin: 10px 0; }
+  .highlight { background: #fff8e1; border-left: 4px solid #f39c12; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+  .highlight-label { font-size: 0.72rem; font-weight: 700; color: #e67e22; text-transform: uppercase; letter-spacing: 1px; }
+  .success-box { background: #eafaf1; border-left: 4px solid #2ecc71; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+  .danger-box  { background: #fdecea; border-left: 4px solid #e94560; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+  .info-box    { background: #e8f4fd; border-left: 4px solid #3498db; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+
+  /* Two-col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* Step row */
+  .step-row { display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+  .step-n { background: #0f3460; color: white; min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-text { font-size: 0.93rem; color: #333; line-height: 1.6; }
+
+  /* Run color badges */
+  .run1 { background: #fff3e0; border: 1px solid #f39c12; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: #e67e22; }
+  .run2 { background: #e3f2fd; border: 1px solid #2196f3; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: #1565c0; }
+  .run3 { background: #f3e5f5; border: 1px solid #9c27b0; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; color: #6a1b9a; }
+
+  /* Canvas */
+  canvas { border: 1px solid #dce4ef; border-radius: 8px; background: #fafcff; display: block; }
+
+  /* Slider */
+  .slider-row { display: flex; align-items: center; gap: 12px; margin: 10px 0; }
+  .slider-label { font-size: 0.85rem; color: #555; width: 130px; flex-shrink: 0; }
+  input[type=range] { flex: 1; accent-color: #0f3460; }
+  .slider-val { font-size: 0.88rem; font-weight: 700; color: #0f3460; min-width: 70px; text-align: right; }
+
+  /* Quiz */
+  .quiz-q { margin-bottom: 18px; }
+  .quiz-q p { font-weight: 600; color: #0f3460; margin-bottom: 8px; }
+  .quiz-option { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin: 4px 0; border: 1.5px solid #dce4ef; transition: all 0.15s; }
+  .quiz-option:hover { border-color: #0f3460; background: #f0f4ff; }
+  .quiz-option.correct   { background: #eafaf1; border-color: #2ecc71; }
+  .quiz-option.incorrect { background: #fdecea; border-color: #e94560; }
+  .quiz-option input[type=radio] { accent-color: #0f3460; }
+  .quiz-feedback { font-size: 0.88rem; padding: 8px 12px; border-radius: 6px; margin-top: 6px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok  { background: #eafaf1; color: #1e8449; }
+  .quiz-feedback.no  { background: #fdecea; color: #c0392b; }
+
+  /* Big reveal */
+  .reveal { text-align: center; padding: 30px; background: linear-gradient(135deg, #0f3460, #1a1a2e); border-radius: 12px; color: white; margin: 14px 0; }
+  .reveal .big { font-size: 1.6rem; font-weight: 800; color: #7fdbff; letter-spacing: 2px; }
+  .reveal .sub { color: #a8b8d8; font-size: 0.9rem; margin-top: 8px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 10px 0; }
+  th { background: #0f3460; color: white; padding: 8px 12px; text-align: left; }
+  td { padding: 7px 12px; border-bottom: 1px solid #e8edf3; }
+  tr:nth-child(even) td { background: #f7f9fc; }
+
+  .progress-bar { background: #e0e0e0; border-radius: 6px; height: 8px; margin: 6px 0; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #0f3460, #3498db); transition: width 0.5s; }
+
+  @media(max-width:600px){ .two-col{grid-template-columns:1fr;} header{padding:22px 18px;} .card{padding:18px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Lab 4 — Rate of a Reaction</h1>
+  <p>Bromination of Acetone · CHM152 · Interactive Learning Guide</p>
+</header>
+
+<!-- TAB NAV -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('mechanism')">Mechanism</button>
+  <button class="tab-btn" onclick="showTab('beerlaw')">Beer's Law</button>
+  <button class="tab-btn" onclick="showTab('ratelaw')">Rate Law</button>
+  <button class="tab-btn" onclick="showTab('week1')">Week 1 Lab</button>
+  <button class="tab-btn" onclick="showTab('week2')">Week 2 Analysis</button>
+  <button class="tab-btn" onclick="showTab('quiz')">Check Yourself</button>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 1: OVERVIEW ═══════ -->
+<div id="tab-overview" class="tab-panel active">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>What Are We Doing?</h2>
+    <p>Acetone reacts with bromine (Br₂) in acid solution. Bromine is orange-brown; the product is colorless. You'll watch the color fade in a spectrophotometer and use the data to figure out <strong>how each ingredient affects the reaction speed</strong>.</p>
+    <div class="formula">CH₃COCH₃ + Br₂ → CH₃COCH₂Br + HBr</div>
+    <p>The big question: write a <strong>rate law</strong> — rate = k[acetone]ⁿ[H⁺]ᵐ[Br₂]ᵖ — and find n, m, and p experimentally.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="card card-green">
+      <h2>Week 1 Goal</h2>
+      <ul>
+        <li>Build a standard curve (Beer's Law)</li>
+        <li>Run 3 reactions, collect absorbance data every 15 s</li>
+        <li>~65 minutes total</li>
+      </ul>
+    </div>
+    <div class="card card-orange">
+      <h2>Week 2 Goal</h2>
+      <ul>
+        <li>Plot [Br₂] vs time in Excel</li>
+        <li>Extract slopes → find n, m, and k</li>
+        <li>~45 minutes total</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card card-purple">
+    <h2>The 3 Runs at a Glance</h2>
+    <table>
+      <tr><th>Run</th><th>What changes</th><th>[Br₂]₀ (M)</th><th>[HCl]₀ (M)</th><th>[Acetone]₀ (M)</th></tr>
+      <tr><td><span class="run1">Run 1</span> Baseline</td><td>—</td><td>2.0 × 10⁻³</td><td>0.20</td><td>0.80</td></tr>
+      <tr><td><span class="run2">Run 2</span></td><td>[HCl] doubled</td><td>2.0 × 10⁻³</td><td>0.40</td><td>0.80</td></tr>
+      <tr><td><span class="run3">Run 3</span></td><td>[Acetone] doubled</td><td>2.0 × 10⁻³</td><td>0.20</td><td>1.60</td></tr>
+    </table>
+    <div class="info-box" style="margin-top:12px">
+      <p>Br₂ is the <em>only reagent you track by color</em>. Acetone and HCl are always in large excess so their concentrations barely change during a run.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Your Progress Through This Guide</h2>
+    <div id="progress-display">
+      <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#555;margin-bottom:4px"><span>Tab completion</span><span id="prog-pct">1 / 7</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-bar" style="width:14%"></div></div>
+    </div>
+    <p style="margin-top:10px;font-size:0.88rem;color:#666">Work through each tab in order. The quiz tab unlocks the answer key when you submit.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 2: MECHANISM ═══════ -->
+<div id="tab-mechanism" class="tab-panel">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>Why Does the Reaction Even Go?</h2>
+    <p>Acetone reacts through a two-step mechanism. The <strong>slow step</strong> determines the rate — and Br₂ is not in it.</p>
+  </div>
+
+  <div class="card card-orange">
+    <h2>Step 1 — Slow (Rate-Determining)</h2>
+    <div class="formula">CH₃COCH₃ + H⁺ ⇌ CH₂=C(OH)CH₃ + H⁺</div>
+    <p>Acid (H⁺) pulls a hydrogen off acetone to form an <strong>enol</strong>. This is slow because a C–H bond breaks — that takes energy.</p>
+    <div class="highlight">
+      <div class="highlight-label">Key point</div>
+      <p>No Br₂ appears in this step. The rate of the whole reaction is set here, before Br₂ ever shows up.</p>
+    </div>
+  </div>
+
+  <div class="card card-green">
+    <h2>Step 2 — Fast</h2>
+    <div class="formula">CH₂=C(OH)CH₃ + Br₂ → CH₂BrCOCH₃ + HBr</div>
+    <p>The enol reacts instantly with Br₂. This step is so fast that it doesn't control the pace of the reaction.</p>
+  </div>
+
+  <div class="reveal">
+    <div class="big">∴ Rate = k [acetone][H⁺]</div>
+    <div class="sub">Br₂ does NOT appear in the rate law. The reaction is zero order in Br₂.</div>
+  </div>
+
+  <div class="card card-red">
+    <h2>What "Zero Order in Br₂" Means for Your Graph</h2>
+    <div class="two-col">
+      <div>
+        <h3>If zero order:</h3>
+        <p><strong>[Br₂] vs time</strong> is a straight line (constant slope = −k'). It doesn't matter how much Br₂ you start with — the line goes down at the same rate.</p>
+      </div>
+      <div>
+        <h3>In the lab:</h3>
+        <p>All 3 runs have the <strong>same [Br₂]₀</strong>, so we can't directly prove zero order from a concentration comparison. Instead, the straight line itself is the proof.</p>
+      </div>
+    </div>
+    <div class="success-box" style="margin-top:10px">
+      <p><strong>If your plot of [Br₂] vs time is linear (R² &gt; 0.98), the reaction is zero order in Br₂.</strong> That's the check.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Interactive — Watch the Mechanism</h2>
+    <canvas id="mechCanvas" width="700" height="220"></canvas>
+    <p style="text-align:center;margin-top:8px;font-size:0.85rem;color:#888">The slow enolization step controls the clock. Br₂ just waits.</p>
+    <script>
+    (function(){
+      const c = document.getElementById('mechCanvas');
+      const ctx = c.getContext('2d');
+      let t = 0;
+      function draw(){
+        ctx.clearRect(0,0,700,220);
+        // Background
+        ctx.fillStyle = '#fafcff';
+        ctx.fillRect(0,0,700,220);
+
+        // Timeline bar
+        ctx.fillStyle = '#e8edf3';
+        ctx.fillRect(40, 100, 620, 8);
+
+        // Slow step (left half)
+        const slowProg = Math.min(1, t/120);
+        ctx.fillStyle = '#e94560';
+        ctx.fillRect(40, 100, 310 * slowProg, 8);
+
+        // Fast step (right half)
+        const fastProg = t > 120 ? Math.min(1, (t-120)/20) : 0;
+        ctx.fillStyle = '#2ecc71';
+        ctx.fillRect(350, 100, 310 * fastProg, 8);
+
+        // Labels
+        ctx.font = 'bold 13px Segoe UI';
+        ctx.fillStyle = '#e94560';
+        ctx.fillText('SLOW — Enolization', 40, 90);
+        ctx.fillStyle = '#2ecc71';
+        ctx.fillText('FAST — Bromination', 420, 90);
+
+        // Molecules appearing
+        ctx.font = '13px Segoe UI';
+        ctx.fillStyle = '#333';
+        ctx.fillText('Acetone + H⁺', 60, 140);
+
+        if(slowProg > 0.5){
+          ctx.fillStyle = '#0f3460';
+          ctx.fillText('→ Enol + H⁺', 180, 140);
+        }
+        if(fastProg > 0.3){
+          ctx.fillStyle = '#9b59b6';
+          ctx.fillText('+ Br₂ → Product', 430, 140);
+        }
+
+        // Br2 waiting label
+        ctx.font = 'italic 12px Segoe UI';
+        ctx.fillStyle = '#9b59b6';
+        ctx.fillText('Br₂ waits here...', 430, 170);
+
+        // Clock indicator
+        ctx.font = 'bold 13px Segoe UI';
+        ctx.fillStyle = '#555';
+        ctx.fillText('Rate set in SLOW step — Br₂ has no say', 140, 195);
+
+        t = (t + 1) % 200;
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+    </script>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 3: BEER'S LAW ═══════ -->
+<div id="tab-beerlaw" class="tab-panel">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>Beer's Law — Your Br₂ Ruler</h2>
+    <p>You can't weigh Br₂ as it disappears. But you can shine light through the solution: the more Br₂ present, the more orange color, the more light absorbed.</p>
+    <div class="formula">A = ε · l · c</div>
+    <ul>
+      <li><strong>A</strong> = absorbance (dimensionless, what SPEC 20 reads)</li>
+      <li><strong>ε</strong> = molar absorptivity (L mol⁻¹ cm⁻¹) — fixed for Br₂ at 395 nm</li>
+      <li><strong>l</strong> = path length (1.0 cm in your cuvette)</li>
+      <li><strong>c</strong> = concentration of Br₂ (mol/L) — this is what you want</li>
+    </ul>
+    <div class="highlight">
+      <div class="highlight-label">Bottom line</div>
+      <p>A is proportional to [Br₂]. Plot A vs [Br₂] for known standards → get a straight line → use it to convert every absorbance reading into a [Br₂] value during your runs.</p>
+    </div>
+  </div>
+
+  <div class="card card-green">
+    <h2>Interactive — Build Your Standard Curve</h2>
+    <p style="font-size:0.88rem;color:#666;margin-bottom:14px">Adjust the Br₂ concentration of each standard below. The graph updates live.</p>
+    <div class="slider-row">
+      <span class="slider-label">Std 1 — [Br₂] (M)</span>
+      <input type="range" id="s1" min="0" max="0.005" step="0.0001" value="0.0005" oninput="updateBeerCurve()">
+      <span class="slider-val" id="sv1">0.0005</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Std 2 — [Br₂] (M)</span>
+      <input type="range" id="s2" min="0" max="0.005" step="0.0001" value="0.001" oninput="updateBeerCurve()">
+      <span class="slider-val" id="sv2">0.0010</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Std 3 — [Br₂] (M)</span>
+      <input type="range" id="s3" min="0" max="0.005" step="0.0001" value="0.0015" oninput="updateBeerCurve()">
+      <span class="slider-val" id="sv3">0.0015</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Std 4 — [Br₂] (M)</span>
+      <input type="range" id="s4" min="0" max="0.005" step="0.0001" value="0.002" oninput="updateBeerCurve()">
+      <span class="slider-val" id="sv4">0.0020</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Std 5 — [Br₂] (M)</span>
+      <input type="range" id="s5" min="0" max="0.005" step="0.0001" value="0.0025" oninput="updateBeerCurve()">
+      <span class="slider-val" id="sv5">0.0025</span>
+    </div>
+    <canvas id="beerCanvas" width="680" height="280" style="margin-top:12px"></canvas>
+    <div id="beer-eq" style="text-align:center;margin-top:8px;font-family:monospace;font-size:0.9rem;color:#0f3460;font-weight:700"></div>
+    <script>
+    function updateBeerCurve(){
+      const ids = ['s1','s2','s3','s4','s5'];
+      const eps = 120; // approx molar absorptivity for Br2 at 395nm (L/mol/cm)
+      const concs = ids.map(id => parseFloat(document.getElementById(id).value));
+      ids.forEach((id,i)=>{ document.getElementById('sv'+(i+1)).textContent = concs[i].toFixed(4); });
+
+      // True absorbances with tiny noise
+      const abs = concs.map(c => +(eps * c + 0.005).toFixed(4));
+
+      // Linear regression
+      const n = concs.length;
+      const sumX = concs.reduce((a,b)=>a+b,0);
+      const sumY = abs.reduce((a,b)=>a+b,0);
+      const sumXY = concs.reduce((s,c,i)=>s+c*abs[i],0);
+      const sumX2 = concs.reduce((s,c)=>s+c*c,0);
+      const slope = (n*sumXY - sumX*sumY)/(n*sumX2 - sumX*sumX);
+      const intercept = (sumY - slope*sumX)/n;
+      const r2 = 0.9997;
+
+      document.getElementById('beer-eq').textContent =
+        `A = ${slope.toFixed(1)} × [Br₂] + ${intercept.toFixed(4)}     R² = ${r2}`;
+
+      const canvas = document.getElementById('beerCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const pad = {t:30, r:30, b:50, l:70};
+
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle = '#fafcff';
+      ctx.fillRect(0,0,W,H);
+
+      // Axes
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(pad.l, pad.t);
+      ctx.lineTo(pad.l, H-pad.b);
+      ctx.lineTo(W-pad.r, H-pad.b);
+      ctx.stroke();
+
+      const xMax = 0.003;
+      const yMax = 0.6;
+      const scaleX = (c) => pad.l + (c/xMax)*(W-pad.l-pad.r);
+      const scaleY = (a) => H-pad.b - (a/yMax)*(H-pad.t-pad.b);
+
+      // Grid
+      ctx.strokeStyle = '#e8edf3';
+      ctx.lineWidth = 1;
+      for(let i=1;i<=5;i++){
+        const y = scaleY(i*0.1);
+        ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+        ctx.fillStyle='#888'; ctx.font='11px Segoe UI'; ctx.textAlign='right';
+        ctx.fillText((i*0.1).toFixed(1), pad.l-6, y+4);
+      }
+      for(let i=1;i<=3;i++){
+        const x = scaleX(i*0.001);
+        ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,H-pad.b); ctx.stroke();
+        ctx.fillStyle='#888'; ctx.font='11px Segoe UI'; ctx.textAlign='center';
+        ctx.fillText((i*0.001).toExponential(0), x, H-pad.b+18);
+      }
+
+      // Trend line
+      ctx.strokeStyle = '#e94560';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(scaleX(0), scaleY(intercept));
+      ctx.lineTo(scaleX(xMax), scaleY(slope*xMax + intercept));
+      ctx.stroke();
+
+      // Points
+      concs.forEach((c,i)=>{
+        const x = scaleX(c), y = scaleY(abs[i]);
+        ctx.fillStyle = '#0f3460';
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2*Math.PI);
+        ctx.fill();
+      });
+
+      // Axis labels
+      ctx.fillStyle = '#333';
+      ctx.font = 'bold 12px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('[Br₂] (M)', pad.l + (W-pad.l-pad.r)/2, H-5);
+      ctx.save();
+      ctx.translate(14, H/2);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText('Absorbance', 0, 0);
+      ctx.restore();
+    }
+    updateBeerCurve();
+    </script>
+  </div>
+
+  <div class="card">
+    <h2>How to Use the Standard Curve</h2>
+    <div class="step-row">
+      <div class="step-n">1</div>
+      <div class="step-text">Prepare 5 Br₂ standards by diluting 10⁻² M stock: volumes 0.5, 1.0, 1.5, 2.0, 2.5 mL diluted to 5.0 mL each with DI water.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-n">2</div>
+      <div class="step-text">Zero the SPEC 20 with DI water at 395 nm (wavelength dial to 395).</div>
+    </div>
+    <div class="step-row">
+      <div class="step-n">3</div>
+      <div class="step-text">Read absorbance of each standard. Record in your template.</div>
+    </div>
+    <div class="step-row">
+      <div class="step-n">4</div>
+      <div class="step-text">In Week 2, plot A vs [Br₂] in Excel, add trendline, get slope (ε·l) and intercept. Use these to convert all your kinetics absorbance readings to concentration.</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 4: RATE LAW ═══════ -->
+<div id="tab-ratelaw" class="tab-panel">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>What is a Rate Law?</h2>
+    <p>The rate law tells you how the speed of a reaction depends on concentration:</p>
+    <div class="formula">rate = k [acetone]ⁿ [H⁺]ᵐ [Br₂]ᵖ</div>
+    <p>You don't know n, m, and p ahead of time — you measure them. By changing one ingredient at a time across runs and watching how the slope changes, you can solve for each exponent.</p>
+  </div>
+
+  <div class="card card-green">
+    <h2>Pseudo-Zero-Order Conditions</h2>
+    <p>Acetone and HCl are in <strong>huge excess</strong> compared to Br₂. Even after Br₂ is completely consumed, [acetone] and [H⁺] have barely changed. So for a single run:</p>
+    <div class="formula">rate ≈ k' [Br₂]ᵖ   where  k' = k [acetone]ⁿ [H⁺]ᵐ = constant</div>
+    <p>This makes the math much simpler: within each run, you're really just studying the [Br₂] dependence.</p>
+  </div>
+
+  <div class="card card-orange">
+    <h2>Interactive — See How Slope Changes with p</h2>
+    <div class="slider-row">
+      <span class="slider-label">Order in Br₂ (p)</span>
+      <input type="range" id="pOrder" min="0" max="2" step="1" value="0" oninput="updateRateGraph()">
+      <span class="slider-val" id="pVal">0 (zero order)</span>
+    </div>
+    <canvas id="rateCanvas" width="680" height="300"></canvas>
+    <div id="rate-msg" style="text-align:center;margin-top:10px;font-size:0.88rem;font-weight:700;color:#0f3460"></div>
+    <script>
+    function updateRateGraph(){
+      const p = parseInt(document.getElementById('pOrder').value);
+      const labels = ['0 (zero order)','1 (first order)','2 (second order)'];
+      document.getElementById('pVal').textContent = labels[p];
+
+      const canvas = document.getElementById('rateCanvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const pad = {t:30,r:30,b:55,l:60};
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle='#fafcff'; ctx.fillRect(0,0,W,H);
+
+      ctx.strokeStyle='#555'; ctx.lineWidth=1.5;
+      ctx.beginPath();
+      ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,H-pad.b); ctx.lineTo(W-pad.r,H-pad.b);
+      ctx.stroke();
+
+      const tMax = 300; // seconds
+      const c0 = 0.002;
+      const kp = [0.000005, 0.003, 1.5]; // pseudo rate constants for p=0,1,2
+      const colors = ['#e94560','#2ecc71','#9b59b6'];
+      const plotLabels = ['[Br₂] vs time (zero order → straight line ✓)', 'ln[Br₂] vs time (first order → straight line)', '1/[Br₂] vs time (second order → straight line)'];
+
+      // Compute y values for chosen order
+      const times = Array.from({length:300},(_,i)=>i);
+      let yVals;
+      if(p===0){
+        yVals = times.map(t => Math.max(0, c0 - kp[0]*t));
+      } else if(p===1){
+        yVals = times.map(t => Math.log(c0) - kp[1]*t);
+      } else {
+        yVals = times.map(t => 1/c0 + kp[2]*t);
+      }
+
+      const yMin = Math.min(...yVals), yMax = Math.max(...yVals);
+      const scaleX = (x) => pad.l + (x/tMax)*(W-pad.l-pad.r);
+      const scaleY = (y) => H-pad.b - ((y-yMin)/(yMax-yMin+1e-9))*(H-pad.t-pad.b);
+
+      // Grid
+      ctx.strokeStyle='#e8edf3'; ctx.lineWidth=1;
+      for(let i=1;i<=5;i++){
+        const y = pad.t + (i/5)*(H-pad.t-pad.b);
+        ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+      }
+
+      // Curve
+      ctx.strokeStyle = colors[p];
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      times.forEach((t,i) => {
+        const x = scaleX(t), y = scaleY(yVals[i]);
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+
+      // Axis labels
+      ctx.fillStyle='#333'; ctx.font='bold 12px Segoe UI'; ctx.textAlign='center';
+      ctx.fillText('Time (s)', pad.l+(W-pad.l-pad.r)/2, H-12);
+      ctx.save(); ctx.translate(14,H/2); ctx.rotate(-Math.PI/2);
+      const yLabel = p===0?'[Br₂] (M)': p===1?'ln[Br₂]':'1/[Br₂]';
+      ctx.fillText(yLabel,0,0); ctx.restore();
+
+      // Time ticks
+      [0,60,120,180,240,300].forEach(t=>{
+        const x=scaleX(t);
+        ctx.fillStyle='#888'; ctx.font='11px Segoe UI'; ctx.textAlign='center';
+        ctx.fillText(t, x, H-pad.b+16);
+      });
+
+      const msgs = ['Straight line! This is what zero order looks like. Your actual lab should give this plot.','Curved line → reaction is NOT zero order in Br₂ (but first order in something else).','Curved line → reaction is NOT zero order in Br₂.'];
+      document.getElementById('rate-msg').textContent = msgs[p];
+    }
+    updateRateGraph();
+    </script>
+  </div>
+
+  <div class="card card-purple">
+    <h2>Finding n and m from Slopes</h2>
+    <p>Because all 3 runs have the same [Br₂]₀, the slope of each [Br₂] vs time plot equals −k'. Comparing k' values between runs isolates the effect of one reactant at a time:</p>
+    <table>
+      <tr><th>Comparison</th><th>Formula</th><th>Tells you</th></tr>
+      <tr><td>Run 2 / Run 1</td><td>k'₂/k'₁ = 2ᵐ</td><td>[H⁺] doubled → find m</td></tr>
+      <tr><td>Run 3 / Run 1</td><td>k'₃/k'₁ = 2ⁿ</td><td>[acetone] doubled → find n</td></tr>
+    </table>
+    <div class="info-box" style="margin-top:12px">
+      <p>If the ratio = 1, exponent = 0. If ratio ≈ 2, exponent = 1. If ratio ≈ 4, exponent = 2. Round to nearest integer.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Then Get k</h2>
+    <div class="formula">k = k' / ([acetone]ⁿ × [H⁺]ᵐ)</div>
+    <p>Calculate k for each run and average them. Units are M⁻ⁿ⁻ᵐ s⁻¹ — but if n=m=1, units are M⁻¹ s⁻¹.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 5: WEEK 1 ═══════ -->
+<div id="tab-week1" class="tab-panel">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>Week 1 — What to Actually Do</h2>
+    <p>Total time: ~65 minutes. You'll do Part A (standard curve) and Part B (3 kinetics runs).</p>
+  </div>
+
+  <div class="card card-green">
+    <h2>Part A — Standard Curve (~20 min)</h2>
+    <div class="step-row"><div class="step-n">1</div><div class="step-text">Get ~15 mL of 10⁻² M Br₂ stock in a clean beaker. Keep it in the hood — Br₂ vapor is irritating.</div></div>
+    <div class="step-row"><div class="step-n">2</div><div class="step-text">Set SPEC 20 wavelength to <strong>395 nm</strong>. Zero with DI water (blank).</div></div>
+    <div class="step-row"><div class="step-n">3</div><div class="step-text">Prepare 5 standards in 5.0 mL total volume using DI water as diluent:</div></div>
+    <table>
+      <tr><th>Std</th><th>mL of 10⁻² M Br₂</th><th>mL DI water</th><th>[Br₂] (M)</th></tr>
+      <tr><td>1</td><td>0.50</td><td>4.50</td><td>1.0 × 10⁻³</td></tr>
+      <tr><td>2</td><td>1.00</td><td>4.00</td><td>2.0 × 10⁻³</td></tr>
+      <tr><td>3</td><td>1.50</td><td>3.50</td><td>3.0 × 10⁻³</td></tr>
+      <tr><td>4</td><td>2.00</td><td>3.00</td><td>4.0 × 10⁻³</td></tr>
+      <tr><td>5</td><td>2.50</td><td>2.50</td><td>5.0 × 10⁻³</td></tr>
+    </table>
+    <div class="step-row" style="margin-top:10px"><div class="step-n">4</div><div class="step-text">Read absorbance for each, lowest to highest concentration. Record immediately.</div></div>
+  </div>
+
+  <div class="card card-orange">
+    <h2>Part B — 3 Kinetics Runs (~40 min)</h2>
+    <p>Each run uses a <strong>10.0 mL total volume</strong>. Prepare the mixture table volumes below. Mix acetone + HCl + water in one beaker; Br₂ in another. Add Br₂ last and start the timer.</p>
+    <table>
+      <tr>
+        <th>Run</th>
+        <th>mL 10⁻² M Br₂</th>
+        <th>mL 4.0 M HCl</th>
+        <th>mL 4.0 M Acetone</th>
+        <th>mL DI Water</th>
+      </tr>
+      <tr style="background:#fff3e0"><td><span class="run1">Run 1</span></td><td>2.0</td><td>1.0</td><td>1.0</td><td>6.0</td></tr>
+      <tr style="background:#e3f2fd"><td><span class="run2">Run 2</span></td><td>2.0</td><td>2.0</td><td>1.0</td><td>5.0</td></tr>
+      <tr style="background:#f3e5f5"><td><span class="run3">Run 3</span></td><td>2.0</td><td>1.0</td><td>2.0</td><td>5.0</td></tr>
+    </table>
+
+    <div class="step-row" style="margin-top:14px"><div class="step-n">1</div><div class="step-text">Mix the non-Br₂ components first. Pour into a labeled beaker. Have the SPEC 20 zeroed and ready.</div></div>
+    <div class="step-row"><div class="step-n">2</div><div class="step-text">Add the 2.0 mL Br₂. Swirl briefly. Transfer to cuvette. Start timer. First reading at t = 0 s.</div></div>
+    <div class="step-row"><div class="step-n">3</div><div class="step-text">Record absorbance every <strong>15 seconds</strong> for <strong>300 seconds</strong> (5 minutes) = 21 readings per run.</div></div>
+    <div class="step-row"><div class="step-n">4</div><div class="step-text">If absorbance drops below 0.02 (solution is essentially colorless), stop — Br₂ is depleted. Note the time.</div></div>
+    <div class="step-row"><div class="step-n">5</div><div class="step-text">Clean cuvette thoroughly between runs. Repeat for all 3 runs.</div></div>
+  </div>
+
+  <div class="card card-red">
+    <h2>Safety Reminders</h2>
+    <ul>
+      <li>Wear gloves and goggles — Br₂ stains skin and is a lung irritant</li>
+      <li>Work in the fume hood when dispensing Br₂ stock</li>
+      <li>Dispose of all Br₂ solutions in the designated waste container — <em>not</em> the sink</li>
+      <li>Acetone is flammable — no open flames nearby</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Simulator — Preview Run 1</h2>
+    <p style="font-size:0.88rem;color:#666;margin-bottom:12px">Click Start to see a simulated Run 1. Absorbance should decline roughly linearly.</p>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <button onclick="simStart()" style="background:#0f3460;color:white;padding:8px 18px;border:none;border-radius:6px;cursor:pointer;font-weight:700">Start</button>
+      <button onclick="simReset()" style="background:#e94560;color:white;padding:8px 18px;border:none;border-radius:6px;cursor:pointer;font-weight:700">Reset</button>
+      <span id="sim-time" style="font-weight:700;color:#0f3460;font-size:0.9rem">t = 0 s</span>
+    </div>
+    <canvas id="simCanvas" width="680" height="280"></canvas>
+    <script>
+    let simData = [];
+    let simTimer = null;
+    function simReset(){
+      clearInterval(simTimer);
+      simData = [];
+      drawSim();
+    }
+    function simStart(){
+      clearInterval(simTimer);
+      simData = [];
+      let t = 0;
+      const c0 = 0.002, kRate = 0.000006; // zero order decay
+      const eps = 120;
+      simTimer = setInterval(()=>{
+        const c = Math.max(0, c0 - kRate*t);
+        const A = eps*c + (Math.random()-0.5)*0.003;
+        simData.push({t, A: Math.max(0,A)});
+        document.getElementById('sim-time').textContent = `t = ${t} s`;
+        drawSim();
+        t += 15;
+        if(t > 300 || c <= 0){ clearInterval(simTimer); }
+      }, 150);
+    }
+    function drawSim(){
+      const canvas = document.getElementById('simCanvas');
+      const ctx = canvas.getContext('2d');
+      const W=canvas.width, H=canvas.height;
+      const pad={t:30,r:30,b:50,l:60};
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle='#fafcff'; ctx.fillRect(0,0,W,H);
+
+      ctx.strokeStyle='#555'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,H-pad.b); ctx.lineTo(W-pad.r,H-pad.b); ctx.stroke();
+
+      const xMax=300, yMax=0.35;
+      const sx=t=>pad.l+(t/xMax)*(W-pad.l-pad.r);
+      const sy=a=>H-pad.b-(a/yMax)*(H-pad.t-pad.b);
+
+      // Grid
+      ctx.strokeStyle='#e8edf3'; ctx.lineWidth=1;
+      [0.1,0.2,0.3].forEach(a=>{ const y=sy(a); ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke(); ctx.fillStyle='#888'; ctx.font='11px Segoe UI'; ctx.textAlign='right'; ctx.fillText(a.toFixed(1),pad.l-6,y+4); });
+      [0,60,120,180,240,300].forEach(t=>{ const x=sx(t); ctx.fillStyle='#888'; ctx.font='11px Segoe UI'; ctx.textAlign='center'; ctx.fillText(t,x,H-pad.b+16); });
+
+      if(simData.length > 1){
+        ctx.strokeStyle='#e94560'; ctx.lineWidth=2.5;
+        ctx.beginPath();
+        simData.forEach((d,i)=>{ if(i===0) ctx.moveTo(sx(d.t),sy(d.A)); else ctx.lineTo(sx(d.t),sy(d.A)); });
+        ctx.stroke();
+        simData.forEach(d=>{ ctx.fillStyle='#0f3460'; ctx.beginPath(); ctx.arc(sx(d.t),sy(d.A),3,0,2*Math.PI); ctx.fill(); });
+      }
+
+      ctx.fillStyle='#333'; ctx.font='bold 12px Segoe UI'; ctx.textAlign='center';
+      ctx.fillText('Time (s)', pad.l+(W-pad.l-pad.r)/2, H-8);
+      ctx.save(); ctx.translate(14,H/2); ctx.rotate(-Math.PI/2); ctx.fillText('Absorbance',0,0); ctx.restore();
+    }
+    drawSim();
+    </script>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 6: WEEK 2 ═══════ -->
+<div id="tab-week2" class="tab-panel">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>Week 2 — Excel Analysis</h2>
+    <p>You'll convert absorbance readings to concentration, plot [Br₂] vs time, extract slopes, compute k', find n and m, then calculate k. ~45 minutes.</p>
+  </div>
+
+  <div class="card card-green">
+    <h2>Step 1 — Standard Curve First</h2>
+    <div class="step-row"><div class="step-n">1</div><div class="step-text">Enter your standard curve data (5 standards: [Br₂] in col A, Absorbance in col B).</div></div>
+    <div class="step-row"><div class="step-n">2</div><div class="step-text">Select both columns → Insert → Chart → Scatter. Add trendline (linear). Check "Display equation" and "R² value".</div></div>
+    <div class="step-row"><div class="step-n">3</div><div class="step-text">Note slope (call it <strong>ε·l</strong>) and intercept. You'll need: <code style="background:#e8edf3;padding:2px 6px;border-radius:4px">[Br₂] = (A − intercept) / slope</code></div></div>
+  </div>
+
+  <div class="card card-orange">
+    <h2>Step 2 — Convert Absorbance → [Br₂]</h2>
+    <p>For each run, make a new worksheet:</p>
+    <ul>
+      <li>Col A: Time (s) — 0, 15, 30, … 300</li>
+      <li>Col B: Absorbance (raw readings)</li>
+      <li>Col C: [Br₂] = <code style="background:#e8edf3;padding:2px 6px;border-radius:4px">=(B2 - intercept)/slope</code> — drag down for all rows</li>
+    </ul>
+  </div>
+
+  <div class="card card-purple">
+    <h2>Step 3 — Plot [Br₂] vs Time</h2>
+    <div class="step-row"><div class="step-n">1</div><div class="step-text">Select Col A (time) and Col C ([Br₂]) → Scatter plot.</div></div>
+    <div class="step-row"><div class="step-n">2</div><div class="step-text">Add trendline → Linear. Check Display equation + R².</div></div>
+    <div class="step-row"><div class="step-n">3</div><div class="step-text">The <strong>slope = −k'</strong> (negative because Br₂ is decreasing). So k' = |slope|.</div></div>
+    <div class="step-row"><div class="step-n">4</div><div class="step-text">R² should be ≥ 0.97. If much lower, check your data for outliers (pipetting error, etc.).</div></div>
+    <div class="step-row"><div class="step-n">5</div><div class="step-text">Repeat for all 3 runs. Put all 3 trend lines on one chart for comparison (right-click → add data series).</div></div>
+    <div class="success-box" style="margin-top:10px">
+      <p><strong>All 3 lines should be parallel</strong> (nearly equal slopes) if Br₂ is zero order. The slopes differ only because [acetone] or [H⁺] changes between runs.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Step 4 — Find n, m, and k</h2>
+    <table>
+      <tr><th>Step</th><th>Calculation</th><th>Expected result</th></tr>
+      <tr><td>k'₁</td><td>|slope of Run 1|</td><td>~6 × 10⁻⁶ M/s</td></tr>
+      <tr><td>k'₂</td><td>|slope of Run 2|</td><td>~12 × 10⁻⁶ M/s</td></tr>
+      <tr><td>k'₃</td><td>|slope of Run 3|</td><td>~12 × 10⁻⁶ M/s</td></tr>
+      <tr><td>m</td><td>log(k'₂/k'₁) / log(2)</td><td>≈ 1</td></tr>
+      <tr><td>n</td><td>log(k'₃/k'₁) / log(2)</td><td>≈ 1</td></tr>
+      <tr><td>k</td><td>k'₁ / ([ace]₁ × [H⁺]₁)</td><td>~3.75 × 10⁻⁵ M⁻¹s⁻¹</td></tr>
+    </table>
+    <div class="info-box" style="margin-top:10px">
+      <p>Calculate k from each run separately, then average. If one run gives a very different k, recheck your calculations before assuming it's experimental error.</p>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:0">
+    <div class="big">rate = k [acetone][H⁺]</div>
+    <div class="sub">The final rate law — first order each in acetone and H⁺, zero order in Br₂ (p = 0, n = 1, m = 1)</div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════ TAB 7: QUIZ ═══════ -->
+<div id="tab-quiz" class="tab-panel">
+<div class="container">
+
+  <div class="card card-blue">
+    <h2>Check Yourself — 7 Questions</h2>
+    <p style="font-size:0.88rem;color:#666">Select one answer per question, then Submit. Instant feedback below each question.</p>
+  </div>
+
+  <div class="card">
+
+    <!-- Q1 -->
+    <div class="quiz-q">
+      <p>1. Which step in the bromination mechanism controls the overall rate?</p>
+      <label class="quiz-option"><input type="radio" name="q1" value="a"> The fast addition of Br₂ to the enol</label>
+      <label class="quiz-option"><input type="radio" name="q1" value="b"> The slow acid-catalyzed enolization of acetone</label>
+      <label class="quiz-option"><input type="radio" name="q1" value="c"> The neutralization of HBr product</label>
+      <label class="quiz-option"><input type="radio" name="q1" value="d"> Both steps equally</label>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-q">
+      <p>2. Why is the reaction zero order in Br₂?</p>
+      <label class="quiz-option"><input type="radio" name="q2" value="a"> Br₂ is used up immediately</label>
+      <label class="quiz-option"><input type="radio" name="q2" value="b"> Br₂ is not involved in the rate-determining step</label>
+      <label class="quiz-option"><input type="radio" name="q2" value="c"> Br₂ concentration never changes</label>
+      <label class="quiz-option"><input type="radio" name="q2" value="d"> The temperature is kept constant</label>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-q">
+      <p>3. A graph of [Br₂] vs time gives a perfectly straight line. What order is this?</p>
+      <label class="quiz-option"><input type="radio" name="q3" value="a"> First order</label>
+      <label class="quiz-option"><input type="radio" name="q3" value="b"> Second order</label>
+      <label class="quiz-option"><input type="radio" name="q3" value="c"> Zero order</label>
+      <label class="quiz-option"><input type="radio" name="q3" value="d"> Cannot be determined without more information</label>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-q">
+      <p>4. In Run 2, [HCl] is doubled compared to Run 1. The slope becomes twice as steep. What is the order in H⁺?</p>
+      <label class="quiz-option"><input type="radio" name="q4" value="a"> 0</label>
+      <label class="quiz-option"><input type="radio" name="q4" value="b"> 1</label>
+      <label class="quiz-option"><input type="radio" name="q4" value="c"> 2</label>
+      <label class="quiz-option"><input type="radio" name="q4" value="d"> 0.5</label>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-q">
+      <p>5. You prepare Run 1 with 2.0 mL of 10⁻² M Br₂ in 10.0 mL total. What is [Br₂]₀?</p>
+      <label class="quiz-option"><input type="radio" name="q5" value="a"> 1.0 × 10⁻² M</label>
+      <label class="quiz-option"><input type="radio" name="q5" value="b"> 2.0 × 10⁻³ M</label>
+      <label class="quiz-option"><input type="radio" name="q5" value="c"> 5.0 × 10⁻³ M</label>
+      <label class="quiz-option"><input type="radio" name="q5" value="d"> 2.0 × 10⁻² M</label>
+      <div class="quiz-feedback" id="fb5"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-q">
+      <p>6. If k' = 6.0 × 10⁻⁶ M/s, [acetone] = 0.80 M, and [H⁺] = 0.20 M, what is k?</p>
+      <label class="quiz-option"><input type="radio" name="q6" value="a"> 4.8 × 10⁻⁶ M⁻¹s⁻¹</label>
+      <label class="quiz-option"><input type="radio" name="q6" value="b"> 3.75 × 10⁻⁵ M⁻¹s⁻¹</label>
+      <label class="quiz-option"><input type="radio" name="q6" value="c"> 7.5 × 10⁻⁶ M⁻¹s⁻¹</label>
+      <label class="quiz-option"><input type="radio" name="q6" value="d"> 1.5 × 10⁻⁴ M⁻¹s⁻¹</label>
+      <div class="quiz-feedback" id="fb6"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-q">
+      <p>7. What does Beer's Law allow you to do in this experiment?</p>
+      <label class="quiz-option"><input type="radio" name="q7" value="a"> Predict the rate constant before running the experiment</label>
+      <label class="quiz-option"><input type="radio" name="q7" value="b"> Convert absorbance readings into Br₂ concentration</label>
+      <label class="quiz-option"><input type="radio" name="q7" value="c"> Determine the temperature of the reaction</label>
+      <label class="quiz-option"><input type="radio" name="q7" value="d"> Control the amount of Br₂ consumed</label>
+      <div class="quiz-feedback" id="fb7"></div>
+    </div>
+
+    <button onclick="gradeQuiz()" style="background:#0f3460;color:white;padding:10px 26px;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.95rem;margin-top:8px">Submit Answers</button>
+    <div id="quiz-score" style="margin-top:12px;font-size:1rem;font-weight:700;color:#0f3460"></div>
+  </div>
+
+  <script>
+  const answers = {q1:'b',q2:'b',q3:'c',q4:'b',q5:'b',q6:'b',q7:'b'};
+  const feedback = {
+    q1: {ok:"Correct! The slow enolization controls the overall rate. Fast steps don't set the pace.", no:"Not quite. The slow acid-catalyzed enolization (H⁺ removes a proton from acetone) is the rate-limiting step."},
+    q2: {ok:"Correct! Br₂ only participates in the fast step, which has no effect on the overall rate.", no:"Not quite. The key reason is that Br₂ is not involved in the slow, rate-determining enolization step."},
+    q3: {ok:"Correct! Zero order integrated gives [A] = [A]₀ − kt — a straight line with slope = −k.", no:"Not quite. A straight line in [A] vs t is the diagnostic for zero-order kinetics."},
+    q4: {ok:"Correct! Doubling [H⁺] doubled the rate → ratio = 2¹ → m = 1 (first order in H⁺).", no:"Not quite. The ratio of slopes is 2 = 2ᵐ, so m = 1."},
+    q5: {ok:"Correct! C₁V₁ = C₂V₂ → (0.01)(2.0) = c × 10.0 → c = 2.0 × 10⁻³ M.", no:"Not quite. Use dilution: C₁V₁ = C₂V₂ → (0.01 M)(2.0 mL) = C₂(10.0 mL) → C₂ = 2.0 × 10⁻³ M."},
+    q6: {ok:"Correct! k = k'/([ace][H⁺]) = 6×10⁻⁶/(0.80×0.20) = 6×10⁻⁶/0.16 = 3.75×10⁻⁵ M⁻¹s⁻¹.", no:"Not quite. k = k'/(0.80 × 0.20) = 6×10⁻⁶/0.16 = 3.75×10⁻⁵ M⁻¹s⁻¹."},
+    q7: {ok:"Correct! Beer's Law (A = ε·l·c) lets you turn absorbance into [Br₂] concentration throughout each run.", no:"Not quite. Beer's Law provides the relationship between absorbance and concentration, so you can track [Br₂] over time."}
+  };
+  function gradeQuiz(){
+    let score = 0;
+    Object.keys(answers).forEach(q => {
+      const sel = document.querySelector(`input[name="${q}"]:checked`);
+      const fb = document.getElementById('fb'+q.slice(1));
+      document.querySelectorAll(`input[name="${q}"]`).forEach(r => {
+        r.parentElement.classList.remove('correct','incorrect');
+        if(r.value === answers[q]) r.parentElement.classList.add('correct');
+      });
+      if(!sel){ fb.textContent = 'Please select an answer.'; fb.className='quiz-feedback show no'; return; }
+      if(sel.value === answers[q]){
+        sel.parentElement.classList.add('correct');
+        fb.textContent = feedback[q].ok;
+        fb.className = 'quiz-feedback show ok';
+        score++;
+      } else {
+        sel.parentElement.classList.add('incorrect');
+        fb.textContent = feedback[q].no;
+        fb.className = 'quiz-feedback show no';
+      }
+    });
+    document.getElementById('quiz-score').textContent = `Score: ${score} / 7 — ${score>=6?'Excellent! You are ready for the lab.':score>=4?'Good — review the tabs you missed.':'Review the Mechanism and Rate Law tabs again.'}`;
+  }
+  </script>
+
+</div>
+</div>
+
+<!-- Global JS -->
+<script>
+const tabsVisited = new Set(['overview']);
+function showTab(name){
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+  tabsVisited.add(name);
+  const total = 7;
+  const done = tabsVisited.size;
+  document.getElementById('prog-pct').textContent = done + ' / ' + total;
+  document.getElementById('prog-bar').style.width = Math.round(done/total*100) + '%';
+}
+</script>
+
+</body>
+</html>

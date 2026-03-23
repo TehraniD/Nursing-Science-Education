@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 4 — Rate of Reaction Template V2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Times New Roman', serif; background: white; color: black; font-size: 11pt; line-height: 1.6; }
+  @media print {
+    body { font-size: 10pt; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    .section { page-break-inside: avoid; }
+  }
+  .no-print { font-family: Arial, sans-serif; }
+  .print-bar { background: #0f3460; color: white; padding: 12px 24px; text-align: center; font-family: Arial, sans-serif; font-size: 0.9rem; }
+  .print-bar button { background: #e94560; color: white; border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer; font-weight: 700; margin-left: 12px; }
+  .page { max-width: 800px; margin: 0 auto; padding: 32px 48px; }
+  .lab-header { text-align: center; border-bottom: 3px double black; padding-bottom: 14px; margin-bottom: 20px; }
+  .lab-header h1 { font-size: 15pt; font-weight: bold; text-transform: uppercase; }
+  .lab-header h2 { font-size: 12pt; font-weight: normal; margin-top: 4px; }
+  .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  .info-field { border-bottom: 1px solid black; padding: 3px 0; }
+  .info-label { font-size: 9pt; color: #444; text-transform: uppercase; letter-spacing: 0.5px; }
+  .field-line { height: 20px; }
+  h3 { font-size: 12pt; font-weight: bold; border-bottom: 1px solid black; padding-bottom: 3px; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  h4 { font-size: 11pt; font-weight: bold; margin: 12px 0 6px; }
+  p { margin-bottom: 8px; font-size: 10.5pt; }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 10pt; }
+  th { border: 1px solid black; padding: 5px 8px; background: #e8e8e8; text-align: center; font-weight: bold; font-size: 9.5pt; }
+  td { border: 1px solid black; padding: 5px 8px; text-align: center; }
+  td.write { background: #fafafa; }
+  .formula-ref { background: #f0f4f8; border-left: 4px solid #333; padding: 6px 12px; margin: 8px 0; font-size: 9.5pt; font-family: 'Courier New', monospace; }
+  .write-line { min-height: 24px; border-bottom: 1px solid #999; margin: 4px 0; }
+  .write-box { min-height: 55px; border: 1px solid #999; padding: 5px; background: #fafafa; margin: 6px 0; }
+  .write-box-lg { min-height: 80px; border: 1px solid #999; padding: 5px; background: #fafafa; margin: 6px 0; }
+  .calc-box { border: 1px solid #666; padding: 12px; background: #fafafa; min-height: 90px; margin: 8px 0; }
+  .blank { display: inline-block; min-width: 100px; border-bottom: 1px solid black; vertical-align: bottom; }
+  .blank-sm { display: inline-block; min-width: 55px; border-bottom: 1px solid black; vertical-align: bottom; }
+  .blank-xs { display: inline-block; min-width: 35px; border-bottom: 1px solid black; vertical-align: bottom; }
+  .note { font-size: 9pt; color: #555; font-style: italic; margin: 3px 0 8px; }
+  .section { margin-bottom: 24px; }
+  .run-header-a { background: #fff3e0 !important; }
+  .run-header-b { background: #fff8e1 !important; }
+  .run-header-c { background: #ffe0b2 !important; }
+  .run-header-d { background: #e3f2fd !important; }
+  .run-header-e { background: #f3e5f5 !important; }
+  .run-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 9pt; }
+  .part-label { background: #0f3460; color: white; padding: 4px 16px; display: inline-block; border-radius: 4px; font-size: 9pt; font-family: Arial, sans-serif; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="print-bar no-print">
+  <span>Lab 4 V2 Student Template — CHM152 · Scheme 1 Design</span>
+  <button onclick="window.print()">🖨 Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="lab-header">
+    <h1>Laboratory 4 — Version 2</h1>
+    <h2>Determination of the Rate of a Chemical Reaction</h2>
+    <h2>Acid-Catalyzed Bromination of Acetone</h2>
+  </div>
+
+  <div class="info-row">
+    <div class="info-field"><div class="info-label">Student Name</div><div class="field-line"></div></div>
+    <div class="info-field"><div class="info-label">Date</div><div class="field-line"></div></div>
+    <div class="info-field"><div class="info-label">Lab Partner(s)</div><div class="field-line"></div></div>
+    <div class="info-field"><div class="info-label">Lab Section / Instructor</div><div class="field-line"></div></div>
+  </div>
+
+  <!-- OBJECTIVE -->
+  <div class="section">
+    <h3>Objective</h3>
+    <p>Determine the rate law for the acid-catalyzed bromination of acetone using a 5-run experimental design.</p>
+    <div class="formula-ref">CH₃COCH₃ + Br₂ → CH₃COCH₂Br + HBr &nbsp;&nbsp;(requires H⁺ catalyst)</div>
+    <div class="formula-ref">rate = k [acetone]ⁿ [H⁺]ᵐ [Br₂]ᵖ &nbsp;&nbsp;→ Find n, m, p, and k</div>
+
+    <h4>Experimental Strategy</h4>
+    <p><strong>Runs A, B, C (Part 1):</strong> Hold [HCl] and [acetone] constant. Vary [Br₂]. If the rate is unchanged → p = 0 (zero order in Br₂).</p>
+    <p><strong>Runs D and E (Part 2):</strong> Use Run B as baseline. Double [H⁺] in Run D → find m. Double [acetone] in Run E → find n.</p>
+  </div>
+
+  <!-- STANDARD CURVE -->
+  <div class="section">
+    <h3>Part A — Standard Curve (Beer's Law)</h3>
+    <p class="note">Spectrophotometer wavelength: 395 nm. Zero with distilled water. Use 10⁻² M Br₂ stock for dilutions.</p>
+
+    <table>
+      <tr><th>Standard</th><th>[Br₂] (M)</th><th>Absorbance</th></tr>
+      <tr><td>Blank</td><td>0</td><td class="write"></td></tr>
+      <tr><td>1</td><td>5 × 10⁻⁴</td><td class="write"></td></tr>
+      <tr><td>2</td><td>1.0 × 10⁻³</td><td class="write"></td></tr>
+      <tr><td>3</td><td>2.0 × 10⁻³</td><td class="write"></td></tr>
+      <tr><td>4</td><td>4.0 × 10⁻³</td><td class="write"></td></tr>
+    </table>
+
+    <p style="margin-top:10px;"><strong>From Excel, Beer's Law equation:</strong> &nbsp; A = <span class="blank-sm"></span> × [Br₂] + <span class="blank-sm"></span> &nbsp;&nbsp; R² = <span class="blank-sm"></span></p>
+    <p><strong>Conversion formula:</strong> &nbsp; [Br₂] = (A − <span class="blank-sm"></span>) ÷ <span class="blank-sm"></span></p>
+  </div>
+
+  <!-- MIXTURE TABLE + CONCENTRATIONS -->
+  <div class="section">
+    <h3>Part B — Reaction Mixtures</h3>
+    <p class="note">Use 10⁻² M Br₂ stock. Total volume = 10.0 mL for each run. Prepare one at a time.</p>
+
+    <table>
+      <tr>
+        <th>Run</th><th>Purpose</th>
+        <th>mL Br₂ (10⁻²M)</th><th>mL HCl (2M)</th><th>mL Acetone (8M)</th><th>mL DI</th>
+      </tr>
+      <tr class="run-header-a"><td><strong>A</strong></td><td>Low [Br₂]</td><td>1.0</td><td>1.0</td><td>1.0</td><td>7.0</td></tr>
+      <tr class="run-header-b"><td><strong>B</strong></td><td>Mid [Br₂] / Baseline</td><td>2.0</td><td>1.0</td><td>1.0</td><td>6.0</td></tr>
+      <tr class="run-header-c"><td><strong>C</strong></td><td>High [Br₂]</td><td>4.0</td><td>1.0</td><td>1.0</td><td>4.0</td></tr>
+      <tr class="run-header-d"><td><strong>D</strong></td><td>Double [H⁺]</td><td>2.0</td><td>2.0</td><td>1.0</td><td>5.0</td></tr>
+      <tr class="run-header-e"><td><strong>E</strong></td><td>Double [acetone]</td><td>2.0</td><td>1.0</td><td>2.0</td><td>5.0</td></tr>
+    </table>
+
+    <h4>Initial Concentrations — Calculate Using C₁V₁ = C₂V₂ (V₂ = 10.0 mL)</h4>
+    <div class="calc-box">
+      <p><strong>Run A:</strong> [Br₂] = (10⁻² × 1.0)/10.0 = <span class="blank-sm"></span> M &nbsp;&nbsp; [HCl] = (2 × 1.0)/10.0 = <span class="blank-sm"></span> M &nbsp;&nbsp; [Acetone] = <span class="blank-sm"></span> M</p>
+      <p><strong>Run B:</strong> [Br₂] = <span class="blank-sm"></span> M &nbsp;&nbsp; [HCl] = <span class="blank-sm"></span> M &nbsp;&nbsp; [Acetone] = <span class="blank-sm"></span> M</p>
+      <p><strong>Run C:</strong> [Br₂] = <span class="blank-sm"></span> M &nbsp;&nbsp; [HCl] = <span class="blank-sm"></span> M &nbsp;&nbsp; [Acetone] = <span class="blank-sm"></span> M</p>
+      <p><strong>Run D:</strong> [Br₂] = <span class="blank-sm"></span> M &nbsp;&nbsp; [HCl] = <span class="blank-sm"></span> M &nbsp;&nbsp; [Acetone] = <span class="blank-sm"></span> M</p>
+      <p><strong>Run E:</strong> [Br₂] = <span class="blank-sm"></span> M &nbsp;&nbsp; [HCl] = <span class="blank-sm"></span> M &nbsp;&nbsp; [Acetone] = <span class="blank-sm"></span> M</p>
+    </div>
+
+    <p><strong>Pre-Run Prediction:</strong> Before running Run C, observe its color next to Run A. Write your prediction:</p>
+    <p>Will Run C's rate be (circle one): &nbsp; <strong>FASTER &nbsp;&nbsp; SLOWER &nbsp;&nbsp; THE SAME</strong> &nbsp; as Run A? Why?</p>
+    <div class="write-box"></div>
+  </div>
+
+  <!-- DATA TABLES -->
+  <div class="section page-break">
+    <h3>Part B — Kinetics Data</h3>
+    <span class="part-label no-print">PART 1 — Proving Zero Order in Br₂</span>
+
+    <h4>Run A — Low [Br₂] (1×10⁻³ M) &nbsp; <span style="font-weight:normal; font-size:10pt; color:#444;">Expected ~2–3 min to colorless</span></h4>
+    <table>
+      <tr><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th></tr>
+      <tr><td>0</td><td class="write run-header-a"></td><td>75</td><td class="write run-header-a"></td><td>150</td><td class="write run-header-a"></td></tr>
+      <tr><td>15</td><td class="write run-header-a"></td><td>90</td><td class="write run-header-a"></td><td>165</td><td class="write run-header-a"></td></tr>
+      <tr><td>30</td><td class="write run-header-a"></td><td>105</td><td class="write run-header-a"></td><td>180</td><td class="write run-header-a"></td></tr>
+      <tr><td>45</td><td class="write run-header-a"></td><td>120</td><td class="write run-header-a"></td><td>195</td><td class="write run-header-a"></td></tr>
+      <tr><td>60</td><td class="write run-header-a"></td><td>135</td><td class="write run-header-a"></td><td>210</td><td class="write run-header-a"></td></tr>
+    </table>
+
+    <h4 style="margin-top:16px;">Run B — Mid [Br₂] (2×10⁻³ M) — Baseline &nbsp; <span style="font-weight:normal; font-size:10pt; color:#444;">Expected ~5–6 min</span></h4>
+    <table>
+      <tr><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th></tr>
+      <tr><td>0</td><td class="write run-header-b"></td><td>105</td><td class="write run-header-b"></td><td>210</td><td class="write run-header-b"></td></tr>
+      <tr><td>15</td><td class="write run-header-b"></td><td>120</td><td class="write run-header-b"></td><td>225</td><td class="write run-header-b"></td></tr>
+      <tr><td>30</td><td class="write run-header-b"></td><td>135</td><td class="write run-header-b"></td><td>240</td><td class="write run-header-b"></td></tr>
+      <tr><td>45</td><td class="write run-header-b"></td><td>150</td><td class="write run-header-b"></td><td>255</td><td class="write run-header-b"></td></tr>
+      <tr><td>60</td><td class="write run-header-b"></td><td>165</td><td class="write run-header-b"></td><td>270</td><td class="write run-header-b"></td></tr>
+      <tr><td>75</td><td class="write run-header-b"></td><td>180</td><td class="write run-header-b"></td><td>285</td><td class="write run-header-b"></td></tr>
+      <tr><td>90</td><td class="write run-header-b"></td><td>195</td><td class="write run-header-b"></td><td>300</td><td class="write run-header-b"></td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h4>Run C — High [Br₂] (4×10⁻³ M) &nbsp; <span style="font-weight:normal; font-size:10pt; color:#444;">Expected ~10–12 min — record full duration</span></h4>
+    <table>
+      <tr><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th></tr>
+      <tr><td>0</td><td class="write run-header-c"></td><td>150</td><td class="write run-header-c"></td><td>360</td><td class="write run-header-c"></td></tr>
+      <tr><td>15</td><td class="write run-header-c"></td><td>180</td><td class="write run-header-c"></td><td>420</td><td class="write run-header-c"></td></tr>
+      <tr><td>30</td><td class="write run-header-c"></td><td>210</td><td class="write run-header-c"></td><td>480</td><td class="write run-header-c"></td></tr>
+      <tr><td>60</td><td class="write run-header-c"></td><td>240</td><td class="write run-header-c"></td><td>540</td><td class="write run-header-c"></td></tr>
+      <tr><td>90</td><td class="write run-header-c"></td><td>270</td><td class="write run-header-c"></td><td>600</td><td class="write run-header-c"></td></tr>
+      <tr><td>120</td><td class="write run-header-c"></td><td>300</td><td class="write run-header-c"></td><td>660</td><td class="write run-header-c"></td></tr>
+    </table>
+  </div>
+
+  <div class="section page-break">
+    <span class="part-label no-print">PART 2 — Finding Orders n and m</span>
+
+    <h4>Run D — Double [H⁺] (0.40 M) &nbsp; <span style="font-weight:normal; font-size:10pt; color:#444;">Expected ~2.5–3 min (twice as fast as B)</span></h4>
+    <table>
+      <tr><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th></tr>
+      <tr><td>0</td><td class="write run-header-d"></td><td>60</td><td class="write run-header-d"></td><td>120</td><td class="write run-header-d"></td></tr>
+      <tr><td>15</td><td class="write run-header-d"></td><td>75</td><td class="write run-header-d"></td><td>135</td><td class="write run-header-d"></td></tr>
+      <tr><td>30</td><td class="write run-header-d"></td><td>90</td><td class="write run-header-d"></td><td>150</td><td class="write run-header-d"></td></tr>
+      <tr><td>45</td><td class="write run-header-d"></td><td>105</td><td class="write run-header-d"></td><td>165</td><td class="write run-header-d"></td></tr>
+    </table>
+
+    <h4 style="margin-top:14px;">Run E — Double [Acetone] (1.60 M) &nbsp; <span style="font-weight:normal; font-size:10pt; color:#444;">Expected ~2.5–3 min (twice as fast as B)</span></h4>
+    <table>
+      <tr><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th><th>Time (s)</th><th>Absorbance</th></tr>
+      <tr><td>0</td><td class="write run-header-e"></td><td>60</td><td class="write run-header-e"></td><td>120</td><td class="write run-header-e"></td></tr>
+      <tr><td>15</td><td class="write run-header-e"></td><td>75</td><td class="write run-header-e"></td><td>135</td><td class="write run-header-e"></td></tr>
+      <tr><td>30</td><td class="write run-header-e"></td><td>90</td><td class="write run-header-e"></td><td>150</td><td class="write run-header-e"></td></tr>
+      <tr><td>45</td><td class="write run-header-e"></td><td>105</td><td class="write run-header-e"></td><td>165</td><td class="write run-header-e"></td></tr>
+    </table>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="section page-break">
+    <h3>Week 2 — Data Analysis</h3>
+
+    <span class="part-label no-print">PART 1 ANALYSIS — Zero Order Proof</span>
+    <h4>Step 1: Graph 1 — Plot [Br₂] vs Time for Runs A, B, and C (same graph)</h4>
+    <p class="note">Convert absorbance to [Br₂] using your Beer's Law equation. Plot all 3 runs as separate series. Add a linear trendline to each. Record slopes below.</p>
+
+    <table>
+      <tr><th>Run</th><th>[Br₂]₀ (M)</th><th>Slope of trendline (M/s)</th><th>k' = |slope|</th></tr>
+      <tr class="run-header-a"><td><strong>A</strong></td><td>1×10⁻³</td><td class="write"></td><td class="write"></td></tr>
+      <tr class="run-header-b"><td><strong>B</strong></td><td>2×10⁻³</td><td class="write"></td><td class="write"></td></tr>
+      <tr class="run-header-c"><td><strong>C</strong></td><td>4×10⁻³</td><td class="write"></td><td class="write"></td></tr>
+    </table>
+
+    <h4>Compare the Slopes</h4>
+    <div class="calc-box">
+      <p>% difference (A vs B) = |k'_A − k'_B| / average × 100 = <span class="blank-sm"></span> %</p>
+      <p>% difference (B vs C) = |k'_B − k'_C| / average × 100 = <span class="blank-sm"></span> %</p>
+      <p>Are the slopes approximately equal? (within 15%) &nbsp; YES / NO &nbsp; (circle one)</p>
+      <br>
+      <p><strong>Conclusion — Order with respect to Br₂: p = </strong><span class="blank-xs"></span></p>
+      <p><strong>Justification:</strong></p>
+      <div class="write-box"></div>
+    </div>
+
+    <p><strong>Post-observation:</strong> Was your prediction (faster/slower/same) correct? What does this tell you about the rate-determining step?</p>
+    <div class="write-box"></div>
+
+    <span class="part-label no-print" style="margin-top:16px; display:inline-block;">PART 2 ANALYSIS — Finding n and m</span>
+    <h4 style="margin-top:10px;">Step 2: Graph 2 — Plot [Br₂] vs Time for Runs B, D, and E (same graph)</h4>
+    <p class="note">Add trendlines to each run. Record slopes. Use Run B as baseline for comparison.</p>
+
+    <table>
+      <tr><th>Run</th><th>[Acetone]₀</th><th>[HCl]₀</th><th>Slope (M/s)</th><th>k' = |slope|</th></tr>
+      <tr class="run-header-b"><td><strong>B</strong> (baseline)</td><td>0.80 M</td><td>0.20 M</td><td class="write"></td><td class="write"></td></tr>
+      <tr class="run-header-d"><td><strong>D</strong></td><td>0.80 M</td><td>0.40 M</td><td class="write"></td><td class="write"></td></tr>
+      <tr class="run-header-e"><td><strong>E</strong></td><td>1.60 M</td><td>0.20 M</td><td class="write"></td><td class="write"></td></tr>
+    </table>
+
+    <h4>Finding m (Order in H⁺) — Compare D vs B</h4>
+    <div class="calc-box">
+      <div class="formula-ref" style="font-size:9.5pt;">k'_D / k'_B = ([H⁺]_D / [H⁺]_B)ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; ratio = 2ᵐ &nbsp;&nbsp;→&nbsp;&nbsp; solve for m</div>
+      <p>k'_D / k'_B = <span class="blank-sm"></span> / <span class="blank-sm"></span> = <span class="blank-sm"></span></p>
+      <p>[H⁺]_D / [H⁺]_B = 0.40 / 0.20 = 2 &nbsp;&nbsp; → &nbsp;&nbsp; ratio = 2ᵐ → m = <span class="blank-xs"></span></p>
+      <p><strong>Order with respect to H⁺: m = </strong><span class="blank-xs"></span></p>
+    </div>
+
+    <h4>Finding n (Order in Acetone) — Compare E vs B</h4>
+    <div class="calc-box">
+      <div class="formula-ref" style="font-size:9.5pt;">k'_E / k'_B = ([acetone]_E / [acetone]_B)ⁿ &nbsp;&nbsp;→&nbsp;&nbsp; ratio = 2ⁿ &nbsp;&nbsp;→&nbsp;&nbsp; solve for n</div>
+      <p>k'_E / k'_B = <span class="blank-sm"></span> / <span class="blank-sm"></span> = <span class="blank-sm"></span></p>
+      <p>[acetone]_E / [acetone]_B = 1.60 / 0.80 = 2 &nbsp;&nbsp; → &nbsp;&nbsp; ratio = 2ⁿ → n = <span class="blank-xs"></span></p>
+      <p><strong>Order with respect to acetone: n = </strong><span class="blank-xs"></span></p>
+    </div>
+
+    <h4>Calculate Rate Constant k</h4>
+    <div class="formula-ref">k = k' / ([acetone]ⁿ × [H⁺]ᵐ)</div>
+    <div class="calc-box">
+      <p><strong>From Run B:</strong> k = <span class="blank-sm"></span> / (<span class="blank-sm"></span> × <span class="blank-sm"></span>) = <span class="blank-sm"></span></p>
+      <p><strong>From Run D:</strong> k = <span class="blank-sm"></span> / (<span class="blank-sm"></span> × <span class="blank-sm"></span>) = <span class="blank-sm"></span></p>
+      <p><strong>From Run E:</strong> k = <span class="blank-sm"></span> / (<span class="blank-sm"></span> × <span class="blank-sm"></span>) = <span class="blank-sm"></span></p>
+      <p><strong>Average k = </strong><span class="blank"></span> &nbsp;&nbsp; Units: <span class="blank-sm"></span></p>
+    </div>
+
+    <h4>Summary</h4>
+    <table>
+      <tr><th>Parameter</th><th>Symbol</th><th>Value</th></tr>
+      <tr><td>Order w.r.t. Br₂</td><td>p</td><td class="write"></td></tr>
+      <tr><td>Order w.r.t. acetone</td><td>n</td><td class="write"></td></tr>
+      <tr><td>Order w.r.t. H⁺</td><td>m</td><td class="write"></td></tr>
+      <tr><td>Rate constant</td><td>k</td><td class="write"></td></tr>
+    </table>
+
+    <p style="margin-top:12px;"><strong>Final Rate Law:</strong></p>
+    <div class="formula-ref" style="font-size:11pt; text-align:center;">
+      rate = <span class="blank-sm"></span> × [acetone]<sup><span class="blank-xs"></span></sup> [H⁺]<sup><span class="blank-xs"></span></sup> [Br₂]<sup><span class="blank-xs"></span></sup>
+    </div>
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="section page-break">
+    <h3>Discussion Questions</h3>
+
+    <h4>Q1. Did your prediction about Run C match your results? Use your data to explain why or why not.</h4>
+    <div class="write-box-lg"></div>
+
+    <h4>Q2. Explain in your own words why Br₂ is zero order. What does this tell us about the reaction mechanism?</h4>
+    <div class="write-box-lg"></div>
+
+    <h4>Q3. In Graph 1 (Runs A, B, C), the three lines are parallel but they reach zero at different times. Explain why Run C takes longer to go colorless if its rate is the same as Run A.</h4>
+    <div class="write-box-lg"></div>
+
+    <h4>Q4. Run E went faster than Run B. Explain why doubling the acetone increased the rate, given your knowledge of the reaction mechanism.</h4>
+    <div class="write-box-lg"></div>
+
+    <h4>Q5. Write a two-step mechanism for this reaction that is consistent with your rate law. Label which step is rate-determining.</h4>
+    <div class="write-box-lg" style="min-height:100px;"></div>
+
+    <h4>Q6. Calculate the concentration of H⁺ that would be required to double the reaction rate compared to Run B, keeping everything else constant.</h4>
+    <div class="calc-box"></div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="section">
+    <h3>Lab Report Checklist</h3>
+    <table>
+      <tr><th style="width:40px;">✓</th><th style="text-align:left;">Item</th></tr>
+      <tr><td class="write"></td><td>Standard curve (Beer's Law) with equation and R²</td></tr>
+      <tr><td class="write"></td><td>Initial concentration calculations for all 5 runs</td></tr>
+      <tr><td class="write"></td><td>Data tables for all 5 runs (absorbance vs time)</td></tr>
+      <tr><td class="write"></td><td>Graph 1: [Br₂] vs time for Runs A, B, C (all on same plot, trendlines, slopes recorded)</td></tr>
+      <tr><td class="write"></td><td>Graph 2: [Br₂] vs time for Runs B, D, E (all on same plot, trendlines, slopes recorded)</td></tr>
+      <tr><td class="write"></td><td>Slope comparison table for Part 1 (equal slopes → p = 0)</td></tr>
+      <tr><td class="write"></td><td>Ratio calculations for m (D vs B) and n (E vs B) with work shown</td></tr>
+      <tr><td class="write"></td><td>k calculated from Runs B, D, E separately and averaged</td></tr>
+      <tr><td class="write"></td><td>Final rate law with numeric values</td></tr>
+      <tr><td class="write"></td><td>All 6 discussion questions answered</td></tr>
+    </table>
+  </div>
+
+  <div style="text-align:center; padding:14px 0; border-top:1px solid black; color:#444; font-size:9.5pt;">
+    CHM152 · Laboratory 4 V2 · Bromination of Acetone · Scheme 1 Design
+  </div>
+
+</div>
+</body>
+</html>

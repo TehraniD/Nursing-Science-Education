@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 http://www.imsglobal.org/xsd/ims_qtiasiv1p2p1.xsd">
+  <assessment ident="week6_practice_quiz" title="HCR-240 Week 6 Practice Quiz">
+    <qtimetadata>
+      <qtimetadatafield>
+        <fieldlabel>cc_maxattempts</fieldlabel>
+        <fieldentry>unlimited</fieldentry>
+      </qtimetadatafield>
+    </qtimetadata>
+    <section ident="root_section">
+
+      <!-- Question 1 -->
+      <item ident="q001" title="Question 1">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Inflammation of bone, tissue and muscles:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Rheumatology</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Cardiology</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Neurology</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Dermatology</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 2 -->
+      <item ident="q002" title="Question 2">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Main treatment for Lyme disease:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Antibiotics</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Antivirals</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Antifungals</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Surgery</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 3 -->
+      <item ident="q003" title="Question 3">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Erythema Migrans (EM) is a characteristic sign of:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Lyme Disease</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Rheumatoid Arthritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Lupus</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Psoriasis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 4 -->
+      <item ident="q004" title="Question 4">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Inflammation of muscles:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Myositis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Arthritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Osteitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Tendonitis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 5 -->
+      <item ident="q005" title="Question 5">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Kyphosis is commonly associated with:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Osteoporosis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Scoliosis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Lordosis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Osteoarthritis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 6 -->
+      <item ident="q006" title="Question 6">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Bone that forms at the margin of cartilage loss:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Osteophytes</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Osteoclasts</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Osteoblasts</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Osteocytes</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 7 -->
+      <item ident="q007" title="Question 7">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Which viral infection can be transmitted by bodily fluid, blood products and sexual contacts and there is a vaccine available for it:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Hepatitis B</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Hepatitis C</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">HIV</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Hepatitis A</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 8 -->
+      <item ident="q008" title="Question 8">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">A stage of bone infection that involves bone necrosis:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Sequestrum</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Involucrum</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Cloaca</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Abscess</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 9 -->
+      <item ident="q009" title="Question 9">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">What disease is typically involved with fatty stool (steatorrhea)?</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Celiac Disease</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Crohn's Disease</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Ulcerative Colitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Irritable Bowel Syndrome</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 10 -->
+      <item ident="q010" title="Question 10">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">This is a disease in which bone matrix within the compact bone starts to thin out:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Osteoporosis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Osteopenia</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Osteoarthritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Osteomyelitis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 11 -->
+      <item ident="q011" title="Question 11">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Cullen sign is associated with which condition?</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Pancreatitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Appendicitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Cholecystitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Diverticulitis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 12 -->
+      <item ident="q012" title="Question 12">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Lean proteins and baked foods like baked chicken and steamed rice are the best selection of meal for a patient who is recovering from which disease?</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Cholecystitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Pancreatitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Gastritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Hepatitis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 13 -->
+      <item ident="q013" title="Question 13">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Early signs of trabecular matrix thinning is associated with which stage, and this is before osteoporosis?</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Osteopenia</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Osteoporosis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Osteogenesis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Osteolysis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 14 -->
+      <item ident="q014" title="Question 14">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Increased pain in the abdomen and in the epigastric region radiating to the back when lying supine is associated with which disease?</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Pancreatitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Cholecystitis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Gastritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Peptic Ulcer</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Question 15 -->
+      <item ident="q015" title="Question 15">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Bouchard's nodes are typically seen in proximal interphalangeal joints in which disease and patient presents usually with joint pain, joint swelling, and limited range of movement:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Osteoarthritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Rheumatoid Arthritis</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Gout</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Psoriatic Arthritis</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- Bonus Question -->
+      <item ident="q016" title="Question 16 (Bonus)">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>multiple_choice_question</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>1</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Black, tarry stool is medically termed:</mattext>
+          </material>
+          <response_lid ident="response1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="choice_a">
+                <material>
+                  <mattext texttype="text/plain">Melena</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_b">
+                <material>
+                  <mattext texttype="text/plain">Steatorrhea</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_c">
+                <material>
+                  <mattext texttype="text/plain">Hematochezia</mattext>
+                </material>
+              </response_label>
+              <response_label ident="choice_d">
+                <material>
+                  <mattext texttype="text/plain">Diarrhea</mattext>
+                </material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes>
+            <decvar maxvalue="100" minvalue="0" varname="SCORE" vartype="Decimal"/>
+          </outcomes>
+          <respcondition continue="No">
+            <conditionvar>
+              <varequal respident="response1">choice_a</varequal>
+            </conditionvar>
+            <setvar action="Set" varname="SCORE">100</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+    </section>
+  </assessment>
+</questestinterop>

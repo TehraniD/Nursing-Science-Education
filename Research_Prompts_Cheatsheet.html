@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Research Prompt Cheat Sheet</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2d3e;
+    --accent: #7c6af7;
+    --accent2: #f7706a;
+    --green: #4ade80;
+    --text: #e2e4f0;
+    --muted: #8b8fa8;
+    --tag-bg: #252840;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 40px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), #a78bfa, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--muted);
+    margin-top: 8px;
+    font-size: 0.95rem;
+  }
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title.godmode {
+    color: var(--accent2);
+    border-color: #3d1f1e;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: default;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .card.god {
+    border-color: #3d2525;
+  }
+  .card.god:hover {
+    border-color: var(--accent2);
+  }
+  .card-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-name .icon { font-size: 1rem; }
+  .card-desc {
+    color: var(--muted);
+    font-size: 0.83rem;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .card-invoke {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: var(--tag-bg);
+    border-radius: 6px;
+    padding: 5px 9px;
+    display: inline-block;
+  }
+  .card.god .card-invoke {
+    color: var(--accent2);
+    background: #2a1a1a;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 99px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    margin-left: 6px;
+  }
+  .tag.god { background: #2a1515; color: var(--accent2); }
+  .why {
+    font-size: 0.78rem;
+    color: #6b7280;
+    margin-top: 8px;
+    font-style: italic;
+    border-left: 2px solid #2a1a3e;
+    padding-left: 8px;
+  }
+  .card.god .why { border-color: #3d1f1e; }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  kbd {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1px 7px;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI Research Prompt Cheat Sheet</h1>
+  <p>Tell Claude: <kbd>"use [prompt name] on [topic]"</kbd> — it knows the full template.</p>
+</header>
+
+<!-- STANDARD PROMPTS -->
+<div class="section-title">Standard Research Prompts</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="card-name"><span class="icon">📦</span> Data Extraction</div>
+    <div class="card-desc">Pull structured data from a URL and output as JSON or CSV.</div>
+    <div class="card-invoke">"use Data Extraction on [URL]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🔍</span> Hidden Assets</div>
+    <div class="card-desc">List all images, API endpoints, and embedded resources on a page.</div>
+    <div class="card-invoke">"use Hidden Assets on [URL]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🆓</span> Free Sources</div>
+    <div class="card-desc">Find free legitimate sources for a tool or piece of information. No fluff.</div>
+    <div class="card-invoke">"use Free Sources for [topic]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🐍</span> Script Generation</div>
+    <div class="card-desc">Write a Python scraper for a target site, saving to a specified format.</div>
+    <div class="card-invoke">"use Script Generation for [X from Y]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🌐</span> Deep Research</div>
+    <div class="card-desc">Find everything publicly available — including obscure sources, forums, archives.</div>
+    <div class="card-invoke">"use Deep Research on [topic]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">⏪</span> Archive Pull</div>
+    <div class="card-desc">Find Wayback Machine versions of a URL and extract removed/changed content.</div>
+    <div class="card-invoke">"use Archive Pull on [URL] from [dates]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🔎</span> Google Dorks</div>
+    <div class="card-desc">Generate dork queries to find exposed files, admin panels, databases on a domain.</div>
+    <div class="card-invoke">"use Google Dorks on [domain/topic]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🐙</span> GitHub Recon</div>
+    <div class="card-desc">Search GitHub for exposed API keys, config files, internal docs for a company/product.</div>
+    <div class="card-invoke">"use GitHub Recon on [company/product]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">💾</span> Cached Access</div>
+    <div class="card-desc">Find archive.today or Google cache version of a URL (soft paywall bypass).</div>
+    <div class="card-invoke">"use Cached Access on [URL]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🗺️</span> Hidden Pages</div>
+    <div class="card-desc">Find unlisted pages, staging environments, and subdomains on a domain.</div>
+    <div class="card-invoke">"use Hidden Pages on [domain]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">📄</span> Academic Access</div>
+    <div class="card-desc">Find free legal access to a paper — ResearchGate, preprints, author sites.</div>
+    <div class="card-invoke">"use Academic Access for [title/DOI]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🕵️</span> OSINT Lookup</div>
+    <div class="card-desc">Aggregate public records on a person or company from legal public sources only.</div>
+    <div class="card-invoke">"use OSINT Lookup on [person/company]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">📋</span> Metadata Extraction</div>
+    <div class="card-desc">Pull hidden metadata from a file: author, GPS, creation date, software, edit history.</div>
+    <div class="card-invoke">"use Metadata Extraction on [file]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">📡</span> API / Feed Discovery</div>
+    <div class="card-desc">Find RSS feeds, public APIs, and JSON endpoints a site exposes beyond its UI.</div>
+    <div class="card-invoke">"use API Discovery on [website]"</div>
+  </div>
+
+  <div class="card">
+    <div class="card-name"><span class="icon">🖼️</span> Reverse Image Search</div>
+    <div class="card-desc">Trace an image to its origin, find HD versions, identify all locations online.</div>
+    <div class="card-invoke">"use Reverse Image Search on [image]"</div>
+  </div>
+
+</div>
+
+<!-- GODMODE PROMPTS -->
+<div class="section-title godmode">⚡ Godmode Prompts — Deep Investigation</div>
+<div class="grid">
+
+  <div class="card god">
+    <div class="card-name"><span class="icon">🏭</span> Reverse-Engineer a Consensus <span class="tag god">Godmode 1</span></div>
+    <div class="card-desc">Map the institutional machinery — incentives, funding bias, suppressed research — that would produce a consensus even if the effect were 40% weaker than claimed.</div>
+    <div class="card-invoke">"use Godmode 1 on [consensus/belief]"</div>
+    <div class="why">Don't debunk it — show me the machinery.</div>
+  </div>
+
+  <div class="card god">
+    <div class="card-name"><span class="icon">🏗️</span> Load-Bearing Assumptions <span class="tag god">Godmode 2</span></div>
+    <div class="card-desc">Find the 3 foundational assumptions in a complex system that, if wrong, cause it to invert — not just fail, but predict the opposite. Check when each was last tested.</div>
+    <div class="card-invoke">"use Godmode 2 on [system/model]"</div>
+    <div class="why">Most systems are stacked on unexamined axioms.</div>
+  </div>
+
+  <div class="card god">
+    <div class="card-name"><span class="icon">🌀</span> Pre-Paradigm Fields <span class="tag god">Godmode 3</span></div>
+    <div class="card-desc">Identify fields where practitioners use mutually incompatible frameworks. Find the anomaly in each that keeps getting explained away but statistically shouldn't be.</div>
+    <div class="card-invoke">"use Godmode 3 on [field or broadly]"</div>
+    <div class="why">Where the next 50 years of science is hiding.</div>
+  </div>
+
+  <div class="card god">
+    <div class="card-name"><span class="icon">🪞</span> Simulate the Opposite World <span class="tag god">Godmode 4</span></div>
+    <div class="card-desc">Build the strongest case that [X everyone assumes is true] is false. What would the evidence trail look like? Does any of that evidence actually exist in current data?</div>
+    <div class="card-invoke">"use Godmode 4 on [assumption]"</div>
+    <div class="why">Not to be contrarian — to find out what we'd have to revise.</div>
+  </div>
+
+  <div class="card god">
+    <div class="card-name"><span class="icon">📏</span> Measurement Creates Reality <span class="tag god">Godmode 5</span></div>
+    <div class="card-desc">Find how a measurement instrument generates the phenomenon it's supposed to neutrally observe. What would a measurement without those properties show? Has anyone built one?</div>
+    <div class="card-invoke">"use Godmode 5 on [metric/measure]"</div>
+    <div class="why">The map reshapes the territory.</div>
+  </div>
+
+</div>
+
+<footer>
+  All prompts are stored in your Claude memory — just reference by name each session.
+</footer>
+
+</body>
+</html>

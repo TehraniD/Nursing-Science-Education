@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHM 130 Lab 1: Aspirin (ASA) Synthesis</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .safety-warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .safety-warning strong {
+            color: #856404;
+        }
+        .timer {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        .question-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #667eea;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .step {
+            background-color: #e8eaf6;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #5c6bc0;
+        }
+        .step-number {
+            background-color: #5c6bc0;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 12px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .checkpoint {
+            background-color: #e8f5e9;
+            border: 2px solid #4caf50;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            margin: 20px 0;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .btn {
+            background-color: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background-color: #5568d3;
+        }
+        .chemical-structure {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+        }
+        .learning-objectives {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .learning-objectives ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        @media print {
+            .btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>CHM 130 Laboratory 1</h1>
+        <h2>Synthesis of Aspirin (Acetylsalicylic Acid)</h2>
+        <p><strong>Total Lab Time:</strong> 3 Hours | <strong>Post-Lab Assignment:</strong> 2 Hours</p>
+    </div>
+
+    <!-- PRE-LAB SECTION (40-45 minutes total) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB REVIEW: 30 minutes</div>
+        <h2 class="section-title">Pre-Lab: Background Information</h2>
+
+        <div class="learning-objectives">
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Understand organic synthesis and esterification reactions</li>
+                <li>Apply concepts of limiting reactants and percent yield</li>
+                <li>Practice proper laboratory techniques including recrystallization</li>
+                <li>Recognize the importance of pharmaceutical chemistry in healthcare</li>
+            </ul>
+        </div>
+
+        <h3>Introduction to Aspirin</h3>
+        <p>Aspirin (acetylsalicylic acid, ASA) is one of the most widely used medications in the world. As a future healthcare professional, understanding how medications are synthesized gives you insight into pharmaceutical chemistry and drug development.</p>
+
+        <h3>History</h3>
+        <p>Aspirin has been called the "wonder drug" of the 20th century. While willow bark (containing salicin) was used for centuries to reduce fever and pain, it wasn't until 1897 that Felix Hoffmann at Bayer synthesized acetylsalicylic acid in a pure, stable form. This discovery revolutionized medicine.</p>
+
+        <div class="chemical-structure">
+            <h3>The Chemical Reaction</h3>
+            <p><strong>Salicylic Acid + Acetic Anhydride → Aspirin + Acetic Acid</strong></p>
+            <p>C₇H₆O₃ + C₄H₆O₃ → C₉H₈O₄ + C₂H₄O₂</p>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">This is an <strong>esterification reaction</strong> where an ester bond is formed between salicylic acid and acetic anhydride, catalyzed by phosphoric acid.</p>
+        </div>
+
+        <h3>Clinical Application</h3>
+        <p>As nurses, you'll encounter patients taking aspirin for various reasons:</p>
+        <ul>
+            <li><strong>Pain relief (analgesic):</strong> Headaches, muscle pain</li>
+            <li><strong>Fever reduction (antipyretic):</strong> Managing fevers</li>
+            <li><strong>Anti-inflammatory:</strong> Arthritis and inflammation</li>
+            <li><strong>Antiplatelet:</strong> Preventing heart attacks and strokes (low-dose aspirin)</li>
+        </ul>
+
+        <div class="safety-warning">
+            <strong>⚠️ SAFETY CONSIDERATIONS</strong>
+            <ul>
+                <li>Salicylic acid and acetic anhydride are irritants - avoid skin contact</li>
+                <li>Acetic anhydride has a strong, vinegar-like odor - work in well-ventilated areas</li>
+                <li>Wear safety goggles and gloves at all times</li>
+                <li>Hot water bath can cause burns - handle with care</li>
+                <li>Never taste or consume laboratory-synthesized chemicals</li>
+            </ul>
+        </div>
+
+        <h3>Key Concepts Review</h3>
+        <div class="step">
+            <strong>Limiting Reactant:</strong> The reactant that is completely consumed first, limiting the amount of product formed.
+        </div>
+        <div class="step">
+            <strong>Theoretical Yield:</strong> The maximum amount of product that can be formed based on stoichiometry.
+        </div>
+        <div class="step">
+            <strong>Percent Yield:</strong> (Actual Yield / Theoretical Yield) × 100%
+        </div>
+        <div class="step">
+            <strong>Recrystallization:</strong> A purification technique where a solid is dissolved in hot solvent and reforms as pure crystals upon cooling.
+        </div>
+    </div>
+
+    <!-- PRE-LAB QUESTIONS (10-15 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ PRE-LAB QUESTIONS: 10-15 minutes</div>
+        <h2 class="section-title">Pre-Lab Questions</h2>
+        <p><em>Answer these questions before beginning the experiment. Your instructor will review answers before you proceed.</em></p>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> What are the three main clinical uses of aspirin you might encounter as a nurse?
+            <textarea id="prelab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> What type of chemical reaction is used to synthesize aspirin?
+            <textarea id="prelab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> List three important safety precautions for this lab.
+            <textarea id="prelab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> If you start with 2.0 g of salicylic acid (molar mass = 138 g/mol), what is the theoretical yield of aspirin (molar mass = 180 g/mol)? Show your calculation.
+            <textarea id="prelab-q4" placeholder="Show your work here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> Why should you NEVER consume chemicals made in a laboratory, even if they're the same as medications?
+            <textarea id="prelab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor review your pre-lab questions before proceeding to the experiment.
+            <br><input type="checkbox" id="instructor-check1"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials1">
+        </div>
+    </div>
+
+    <!-- EXPERIMENT SECTION (90 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ EXPERIMENT: 90 minutes</div>
+        <h2 class="section-title">Experimental Procedure</h2>
+
+        <h3>Materials Needed</h3>
+        <table class="data-table">
+            <tr>
+                <th>Chemicals</th>
+                <th>Equipment</th>
+            </tr>
+            <tr>
+                <td>
+                    • Salicylic acid (2.0 g)<br>
+                    • Acetic anhydride (5 mL)<br>
+                    • Phosphoric acid (5 drops, catalyst)<br>
+                    • Ethanol<br>
+                    • Distilled water<br>
+                    • Ice
+                </td>
+                <td>
+                    • 125 mL Erlenmeyer flask<br>
+                    • Hot water bath<br>
+                    • Graduated cylinder<br>
+                    • Stirring rod<br>
+                    • Büchner funnel and filter paper<br>
+                    • Vacuum filtration apparatus<br>
+                    • Thermometer<br>
+                    • Balance
+                </td>
+            </tr>
+        </table>
+
+        <h3>Procedure</h3>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Weigh salicylic acid (5 min)</strong><br>
+            Place a 125 mL Erlenmeyer flask on the balance and tare (zero) it. Add approximately 2.0 g of salicylic acid. Record the exact mass in the data table below.
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Add acetic anhydride (3 min)</strong><br>
+            Using a graduated cylinder, carefully measure 5 mL of acetic anhydride and add it to the flask containing salicylic acid. <em>Note: Acetic anhydride has a strong odor - avoid inhaling vapors.</em>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Add catalyst (2 min)</strong><br>
+            Add 5 drops of phosphoric acid to the flask using a dropper. This catalyst speeds up the esterification reaction.
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Heat the reaction mixture (15 min)</strong><br>
+            Place the Erlenmeyer flask in a hot water bath (75-85°C). Swirl gently every 2-3 minutes. The salicylic acid should completely dissolve. Continue heating for 10-15 minutes to ensure complete reaction.
+        </div>
+
+        <div class="checkpoint">
+            ✅ <strong>Lab Partner Check:</strong> Has the salicylic acid completely dissolved?
+            <br><input type="checkbox" id="partner-check1"> Partner initials: <input type="text" style="width: 200px;" id="partner-initials1">
+        </div>
+
+        <div class="step">
+            <span class="step-number">5</span>
+            <strong>Add water and cool (10 min)</strong><br>
+            Carefully remove the flask from the water bath. Add 20 mL of distilled water to decompose excess acetic anhydride. Carefully add 50 mL of room temperature water to the flask. Place the flask in an ice bath to crystallize the aspirin. Crystals should begin forming within 5-10 minutes.
+        </div>
+
+        <div class="step">
+            <span class="step-number">6</span>
+            <strong>Vacuum filtration (15 min)</strong><br>
+            Set up the vacuum filtration apparatus with a Büchner funnel and filter paper. Pour the crystal slurry onto the filter paper and wash the crystals with two 10 mL portions of ice-cold distilled water. Continue vacuum for 5 minutes to dry the crystals.
+        </div>
+
+        <div class="step">
+            <span class="step-number">7</span>
+            <strong>Recrystallization (optional if time permits) (20 min)</strong><br>
+            Transfer crude aspirin to a clean Erlenmeyer flask. Add minimal hot ethanol (just enough to dissolve). Filter while hot to remove impurities. Allow to cool slowly, then place in ice bath. Filter and dry the purified aspirin crystals.
+        </div>
+
+        <div class="step">
+            <span class="step-number">8</span>
+            <strong>Weigh product (5 min)</strong><br>
+            Weigh a piece of filter paper and record the mass. Transfer your dried aspirin crystals to the filter paper and weigh again. Calculate the mass of aspirin produced.
+        </div>
+
+        <div class="step">
+            <span class="step-number">9</span>
+            <strong>Observe crystal appearance (5 min)</strong><br>
+            Examine your aspirin crystals. Note the color, crystal shape, and any other observations.
+        </div>
+
+        <h3>Data Collection</h3>
+        <table class="data-table">
+            <tr>
+                <th>Measurement</th>
+                <th>Value</th>
+                <th>Units</th>
+            </tr>
+            <tr>
+                <td>Mass of salicylic acid (initial)</td>
+                <td><input type="text" id="mass-salicylic"></td>
+                <td>g</td>
+            </tr>
+            <tr>
+                <td>Volume of acetic anhydride</td>
+                <td><input type="text" id="vol-anhydride"></td>
+                <td>mL</td>
+            </tr>
+            <tr>
+                <td>Mass of filter paper</td>
+                <td><input type="text" id="mass-paper"></td>
+                <td>g</td>
+            </tr>
+            <tr>
+                <td>Mass of filter paper + aspirin</td>
+                <td><input type="text" id="mass-paper-aspirin"></td>
+                <td>g</td>
+            </tr>
+            <tr>
+                <td><strong>Mass of aspirin produced (actual yield)</strong></td>
+                <td><input type="text" id="actual-yield"></td>
+                <td>g</td>
+            </tr>
+            <tr>
+                <td>Appearance of crystals</td>
+                <td colspan="2"><input type="text" id="crystal-appearance"></td>
+            </tr>
+        </table>
+
+        <div class="checkpoint">
+            ✅ <strong>Instructor Checkpoint:</strong> Have your instructor verify your data before cleanup.
+            <br><input type="checkbox" id="instructor-check2"> Instructor initials: <input type="text" style="width: 200px;" id="instructor-initials2">
+        </div>
+    </div>
+
+    <!-- POST-LAB SECTION (30-45 minutes) -->
+    <div class="section">
+        <div class="timer">⏱️ POST-LAB: 30-45 minutes</div>
+        <h2 class="section-title">Post-Lab Analysis and Questions</h2>
+
+        <h3>Calculations</h3>
+
+        <div class="question-box">
+            <strong>Calculation 1:</strong> Calculate the theoretical yield of aspirin from your mass of salicylic acid.<br>
+            <em>Hints: Molar mass of salicylic acid = 138.12 g/mol; Molar mass of aspirin = 180.16 g/mol; 1:1 molar ratio</em>
+            <textarea id="calc1" placeholder="Show your calculation here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Calculation 2:</strong> Calculate your percent yield.<br>
+            <em>Percent Yield = (Actual Yield / Theoretical Yield) × 100%</em>
+            <textarea id="calc2" placeholder="Show your calculation here..."></textarea>
+        </div>
+
+        <h3>Analysis Questions</h3>
+
+        <div class="question-box">
+            <strong>Question 1:</strong> Was salicylic acid or acetic anhydride the limiting reactant in this experiment? Explain your reasoning.
+            <textarea id="postlab-q1" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 2:</strong> Why was your percent yield less than 100%? List at least three possible reasons for lost product.
+            <textarea id="postlab-q2" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 3:</strong> Why is it important to cool the flask in an ice bath during crystallization?
+            <textarea id="postlab-q3" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 4:</strong> What was the purpose of washing the aspirin crystals with ice-cold water rather than room temperature water?
+            <textarea id="postlab-q4" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 5:</strong> A patient tells you they take "a baby aspirin" (81 mg) every day. Based on what you learned today, explain to the patient why this medication helps prevent heart attacks and strokes.
+            <textarea id="postlab-q5" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <div class="question-box">
+            <strong>Question 6:</strong> Some patients are allergic to aspirin. What are some alternative medications that provide similar pain relief? (You may need to do brief research for this question.)
+            <textarea id="postlab-q6" placeholder="Type your answer here..."></textarea>
+        </div>
+
+        <h3>Clinical Connection</h3>
+        <div class="question-box">
+            <strong>Reflection:</strong> Describe a clinical scenario where you, as a nurse, would need to educate a patient about aspirin use. Consider contraindications, side effects, and drug interactions.
+            <textarea id="clinical-reflection" placeholder="Type your reflection here..." style="min-height: 120px;"></textarea>
+        </div>
+
+        <div class="checkpoint">
+            <strong>Before Leaving Lab:</strong>
+            <ul>
+                <li><input type="checkbox"> Clean and dry all glassware</li>
+                <li><input type="checkbox"> Dispose of chemicals properly (follow instructor directions)</li>
+                <li><input type="checkbox"> Wipe down your work station</li>
+                <li><input type="checkbox"> Complete all post-lab questions above</li>
+                <li><input type="checkbox"> Submit this worksheet to Canvas</li>
+            </ul>
+        </div>
+
+        <button class="btn" onclick="window.print()">🖨️ Print Worksheet</button>
+        <button class="btn" onclick="alert('Save your work! Use your browser\'s save function or copy your responses to Canvas.')">💾 Save Responses</button>
+    </div>
+
+    <!-- POST-LAB ASSIGNMENT (2 hours, completed outside of lab) -->
+    <div class="section">
+        <div class="timer">📹 POST-LAB VIDEO ASSIGNMENT: 2 hours (complete outside of lab)</div>
+        <h2 class="section-title">Post-Lab Video Assignment</h2>
+
+        <p><strong>Due:</strong> Within 48 hours of lab completion</p>
+
+        <div class="learning-objectives">
+            <h3>Assignment Instructions</h3>
+            <p>Create a 2-3 minute video that includes:</p>
+            <ol>
+                <li><strong>Lab Summary (45-60 seconds):</strong> Briefly describe the aspirin synthesis process and your results</li>
+                <li><strong>Clinical Application (60-90 seconds):</strong> Discuss how understanding pharmaceutical chemistry helps you as a future healthcare professional. Include specific examples of how you'll use this knowledge in patient care</li>
+                <li><strong>Key Takeaway (15-30 seconds):</strong> Share one important concept you learned that you didn't know before</li>
+            </ol>
+        </div>
+
+        <div class="question-box">
+            <strong>Video Link Submission:</strong><br>
+            Upload your video to Canvas or paste your YouTube/OneDrive link here:
+            <input type="text" id="video-link" placeholder="Paste video link here...">
+        </div>
+
+        <div class="safety-warning">
+            <strong>💡 Pro Tips for Your Video:</strong>
+            <ul>
+                <li>You don't need fancy equipment - phone camera is fine</li>
+                <li>Speak clearly and maintain good eye contact with the camera</li>
+                <li>Consider showing your data table or calculations</li>
+                <li>Be professional but be yourself</li>
+                <li>Practice once before recording your final version</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section" style="background-color: #f0f4ff;">
+        <h3>Additional Resources</h3>
+        <ul>
+            <li>📖 Textbook: Chapter on Organic Chemistry and Esters</li>
+            <li>🔗 <a href="https://www.acs.org/content/acs/en/education/whatischemistry/landmarks/aspirin.html" target="_blank">American Chemical Society: The History of Aspirin</a></li>
+            <li>🎥 Khan Academy: Esterification Reactions</li>
+            <li>📱 Office Hours: Wednesdays 2-4 PM or by appointment</li>
+        </ul>
+    </div>
+
+    <script>
+        // Auto-save functionality
+        function autoSave() {
+            const formData = {};
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                if(input.id) {
+                    formData[input.id] = input.value;
+                    localStorage.setItem('aspirin_lab_' + input.id, input.value);
+                }
+            });
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            const inputs = document.querySelectorAll('input[type="text"], textarea');
+            inputs.forEach(input => {
+                if(input.id) {
+                    const savedValue = localStorage.getItem('aspirin_lab_' + input.id);
+                    if(savedValue) {
+                        input.value = savedValue;
+                    }
+                }
+            });
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(autoSave, 30000);
+
+        // Load saved data when page loads
+        window.onload = loadSavedData;
+
+        // Save before closing
+        window.addEventListener('beforeunload', autoSave);
+    </script>
+</body>
+</html>
