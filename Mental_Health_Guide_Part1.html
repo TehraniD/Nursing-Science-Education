@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Study Guide - Part 1: Bipolar Disorders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .flashcard-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            backface-visibility: hidden;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans pb-16">
+    <header class="bg-indigo-700 text-white py-6 shadow-md">
+        <div class="max-w-5xl mx-auto px-4">
+            <h1 class="text-3xl font-bold">Mental Health Nursing: Comprehensive Review</h1>
+            <p class="text-indigo-200 mt-2">Part 1: Bipolar and Related Disorders</p>
+        </div>
+    </header>
+
+    <div class="max-w-5xl mx-auto px-4 mt-8">
+        <div class="flex gap-4 mb-8">
+            <a href="Mental_Health_Guide_Part1.html" class="bg-indigo-600 text-white px-4 py-2 rounded shadow">Part 1: Bipolar & Mood</a>
+            <a href="Mental_Health_Guide_Part2.html" class="bg-white text-indigo-700 hover:bg-indigo-100 border border-indigo-600 px-4 py-2 rounded shadow">Part 2: Thought Disorders</a>
+            <a href="Mental_Health_Guide_Part3.html" class="bg-white text-indigo-700 hover:bg-indigo-100 border border-indigo-600 px-4 py-2 rounded shadow">Part 3: Substance Use</a>
+        </div>
+
+        <section class="bg-white rounded-lg shadow-sm p-6 mb-8 border-t-4 border-indigo-500">
+            <h2 class="text-2xl font-bold mb-4 text-indigo-800">Concept Overview</h2>
+            <ul class="list-disc pl-6 space-y-2 text-lg">
+                <li><strong>Bipolar I vs Bipolar II vs Cyclothymic:</strong> Distinguishing severity and duration of manic vs hypomanic episodes.</li>
+                <li><strong>Nursing Priorities in Acute Mania:</strong> Safety, milieu management, and meeting physiological needs (nutrition, hydration, sleep).</li>
+                <li><strong>Psychopharmacology:</strong> Lithium and its narrow therapeutic index; mood-stabilizing antiepileptics.</li>
+            </ul>
+        </section>
+
+        <h2 class="text-2xl font-bold mb-6 text-gray-700">Interactive Concept Check</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="flashcards-container">
+            <!-- Flashcards injected via JS -->
+        </div>
+    </div>
+
+    <footer class="mt-12 text-center text-gray-500 text-sm pb-8">
+        <p>&copy; 2026 Tehrani Labs &middot; Nursing Science Education &middot; tehranilabs.org</p>
+        <p class="italic mt-1">Disclaimer: This is a secure, conceptual study guide meant for NCLEX/Exam preparation.</p>
+    </footer>
+
+    <script>
+        const qaPairs = [
+            {
+                q: "What is the primary difference between Bipolar I and Bipolar II Disorder?",
+                a: "Bipolar I requires at least one full manic episode, which may include psychosis or require hospitalization. Bipolar II involves at least one hypomanic episode and one major depressive episode, but NO full manic episodes."
+            },
+            {
+                q: "Describe the presentation of Cyclothymic Disorder.",
+                a: "It involves alternating periods of hypomanic symptoms and mild-to-moderate depressive symptoms (not meeting criteria for a major depressive episode) lasting for at least 2 years in adults."
+            },
+            {
+                q: "What are the priority nursing interventions for a patient in acute mania?",
+                a: "1. Promote safety and decrease stimulation (low noise/lighting).\n2. Provide 'finger foods' that are high in calories and protein since they cannot sit still to eat.\n3. Ensure adequate sleep/rest periods."
+            },
+            {
+                q: "What is the normal therapeutic range for Lithium, and what are the early signs of toxicity?",
+                a: "Therapeutic range is typically 0.6 - 1.2 mEq/L. Early signs of toxicity (usually >1.5 mEq/L) include fine hand tremors, GI upset (nausea/vomiting/diarrhea), polyuria, and muscle weakness."
+            },
+            {
+                q: "How does sodium intake affect Lithium levels?",
+                a: "Lithium is an ion similar to sodium. If sodium levels drop (due to sweating, dehydration, or low salt diet), the kidneys retain Lithium, leading to dangerous toxicity. Patients must maintain consistent sodium and fluid intake."
+            },
+            {
+                q: "Name two anticonvulsant medications used as mood stabilizers in bipolar disorder.",
+                a: "Valproic acid (Depakote), Carbamazepine (Tegretol), and Lamotrigine (Lamictal). Note: Lamotrigine carries a risk for a life-threatening rash known as Stevens-Johnson Syndrome."
+            }
+        ];
+
+        const container = document.getElementById('flashcards-container');
+        
+        qaPairs.forEach((pair, index) => {
+            container.innerHTML += `
+                <div class="flashcard cursor-pointer perspective h-64" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-inner relative w-full h-full text-center shadow-lg rounded-xl">
+                        <!-- Front -->
+                        <div class="flashcard-front absolute w-full h-full bg-indigo-50 border-2 border-indigo-200 rounded-xl flex items-center justify-center p-6">
+                            <h3 class="text-xl font-semibold text-indigo-900">${pair.q}</h3>
+                            <p class="absolute bottom-4 text-sm text-indigo-400">Click to reveal answer</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="flashcard-back absolute w-full h-full bg-indigo-600 text-white rounded-xl flex items-center justify-center p-6 text-left overflow-y-auto">
+                            <p class="text-lg leading-relaxed whitespace-pre-line">${pair.a}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
