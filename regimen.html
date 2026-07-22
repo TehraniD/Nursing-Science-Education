@@ -9,6 +9,12 @@
 <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d1014" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%231f6f7a'/%3E%3Ctext%20x='16'%20y='23'%20font-family='ui-monospace,monospace'%20font-size='19'%20font-weight='700'%20text-anchor='middle'%20fill='white'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="regimen.webmanifest">
+<link rel="apple-touch-icon" href="regimen-icon.svg">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Regimen">
 
 <!--
   Optional: enable richer interactive charts on GitHub Pages by uncommenting
@@ -1765,6 +1771,16 @@ function clinicianSummaryHtml() {
 
 /* ---------- Boot ---------- */
 render();
+
+/* ---------- Offline install (service worker) ----------
+   Registered with a narrow scope so it only ever controls this
+   page — never the other pages on this Pages site. No-ops on
+   file:// or unsupported browsers. */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js', { scope: './regimen.html' }).catch(() => {});
+  });
+}
 </script>
 </body>
 </html>

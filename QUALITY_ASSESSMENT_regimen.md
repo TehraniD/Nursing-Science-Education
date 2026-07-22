@@ -132,8 +132,7 @@ references and individual labs:
 
 ## 🚀 Recommended expansions (prioritized backlog)
 
-1. **PWA** — add a web-app manifest + service worker. An offline, local-first health tool is an
-   ideal installable PWA (home-screen icon, reliable offline load).
+1. ~~**PWA** — add a web-app manifest + service worker.~~ ✅ **Done** (see Follow-up below).
 2. **Encryption at rest** — optional passphrase to encrypt the `localStorage` blob; health data
    currently sits in plaintext readable by any script on the origin.
 3. **Edit + undo for entries** — the Log page deletes but cannot edit; deletions have no undo.
@@ -142,8 +141,7 @@ references and individual labs:
 5. **Injection-site suggestion** — recommend the least-recently-used site from the rotation map.
 6. **Dose reminders** — optional local notifications for due doses.
 7. **Resolve F9** — wire real Chart.js (pinned SRI) or delete the dead hook.
-8. **Test harness** — the pure helpers (`bmi`, `expectedDoses`, `interpretLab`, the PK
-   summation) are directly unit-testable; a tiny test file would prevent regressions like F2.
+8. ~~**Test harness** — the pure helpers are directly unit-testable.~~ ✅ **Done** (see Follow-up below).
 9. **Hosting posture** — if "not for distribution" is a hard requirement, consider moving this
    file behind auth or out of the public Pages site; `noindex` alone does not restrict access.
 
@@ -158,3 +156,31 @@ references and individual labs:
 - **Runtime:** headless Chromium `--dump-dom` — confirmed the app boots and renders (seeded
   meds, nav, brand), `<!DOCTYPE html>` present (standards mode), and the mobile tab bar exposes
   all eight routes including the two that were previously unreachable.
+
+---
+
+## 🔁 Follow-up round — PWA + test harness
+
+Two highest-leverage backlog items were implemented after the initial fixes:
+
+### Installable / offline PWA
+- **`regimen.webmanifest`** — standalone display, theme/background `#0d1014`, an SVG icon, and
+  `scope`/`start_url` pinned to `./regimen.html`.
+- **`regimen-icon.svg`** — maskable-safe "R" brand icon (content kept inside the central safe zone).
+- **`sw.js`** — a stale-while-revalidate service worker that precaches the page, manifest, and
+  icon so Regimen loads with **no network**. It is registered by `regimen.html` with the narrow
+  scope `./regimen.html`, so it **only controls this page** and never intercepts the many other
+  educational pages served from this Pages site. It no-ops on `file://` and unsupported browsers.
+- `regimen.html` head gained `<link rel="manifest">`, an Apple touch icon, and
+  `apple-mobile-web-app-*` / `mobile-web-app-capable` metas for iOS/Android standalone launch.
+
+*Caveat:* the app is no longer strictly one file (it now ships three small sidecar assets). iOS
+home-screen icons require a PNG `apple-touch-icon`; the SVG works on Android/desktop Chrome, and a
+PNG can be added later if iOS install polish is wanted.
+
+### Regression test harness
+- **`regimen.test.mjs`** — dependency-free (`node regimen.test.mjs`, exits non-zero on failure).
+  It **extracts the real functions from `regimen.html`** (not copies) via brace-matching and
+  asserts `expectedDoses` (incl. the biweekly case that regressed), `esc`, `bmi`/`bmiCategory`,
+  `interpretLab`, and the unit conversions — plus sanity checks that the manifest parses, the
+  service worker parses, and both are correctly wired into the page. **37 assertions, all passing.**

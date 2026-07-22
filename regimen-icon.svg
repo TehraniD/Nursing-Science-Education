@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Regimen">
+  <!-- Full-bleed background so the icon works as a maskable icon (OS crops to its own shape). -->
+  <rect width="512" height="512" fill="#0d1014"/>
+  <!-- Brand tile kept within the maskable safe zone (central ~80%). -->
+  <rect x="106" y="106" width="300" height="300" rx="68" fill="#1f6f7a"/>
+  <text x="256" y="352" font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="220" font-weight="700" text-anchor="middle" fill="#ffffff">R</text>
+</svg>

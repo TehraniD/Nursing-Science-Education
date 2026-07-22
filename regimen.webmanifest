@@ -1,0 +1,20 @@
+{
+  "name": "Regimen — Personal Tracker",
+  "short_name": "Regimen",
+  "description": "Private, offline personal medication, lab, and pharmacokinetics tracker. All data stays on your device.",
+  "id": "/regimen.html",
+  "start_url": "./regimen.html",
+  "scope": "./regimen.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d1014",
+  "theme_color": "#0d1014",
+  "icons": [
+    {
+      "src": "regimen-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
