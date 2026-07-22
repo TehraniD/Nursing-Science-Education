@@ -1,6 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <title>Regimen — Personal Tracker</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d1014">
+<meta name="description" content="Regimen — a private, offline, single-file personal medication, lab, and pharmacokinetics tracker. All data stays in your browser; no network calls.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d1014" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%231f6f7a'/%3E%3Ctext%20x='16'%20y='23'%20font-family='ui-monospace,monospace'%20font-size='19'%20font-weight='700'%20text-anchor='middle'%20fill='white'%3ER%3C/text%3E%3C/svg%3E">
 
 <!--
   Optional: enable richer interactive charts on GitHub Pages by uncommenting
@@ -284,13 +292,14 @@
     .main { padding: 20px 16px 100px; }
     .page-head { flex-direction: column; align-items: stretch; }
     .mobile-tabs {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px;
+      display: grid; grid-template-columns: repeat(8, 1fr); gap: 1px;
       position: fixed; bottom: 0; left: 0; right: 0;
       background: var(--surface); border-top: 1px solid var(--border);
-      padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); z-index: 20;
+      padding: 6px 2px calc(6px + env(safe-area-inset-bottom)); z-index: 20;
     }
-    .mobile-tabs .nav-item { flex-direction: column; gap: 2px; padding: 6px 2px; font-size: 10.5px; text-align: center; justify-content: center; }
-    .mobile-tabs .nav-item .ic { width: 18px; height: 18px; }
+    .mobile-tabs .nav-item { flex-direction: column; gap: 2px; padding: 6px 1px; font-size: 10px; text-align: center; justify-content: center; }
+    .mobile-tabs .nav-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+    .mobile-tabs .nav-item .ic { width: 17px; height: 17px; }
   }
 
   /* ---------- Panel / dialog ---------- */
@@ -341,7 +350,9 @@
   .flag-note.info { background: var(--accent-soft); color: var(--accent-strong); border-color: var(--accent); }
   .flag-note.crit { background: var(--crit-soft); color: var(--crit); border-color: var(--crit); }
 </style>
+</head>
 
+<body>
 <div class="banner">
   <strong>Personal use</strong> &nbsp;·&nbsp; Not for distribution. Contains dose calculators, PK modeling, and lab interpretation intended solely for the clinician-user. Do not deploy publicly.
 </div>
@@ -478,14 +489,14 @@ function lbsFromKg(kg) { return kg / 0.453592; }
 
 /* ---------- Navigation ---------- */
 const ROUTES = [
-  { id: 'today',   label: 'Today',       icon: ICONS.today },
-  { id: 'log',     label: 'Log',         icon: ICONS.log },
-  { id: 'regimen', label: 'Regimen',     icon: ICONS.regimen },
-  { id: 'inject',  label: 'Injections',  icon: ICONS.inject },
-  { id: 'labs',    label: 'Labs',        icon: ICONS.labs },
-  { id: 'trends',  label: 'Trends',      icon: ICONS.trends },
-  { id: 'pk',      label: 'PK & Calc',   icon: ICONS.pk },
-  { id: 'data',    label: 'Data',        icon: ICONS.data },
+  { id: 'today',   label: 'Today',       short: 'Today',  icon: ICONS.today },
+  { id: 'log',     label: 'Log',         short: 'Log',    icon: ICONS.log },
+  { id: 'regimen', label: 'Regimen',     short: 'Meds',   icon: ICONS.regimen },
+  { id: 'inject',  label: 'Injections',  short: 'Sites',  icon: ICONS.inject },
+  { id: 'labs',    label: 'Labs',        short: 'Labs',   icon: ICONS.labs },
+  { id: 'trends',  label: 'Trends',      short: 'Trends', icon: ICONS.trends },
+  { id: 'pk',      label: 'PK & Calc',   short: 'PK',     icon: ICONS.pk },
+  { id: 'data',    label: 'Data',        short: 'Data',   icon: ICONS.data },
 ];
 
 let currentRoute = 'today';
@@ -514,12 +525,12 @@ function renderNav() {
 
   const mob = document.getElementById('nav-mobile');
   mob.innerHTML = '';
-  const mobileIds = ['today','log','regimen','labs','trends','data'];
+  const mobileIds = ['today','log','regimen','inject','labs','trends','pk','data'];
   mobileIds.forEach(id => {
     const r = ROUTES.find(x => x.id === id);
     const b = document.createElement('button');
     b.className = 'nav-item' + (currentRoute === id ? ' active' : '');
-    b.innerHTML = `<svg class="ic" viewBox="0 0 24 24">${r.icon}</svg><span>${r.label}</span>`;
+    b.innerHTML = `<svg class="ic" viewBox="0 0 24 24">${r.icon}</svg><span>${r.short || r.label}</span>`;
     b.onclick = () => go(id);
     mob.appendChild(b);
   });
@@ -532,12 +543,14 @@ function go(route) {
 }
 
 /* ---------- Panels ---------- */
+let _panelLastFocus = null;
 function openPanel({ title, body, actions }) {
   const root = document.getElementById('panel-root');
   root.innerHTML = '';
+  _panelLastFocus = document.activeElement;
   const backdrop = el('div', { className: 'panel-backdrop' });
   backdrop.onclick = (e) => { if (e.target === backdrop) closePanel(); };
-  const panel = el('div', { className: 'panel', role: 'dialog', 'aria-modal': 'true' });
+  const panel = el('div', { className: 'panel', role: 'dialog', 'aria-modal': 'true', 'aria-label': title });
   const head = el('div', { className: 'panel-head' },
     el('h2', { textContent: title }),
     el('button', { className: 'icon-btn', 'aria-label': 'Close', onclick: closePanel,
@@ -552,10 +565,27 @@ function openPanel({ title, body, actions }) {
     foot.appendChild(btn);
   });
   panel.appendChild(head); panel.appendChild(b); panel.appendChild(foot);
+  // Keyboard: Escape closes, Tab is trapped within the dialog.
+  backdrop.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); closePanel(); return; }
+    if (e.key !== 'Tab') return;
+    const f = panel.querySelectorAll('a[href],button,input,select,textarea,[tabindex]:not([tabindex="-1"])');
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   backdrop.appendChild(panel);
   root.appendChild(backdrop);
+  // Move focus into the dialog (first field, else first action button).
+  const fields = panel.querySelectorAll('.panel-body input, .panel-body select, .panel-body textarea, .panel-body button');
+  (fields[0] || panel.querySelector('.panel-foot button') || panel).focus();
 }
-function closePanel() { document.getElementById('panel-root').innerHTML = ''; }
+function closePanel() {
+  document.getElementById('panel-root').innerHTML = '';
+  if (_panelLastFocus && typeof _panelLastFocus.focus === 'function') _panelLastFocus.focus();
+  _panelLastFocus = null;
+}
 
 /* ---------- DOM helpers ---------- */
 function el(tag, props, ...children) {
@@ -572,6 +602,8 @@ function el(tag, props, ...children) {
   return n;
 }
 function html(strings, ...vals) { return strings.map((s,i)=> s + (vals[i]!==undefined?vals[i]:'')).join(''); }
+/* HTML-escape user-supplied text before interpolating into innerHTML. */
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
 /* ---------- Theme ---------- */
 function toggleTheme() {
@@ -620,6 +652,7 @@ function adherenceForMed(medId, days) {
 function expectedDoses(med, days) {
   if (med.freq === 'daily') return days;
   if (med.freq === 'weekly') return Math.max(1, Math.round(days / 7));
+  if (med.freq === 'biweekly') return Math.max(1, Math.round(days / 14));
   if (med.freq === 'twice-weekly') return Math.max(1, Math.round(days / 3.5));
   if (med.freq === 'every-other-day') return Math.max(1, Math.round(days / 2));
   if (med.freq === 'custom') {
@@ -809,7 +842,7 @@ function isDueToday(m) {
   if (m.freq === 'daily') return true;
   const last = state.logs.filter(l => l.type === 'dose' && l.payload.medId === m.id).sort((a,b) => b.date.localeCompare(a.date))[0];
   if (!last) return true;
-  const iv = m.freq === 'weekly' ? 7 : m.freq === 'twice-weekly' ? 3 : m.freq === 'every-other-day' ? 2 : (m.freqDetail?.intervalDays || 7);
+  const iv = m.freq === 'weekly' ? 7 : m.freq === 'biweekly' ? 14 : m.freq === 'twice-weekly' ? 3 : m.freq === 'every-other-day' ? 2 : (m.freqDetail?.intervalDays || 7);
   return daysBetween(last.date, todayIso()) >= iv;
 }
 
@@ -1011,11 +1044,11 @@ function chipColor(t) { return t === 'dose' ? 'accent' : t === 'weight' ? '' : t
 function entryDetail(e) {
   if (e.type === 'dose') {
     const m = medById(e.payload.medId);
-    return `${m ? m.name : '(deleted med)'} — ${e.payload.dose} ${e.payload.unit}${e.payload.site ? ' · ' + e.payload.site : ''}${e.payload.notes ? ' · ' + e.payload.notes : ''}`;
+    return `${esc(m ? m.name : '(deleted med)')} — ${esc(e.payload.dose)} ${esc(e.payload.unit)}${e.payload.site ? ' · ' + esc(e.payload.site) : ''}${e.payload.notes ? ' · ' + esc(e.payload.notes) : ''}`;
   }
   if (e.type === 'weight') return `${e.payload.kg.toFixed(1)} kg (${lbsFromKg(e.payload.kg).toFixed(1)} lb)`;
-  if (e.type === 'appetite') return `${e.payload.score}/10${e.payload.notes ? ' — ' + e.payload.notes : ''}`;
-  if (e.type === 'note') return `${e.payload.text}${e.payload.tags?.length ? ' [' + e.payload.tags.join(', ') + ']' : ''}`;
+  if (e.type === 'appetite') return `${e.payload.score}/10${e.payload.notes ? ' — ' + esc(e.payload.notes) : ''}`;
+  if (e.type === 'note') return `${esc(e.payload.text)}${e.payload.tags?.length ? ' [' + esc(e.payload.tags.join(', ')) + ']' : ''}`;
   return '';
 }
 
@@ -1065,7 +1098,7 @@ function pageRegimen() {
     state.regimen.forEach(m => {
       const adh = adherenceForMed(m.id, 30);
       const tr = el('tr');
-      tr.appendChild(el('td', { innerHTML: `<div class="med-swatch" style="width:24px;height:24px;font-size:11px">${m.color || m.name[0]}</div>` }));
+      tr.appendChild(el('td', { innerHTML: `<div class="med-swatch" style="width:24px;height:24px;font-size:11px">${esc(m.color || m.name[0])}</div>` }));
       tr.appendChild(el('td', {}, el('div', { textContent: m.name }), el('div', { className: 'faint', style: { fontSize: '11px' }, textContent: m.generic || '' })));
       tr.appendChild(el('td', { innerHTML: `<span class="chip">${m.cls}</span>` }));
       tr.appendChild(el('td', { textContent: m.route }));
@@ -1105,6 +1138,10 @@ function openMedPanel(existing) {
   const freq = el('select', {}, ...[['daily','daily'],['every-other-day','every other day'],['twice-weekly','twice weekly'],['weekly','weekly'],['biweekly','every 2 weeks'],['custom','custom']].map(([v,l]) => {
     const o = el('option', { value: v, textContent: l }); if (m.freq === v) o.setAttribute('selected',''); return o;
   }));
+  const customIvl = el('input', { type: 'number', step: '1', min: '1', value: (m.freqDetail && m.freqDetail.intervalDays) || 7 });
+  const customField = label('Custom interval (days between doses)', customIvl);
+  customField.style.display = m.freq === 'custom' ? '' : 'none';
+  freq.addEventListener('change', () => { customField.style.display = freq.value === 'custom' ? '' : 'none'; });
   const color = el('input', { value: m.color || '', placeholder: '2-char label (e.g., EV)', maxlength: 3 });
   const conc = el('input', { type: 'number', step: '0.01', value: m.conc || '', placeholder: '(injectable only)' });
   const concUnit = el('select', {}, ...['mg/mL','mcg/mL','IU/mL','units/mL'].map(v => {
@@ -1118,6 +1155,7 @@ function openMedPanel(existing) {
   body.appendChild(row([label('Class', cls), label('Route', route)]));
   body.appendChild(row([label('Dose', dose), label('Unit', unit)]));
   body.appendChild(row([label('Frequency', freq), label('Label', color)]));
+  body.appendChild(customField);
   body.appendChild(row([label('Concentration', conc), label('Conc unit', concUnit)]));
   body.appendChild(label('Notes', notes));
 
@@ -1127,6 +1165,7 @@ function openMedPanel(existing) {
       const rec = { ...m, name: name.value.trim(), generic: generic.value.trim(), cls: cls.value, route: route.value,
         dose: +dose.value, unit: unit.value, freq: freq.value, color: color.value.trim().slice(0,3),
         conc: conc.value ? +conc.value : undefined, concUnit: concUnit.value, notes: notes.value.trim() };
+      if (freq.value === 'custom') rec.freqDetail = { ...(m.freqDetail || {}), intervalDays: Math.max(1, Math.round(+customIvl.value) || 7) };
       if (!rec.name) return;
       if (existing) {
         state.regimen = state.regimen.map(x => x.id === m.id ? rec : x);
@@ -1153,7 +1192,6 @@ function pageInject() {
   wrap.appendChild(pageHead('Rotation', 'Injections', 'Track site rotation for parenteral doses. Heat scale = sites used in the last 14 days.', []));
 
   const recent = state.injectionSites.slice().sort((a,b) => b.date.localeCompare(a.date));
-  const now = new Date();
   const heat = {};
   recent.forEach(r => {
     const days = daysBetween(r.date, todayIso());
@@ -1246,7 +1284,6 @@ function pageLabs() {
     { label: 'Edit ranges', onclick: () => openRangesPanel() }
   ]));
 
-  const analytes = Object.keys(state.labRanges);
   const byAnalyte = {};
   state.labs.forEach(l => { (byAnalyte[l.analyte] = byAnalyte[l.analyte] || []).push(l); });
 
@@ -1685,12 +1722,12 @@ function openClinicianSummary() {
   win.document.open(); win.document.write(html); win.document.close();
 }
 function clinicianSummaryHtml() {
-  const meds = state.regimen.map(m => `<tr><td>${m.name}</td><td>${m.cls}</td><td>${m.route}</td><td>${m.dose} ${m.unit}</td><td>${m.freq}</td></tr>`).join('');
+  const meds = state.regimen.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.cls)}</td><td>${esc(m.route)}</td><td>${esc(m.dose)} ${esc(m.unit)}</td><td>${esc(m.freq)}</td></tr>`).join('');
   const last6mo = daysAgo(180);
   const recentLabs = state.labs.filter(l => l.date >= last6mo).sort((a,b) => b.date.localeCompare(a.date));
-  const labRows = recentLabs.map(l => `<tr><td>${l.date}</td><td>${l.analyte}</td><td>${l.value} ${state.labRanges[l.analyte]?.unit || ''}</td><td>${state.labRanges[l.analyte] ? state.labRanges[l.analyte].low + '–' + state.labRanges[l.analyte].high : ''}</td></tr>`).join('');
+  const labRows = recentLabs.map(l => `<tr><td>${esc(l.date)}</td><td>${esc(l.analyte)}</td><td>${esc(l.value)} ${esc(state.labRanges[l.analyte]?.unit || '')}</td><td>${state.labRanges[l.analyte] ? esc(state.labRanges[l.analyte].low + '–' + state.labRanges[l.analyte].high) : ''}</td></tr>`).join('');
   const wLast = state.logs.filter(l => l.type === 'weight').slice(-3).map(l => `${l.date}: ${l.payload.kg.toFixed(1)} kg`).join(' · ');
-  const dose30 = state.regimen.map(m => { const a = adherenceForMed(m.id, 30); return `<tr><td>${m.name}</td><td>${a.taken}/${a.expected}</td><td>${a.pct}%</td></tr>`; }).join('');
+  const dose30 = state.regimen.map(m => { const a = adherenceForMed(m.id, 30); return `<tr><td>${esc(m.name)}</td><td>${a.taken}/${a.expected}</td><td>${a.pct}%</td></tr>`; }).join('');
 
   return `<!DOCTYPE html><html><head><title>Clinician summary — ${todayIso()}</title>
     <style>
@@ -1707,7 +1744,7 @@ function clinicianSummaryHtml() {
     <div class="muted">Generated ${new Date().toLocaleString()} · Patient self-report · Not a medical record</div>
 
     <h2>Profile</h2>
-    <div>Height: ${state.profile.heightCm} cm · Sex at birth: ${state.profile.sexAtBirth || '—'} · DOB: ${state.profile.dob || '—'}</div>
+    <div>Height: ${esc(state.profile.heightCm)} cm · Sex at birth: ${esc(state.profile.sexAtBirth || '—')} · DOB: ${esc(state.profile.dob || '—')}</div>
     <div class="muted">Recent weights: ${wLast || '—'}</div>
 
     <h2>Current regimen</h2>
@@ -1729,3 +1766,5 @@ function clinicianSummaryHtml() {
 /* ---------- Boot ---------- */
 render();
 </script>
+</body>
+</html>
