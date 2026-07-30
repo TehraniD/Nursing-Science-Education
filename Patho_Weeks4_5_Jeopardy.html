@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathophysiology Weeks 4 &amp; 5 Jeopardy!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:wght@700&family=Oswald:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Oswald', 'Courier New', monospace;
+            background: radial-gradient(ellipse at center, #0a1628 0%, #060d1a 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 15px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Bebas Neue', 'Courier New', monospace;
+            font-size: clamp(2em, 5vw, 3.5em);
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 3px 3px 6px rgba(0,0,0,0.8);
+            letter-spacing: 8px;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 3px 3px 6px rgba(0,0,0,0.8); }
+            50% { text-shadow: 0 0 40px rgba(255, 215, 0, 0.9), 0 0 80px rgba(255, 215, 0, 0.3), 3px 3px 6px rgba(0,0,0,0.8); }
+        }
+
+        .header .subtitle {
+            font-size: 1em;
+            color: #a0c4ff;
+            margin-top: 5px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .team {
+            background: linear-gradient(135deg, #1a1a4e 0%, #2d1b69 100%);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            border: 2px solid #4a3f8a;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .team:hover {
+            border-color: #ffd700;
+        }
+
+        .team.active {
+            border-color: #00ff88;
+            box-shadow: 0 0 25px rgba(0,255,136,0.4);
+            background: linear-gradient(135deg, #1a2a4e 0%, #1b4569 100%);
+        }
+
+        .team h3 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #ffd700;
+            font-family: 'Bebas Neue', monospace;
+            letter-spacing: 2px;
+        }
+
+        .team .score {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+            font-family: 'Bebas Neue', monospace;
+        }
+
+        .team .score.negative {
+            color: #ff4444;
+        }
+
+        .board {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #000814 0%, #001d3d 100%);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,215,0,0.1);
+            border: 2px solid #1a3a5c;
+        }
+
+        .category-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .category {
+            background: linear-gradient(180deg, #003580 0%, #00267a 100%);
+            padding: 12px 8px;
+            text-align: center;
+            font-size: clamp(0.65em, 1.2vw, 0.95em);
+            font-weight: bold;
+            border-radius: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            border: 1px solid #004aad;
+            line-height: 1.3;
+            letter-spacing: 1px;
+        }
+
+        .questions-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .question-box {
+            background: linear-gradient(180deg, #003580 0%, #00267a 100%);
+            padding: 25px 10px;
+            text-align: center;
+            font-size: clamp(1.2em, 2.5vw, 1.8em);
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #ffd700;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+            border: 1px solid #004aad;
+            font-family: 'Bebas Neue', monospace;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .question-box:hover:not(.answered)::before {
+            opacity: 1;
+        }
+
+        .question-box:hover:not(.answered) {
+            background: linear-gradient(180deg, #0050bb 0%, #003a99 100%);
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(0,80,187,0.5);
+        }
+
+        .question-box.answered {
+            background: linear-gradient(180deg, #0a0a2e 0%, #050520 100%);
+            cursor: not-allowed;
+            color: #1a1a4e;
+            border-color: #0a0a2e;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.92);
+            overflow: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #001d3d 0%, #003566 100%);
+            margin: 3% auto;
+            padding: 35px;
+            border: 4px solid #ffd700;
+            width: 90%;
+            max-width: 950px;
+            border-radius: 15px;
+            box-shadow: 0 0 60px rgba(255,215,0,0.2), 0 10px 50px rgba(0,0,0,0.5);
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .daily-double-splash {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #1a0a3e 0%, #000 100%);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .daily-double-splash.show {
+            display: flex;
+            animation: ddFlash 0.5s ease-out;
+        }
+
+        @keyframes ddFlash {
+            0% { background: #fff; }
+            100% { background: radial-gradient(circle, #1a0a3e 0%, #000 100%); }
+        }
+
+        .daily-double-text {
+            font-family: 'Bebas Neue', monospace;
+            font-size: clamp(3em, 10vw, 8em);
+            color: #ffd700;
+            text-shadow: 0 0 40px rgba(255,215,0,0.8), 0 0 80px rgba(255,215,0,0.4);
+            animation: ddPulse 1s ease-in-out infinite;
+            text-align: center;
+            letter-spacing: 10px;
+        }
+
+        @keyframes ddPulse {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 40px rgba(255,215,0,0.8); }
+            50% { transform: scale(1.1); text-shadow: 0 0 80px rgba(255,215,0,1), 0 0 120px rgba(255,215,0,0.5); }
+        }
+
+        .question-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .question-header h2 {
+            font-family: 'Bebas Neue', monospace;
+            font-size: 2em;
+            color: #ffd700;
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+
+        .question-header .cat-label {
+            color: #a0c4ff;
+            font-size: 1em;
+            letter-spacing: 2px;
+        }
+
+        .timer {
+            font-family: 'Bebas Neue', monospace;
+            font-size: 3em;
+            color: #00ff88;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            letter-spacing: 5px;
+        }
+
+        .timer.warning {
+            color: #ff4444;
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .question-text {
+            background: rgba(0,0,0,0.4);
+            padding: 25px;
+            border-radius: 10px;
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            border-left: 5px solid #ffd700;
+            font-family: 'Merriweather', serif;
+            font-weight: 400;
+        }
+
+        .question-text .clue-image {
+            display: block;
+            max-width: 350px;
+            max-height: 280px;
+            margin: 15px auto;
+            border-radius: 8px;
+            border: 2px solid #ffd700;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .question-text .image-caption {
+            text-align: center;
+            font-size: 0.75em;
+            color: #a0c4ff;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .fun-fact {
+            background: rgba(255,215,0,0.08);
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: #ffd700;
+            margin-top: 12px;
+            border: 1px dashed rgba(255,215,0,0.3);
+            font-style: italic;
+        }
+
+        .answer-text {
+            background: rgba(0,255,136,0.1);
+            padding: 25px;
+            border-radius: 10px;
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            border-left: 5px solid #00ff88;
+            display: none;
+            font-family: 'Merriweather', serif;
+        }
+
+        .answer-text strong {
+            color: #00ff88;
+            font-size: 1.1em;
+        }
+
+        .rationale {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,255,136,0.2);
+            font-size: 0.9em;
+            color: #a0e8c8;
+            line-height: 1.7;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-family: 'Oswald', monospace;
+            letter-spacing: 1px;
+        }
+
+        .btn-show {
+            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+            color: #000;
+        }
+
+        .btn-correct {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: #000;
+        }
+
+        .btn-wrong {
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            color: #fff;
+        }
+
+        .btn-close {
+            background: linear-gradient(135deg, #555 0%, #333 100%);
+            color: #fff;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        .close {
+            color: #666;
+            float: right;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #ffd700;
+        }
+
+        .team-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .team-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, #2d1b69 0%, #1a1a4e 100%);
+            color: #fff;
+            border: 2px solid #4a3f8a;
+            font-size: 0.9em;
+        }
+
+        .team-btn:hover {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #3d2b79 0%, #2a2a5e 100%);
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #8b0000 0%, #cc0000 100%);
+            color: #fff;
+            padding: 12px 35px;
+            font-size: 1em;
+        }
+
+        .final-jeopardy-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            color: #000;
+            padding: 12px 35px;
+            font-size: 1em;
+            margin-left: 10px;
+        }
+
+        .final-jeopardy-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            overflow: auto;
+        }
+
+        .final-jeopardy-content {
+            background: linear-gradient(135deg, #1a0a3e 0%, #2d1b69 100%);
+            margin: 5% auto;
+            padding: 40px;
+            border: 5px solid #ffd700;
+            width: 90%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 0 80px rgba(255,215,0,0.3);
+        }
+
+        .wager-input {
+            width: 120px;
+            padding: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 2px solid #ffd700;
+            border-radius: 5px;
+            background: #001d3d;
+            color: #ffd700;
+            font-family: 'Bebas Neue', monospace;
+        }
+
+        .sound-toggle {
+            position: fixed;
+            top: 10px;
+            right: 15px;
+            z-index: 500;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .confetti {
+            position: fixed;
+            top: -10px;
+            z-index: 4000;
+            font-size: 2em;
+            animation: confettiFall 3s ease-in forwards;
+            pointer-events: none;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        @media (max-width: 900px) {
+            .category-row, .questions-row {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 4px;
+            }
+            .question-box { padding: 15px 5px; font-size: 1em; }
+            .category { font-size: 0.55em; padding: 8px 4px; min-height: 55px; }
+            .scoreboard { grid-template-columns: repeat(2, 1fr); }
+            .team-buttons { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 500px) {
+            .question-box { padding: 10px 3px; font-size: 0.85em; }
+            .category { font-size: 0.5em; min-height: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="sound-toggle" onclick="toggleSound()" id="soundBtn">&#x1f50a; Sound ON</button>
+
+<div class="header">
+    <h1>PATHOPHYSIOLOGY JEOPARDY!</h1>
+    <p class="subtitle">Weeks 4 &amp; 5 &mdash; "I'll take Gut Feelings for $800, Alex"</p>
+    <p style="margin-top:10px;"><a href="https://tehranilabs.org" target="_blank" rel="noopener" style="display:inline-block;color:#000;background:linear-gradient(135deg,#ffd700,#ffaa00);text-decoration:none;font-family:'Bebas Neue','Oswald',sans-serif;font-size:1.1em;letter-spacing:3px;padding:6px 22px;border-radius:20px;box-shadow:0 2px 12px rgba(255,215,0,0.4);transition:transform 0.2s,box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.07)';this.style.boxShadow='0 4px 20px rgba(255,215,0,0.6)'" onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 2px 12px rgba(255,215,0,0.4)'">TEHRANILABS.ORG</a></p>
+</div>
+
+<div class="scoreboard">
+    <div class="team" id="team1" onclick="setActiveTeam(1)">
+        <h3>Team 1</h3>
+        <div class="score" id="score1">$0</div>
+    </div>
+    <div class="team" id="team2" onclick="setActiveTeam(2)">
+        <h3>Team 2</h3>
+        <div class="score" id="score2">$0</div>
+    </div>
+    <div class="team" id="team3" onclick="setActiveTeam(3)">
+        <h3>Team 3</h3>
+        <div class="score" id="score3">$0</div>
+    </div>
+    <div class="team" id="team4" onclick="setActiveTeam(4)">
+        <h3>Team 4</h3>
+        <div class="score" id="score4">$0</div>
+    </div>
+</div>
+
+<div class="board" id="gameBoard">
+    <div class="category-row">
+        <div class="category">Bone to Pick</div>
+        <div class="category">Gut Feelings</div>
+        <div class="category">The Liver Diaries</div>
+        <div class="category">Sign Language</div>
+        <div class="category">Infection Connection</div>
+        <div class="category">Patho Potpourri</div>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="reset-btn" onclick="confirmReset()">Reset Game</button>
+    <button class="final-jeopardy-btn" onclick="showFinalJeopardy()">Final Jeopardy!</button>
+</div>
+
+<div class="modal" id="questionModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="question-header">
+            <div class="cat-label" id="modalCategory"></div>
+            <h2 id="modalValue"></h2>
+        </div>
+        <div class="timer" id="timer">30</div>
+        <div class="question-text" id="modalQuestion"></div>
+        <div class="answer-text" id="modalAnswer"></div>
+        <div class="button-group" id="btnGroup">
+            <button class="btn-show" onclick="showAnswer()">Reveal Answer</button>
+        </div>
+        <div class="team-buttons" id="teamBtns" style="display:none;">
+            <button class="team-btn" onclick="awardPoints(1)">Team 1 &#x2714;</button>
+            <button class="team-btn" onclick="awardPoints(2)">Team 2 &#x2714;</button>
+            <button class="team-btn" onclick="awardPoints(3)">Team 3 &#x2714;</button>
+            <button class="team-btn" onclick="awardPoints(4)">Team 4 &#x2714;</button>
+        </div>
+        <div class="button-group" id="postAnswerBtns" style="display:none;">
+            <button class="btn-wrong" onclick="deductPoints()">No One Got It</button>
+            <button class="btn-close" onclick="closeModal()">Back to Board</button>
+        </div>
+    </div>
+</div>
+
+<div class="daily-double-splash" id="ddSplash" onclick="dismissDD()">
+    <div class="daily-double-text">DAILY<br>DOUBLE!</div>
+</div>
+
+<div class="final-jeopardy-modal" id="finalModal">
+    <div class="final-jeopardy-content">
+        <span class="close" onclick="closeFinalJeopardy()">&times;</span>
+        <div class="question-header">
+            <h2>FINAL JEOPARDY!</h2>
+            <div class="cat-label">Category: The Body Fights Back</div>
+        </div>
+
+        <div style="margin: 20px 0;">
+            <p style="color: #ffd700; margin-bottom: 15px; font-size: 1.1em;">Each team wagers before the clue is revealed:</p>
+            <div class="team-buttons">
+                <div style="text-align:center;">
+                    <label style="color:#a0c4ff;">Team 1 Wager</label><br>
+                    <input type="number" class="wager-input" id="wager1" min="0" value="0">
+                </div>
+                <div style="text-align:center;">
+                    <label style="color:#a0c4ff;">Team 2 Wager</label><br>
+                    <input type="number" class="wager-input" id="wager2" min="0" value="0">
+                </div>
+                <div style="text-align:center;">
+                    <label style="color:#a0c4ff;">Team 3 Wager</label><br>
+                    <input type="number" class="wager-input" id="wager3" min="0" value="0">
+                </div>
+                <div style="text-align:center;">
+                    <label style="color:#a0c4ff;">Team 4 Wager</label><br>
+                    <input type="number" class="wager-input" id="wager4" min="0" value="0">
+                </div>
+            </div>
+        </div>
+
+        <div class="question-text" id="finalClue" style="display:none;"></div>
+        <div class="answer-text" id="finalAnswer"></div>
+
+        <div class="button-group" id="finalBtnGroup">
+            <button class="btn-show" onclick="revealFinalClue()">Lock Wagers &amp; Reveal Clue</button>
+        </div>
+        <div class="button-group" id="finalRevealBtns" style="display:none;">
+            <button class="btn-show" onclick="revealFinalAnswer()">Reveal Answer</button>
+        </div>
+        <div class="team-buttons" id="finalTeamBtns" style="display:none;">
+            <button class="team-btn" onclick="finalAward(1, true)">Team 1 &#x2714;</button>
+            <button class="team-btn" onclick="finalAward(1, false)">Team 1 &#x2718;</button>
+            <button class="team-btn" onclick="finalAward(2, true)">Team 2 &#x2714;</button>
+            <button class="team-btn" onclick="finalAward(2, false)">Team 2 &#x2718;</button>
+            <button class="team-btn" onclick="finalAward(3, true)">Team 3 &#x2714;</button>
+            <button class="team-btn" onclick="finalAward(3, false)">Team 3 &#x2718;</button>
+            <button class="team-btn" onclick="finalAward(4, true)">Team 4 &#x2714;</button>
+            <button class="team-btn" onclick="finalAward(4, false)">Team 4 &#x2718;</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const questions = {
+    // ========== CATEGORY 1: BONE TO PICK (Musculoskeletal) ==========
+    "1_1": {
+        category: "Bone to Pick",
+        value: 200,
+        clue: `This skeletal condition is characterized by low bone mass and microarchitectural deterioration &mdash; basically, your bones are ghosting you by becoming more porous than Swiss cheese at a wine party.`,
+        answer: `<strong>What is Osteoporosis?</strong>
+            <div class="rationale"><b>Why it matters:</b> The underlying mechanism is an imbalance in bone remodeling &mdash; osteoclast activity outpaces osteoblast rebuilding, leading to fragile bones with increased fracture risk. Postmenopausal women lose the protective effect of estrogen on bone density, making this a high-priority assessment population.</div>`,
+        funFact: `Your skeleton completely replaces itself every 10 years. By the time you finish nursing school, you'll literally be a different person. Convenient excuse.`
+    },
+    "1_2": {
+        category: "Bone to Pick",
+        value: 400,
+        clue: `This degenerative joint disease gives patients bony enlargements called osteophytes at the margins of cartilage loss, and produces deep aching pain that is <em>relieved</em> by rest &mdash; unlike your clinical instructor, who never lets you rest.
+            <br><br>Name both the disease AND the specific bony swellings found at the proximal interphalangeal joints.`,
+        answer: `<strong>What is Osteoarthritis, and what are Bouchard's Nodes?</strong>
+            <div class="rationale"><b>Clinical Judgment Connection:</b> OA pain <em>improves</em> with rest and <em>worsens</em> with activity &mdash; the opposite pattern from RA. This is a critical cue for differential diagnosis. Bouchard's nodes (PIP joints) are distinct from Heberden's nodes (DIP joints). Low-impact, non-weight-bearing exercises are recommended to protect remaining cartilage.</div>`,
+        funFact: `Heberden described his DIP nodes in the 1700s. Bouchard described his PIP nodes later. They never met, but their nodes are always talked about in the same sentence. Relationship goals.`
+    },
+    "1_3": {
+        category: "Bone to Pick",
+        value: 600,
+        clue: `In this stage of bone infection, pus-forming bacteria invade the Haversian system, creating an abscess that would make even a seasoned OR nurse wince. Name this stage.`,
+        answer: `<strong>What is the Suppuration stage?</strong>
+            <div class="rationale"><b>The 4-Stage Progression:</b> (1) <b>Inflammation</b> &mdash; swelling and pressure build; (2) <b>Suppuration</b> &mdash; pus forms, bacteria enter the Haversian canals, abscess develops; (3) <b>Sequestrum</b> &mdash; dead bone tissue from necrosis; (4) <b>Involucrum</b> &mdash; new bone forms around the dead bone. Recognizing the stage guides whether the patient needs antibiotics alone vs. surgical debridement.</div>`,
+        funFact: `The Haversian system is named after Clopton Havers (1691). His first name was literally "Clopton." Somehow that's the least strange thing about 17th-century anatomy.`
+    },
+    "1_4": {
+        category: "Bone to Pick",
+        value: 800,
+        clue: `This autoimmune arthritis shows up <em>symmetrically</em> in the hands, causes morning stiffness lasting MORE than 60 minutes, and brings uninvited friends like fatigue and low-grade fever. What separates it from its degenerative cousin OA, where stiffness is typically under 30 minutes?`,
+        answer: `<strong>What is Rheumatoid Arthritis (RA)?</strong>
+            <div class="rationale"><b>Key Differentiation Cues:</b><br>
+            &bull; RA: <em>Symmetric</em>, morning stiffness &gt;60 min, systemic symptoms (fatigue, fever), autoimmune<br>
+            &bull; OA: <em>Asymmetric</em>, stiffness &lt;30 min, no systemic symptoms, degenerative/mechanical<br>
+            The student trap is confusing these two. RA is an inflammatory autoimmune process attacking the synovial membrane; OA is mechanical wear-and-tear degrading cartilage. Different mechanisms, different management.</div>`,
+        funFact: `RA doesn't just affect joints &mdash; it can attack the lungs, heart, and eyes. It's the autoimmune equivalent of that group project member who creates problems in every department.`
+    },
+    "1_5": {
+        category: "Bone to Pick",
+        value: 1000,
+        dailyDouble: false,
+        clue: `A patient presents with chronic back pain that worsens with bending and lifting, numbness and tingling in the legs ("pins and needles"), and motor weakness affecting their ability to walk. The intervertebral discs are gradually deteriorating.
+            <br><br>Name this spinal condition AND identify the most appropriate first-line diagnostic approach.`,
+        answer: `<strong>What is Degenerative Disc Disease (DDD), diagnosed by physical exam and X-ray?</strong>
+            <div class="rationale"><b>Mechanism:</b> The intervertebral discs lose hydration, height, and structural integrity over time. Disc narrowing compresses spinal nerve roots, producing radiculopathy &mdash; pain radiating to extremities, numbness/tingling (neuropathy), and motor weakness. The nurse should monitor for progressive neurological deficits that indicate worsening compression. Red flag: sudden bowel/bladder dysfunction suggests cauda equina syndrome &mdash; a surgical emergency.</div>`,
+        funFact: `Your spinal discs are about 80% water at birth and shrink as you age. You're literally getting shorter every day. Nursing school just makes it feel faster.`
+    },
+
+    // ========== CATEGORY 2: GUT FEELINGS (GI Disorders) ==========
+    "2_1": {
+        category: "Gut Feelings",
+        value: 200,
+        clue: `This esophageal motility disorder involves the smooth muscle failing to push food down properly because peristalsis has essentially clocked out for the day, PLUS the lower esophageal sphincter refuses to relax. It's like your esophagus locked the door and threw away the key.`,
+        answer: `<strong>What is Achalasia?</strong>
+            <div class="rationale"><b>Pathophysiology:</b> Two problems occur simultaneously: (1) absence of normal peristalsis in the esophageal body, and (2) incomplete relaxation of the LES with increased muscular tone. Food accumulates in the esophagus, causing progressive dysphagia. The cue to recognize: difficulty swallowing both solids AND liquids (unlike mechanical obstruction, which starts with solids only).</div>`,
+        funFact: `"Achalasia" comes from Greek meaning "failure to relax." We've all had coworkers like that.`
+    },
+    "2_2": {
+        category: "Gut Feelings",
+        value: 400,
+        clue: `This abdominal condition features burning or gnawing pain <em>between meals or at night</em> that is <em>relieved by eating or antacids</em>. The top 3 suspects behind it: NSAID overuse, alcohol abuse, and a tiny spiral bacterium that colonized about half the world's stomachs.`,
+        answer: `<strong>What is Peptic Ulcer Disease (PUD)?</strong>
+            <div class="rationale"><b>Clinical Judgment Map:</b><br>
+            &bull; <b>Recognize cues:</b> epigastric burning relieved by food/antacids, worse between meals<br>
+            &bull; <b>Analyze cues:</b> mucosal barrier disruption from H. pylori, NSAIDs, or acid hypersecretion<br>
+            &bull; <b>Generate solutions:</b> PPIs to reduce acid, antibiotics for H. pylori (triple therapy), discontinue NSAIDs<br>
+            &bull; <b>Evaluate:</b> pain resolution, negative follow-up urea breath test<br>
+            The <em>H. pylori</em> connection is critical &mdash; diagnose with urea breath test, stool antigen test, or antibody blood tests.</div>`,
+        funFact: `Barry Marshall was so convinced H. pylori caused ulcers that he drank a petri dish of the bacteria to prove it. He got sick, treated himself with antibiotics, and won the Nobel Prize. Do NOT try this in clinical.`
+    },
+    "2_3": {
+        category: "Gut Feelings",
+        value: 600,
+        clue: `One inflammatory bowel disease attacks in "skip lesions" &mdash; patches of disease with healthy tissue in between, like a bizarre game of hopscotch through your intestines. The other causes <em>continuous</em> inflammation starting at the rectum and marching proximally through the colon with no breaks.
+            <br><br>Name BOTH diseases.`,
+        answer: `<strong>What are Crohn's Disease (skip lesions) and Ulcerative Colitis (continuous inflammation)?</strong>
+            <div class="rationale"><b>The Critical Contrast:</b><br>
+            &bull; <b>Crohn's:</b> Skip lesions, can affect ANY part of GI tract (mouth to anus), transmural (full thickness), fistulas and strictures common<br>
+            &bull; <b>UC:</b> Continuous inflammation, limited to colon and rectum ONLY, affects mucosal/submucosal layers, bloody diarrhea is hallmark<br>
+            <b>Student trap:</b> "Skip lesions" = Crohn's, always. If it's continuous = UC. This distinction drives treatment decisions and surgical planning.</div>`,
+        funFact: `Crohn's was described by Dr. Burrill Crohn in 1932. His co-authors were Ginzburg and Oppenheimer, but Crohn got top billing because... alphabetical order. That's it. That's the whole reason.`
+    },
+    "2_4": {
+        category: "Gut Feelings",
+        value: 800,
+        dailyDouble: true,
+        clue: `These little pouches form at weak spots in the wall of the large intestine, most commonly in the sigmoid colon. When they fill with stagnant intestinal contents and become inflamed, the patient goes from having a "-osis" to having a "-itis."
+            <br><br>Name the condition when these pouches become inflamed AND explain why the sigmoid colon is the most common location.`,
+        answer: `<strong>What is Diverticulitis?</strong>
+            <div class="rationale"><b>Pathophysiology:</b> Diverticula (the pouches) form at weak points in the colonic wall where blood vessels penetrate the muscle layer &mdash; this is "diverticulosis." When stagnant fecal material becomes trapped in these pouches, bacteria proliferate, leading to inflammation and infection &mdash; now it's "diverticulitis."<br><br>
+            <b>Why the sigmoid?</b> The sigmoid colon has the smallest diameter and highest intraluminal pressure of any colon segment. Higher pressure = more force pushing against weak spots = more diverticula formation. It's basic physics meets GI anatomy.<br><br>
+            <b>Priority cue:</b> Left lower quadrant pain with fever and elevated WBC = suspect diverticulitis until proven otherwise.</div>`,
+        funFact: `"-osis" means condition. "-itis" means inflammation. The difference between diverticulosis and diverticulitis is basically the difference between "I have pouches" and "my pouches are ANGRY."`
+    },
+    "2_5": {
+        category: "Gut Feelings",
+        value: 1000,
+        clue: `A portion of the stomach pushes up through the diaphragm like an uninvited guest crashing through the ceiling. The patient presents with the classic triad of dysphagia, substernal burning, and belching.
+            <br><br>Name this condition. THEN, name the type of hernia where blood supply to herniated tissue gets cut off &mdash; making it a surgical emergency.`,
+        answer: `<strong>What are a Hiatal Hernia and a Strangulated Hernia?</strong>
+            <div class="rationale"><b>Hiatal Hernia:</b> Stomach protrudes through the diaphragmatic hiatus into the thoracic cavity. The three key symptoms (dysphagia, heartburn, belching) result from disrupted LES function and gastric acid reflux.<br><br>
+            <b>Strangulated Hernia:</b> Blood supply to herniated tissue is compromised by pressure, leading to ischemia and tissue necrosis. This is a <em>surgical emergency</em>. Cues that demand immediate action: severe pain, nausea/vomiting, signs of bowel obstruction, and a hernia that can no longer be reduced (pushed back in).<br><br>
+            <b>Priority logic:</b> Reducible hernia = monitor. Irreducible hernia = urgent evaluation. Strangulated = emergency surgery. Progression matters.</div>`,
+        funFact: `About 60% of people over 60 have a hiatal hernia. Most don't even know it. The stomach just decided to explore upstairs without telling anyone.`
+    },
+
+    // ========== CATEGORY 3: THE LIVER DIARIES (Hepatobiliary & Pancreas) ==========
+    "3_1": {
+        category: "The Liver Diaries",
+        value: 200,
+        clue: `When small gallstones decide to go on an adventure and travel from the gallbladder through the cystic duct into the common bile duct, they cause this condition whose name literally means "stones in the common bile duct" in fancy medical Greek.`,
+        answer: `<strong>What is Choledocholithiasis?</strong>
+            <div class="rationale"><b>Breaking down the name:</b> Chole (bile) + docho (duct) + lithiasis (stone condition). These migrating stones can obstruct bile flow, causing jaundice, elevated bilirubin, and potentially ascending cholangitis (bile duct infection) &mdash; which is a medical emergency. Watch for Charcot's triad: fever, jaundice, RUQ pain.</div>`,
+        funFact: `Medical terminology is just Greek and Latin wearing a lab coat. Once you decode the prefixes and suffixes, you realize the name already tells you the entire pathology.`
+    },
+    "3_2": {
+        category: "The Liver Diaries",
+        value: 400,
+        clue: `This inflammation of the gallbladder presents with epigastric pain radiating to the right scapula. To confirm it, the examiner presses on the right upper quadrant and asks the patient to inhale deeply. Pain and an abrupt stop in breathing = positive.
+            <br><br>Name the condition AND the clinical sign being tested.`,
+        answer: `<strong>What is Cholecystitis, confirmed by a positive Murphy's Sign?</strong>
+            <div class="rationale"><b>Mechanism:</b> A gallstone obstructs the cystic duct &rarr; bile backs up &rarr; gallbladder distends &rarr; inflammation develops. The inflamed gallbladder sits just below the liver edge. When the examiner applies pressure at the RUQ and the patient inhales, the diaphragm pushes the inflamed gallbladder down onto the examiner's fingers, causing sharp pain and inspiratory arrest.<br><br>
+            <b>Post-surgery diet:</b> Low fat, high fiber, lean proteins. Without a gallbladder, the body can't concentrate bile for large fatty meals. Fat digestion becomes a continuous trickle rather than an on-demand flood.</div>`,
+        funFact: `Murphy's Sign is named after John Benjamin Murphy, a Chicago surgeon so famous that he once operated on Teddy Roosevelt's attempted-assassination wound. The man collected clinical signs like trading cards.`
+    },
+    "3_3": {
+        category: "The Liver Diaries",
+        value: 600,
+        clue: `This acute inflammatory condition is most commonly caused by gallstones or chronic alcohol abuse. The classic presentation is severe epigastric pain radiating to the back that worsens when lying supine.
+            <br><br>Name this condition AND the clinical sign that appears as bluish-purplish discoloration around the umbilicus.`,
+        answer: `<strong>What is Acute Pancreatitis, with Cullen's Sign?</strong>
+            <div class="rationale"><b>Pathophysiology:</b> Premature activation of pancreatic digestive enzymes (particularly trypsinogen &rarr; trypsin) causes autodigestion of pancreatic tissue. This triggers a massive inflammatory cascade.<br><br>
+            <b>Cullen's Sign</b> = periumbilical ecchymosis (bruising around the belly button) indicating retroperitoneal hemorrhage tracking to the anterior abdominal wall. Its partner is <b>Grey Turner's Sign</b> = flank ecchymosis. Both suggest severe hemorrhagic pancreatitis.<br><br>
+            <b>Priority action:</b> NPO status, aggressive IV fluid resuscitation, pain management, monitor for organ failure (SIRS criteria).</div>`,
+        funFact: `The pancreas auto-digests itself. It's literally the only organ dramatic enough to eat itself alive. Peak organ behavior.`
+    },
+    "3_4": {
+        category: "The Liver Diaries",
+        value: 800,
+        clue: `Three versions of this liver inflammation exist. Type A travels the fecal-oral route through contaminated food and water. Type B spreads through blood and body fluids. Type C is primarily blood-to-blood and until recently had no vaccine.
+            <br><br>Which type is MOST associated with IV drug use and sharing needles, and why?`,
+        answer: `<strong>What is Hepatitis C (HCV)?</strong>
+            <div class="rationale"><b>Transmission Logic:</b> While Hep B also spreads through blood, Hep C is <em>primarily</em> blood-to-blood, making shared needles the dominant risk factor. HCV has no widely accepted vaccine (unlike HAV and HBV), which is why prevention centers on harm reduction and screening.<br><br>
+            <b>Key Distinctions:</b><br>
+            &bull; <b>Hep A:</b> Fecal-oral (think contaminated food/water). Vaccine available. Usually self-limiting.<br>
+            &bull; <b>Hep B:</b> Blood + body fluids + sexual contact. Vaccine available. Can become chronic.<br>
+            &bull; <b>Hep C:</b> Blood-to-blood. No widely accepted vaccine. Highest chronicity rate. Now curable with DAAs (direct-acting antivirals).<br><br>
+            <b>Student trap:</b> Don't confuse Hep A's fecal-oral route with the blood-borne hepatitides. "A = Alimentary, B = Blood/Body fluids, C = Chronic (and needles)" is a useful mnemonic.</div>`,
+        funFact: `Hep C was called "non-A, non-B hepatitis" for years because scientists knew SOMETHING was infecting people's livers but couldn't figure out what. It was the medical mystery equivalent of "not it."`
+    },
+    "3_5": {
+        category: "The Liver Diaries",
+        value: 1000,
+        clue: `After having their gallbladder removed, a patient asks what they should eat. You hand them a plate.
+            <br><br>Describe THREE specific dietary principles that should guide this patient's post-cholecystectomy eating plan, and explain the physiological reason behind each recommendation.`,
+        answer: `<strong>What is a low-fat, high-fiber, lean-protein diet?</strong>
+            <div class="rationale"><b>Three Principles with Mechanisms:</b><br><br>
+            <b>1. Low fat:</b> Without the gallbladder to store and concentrate bile, the body loses its ability to release a large bolus of bile on demand. Bile now drips continuously from the liver. Large fatty meals overwhelm this limited bile supply &rarr; fat malabsorption, steatorrhea (fatty stools), bloating, and diarrhea.<br><br>
+            <b>2. High fiber:</b> Soluble fiber binds excess bile acids in the intestine, reducing the irritant effect of continuously flowing bile on the colonic mucosa. This reduces diarrhea and promotes normal stool formation.<br><br>
+            <b>3. Lean proteins:</b> Protein provides essential nutrition without requiring significant bile for digestion (bile primarily emulsifies fats, not proteins). This supports healing while avoiding the fat-malabsorption problem.<br><br>
+            <b>Evaluate outcomes:</b> Resolution of steatorrhea, absence of post-prandial cramping, regular bowel movements = diet is working.</div>`,
+        funFact: `Your gallbladder holds about 50 mL of bile. That's roughly a double espresso shot. Your liver makes about 500-1000 mL per day. Post-cholecystectomy, you're running on a drip coffee maker instead of an espresso machine.`
+    },
+
+    // ========== CATEGORY 4: SIGN LANGUAGE (Clinical Signs & Symptoms) ==========
+    "4_1": {
+        category: "Sign Language",
+        value: 200,
+        clue: `This exaggerated outward curvature of the thoracic spine creates a "dowager's hump" and is commonly associated with advanced osteoporosis. The patient looks like their spine is trying to curl into the fetal position while they're still standing.`,
+        answer: `<strong>What is Kyphosis?</strong>
+            <div class="rationale"><b>Mechanism:</b> Vertebral compression fractures from osteoporotic bone collapse anteriorly, creating wedge-shaped vertebrae. Multiple wedge fractures progressively increase the thoracic curvature. This isn't just cosmetic &mdash; severe kyphosis reduces lung capacity, impairs balance (fall risk!), and causes chronic pain.<br><br>
+            <b>Priority nursing concern:</b> Fall prevention. Kyphosis shifts the center of gravity forward, increasing fall risk. Falls + osteoporotic bones = fracture cascade.</div>`,
+        funFact: `The term "dowager's hump" comes from wealthy elderly women (dowagers) in historical aristocracy who developed the curve. Even old money couldn't buy its way out of osteoporosis.`
+    },
+    "4_2": {
+        category: "Sign Language",
+        value: 400,
+        clue: `Bluish-purplish discoloration around the belly button after acute pancreatitis. This sign means blood is tracking from the retroperitoneum to the anterior abdominal wall, and your patient is having a very, very bad day.`,
+        answer: `<strong>What is Cullen's Sign?</strong>
+            <div class="rationale"><b>What it tells you:</b> Cullen's Sign indicates retroperitoneal or intraperitoneal hemorrhage. In the context of pancreatitis, it signals hemorrhagic (necrotizing) pancreatitis &mdash; a severe, life-threatening complication.<br><br>
+            <b>Paired with:</b> Grey Turner's Sign (flank ecchymosis) = same mechanism, different anatomical tracking path. Both are LATE signs &mdash; by the time you see them, significant hemorrhage has already occurred.<br><br>
+            <b>Priority:</b> Hemodynamic monitoring, aggressive fluid resuscitation, prepare for possible ICU transfer. These signs don't appear and then politely wait for you to finish charting.</div>`,
+        funFact: `Cullen's Sign was originally described in ectopic pregnancy, not pancreatitis. Dr. Thomas Cullen was actually a gynecologist. The sign just decided to be versatile.`
+    },
+    "4_3": {
+        category: "Sign Language",
+        value: 600,
+        clue: `You press on the right upper quadrant. You ask the patient to take a deep breath. They gasp in pain and stop breathing in mid-inhale, staring at you with a look that says "I trusted you."
+            <br><br>Name this clinical sign, what it tests for, and explain the mechanism of why inspiration makes it worse.`,
+        answer: `<strong>What is a Positive Murphy's Sign, testing for Cholecystitis?</strong>
+            <div class="rationale"><b>The Mechanism:</b> When the patient inspires, the diaphragm descends, pushing the liver and the inflamed gallbladder downward &mdash; directly onto the examiner's palpating fingers. The sudden contact between inflamed tissue and external pressure produces acute pain, causing involuntary inspiratory arrest.<br><br>
+            <b>Why it works:</b> A non-inflamed gallbladder would slide past the fingers without pain. The inflammation makes the organ exquisitely tender to direct pressure.<br><br>
+            <b>Student trap:</b> Murphy's Sign tests for cholecystitis specifically, NOT cholelithiasis (gallstones alone). You can have stones without inflammation and get a negative Murphy's.</div>`,
+        funFact: `Asking a patient to "take a deep breath" while you're about to cause them severe pain is peak healthcare irony. It's also excellent diagnostic technique.`
+    },
+    "4_4": {
+        category: "Sign Language",
+        value: 800,
+        clue: `A patient with gout is screaming about their big toe. Specifically, the metatarsophalangeal joint is red, swollen, and hot. Their blood work shows hyperuricemia.
+            <br><br>Explain what is happening at the molecular level that makes this joint feel like it's being attacked by tiny glass shards.`,
+        answer: `<strong>What is urate crystal deposition in the joint (Gout)?</strong>
+            <div class="rationale"><b>Molecular Mechanism:</b> Elevated uric acid in the blood (hyperuricemia) exceeds the saturation point in synovial fluid. Monosodium urate (MSU) crystals precipitate out of solution and deposit in joint tissue. These needle-shaped crystals are phagocytosed by neutrophils, triggering a massive inflammatory cascade with IL-1&beta; release, creating the classic acute gouty arthritis flare.<br><br>
+            <b>Why the big toe?</b> The first MTP joint is the coolest (lowest temperature) and most dependent joint in the body. Urate solubility decreases with temperature, so crystals preferentially precipitate in cooler peripheral joints.<br><br>
+            <b>Evaluate improvement:</b> Reduced swelling, pain relief, normalized uric acid levels, no new flares.</div>`,
+        funFact: `Gout was historically called "the disease of kings" because it was associated with rich diets and excessive alcohol. Henry VIII had it. So did Benjamin Franklin. Royal pain, literally.`
+    },
+    "4_5": {
+        category: "Sign Language",
+        value: 1000,
+        dailyDouble: false,
+        clue: `A patient with an inflammatory bowel disease is presenting with abdominal pain and bloody diarrhea. The colonoscopy shows continuous inflammation starting from the rectum and extending proximally through the colon with no skip areas.
+            <br><br>Name the disease. Then explain WHY this continuous pattern matters for surgical decision-making compared to a disease with skip lesions.`,
+        answer: `<strong>What is Ulcerative Colitis?</strong>
+            <div class="rationale"><b>Why Continuity Matters for Surgery:</b><br><br>
+            Because UC is <em>limited to the colon and rectum</em> with continuous inflammation, a total proctocolectomy (removing the entire colon and rectum) is essentially <em>curative</em>. You can remove all the disease because it's confined to one organ and one continuous segment.<br><br>
+            In contrast, Crohn's has skip lesions anywhere from mouth to anus and is transmural. You CANNOT surgically remove "all" of Crohn's because:<br>
+            &bull; It can recur anywhere in the GI tract<br>
+            &bull; New skip lesions can appear in previously healthy areas<br>
+            &bull; Surgery addresses complications (strictures, fistulas) but does NOT cure the disease<br><br>
+            <b>This is the clinical reasoning that separates pattern recognition from true understanding.</b></div>`,
+        funFact: `UC always starts at the rectum and works its way up, like a very unwelcome visitor who starts at your front door and methodically trashes every room in the house.`
+    },
+
+    // ========== CATEGORY 5: INFECTION CONNECTION ==========
+    "5_1": {
+        category: "Infection Connection",
+        value: 200,
+        clue: `This disease is transmitted by the bite of a black-legged (deer) tick and produces a characteristic expanding rash that often forms a "bull's-eye" pattern. The rash even has a fancy Latin name.
+            <br><br>Name the disease AND the rash.`,
+        answer: `<strong>What is Lyme Disease, presenting with Erythema Migrans?</strong>
+            <div class="rationale"><b>Pathophysiology:</b> The spirochete <em>Borrelia burgdorferi</em> is transmitted through the tick bite. Erythema migrans (EM) is the pathognomonic rash &mdash; it expands outward from the bite site, often clearing centrally to create the "bull's-eye" appearance.<br><br>
+            <b>Key point:</b> First-line treatment for early-stage Lyme is <em>oral antibiotics</em> (doxycycline for adults). Early recognition and treatment prevents progression to late-stage complications (arthritis, carditis, neuroborreliosis).</div>`,
+        funFact: `Lyme disease is named after Lyme, Connecticut, where a cluster of kids with mysterious arthritis was investigated in 1975. The town's tourism board was... not thrilled.`
+    },
+    "5_2": {
+        category: "Infection Connection",
+        value: 400,
+        clue: `This condition is often called the "stomach flu," though influenza has absolutely nothing to do with it. It involves inflammation of the stomach and intestines caused by viruses, bacteria, parasites, or their toxins.
+            <br><br>Name this condition and explain why calling it "the flu" is a clinical misnomer that would make your patho professor twitch.`,
+        answer: `<strong>What is Gastroenteritis?</strong>
+            <div class="rationale"><b>Why "stomach flu" is wrong:</b> Influenza is a respiratory virus that attacks the respiratory tract. Gastroenteritis is an infection/inflammation of the GI tract caused by entirely different pathogens (norovirus, rotavirus, <em>E. coli</em>, <em>Salmonella</em>, parasites like <em>Giardia</em>). They share no common etiology, mechanism, or treatment.<br><br>
+            <b>Clinical priority:</b> The primary danger is dehydration from fluid losses through vomiting and diarrhea. Monitor I&Os, electrolytes (especially potassium and sodium), mucous membrane moisture, and urine output.<br><br>
+            <b>Student trap:</b> Don't reach for antibiotics first. Most gastroenteritis is viral and self-limiting. Antibiotics can actually worsen some bacterial causes (e.g., STEC <em>E. coli</em>).</div>`,
+        funFact: `Norovirus is the #1 cause of gastroenteritis outbreaks on cruise ships. Nothing says "luxury vacation" like 2,000 people sharing a floating GI tract infection.`
+    },
+    "5_3": {
+        category: "Infection Connection",
+        value: 600,
+        clue: `This liver infection has THREE distinct types. For EACH type (A, B, and C), name the primary transmission route:
+            <br><br>A = _____ route<br>B = _____ and _____ contact<br>C = _____ to _____ contact`,
+        answer: `<strong>What is Hepatitis?<br>A = Fecal-oral route<br>B = Blood, body fluids, and sexual contact<br>C = Blood-to-blood contact</strong>
+            <div class="rationale"><b>Memory Framework:</b><br>
+            &bull; <b>A = Alimentary</b> (fecal-oral, contaminated food/water) &mdash; think "A for Appetite" = food/water source<br>
+            &bull; <b>B = Blood &amp; Bodily fluids</b> &mdash; think "B for Blood"<br>
+            &bull; <b>C = Chronic &amp; Contaminated needles</b> &mdash; think "C for Cirrhosis" (highest chronicity rate)<br><br>
+            <b>Vaccines:</b> Available for A and B. No widely accepted vaccine for C. This makes Hep C prevention entirely dependent on risk-reduction behaviors.<br><br>
+            <b>Clinical judgment:</b> When assessing a patient with hepatitis, the transmission route determines your exposure precautions AND the patient's teaching needs.</div>`,
+        funFact: `Hepatitis B is 50-100x more infectious than HIV. A microscopic amount of blood can transmit it. This is why your clinical instructor is absolutely relentless about Standard Precautions.`
+    },
+    "5_4": {
+        category: "Infection Connection",
+        value: 800,
+        clue: `In bone infection, there is a stage where the bone tissue actually dies from the infectious process. The dead bone fragment gets a specific name. Later, the body attempts to wall off this dead bone by forming NEW bone around it.
+            <br><br>Name BOTH the dead bone fragment AND the new bone formation that encases it.`,
+        answer: `<strong>What are Sequestrum (dead bone) and Involucrum (new bone)?</strong>
+            <div class="rationale"><b>The Full Sequence of Osteomyelitis:</b><br>
+            1. <b>Inflammation:</b> Bacteria seed the bone &rarr; swelling, vascular congestion, increased intraosseous pressure<br>
+            2. <b>Suppuration:</b> Pus forms, bacteria invade Haversian canals, abscess develops<br>
+            3. <b>Sequestrum:</b> Elevated pressure + infection &rarr; vascular thrombosis &rarr; bone ischemia &rarr; necrotic bone fragment (sequestrum)<br>
+            4. <b>Involucrum:</b> Periosteum lays down new bone around the sequestrum, attempting to wall off the infection<br><br>
+            <b>Clinical significance:</b> Sequestrum is dead, avascular tissue that antibiotics cannot penetrate (no blood supply = no drug delivery). This is why chronic osteomyelitis often requires surgical debridement &mdash; medications alone can't reach the dead bone.</div>`,
+        funFact: `The body's response to bone infection is basically: "Oh, the bone died? Let me just... build a new bone around the dead bone." Like putting a new coat of paint over water damage. It's trying its best.`
+    },
+    "5_5": {
+        category: "Infection Connection",
+        value: 1000,
+        clue: `A general term for inflammation of the muscles, often of autoimmune origin, that results in muscle inflammation and damage. It encompasses several specific conditions.
+            <br><br>Name this general condition. Then, explain why autoimmune-mediated muscle destruction is particularly dangerous beyond just "weakness" &mdash; what systemic complication should the nurse monitor for?`,
+        answer: `<strong>What is Myositis?</strong>
+            <div class="rationale"><b>Beyond Weakness &mdash; The Hidden Danger:</b><br><br>
+            When muscle fibers are destroyed (rhabdomyolysis in severe cases), they release <b>myoglobin</b> into the bloodstream. Myoglobin is nephrotoxic &mdash; it precipitates in the renal tubules, causing <b>acute kidney injury (AKI)</b>.<br><br>
+            <b>What to monitor:</b><br>
+            &bull; <b>CK (creatine kinase):</b> Elevated levels indicate ongoing muscle destruction<br>
+            &bull; <b>Urine color:</b> Dark, tea-colored urine suggests myoglobinuria<br>
+            &bull; <b>Renal function:</b> BUN, creatinine, urine output<br>
+            &bull; <b>Electrolytes:</b> Hyperkalemia from cellular lysis (cardiac risk!)<br><br>
+            <b>Priority nursing action:</b> Aggressive IV hydration to flush myoglobin through the kidneys before it can precipitate and cause tubular necrosis. Monitor urine output closely &mdash; oliguria is a red flag.</div>`,
+        funFact: `Your muscles are about 40% of your body mass. When they decide to self-destruct, that's a LOT of cellular debris flooding your bloodstream. Your kidneys did NOT sign up for this.`
+    },
+
+    // ========== CATEGORY 6: PATHO POTPOURRI ==========
+    "6_1": {
+        category: "Patho Potpourri",
+        value: 200,
+        clue: `This branch of medicine deals specifically with the study and treatment of inflammatory conditions affecting the musculoskeletal system. If your joints are angry, this is the specialist you call.`,
+        answer: `<strong>What is Rheumatology?</strong>
+            <div class="rationale"><b>Scope:</b> Rheumatologists diagnose and treat autoimmune and inflammatory conditions: RA, lupus (SLE), gout, ankylosing spondylitis, vasculitis, and more. They are the detectives of the musculoskeletal world &mdash; because when joints are inflamed, the underlying cause could be autoimmune, metabolic, infectious, or crystalline.<br><br>
+            <b>Nursing connection:</b> Rheumatologic conditions are often chronic, requiring long-term immunosuppressive therapy. Patients on these medications need monitoring for infection risk, liver/kidney toxicity, and bone marrow suppression.</div>`,
+        funFact: `"Rheumatology" comes from the Greek "rheuma" meaning "flowing." Ancient Greeks thought joint diseases were caused by evil fluids flowing through the body. They were wrong about the evil part, but the autoantibodies ARE flowing, so... partial credit?`
+    },
+    "6_2": {
+        category: "Patho Potpourri",
+        value: 400,
+        clue: `DOUBLE FEATURE: A patient with this condition has elevated uric acid, and the big toe is the most commonly affected joint. Meanwhile, another patient has symmetric joint involvement in the hands with morning stiffness lasting over an hour.
+            <br><br>Name BOTH conditions and identify the key lab value or finding that differentiates each.`,
+        answer: `<strong>What are Gout (hyperuricemia/urate crystals) and Rheumatoid Arthritis (RF/anti-CCP antibodies, symmetric involvement)?</strong>
+            <div class="rationale"><b>Differentiation Framework:</b><br><br>
+            <b>Gout:</b><br>
+            &bull; Key lab: Elevated serum uric acid (hyperuricemia)<br>
+            &bull; Gold standard: Needle-shaped monosodium urate crystals on joint aspiration (negatively birefringent under polarized light)<br>
+            &bull; Pattern: Usually monoarticular, acute onset, big toe most common<br><br>
+            <b>RA:</b><br>
+            &bull; Key labs: Rheumatoid factor (RF), anti-CCP antibodies, elevated ESR/CRP<br>
+            &bull; Pattern: Symmetric polyarticular, gradual onset, hands/wrists most common<br>
+            &bull; Stiffness &gt;60 min (vs. &lt;30 min in OA)<br><br>
+            <b>The lesson:</b> Joint pain is never just "joint pain." The pattern of involvement, timeline, and lab findings point to entirely different disease mechanisms.</div>`,
+        funFact: `Gout is acute and dramatic, like a fire alarm. RA is chronic and insidious, like a slow gas leak. Both are dangerous, but they require completely different responses.`
+    },
+    "6_3": {
+        category: "Patho Potpourri",
+        value: 600,
+        dailyDouble: false,
+        clue: `A nursing student is confused about two hernia-related conditions. Help them out:
+            <br><br>Condition A: A portion of the stomach pushes through the diaphragm. Symptoms = dysphagia + heartburn + belching.
+            <br>Condition B: Blood supply to herniated tissue is cut off. THIS one is the surgical emergency.
+            <br><br>Name both AND explain the pathophysiological difference that makes Condition B an emergency while Condition A is usually managed conservatively.`,
+        answer: `<strong>What are Hiatal Hernia (A) and Strangulated Hernia (B)?</strong>
+            <div class="rationale"><b>Why Strangulation = Emergency:</b><br><br>
+            <b>Hiatal Hernia:</b> The stomach herniates through the diaphragm but maintains its blood supply. The symptoms are from mechanical disruption (reflux, compression) but the tissue remains <em>viable</em>. Treatment is usually conservative: PPIs, positioning, dietary changes, possibly surgical fundoplication if severe.<br><br>
+            <b>Strangulated Hernia:</b> Pressure at the hernia ring <em>compresses the blood vessels</em> supplying the herniated tissue. Without blood flow:<br>
+            &bull; Ischemia develops within hours<br>
+            &bull; Tissue necrosis follows<br>
+            &bull; Necrotic bowel can perforate &rarr; peritonitis &rarr; sepsis<br>
+            &bull; Timeline: This is a race against the clock<br><br>
+            <b>The Priority Principle:</b> Viable tissue with symptoms = urgent but manageable. Non-viable tissue = surgical emergency. Tissue perfusion status determines the acuity level.</div>`,
+        funFact: `A strangulated hernia is essentially your intestine being slowly strangled by its own body. The body is occasionally its own worst enemy, which is basically the theme of this entire pathophysiology course.`
+    },
+    "6_4": {
+        category: "Patho Potpourri",
+        value: 800,
+        clue: `RAPID FIRE &mdash; Match each GI condition to its MOST distinguishing feature:<br><br>
+            1. Skip lesions<br>
+            2. Continuous inflammation starting at rectum<br>
+            3. Pouches in sigmoid colon wall<br>
+            4. Burning pain relieved by eating<br>
+            5. Epigastric pain radiating to the back, worsened supine`,
+        answer: `<strong>1. Crohn's Disease<br>2. Ulcerative Colitis<br>3. Diverticulitis/Diverticulosis<br>4. Peptic Ulcer Disease<br>5. Acute Pancreatitis</strong>
+            <div class="rationale"><b>Pattern Recognition Framework:</b><br>
+            Each condition has a <em>pathognomonic</em> or highly characteristic finding:<br><br>
+            &bull; <b>Skip lesions</b> = Crohn's (only IBD with discontinuous inflammation)<br>
+            &bull; <b>Continuous from rectum</b> = UC (always starts distally and extends proximally)<br>
+            &bull; <b>Sigmoid pouches</b> = Diverticular disease (highest pressure zone)<br>
+            &bull; <b>Pain relieved by food</b> = PUD (food buffers gastric acid)<br>
+            &bull; <b>Epigastric → back, worse supine</b> = Pancreatitis (retroperitoneal organ, lying flat compresses it)<br><br>
+            <b>Clinical reasoning transfer:</b> Can you identify which of these is the most immediately life-threatening? (Answer: Pancreatitis with Cullen's/Grey Turner's signs, indicating hemorrhagic necrosis.)</div>`,
+        funFact: `If the GI tract were a neighborhood, Crohn's would be the vandal hitting random houses, UC would be the methodical burglar going door-to-door, diverticulitis would be the pothole problem, PUD would be the acid rain, and pancreatitis would be the house fire.`
+    },
+    "6_5": {
+        category: "Patho Potpourri",
+        value: 1000,
+        clue: `GRAND FINALE CLUE: A 65-year-old postmenopausal woman presents with back pain and a noticeable thoracic curvature. X-ray shows decreased bone density with vertebral compression fractures. She also has symmetric hand joint swelling with morning stiffness lasting 90 minutes, fatigue, and low-grade fever.
+            <br><br>This patient has TWO coexisting conditions. Name both. Then explain why long-term treatment of ONE condition could actually WORSEN the other &mdash; and what the nurse should monitor.`,
+        answer: `<strong>What are Osteoporosis and Rheumatoid Arthritis?</strong>
+            <div class="rationale"><b>The Dangerous Intersection:</b><br><br>
+            RA is often treated with <b>long-term corticosteroids</b> (prednisone) to control inflammation. However, corticosteroids are a <em>known risk factor for osteoporosis</em> &mdash; they:<br>
+            &bull; Inhibit osteoblast function (reduce bone formation)<br>
+            &bull; Increase osteoclast activity (accelerate bone resorption)<br>
+            &bull; Decrease calcium absorption from the gut<br>
+            &bull; Increase renal calcium excretion<br><br>
+            So treating the RA with steroids directly worsens the osteoporosis. This is glucocorticoid-induced osteoporosis (GIOP).<br><br>
+            <b>What the nurse monitors:</b><br>
+            &bull; DEXA scan results (bone density trending)<br>
+            &bull; Calcium and Vitamin D levels<br>
+            &bull; Height measurements (compression fractures cause height loss)<br>
+            &bull; Fall risk assessment<br>
+            &bull; Bisphosphonate therapy adherence<br>
+            &bull; Steroid dose &mdash; advocate for the lowest effective dose<br><br>
+            <b>This is the kind of clinical reasoning that separates safe nurses from textbook memorizers.</b></div>`,
+        funFact: `This is medicine's version of "the treatment is making the other thing worse." It's like putting out a grease fire with water &mdash; you solved one problem and created another. The nurse who catches this interaction is the nurse everyone wants on their team.`
+    }
+};
+
+const finalJeopardyData = {
+    category: "The Body Fights Back",
+    clue: `A 58-year-old patient presents to the ED with severe right upper quadrant pain radiating to the right scapula, worsened by deep inspiration. Labs show elevated WBC, bilirubin, and alkaline phosphatase. Murphy's sign is positive. Ultrasound reveals gallstones AND dilation of the common bile duct.
+        <br><br>This patient likely has TWO simultaneous biliary conditions. Name them both, explain how one led to the other, and identify the most dangerous potential complication if the second condition is left untreated.
+        <div class="fun-fact">Think about the anatomy: Where do gallstones go when they leave the gallbladder, and what gets blocked along the way?</div>`,
+    answer: `<strong>What are Cholecystitis AND Choledocholithiasis?</strong>
+        <div class="rationale"><b>The Pathophysiological Chain:</b><br><br>
+        <b>Step 1 &mdash; Cholecystitis:</b> A gallstone obstructs the cystic duct &rarr; bile backs up in the gallbladder &rarr; distension &rarr; inflammation. This explains the RUQ pain, positive Murphy's sign, and elevated WBC.<br><br>
+        <b>Step 2 &mdash; Choledocholithiasis:</b> Smaller gallstones migrate through the cystic duct into the common bile duct (CBD) &rarr; CBD obstruction &rarr; bile cannot drain into the duodenum &rarr; elevated bilirubin (jaundice) and alkaline phosphatase. The dilated CBD on ultrasound confirms obstruction.<br><br>
+        <b>The Dangerous Complication &mdash; Ascending Cholangitis:</b><br>
+        If the CBD remains obstructed, stagnant bile becomes a breeding ground for bacteria. Infection ascends from the duodenum into the biliary tree:<br>
+        &bull; <b>Charcot's Triad:</b> Fever + Jaundice + RUQ pain<br>
+        &bull; <b>Reynolds' Pentad:</b> Charcot's + Altered mental status + Hypotension (septic shock)<br>
+        &bull; This is a <em>life-threatening emergency</em> requiring emergent biliary decompression (ERCP) and IV antibiotics.<br><br>
+        <b>The lesson:</b> Gallstones aren't just painful. Their migration creates a cascade where each downstream obstruction increases the risk of a more dangerous complication. The nurse who understands this anatomy-to-pathology chain can anticipate deterioration before it happens.</div>`
+};
+
+let scores = [0, 0, 0, 0];
+let activeTeam = null;
+let currentValue = 0;
+let timerInterval = null;
+let timerCount = 30;
+let soundEnabled = true;
+let answeredCount = 0;
+const totalQuestions = 30;
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(freq, duration, type = 'sine') {
+    if (!soundEnabled) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+}
+
+function playSelectSound() {
+    playTone(523, 0.1);
+    setTimeout(() => playTone(659, 0.1), 100);
+    setTimeout(() => playTone(784, 0.15), 200);
+}
+
+function playCorrectSound() {
+    playTone(523, 0.15);
+    setTimeout(() => playTone(659, 0.15), 150);
+    setTimeout(() => playTone(784, 0.15), 300);
+    setTimeout(() => playTone(1047, 0.3), 450);
+}
+
+function playWrongSound() {
+    playTone(300, 0.3, 'sawtooth');
+    setTimeout(() => playTone(250, 0.4, 'sawtooth'), 300);
+}
+
+function playDDSound() {
+    for (let i = 0; i < 6; i++) {
+        setTimeout(() => playTone(400 + i * 100, 0.15, 'square'), i * 100);
+    }
+}
+
+function playTimerWarning() {
+    playTone(800, 0.1, 'square');
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    document.getElementById('soundBtn').innerHTML = soundEnabled ? '&#x1f50a; Sound ON' : '&#x1f507; Sound OFF';
+}
+
+function buildBoard() {
+    const board = document.getElementById('gameBoard');
+    const values = [200, 400, 600, 800, 1000];
+    for (let row = 0; row < 5; row++) {
+        const qRow = document.createElement('div');
+        qRow.className = 'questions-row';
+        for (let col = 1; col <= 6; col++) {
+            const key = `${col}_${row + 1}`;
+            const box = document.createElement('div');
+            box.className = 'question-box';
+            box.id = `box_${key}`;
+            box.textContent = `$${values[row]}`;
+            box.onclick = () => openQuestion(key);
+            qRow.appendChild(box);
+        }
+        board.appendChild(qRow);
+    }
+}
+
+function setActiveTeam(num) {
+    activeTeam = num;
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById(`team${i}`).classList.toggle('active', i === num);
+    }
+}
+
+function openQuestion(key) {
+    const q = questions[key];
+    if (!q) return;
+    const box = document.getElementById(`box_${key}`);
+    if (box.classList.contains('answered')) return;
+
+    currentValue = q.value;
+    playSelectSound();
+
+    if (q.dailyDouble) {
+        document.getElementById('ddSplash').classList.add('show');
+        playDDSound();
+        document.getElementById('ddSplash').dataset.key = key;
+        return;
+    }
+
+    showQuestionModal(key);
+}
+
+function dismissDD() {
+    const splash = document.getElementById('ddSplash');
+    splash.classList.remove('show');
+    const key = splash.dataset.key;
+    showQuestionModal(key);
+}
+
+function showQuestionModal(key) {
+    const q = questions[key];
+    document.getElementById('modalCategory').textContent = q.category;
+    document.getElementById('modalValue').textContent = `$${q.value}` + (q.dailyDouble ? ' - DAILY DOUBLE!' : '');
+    let questionHTML = q.clue;
+    if (q.funFact) {
+        questionHTML += `<div class="fun-fact">&#x1f4a1; ${q.funFact}</div>`;
+    }
+    document.getElementById('modalQuestion').innerHTML = questionHTML;
+    document.getElementById('modalAnswer').innerHTML = q.answer;
+    document.getElementById('modalAnswer').style.display = 'none';
+    document.getElementById('btnGroup').style.display = 'flex';
+    document.getElementById('teamBtns').style.display = 'none';
+    document.getElementById('postAnswerBtns').style.display = 'none';
+    document.getElementById('questionModal').style.display = 'block';
+
+    const box = document.getElementById(`box_${key}`);
+    box.classList.add('answered');
+    answeredCount++;
+
+    startTimer();
+}
+
+function startTimer() {
+    timerCount = 30;
+    const timerEl = document.getElementById('timer');
+    timerEl.textContent = timerCount;
+    timerEl.classList.remove('warning');
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timerCount--;
+        timerEl.textContent = timerCount;
+        if (timerCount <= 10) {
+            timerEl.classList.add('warning');
+            if (timerCount <= 5) playTimerWarning();
+        }
+        if (timerCount <= 0) {
+            clearInterval(timerInterval);
+            timerEl.textContent = "TIME!";
+            playWrongSound();
+        }
+    }, 1000);
+}
+
+function showAnswer() {
+    clearInterval(timerInterval);
+    document.getElementById('modalAnswer').style.display = 'block';
+    document.getElementById('btnGroup').style.display = 'none';
+    document.getElementById('teamBtns').style.display = 'grid';
+    document.getElementById('postAnswerBtns').style.display = 'flex';
+    document.getElementById('modalAnswer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function awardPoints(team) {
+    scores[team - 1] += currentValue;
+    updateScores();
+    playCorrectSound();
+    launchConfetti();
+    closeModal();
+}
+
+function deductPoints() {
+    playWrongSound();
+    closeModal();
+}
+
+function updateScores() {
+    for (let i = 1; i <= 4; i++) {
+        const scoreEl = document.getElementById(`score${i}`);
+        const val = scores[i - 1];
+        scoreEl.textContent = val < 0 ? `-$${Math.abs(val)}` : `$${val}`;
+        scoreEl.classList.toggle('negative', val < 0);
+    }
+}
+
+function closeModal() {
+    document.getElementById('questionModal').style.display = 'none';
+    clearInterval(timerInterval);
+}
+
+function confirmReset() {
+    if (confirm('Reset the entire game? All scores and answers will be cleared.')) {
+        scores = [0, 0, 0, 0];
+        activeTeam = null;
+        answeredCount = 0;
+        updateScores();
+        for (let i = 1; i <= 4; i++) {
+            document.getElementById(`team${i}`).classList.remove('active');
+        }
+        document.querySelectorAll('.question-box').forEach(box => {
+            box.classList.remove('answered');
+        });
+    }
+}
+
+function showFinalJeopardy() {
+    document.getElementById('finalModal').style.display = 'block';
+    document.getElementById('finalClue').style.display = 'none';
+    document.getElementById('finalAnswer').style.display = 'none';
+    document.getElementById('finalBtnGroup').style.display = 'flex';
+    document.getElementById('finalRevealBtns').style.display = 'none';
+    document.getElementById('finalTeamBtns').style.display = 'none';
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById(`wager${i}`).value = 0;
+        document.getElementById(`wager${i}`).max = Math.max(scores[i-1], 0);
+    }
+}
+
+function revealFinalClue() {
+    document.getElementById('finalClue').innerHTML = finalJeopardyData.clue;
+    document.getElementById('finalClue').style.display = 'block';
+    document.getElementById('finalBtnGroup').style.display = 'none';
+    document.getElementById('finalRevealBtns').style.display = 'flex';
+    for (let i = 1; i <= 4; i++) {
+        document.getElementById(`wager${i}`).disabled = true;
+    }
+    playSelectSound();
+}
+
+function revealFinalAnswer() {
+    document.getElementById('finalAnswer').innerHTML = finalJeopardyData.answer;
+    document.getElementById('finalAnswer').style.display = 'block';
+    document.getElementById('finalRevealBtns').style.display = 'none';
+    document.getElementById('finalTeamBtns').style.display = 'grid';
+    playSelectSound();
+}
+
+function finalAward(team, correct) {
+    const wager = parseInt(document.getElementById(`wager${team}`).value) || 0;
+    if (correct) {
+        scores[team - 1] += wager;
+        playCorrectSound();
+        launchConfetti();
+    } else {
+        scores[team - 1] -= wager;
+        playWrongSound();
+    }
+    updateScores();
+}
+
+function closeFinalJeopardy() {
+    document.getElementById('finalModal').style.display = 'none';
+}
+
+function launchConfetti() {
+    const emojis = ['&#x1f389;', '&#x2b50;', '&#x1f31f;', '&#x1f3c6;', '&#x1f4af;', '&#x2764;&#xfe0f;', '&#x1f525;'];
+    for (let i = 0; i < 20; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti';
+        el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (2 + Math.random() * 2) + 's';
+        el.style.animationDelay = Math.random() * 0.5 + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+    }
+}
+
+window.onclick = function(event) {
+    if (event.target === document.getElementById('questionModal')) closeModal();
+    if (event.target === document.getElementById('finalModal')) closeFinalJeopardy();
+};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+        closeFinalJeopardy();
+    }
+});
+
+buildBoard();
+</script>
+
+</body>
+</html>
