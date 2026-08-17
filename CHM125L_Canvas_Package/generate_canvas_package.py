@@ -520,12 +520,15 @@ def gen_grading_standard():
     return "\n".join(lines)
 
 
-def gen_assignment_xml(asgn):
+def gen_assignment_xml(asgn, position_in_group=1):
     sub_types = asgn.get("submission_types", "online_upload")
     desc = asgn.get("description", "<p>No description provided.</p>")
     unlock = ""
     if asgn.get("unlock"):
         unlock = f"\n  <unlock_at>{asgn['unlock']}</unlock_at>"
+    lock = ""
+    if asgn.get("lock"):
+        lock = f"\n  <lock_at>{asgn['lock']}</lock_at>"
 
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <assignment xmlns="http://canvas.instructure.com/xsd/cccv1p0"
@@ -533,13 +536,14 @@ def gen_assignment_xml(asgn):
             xsi:schemaLocation="http://canvas.instructure.com/xsd/cccv1p0 https://canvas.instructure.com/xsd/cccv1p0.xsd"
             identifier="{asgn['id']}">
   <title>{asgn['title']}</title>
-  <due_at>{asgn['due']}</due_at>{unlock}
+  <due_at>{asgn['due']}</due_at>{unlock}{lock}
   <all_day>false</all_day>
   <assignment_group_identifierref>{asgn['group']}</assignment_group_identifierref>
   <points_possible>{asgn['points']}</points_possible>
   <grading_type>points</grading_type>
   <submission_types>{sub_types}</submission_types>
-  <position>{ASSIGNMENT_GROUPS[0]['position']}</position>
+  <position>{position_in_group}</position>
+  <workflow_state>published</workflow_state>
   <description>{desc}</description>
 </assignment>"""
 
@@ -728,11 +732,15 @@ def build():
     write_file(os.path.join(BUILD, "course_settings", "grading_standards.xml"), gen_grading_standard())
     write_file(os.path.join(BUILD, "course_settings", "module_meta.xml"), gen_module_meta())
 
-    # Assignment files
-    all_assignments = WORKSHOPS + LAB_REPORTS
-    for asgn in all_assignments:
+    # Assignment files (with correct position_in_group per assignment group)
+    for pos, asgn in enumerate(WORKSHOPS, 1):
         aid = asgn["id"]
-        write_file(os.path.join(BUILD, "assignments", aid, "assignment_settings.xml"), gen_assignment_xml(asgn))
+        write_file(os.path.join(BUILD, "assignments", aid, "assignment_settings.xml"), gen_assignment_xml(asgn, position_in_group=pos))
+        write_file(os.path.join(BUILD, "assignments", aid, f"{aid}.html"), gen_assignment_html(asgn))
+
+    for pos, asgn in enumerate(LAB_REPORTS, 1):
+        aid = asgn["id"]
+        write_file(os.path.join(BUILD, "assignments", aid, "assignment_settings.xml"), gen_assignment_xml(asgn, position_in_group=pos))
         write_file(os.path.join(BUILD, "assignments", aid, f"{aid}.html"), gen_assignment_html(asgn))
 
     # Quiz files
